@@ -28,7 +28,7 @@ const TrailerModal: React.FC<Props> = ({ item, open, title, onClose }) => {
 
   return (
     <Modal open={open} onClose={onClose}>
-      <div className={styles.container} role="dialog" aria-labelledby="trailer-modal-title">
+      <div className={styles.container} role="dialog" aria-modal="true" aria-labelledby="trailer-modal-title">
         <Player
           item={item}
           onPlay={handlePlay}
