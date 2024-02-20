@@ -10,3 +10,8 @@ export const createURLFromLocation = (location: Location, queryParams: QueryPara
 export const modalURLFromLocation = (location: Location, u: keyof AccountModals | null, queryParams?: QueryParamsArg) => {
   return createURL(`${location.pathname}${location.search || ''}`, { u, ...queryParams });
 };
+
+// Create a full modal url including hostname, mostly for external use (e.g paypal successUrl)
+export const modalURLFromWindowLocation = (u: keyof AccountModals, queryParams?: QueryParamsArg) => {
+  return createURL(window.location.href, { u, ...queryParams });
+};

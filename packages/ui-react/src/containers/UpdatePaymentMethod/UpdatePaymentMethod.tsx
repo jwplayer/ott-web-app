@@ -3,13 +3,13 @@ import { getModule } from '@jwp/ott-common/src/modules/container';
 import { useCheckoutStore } from '@jwp/ott-common/src/stores/CheckoutStore';
 import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
 import CheckoutController from '@jwp/ott-common/src/controllers/CheckoutController';
-import { createURL } from '@jwp/ott-common/src/utils/urlFormatting';
 import useQueryParam from '@jwp/ott-ui-react/src/hooks/useQueryParam';
 
 import LoadingOverlay from '../../components/LoadingOverlay/LoadingOverlay';
 import PaymentMethodForm from '../../components/PaymentMethodForm/PaymentMethodForm';
 import PayPal from '../../components/PayPal/PayPal';
 import AdyenPaymentDetails from '../AdyenPaymentDetails/AdyenPaymentDetails';
+import { modalURLFromWindowLocation } from '../../utils/location';
 
 type Props = {
   onCloseButtonClick: () => void;
@@ -48,10 +48,10 @@ const UpdatePaymentMethod = ({ onCloseButtonClick }: Props) => {
     try {
       setPaymentError(undefined);
 
-      const successUrl = createURL(window.location.href, { u: 'payment-method-success' });
-      const waitingUrl = createURL(window.location.href, { u: 'waiting-for-payment' });
-      const cancelUrl = createURL(window.location.href, { u: 'paypal-cancelled' }); // @todo: This route doesn't exist
-      const errorUrl = createURL(window.location.href, { u: 'paypal-error' }); // @todo: This route doesn't exist
+      const successUrl = modalURLFromWindowLocation('payment-method-success');
+      const waitingUrl = modalURLFromWindowLocation('waiting-for-payment');
+      const cancelUrl = modalURLFromWindowLocation('payment-cancelled');
+      const errorUrl = modalURLFromWindowLocation('payment-error');
 
       const response = await checkoutController.updatePayPalPaymentMethod(
         successUrl,
