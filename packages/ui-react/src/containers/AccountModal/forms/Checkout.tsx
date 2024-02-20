@@ -102,10 +102,9 @@ const Checkout = () => {
   }
 
   const cancelUrl = createURL(window.location.href, { u: 'payment-cancelled' });
-  const waitingUrl = createURL(window.location.href, { u: 'waiting-for-payment' });
+  const waitingUrl = createURL(window.location.href, { u: 'waiting-for-payment', offerId: selectedOffer?.offerId });
   const errorUrl = createURL(window.location.href, { u: 'payment-error' });
-  const successUrl = offerType === 'svod' ? welcomeUrl : closeModalUrl;
-  const successUrlWithOrigin = `${window.location.origin}${successUrl}`;
+  const successUrlPaypal = offerType === 'svod' ? waitingUrl : closeModalUrl;
   const referrer = window.location.href;
 
   const paymentMethod = paymentMethods?.find((method) => method.id === parseInt(paymentMethodId));
@@ -154,7 +153,7 @@ const Checkout = () => {
       )}
       {isPayPalPayment && (
         <PayPal
-          onSubmit={() => submitPaymentPaypal.mutate({ successUrl: successUrlWithOrigin, waitingUrl, cancelUrl, errorUrl, couponCode })}
+          onSubmit={() => submitPaymentPaypal.mutate({ successUrl: successUrlPaypal, waitingUrl, cancelUrl, errorUrl, couponCode })}
           error={submitPaymentPaypal.error?.message || null}
         />
       )}
