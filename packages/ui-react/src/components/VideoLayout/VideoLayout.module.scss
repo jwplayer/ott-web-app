@@ -68,11 +68,22 @@
 .relatedVideosList {
   grid-area: related;
   position: relative;
+
+  .relatedVideosListHeader {
+    display: flex;
+    flex-direction: column;
+    gap: variables.$base-spacing;
+    margin-bottom: variables.$base-spacing;
+    padding-left: #{variables.$base-spacing * 1.5};
+
+    @include responsive.mobile-only() {
+      padding-left: 0;
+    }
+  }
 }
 
 .relatedVideos {
-  padding: 37px 56px 0;
-  padding-bottom: 16px;
+  padding: 37px 56px variables.$base-spacing;
 
   @include responsive.desktop-small-only() {
     padding: 34px;
@@ -83,7 +94,7 @@
   }
 
   @include responsive.mobile-only() {
-    padding: 16px;
+    padding: variables.$base-spacing;
   }
 }
 
@@ -92,14 +103,14 @@
   display: flex;
   align-items: center;
   height: 100%;
-  padding-bottom: 16px;
+  padding-bottom: variables.$base-spacing;
 
   &.inlineLayout {
     flex-direction: column;
     align-items: initial;
     width: 100%;
     grid-area: related;
-    padding-bottom: 0;
+    gap: variables.$base-spacing;
 
     > h3 {
       font-size: 20px;
@@ -121,7 +132,6 @@
 }
 
 .relatedVideosListTitle {
-  margin-left: 24px;
   font-family: var(--body-alt-font-family);
   font-weight: var(--body-font-weight-bold);
   font-size: 20px;
@@ -136,7 +146,6 @@
 }
 
 .filtersInline {
-  margin-bottom: variables.$base-spacing;
   padding-bottom: variables.$base-spacing;
   border-bottom: 1px solid rgba(255, 255, 255, 0.3);
 }
