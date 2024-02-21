@@ -18,6 +18,11 @@
   > strong {
     letter-spacing: 0.25px;
   }
+
+  @include responsive.mobile-only() {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }
 
 .transactionItem {
@@ -39,12 +44,22 @@
   display: flex;
   justify-content: center;
   align-items: center;
+
   > div {
     margin-left: variables.$base-spacing;
+
+    @include responsive.mobile-only() {
+      margin-left: 0;
+    }
+  }
+
+  @include responsive.mobile-only() {
+    justify-content: space-between;
+    width: 100%;
   }
 }
 
-.transationPrice {
+.transactionPrice {
   font-size: 1.25em;
 }
 
@@ -99,4 +114,8 @@
 
 .changePlanCancelButton {
   margin-left: auto;
+}
+
+.editCard {
+  margin: 0 0 8px;
 }

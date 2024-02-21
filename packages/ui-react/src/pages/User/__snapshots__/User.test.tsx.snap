@@ -823,7 +823,7 @@ exports[`User Component tests > Payments Page 1`] = `
             class="_transactionDetails_c57ff5"
           >
             <div
-              class="_transationPrice_c57ff5"
+              class="_transactionPrice_c57ff5"
             >
               user:payment.price_paid_with
             </div>
@@ -849,7 +849,7 @@ exports[`User Component tests > Payments Page 1`] = `
             class="_transactionDetails_c57ff5"
           >
             <div
-              class="_transationPrice_c57ff5"
+              class="_transactionPrice_c57ff5"
             >
               user:payment.price_paid_with
             </div>
