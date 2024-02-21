@@ -14,6 +14,11 @@
 
 .dropDown {
   margin-bottom: 0;
+
+  label {
+    // hide the label and optional label
+    display: none;
+  }
 }
 
 .filterDropDown {

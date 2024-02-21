@@ -140,10 +140,10 @@ const VideoLayout: React.FC<Props> = ({
       <div className={styles.relatedVideosList}>
         <VideoList
           header={
-            <>
+            <div className={styles.relatedVideosListHeader}>
               {title && <h2 className={styles.relatedVideosListTitle}>{relatedTitle}</h2>}
               {hasFilters && renderFilters(true)}
-            </>
+            </div>
           }
           activeMediaId={item?.mediaid}
           activeLabel={activeLabel}
