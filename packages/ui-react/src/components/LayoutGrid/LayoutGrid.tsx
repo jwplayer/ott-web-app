@@ -129,7 +129,24 @@ const LayoutGrid = <Item extends object>({ className, columnCount, data, renderC
   }, [currentColumnIndex, currentRowIndex, columnCount, rowCount, data.length]);
 
   return (
-    <div role="grid" ref={gridRef} aria-rowcount={rowCount} className={className} onFocus={() => setFocused(true)} onBlur={() => setFocused(false)}>
+    <div
+      role="grid"
+      ref={gridRef}
+      aria-rowcount={rowCount}
+      className={className}
+      onFocus={(event) => {
+        // only update the focused state when the `relatedTarget` is not a child of this element
+        if (!event.relatedTarget || !gridRef.current?.contains(event.relatedTarget)) {
+          setFocused(true);
+        }
+      }}
+      onBlur={(event) => {
+        // only update the focused state when the `relatedTarget` is not a child of this element
+        if (!event.relatedTarget || !gridRef.current?.contains(event.relatedTarget)) {
+          setFocused(false);
+        }
+      }}
+    >
       {Array.from({ length: rowCount }).map((_, rowIndex) => (
         <div role="row" key={rowIndex} aria-rowindex={rowIndex} className={styles.row}>
           {data.slice(rowIndex * columnCount, rowIndex * columnCount + columnCount).map((item, columnIndex) => (
