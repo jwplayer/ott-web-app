@@ -1,11 +1,12 @@
 import { useEffect } from 'react';
-import { object, string, type SchemaOf } from 'yup';
+import { number, object, string } from 'yup';
 import { useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import classNames from 'classnames';
 import { useProfileStore } from '@jwp/ott-common/src/stores/ProfileStore';
 import useForm, { type UseFormOnSubmitHandler } from '@jwp/ott-hooks-react/src/useForm';
 import type { ProfileFormValues } from '@jwp/ott-common/types/profiles';
+import { PATH_USER_PROFILES } from '@jwp/ott-common/src/paths';
 
 import styles from '../../pages/User/User.module.scss';
 import Button from '../../components/Button/Button';
@@ -40,16 +41,22 @@ const Form = ({ initialValues, formHandler, selectedAvatar, showCancelButton = t
     { label: t('profile.kids'), value: 'false' },
   ];
 
-  const validationSchema: SchemaOf<{ name: string }> = object().shape({
-    name: string()
-      .trim()
-      .required(t('profile.validation.name.required'))
-      .min(3, t('profile.validation.name.too_short', { charactersCount: 3 }))
-      .max(30, t('profile.validation.name.too_long', { charactersCount: 30 }))
-      .matches(/^[a-zA-Z0-9\s]*$/, t('profile.validation.name.invalid_characters')),
+  const { handleSubmit, handleChange, values, errors, submitting, setValue } = useForm<ProfileFormValues>({
+    initialValues,
+    validationSchema: object().shape({
+      id: string(),
+      name: string()
+        .trim()
+        .required(t('profile.validation.name.required'))
+        .min(3, t('profile.validation.name.too_short', { charactersCount: 3 }))
+        .max(30, t('profile.validation.name.too_long', { charactersCount: 30 }))
+        .matches(/^[a-zA-Z0-9\s]*$/, t('profile.validation.name.invalid_characters')),
+      adult: string().required(),
+      avatar_url: string(),
+      pin: number(),
+    }),
+    onSubmit: formHandler,
   });
-
-  const { handleSubmit, handleChange, values, errors, submitting, setValue } = useForm(initialValues, formHandler, validationSchema);
   const isDirty = Object.entries(values).some(([k, v]) => v !== initialValues[k as keyof typeof initialValues]);
   useEffect(() => {
     setValue('avatar_url', selectedAvatar?.value || profile?.avatar_url || '');
@@ -109,7 +116,7 @@ const Form = ({ initialValues, formHandler, selectedAvatar, showCancelButton = t
         </div>
         <>
           <Button type="submit" label={t('account.save')} variant="outlined" disabled={!isDirty || submitting} fullWidth={isMobile} />
-          {showCancelButton && <Button onClick={() => navigate('/u/profiles')} label={t('account.cancel')} variant="text" fullWidth={isMobile} />}
+          {showCancelButton && <Button onClick={() => navigate(PATH_USER_PROFILES)} label={t('account.cancel')} variant="text" fullWidth={isMobile} />}
         </>
       </div>
     </form>

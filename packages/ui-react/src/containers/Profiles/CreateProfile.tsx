@@ -5,6 +5,7 @@ import type { UseFormOnSubmitHandler } from '@jwp/ott-hooks-react/src/useForm';
 import { useCreateProfile, useProfileErrorHandler, useProfiles } from '@jwp/ott-hooks-react/src/useProfiles';
 import type { ProfileFormValues } from '@jwp/ott-common/types/profiles';
 import { createURL } from '@jwp/ott-common/src/utils/urlFormatting';
+import { PATH_USER_PROFILES } from '@jwp/ott-common/src/paths';
 
 import styles from '../../pages/User/User.module.scss';
 import LoadingOverlay from '../../components/LoadingOverlay/LoadingOverlay';
@@ -37,9 +38,9 @@ const CreateProfile = () => {
 
   const createProfile = useCreateProfile({
     onSuccess: (res) => {
-      const id = res?.responseData?.id;
+      const id = res?.id;
 
-      !!id && navigate(createURL(`/u/profiles`, { success: 'true', id }));
+      !!id && navigate(createURL(PATH_USER_PROFILES, { success: 'true', id }));
     },
   });
 

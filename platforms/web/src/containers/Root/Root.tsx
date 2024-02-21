@@ -8,6 +8,7 @@ import { type BootstrapData, type OnReadyCallback, useBootstrapApp } from '@jwp/
 import { setThemingVariables } from '@jwp/ott-ui-react/src/utils/theming';
 import { addScript } from '@jwp/ott-ui-react/src/utils/dom';
 import type { Config } from '@jwp/ott-common/types/config';
+import { AppError } from '@jwp/ott-common/src/utils/error';
 
 import DemoConfigDialog from '../../components/DemoConfigDialog/DemoConfigDialog';
 import AppRoutes from '../AppRoutes/AppRoutes';
@@ -17,6 +18,13 @@ import { useTrackConfigKeyChange } from '#src/hooks/useTrackConfigKeyChange';
 
 const IS_DEMO_OR_PREVIEW = IS_DEMO_MODE || IS_PREVIEW_MODE;
 
+const BootstrapError = ({ error }: { error: Error | AppError }) => {
+  if (error instanceof AppError) {
+    return <ErrorPage title={error.payload.title} message={error.payload.description} helpLink={error.payload.helpLink} error={error} />;
+  }
+  return <ErrorPage error={error} />;
+};
+
 const ProdContentLoader = ({ query }: { query: BootstrapData }) => {
   const { isLoading, error } = query;
 
@@ -25,7 +33,7 @@ const ProdContentLoader = ({ query }: { query: BootstrapData }) => {
   }
 
   if (error) {
-    return <ErrorPage title={error.payload.title} message={error.payload.description} helpLink={error.payload.helpLink} />;
+    return <BootstrapError error={error} />;
   }
 
   return null;
@@ -44,9 +52,7 @@ const DemoContentLoader = ({ query }: { query: BootstrapData }) => {
   return (
     <>
       {/* Show the error page when error except in demo mode (the demo mode shows its own error) */}
-      {!IS_DEMO_OR_PREVIEW && error && (
-        <ErrorPage title={error?.payload?.title} message={error?.payload?.description} error={error} helpLink={error?.payload?.helpLink} />
-      )}
+      {!IS_DEMO_OR_PREVIEW && error && <BootstrapError error={error} />}
       {IS_DEMO_OR_PREVIEW && <DemoConfigDialog query={query} />}
       {/* Config select control to improve testing experience */}
       {(IS_DEVELOPMENT_BUILD || IS_PREVIEW_MODE) && <DevConfigSelector selectedConfig={configSource} />}

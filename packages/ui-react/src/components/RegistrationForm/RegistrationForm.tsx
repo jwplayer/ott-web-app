@@ -3,7 +3,7 @@ import { useLocation } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import DOMPurify from 'dompurify';
 import type { FormErrors } from '@jwp/ott-common/types/form';
-import type { Consent, RegistrationFormData } from '@jwp/ott-common/types/account';
+import type { CustomFormField, RegistrationFormData } from '@jwp/ott-common/types/account';
 import { testId } from '@jwp/ott-common/src/utils/common';
 import useToggle from '@jwp/ott-hooks-react/src/useToggle';
 import Visibility from '@jwp/ott-theme/assets/icons/visibility.svg?react';
@@ -34,7 +34,7 @@ type Props = {
   consentErrors: string[];
   submitting: boolean;
   canSubmit: boolean;
-  publisherConsents?: Consent[];
+  publisherConsents: CustomFormField[] | null;
 };
 
 const RegistrationForm: React.FC<Props> = ({

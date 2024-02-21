@@ -3,6 +3,7 @@ import { Navigate, useLocation, useNavigate, useParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import useQueryParam from '@jwp/ott-ui-react/src/hooks/useQueryParam';
 import { useDeleteProfile } from '@jwp/ott-hooks-react/src/useProfiles';
+import { PATH_USER_PROFILES } from '@jwp/ott-common/src/paths';
 
 import Button from '../../components/Button/Button';
 import Dialog from '../../components/Dialog/Dialog';
@@ -28,7 +29,7 @@ const DeleteProfile = () => {
 
   const deleteProfile = useDeleteProfile({
     onMutate: closeHandler,
-    onSuccess: () => navigate('/u/profiles'),
+    onSuccess: () => navigate(PATH_USER_PROFILES),
     onError: () => setIsDeleting(false),
   });
 

@@ -1,4 +1,4 @@
-import type { Consent, CustomerConsent } from '../../types/account';
+import type { CustomFormField, CustomerConsent } from '../../types/account';
 import type { Config } from '../../types/config';
 import type { GenericFormValues } from '../../types/form';
 import type { Playlist, PlaylistItem } from '../../types/playlist';
@@ -57,7 +57,7 @@ const generatePlaylistPlaceholder = (playlistLength: number = 15): Playlist => (
   ),
 });
 
-const formatConsentValues = (publisherConsents: Consent[] | null = [], customerConsents: CustomerConsent[] | null = []) => {
+const formatConsentValues = (publisherConsents: CustomFormField[] | null = [], customerConsents: CustomerConsent[] | null = []) => {
   if (!publisherConsents || !customerConsents) {
     return {};
   }
@@ -76,7 +76,7 @@ const formatConsentValues = (publisherConsents: Consent[] | null = [], customerC
   return values;
 };
 
-const formatConsents = (publisherConsents: Consent[] | null = [], customerConsents: CustomerConsent[] | null = []) => {
+const formatConsents = (publisherConsents: CustomFormField[] | null = [], customerConsents: CustomerConsent[] | null = []) => {
   if (!publisherConsents || !customerConsents) {
     return {};
   }
@@ -90,7 +90,7 @@ const formatConsents = (publisherConsents: Consent[] | null = [], customerConsen
   return values;
 };
 
-const extractConsentValues = (consents?: Consent[]) => {
+const extractConsentValues = (consents?: CustomFormField[]) => {
   const values: Record<string, string | boolean> = {};
 
   if (!consents) {
@@ -104,7 +104,7 @@ const extractConsentValues = (consents?: Consent[]) => {
   return values;
 };
 
-const formatConsentsFromValues = (publisherConsents: Consent[] | null, values?: GenericFormValues) => {
+const formatConsentsFromValues = (publisherConsents: CustomFormField[] | null, values?: GenericFormValues) => {
   const consents: CustomerConsent[] = [];
 
   if (!publisherConsents || !values) return consents;
@@ -121,7 +121,7 @@ const formatConsentsFromValues = (publisherConsents: Consent[] | null, values?: 
   return consents;
 };
 
-const checkConsentsFromValues = (publisherConsents: Consent[], consents: Record<string, string | boolean>) => {
+const checkConsentsFromValues = (publisherConsents: CustomFormField[], consents: Record<string, string | boolean>) => {
   const customerConsents: CustomerConsent[] = [];
   const consentsErrors: string[] = [];
 

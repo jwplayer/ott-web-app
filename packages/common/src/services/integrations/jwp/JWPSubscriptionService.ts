@@ -54,12 +54,17 @@ export default class JWPSubscriptionService extends SubscriptionService {
   ): PaymentDetail => {
     const { number, exp_month, exp_year, card_name, card_type, account_id, currency } = card;
     const zeroFillExpMonth = `0${exp_month}`.slice(-2);
+
     return {
+      id: 0,
+      paymentMethodId: 0,
+      paymentGateway: 'card',
+      paymentMethod: 'card',
       customerId: account_id.toString(),
       paymentMethodSpecificParams: {
         holderName: card_name,
         variant: card_type,
-        lastCardFourDigits: number,
+        lastCardFourDigits: String(number),
         cardExpirationDate: `${zeroFillExpMonth}/${exp_year}`,
       },
       active: true,

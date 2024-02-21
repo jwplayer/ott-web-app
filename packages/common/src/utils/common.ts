@@ -6,6 +6,12 @@ export function debounce<T extends (...args: any[]) => void>(callback: T, wait =
   };
 }
 
+export const unicodeToChar = (text: string) => {
+  return text.replace(/\\u[\dA-F]{4}/gi, (match) => {
+    return String.fromCharCode(parseInt(match.replace(/\\u/g, ''), 16));
+  });
+};
+
 /**
  * Parse hex color and return the RGB colors
  * @param color

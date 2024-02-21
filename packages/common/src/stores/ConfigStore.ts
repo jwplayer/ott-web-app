@@ -34,9 +34,7 @@ export const useConfigStore = createStore<ConfigState>('ConfigStore', () => ({
         useSandbox: true,
       },
     },
-    styling: {
-      footerText: '',
-    },
+    styling: {},
   },
   settings: {
     additionalAllowedConfigSources: [],

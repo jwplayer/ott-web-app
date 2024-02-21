@@ -5,7 +5,7 @@ import { mockService } from '@jwp/ott-common/test/mockService';
 import ApiService from '@jwp/ott-common/src/services/ApiService';
 import GenericEntitlementService from '@jwp/ott-common/src/services/GenericEntitlementService';
 import JWPEntitlementService from '@jwp/ott-common/src/services/JWPEntitlementService';
-import WatchHistoryController from '@jwp/ott-common/src/stores/WatchHistoryController';
+import WatchHistoryController from '@jwp/ott-common/src/controllers/WatchHistoryController';
 
 import { renderWithRouter } from '../../../test/utils';
 

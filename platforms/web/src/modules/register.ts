@@ -30,3 +30,23 @@ container.bind(StorageService).to(LocalStorageService);
 
 // Currently, this is only used for e2e testing to override the customer ip from a browser cookie
 container.bind<GetCustomerIP>(GET_CUSTOMER_IP).toConstantValue(async () => getOverrideIP());
+
+/**
+ * UI Component override
+ *
+ * @example
+ * ```ts
+ * // Define in types.ts (from `ui-react` for example)
+ * const TAG_IDENTIFIER = 'TAG_IDENTIFIER';
+ *
+ * // Bind custom component
+ * container.bind(TAG_IDENTIFIER).toConstantValue(CustomTag);
+ *
+ * // Then wrap the component in a HOC, from the component file itself
+ * export default createInjectableComponent(TAG_IDENTIFIER, DefaultTag);
+ *
+ * ```
+ */
+
+// Override ui-react component
+// uiComponentContainer.bind<React.FC<TagProps>>(TAG_IDENTIFIER).toConstantValue(Tag);

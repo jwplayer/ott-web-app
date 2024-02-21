@@ -2,13 +2,15 @@ import React, { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import classNames from 'classnames';
-import type { Profile } from '@jwp/ott-common/types/account';
 import { getModule } from '@jwp/ott-common/src/modules/container';
-import AccountController from '@jwp/ott-common/src/stores/AccountController';
+import AccountController from '@jwp/ott-common/src/controllers/AccountController';
 import AccountCircle from '@jwp/ott-theme/assets/icons/account_circle.svg?react';
 import Favorite from '@jwp/ott-theme/assets/icons/favorite.svg?react';
 import BalanceWallet from '@jwp/ott-theme/assets/icons/balance_wallet.svg?react';
 import Exit from '@jwp/ott-theme/assets/icons/exit.svg?react';
+import { PATH_USER_ACCOUNT, PATH_USER_FAVORITES, PATH_USER_PAYMENTS, PATH_USER_PROFILES_CREATE } from '@jwp/ott-common/src/paths';
+import { userProfileURL } from '@jwp/ott-common/src/utils/urlFormatting';
+import type { Profile } from '@jwp/ott-common/types/profiles';
 
 import MenuButton from '../MenuButton/MenuButton';
 import Icon from '../Icon/Icon';
@@ -71,7 +73,7 @@ const UserMenu = ({
           selectProfile={selectProfile}
           createButtonLabel={t('nav.add_profile')}
           switchProfilesLabel={t('nav.switch_profiles')}
-          onCreateButtonClick={() => navigate('/u/profiles/create')}
+          onCreateButtonClick={() => navigate(PATH_USER_PROFILES_CREATE)}
         />
       )}
       <li className={styles.sectionHeader}>{t('nav.settings')}</li>
@@ -80,7 +82,7 @@ const UserMenu = ({
           <MenuButton
             small={small}
             onClick={onClick}
-            to={`/u/my-profile/${currentProfile?.id ?? ''}`}
+            to={userProfileURL(currentProfile.id ?? '')}
             label={t('nav.profile')}
             tabIndex={tabIndex}
             startIcon={<ProfileCircle src={currentProfile?.avatar_url} alt={currentProfile?.name ?? ''} />}
@@ -88,12 +90,26 @@ const UserMenu = ({
         </li>
       )}
       <li>
-        <MenuButton small={small} onClick={onClick} to="/u/my-account" label={t('nav.account')} startIcon={<Icon icon={AccountCircle} />} tabIndex={tabIndex} />
+        <MenuButton
+          small={small}
+          onClick={onClick}
+          to={PATH_USER_ACCOUNT}
+          label={t('nav.account')}
+          startIcon={<Icon icon={AccountCircle} />}
+          tabIndex={tabIndex}
+        />
       </li>
 
       {favoritesEnabled && (
         <li>
-          <MenuButton small={small} onClick={onClick} to="/u/favorites" label={t('nav.favorites')} startIcon={<Icon icon={Favorite} />} tabIndex={tabIndex} />
+          <MenuButton
+            small={small}
+            onClick={onClick}
+            to={PATH_USER_FAVORITES}
+            label={t('nav.favorites')}
+            startIcon={<Icon icon={Favorite} />}
+            tabIndex={tabIndex}
+          />
         </li>
       )}
       {showPaymentsItem && (
@@ -101,7 +117,7 @@ const UserMenu = ({
           <MenuButton
             small={small}
             onClick={onClick}
-            to="/u/payments"
+            to={PATH_USER_PAYMENTS}
             label={t('nav.payments')}
             startIcon={<Icon icon={BalanceWallet} />}
             tabIndex={tabIndex}

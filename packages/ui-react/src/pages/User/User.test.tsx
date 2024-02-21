@@ -5,12 +5,12 @@ import type { PaymentDetail, Subscription, Transaction } from '@jwp/ott-common/t
 import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
 import { useConfigStore } from '@jwp/ott-common/src/stores/ConfigStore';
 import { useFavoritesStore } from '@jwp/ott-common/src/stores/FavoritesStore';
-import AccountController from '@jwp/ott-common/src/stores/AccountController';
+import AccountController from '@jwp/ott-common/src/controllers/AccountController';
 import { mockService } from '@jwp/ott-common/test/mockService';
 import ApiService from '@jwp/ott-common/src/services/ApiService';
-import FavoritesController from '@jwp/ott-common/src/stores/FavoritesController';
-import CheckoutController from '@jwp/ott-common/src/stores/CheckoutController';
-import ProfileController from '@jwp/ott-common/src/stores/ProfileController';
+import FavoritesController from '@jwp/ott-common/src/controllers/FavoritesController';
+import CheckoutController from '@jwp/ott-common/src/controllers/CheckoutController';
+import ProfileController from '@jwp/ott-common/src/controllers/ProfileController';
 import { ACCESS_MODEL, DEFAULT_FEATURES } from '@jwp/ott-common/src/constants';
 import { Route, Routes } from 'react-router-dom';
 import React from 'react';
@@ -27,8 +27,8 @@ const data = {
     country: 'us',
     firstName: 'User',
     lastName: 'Person',
-    regDate: 'Jan 1, 2000',
     lastUserIp: '192.0.0.1',
+    metadata: {},
   },
   subscription: {
     subscriptionId: 90210,
@@ -79,6 +79,7 @@ describe('User Component tests', () => {
     mockService(ApiService, {});
     mockService(AccountController, {
       logout: vi.fn(),
+      getPublisherConsents: vi.fn().mockResolvedValue([]),
       getFeatures: vi.fn(() => ({
         ...DEFAULT_FEATURES,
         canUpdateEmail: false,

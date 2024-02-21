@@ -1,11 +1,11 @@
 import { useTranslation } from 'react-i18next';
-import { object, type SchemaOf, string } from 'yup';
+import { object, string } from 'yup';
 import { useLocation, useNavigate } from 'react-router';
 import { useCallback, useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
 import type { DeleteAccountFormData } from '@jwp/ott-common/types/account';
 import { getModule } from '@jwp/ott-common/src/modules/container';
-import AccountController from '@jwp/ott-common/src/stores/AccountController';
+import AccountController from '@jwp/ott-common/src/controllers/AccountController';
 import useForm from '@jwp/ott-hooks-react/src/useForm';
 
 import PasswordField from '../PasswordField/PasswordField';
@@ -24,8 +24,8 @@ const DeleteAccountModal = () => {
 
   const deleteAccount = useMutation(accountController.deleteAccountData, {
     onSuccess: async () => {
-      await accountController.logout();
       navigate('/');
+      await accountController.logout();
     },
     onError: () => {
       setEnteredPassword('');
@@ -35,24 +35,20 @@ const DeleteAccountModal = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const validationSchema: SchemaOf<DeleteAccountFormData> = object().shape({
-    password: string().required(t('login.field_required')),
-  });
-  const initialValues: DeleteAccountFormData = { password: '' };
   const {
     handleSubmit,
     handleChange,
     values,
     errors,
     reset: resetForm,
-  } = useForm(
-    initialValues,
-    () => {
+  } = useForm<DeleteAccountFormData>({
+    initialValues: { password: '' },
+    validationSchema: object().shape({ password: string().required(t('login.field_required')) }),
+    onSubmit: (values) => {
       setEnteredPassword(values.password);
       navigate(modalURLFromLocation(location, 'delete-account-confirmation'), { replace: true });
     },
-    validationSchema,
-  );
+  });
 
   useEffect(() => {
     if (!location.search.includes('delete-account-confirmation') && enteredPassword) {

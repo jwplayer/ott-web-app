@@ -21,6 +21,7 @@ ignores: [
   '@babel/plugin-proposal-decorators', # Used to build with decorators for ioc resolution
   'babel-plugin-transform-typescript-metadata', # Used to build with decorators for ioc resolution
   '@babel/core', # Required peer dependency for babel plugins above
+  'sharp', # Requirement for @vite-pwa/assets-generator
 
   'eslint-plugin-react', # Installed by eslint config
   'eslint-plugin-react-hooks', # Installed by eslint config

@@ -1,8 +1,7 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import classNames from 'classnames';
-import type { OfferType } from '@jwp/ott-common/types/account';
-import type { Offer, Order, PaymentMethod } from '@jwp/ott-common/types/checkout';
+import type { Offer, OfferType, Order, PaymentMethod } from '@jwp/ott-common/types/checkout';
 import { formatPrice } from '@jwp/ott-common/src/utils/formatting';
 import Close from '@jwp/ott-theme/assets/icons/close.svg?react';
 import PayPal from '@jwp/ott-theme/assets/icons/paypal.svg?react';
@@ -18,7 +17,7 @@ import Icon from '../Icon/Icon';
 import styles from './CheckoutForm.module.scss';
 
 type Props = {
-  paymentMethodId?: number;
+  paymentMethodId?: string;
   onBackButtonClick: () => void;
   paymentMethods?: PaymentMethod[];
   onPaymentMethodChange: React.ChangeEventHandler<HTMLInputElement>;
@@ -34,7 +33,7 @@ type Props = {
   order: Order;
   offer: Offer;
   offerType: OfferType;
-  renderPaymentMethod?: () => JSX.Element | null;
+  children: ReactNode;
   submitting: boolean;
 };
 
@@ -55,7 +54,7 @@ const CheckoutForm: React.FC<Props> = ({
   onCloseCouponFormClick,
   onCouponFormSubmit,
   onRedeemCouponButtonClick,
-  renderPaymentMethod,
+  children,
   submitting,
 }) => {
   const { t } = useTranslation('account');
@@ -181,10 +180,10 @@ const CheckoutForm: React.FC<Props> = ({
               <input
                 className={styles.radio}
                 type="radio"
-                name="paymentMethod"
+                name="paymentMethodId"
                 value={cardPaymentMethod.id}
                 id="card"
-                checked={paymentMethodId === cardPaymentMethod.id}
+                checked={paymentMethodId === cardPaymentMethod.id.toString()}
                 onChange={onPaymentMethodChange}
               />
               <label className={styles.paymentMethodLabel} htmlFor="card">
@@ -197,10 +196,10 @@ const CheckoutForm: React.FC<Props> = ({
               <input
                 className={styles.radio}
                 type="radio"
-                name="paymentMethod"
+                name="paymentMethodId"
                 value={paypalPaymentMethod.id}
                 id="paypal"
-                checked={paymentMethodId === paypalPaymentMethod.id}
+                checked={paymentMethodId === paypalPaymentMethod.id.toString()}
                 onChange={onPaymentMethodChange}
               />
               <label className={styles.paymentMethodLabel} htmlFor="paypal">
@@ -210,7 +209,7 @@ const CheckoutForm: React.FC<Props> = ({
           ) : null}
         </div>
       ) : null}
-      <div className={styles.paymentDetails}>{renderPaymentMethod ? renderPaymentMethod() : null}</div>
+      {children ? <div>{children}</div> : null}
       {submitting && <LoadingOverlay transparentBackground inline />}
     </div>
   );

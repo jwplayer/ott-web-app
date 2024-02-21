@@ -1,4 +1,4 @@
-import type { Consent, Customer, CustomerConsent } from '../../types/account';
+import type { CustomFormField, Customer, CustomerConsent } from '../../types/account';
 import type { Offer } from '../../types/checkout';
 import type { PaymentDetail, Subscription, Transaction } from '../../types/subscription';
 
@@ -11,7 +11,8 @@ type AccountStore = {
   transactions: Transaction[] | null;
   activePayment: PaymentDetail | null;
   customerConsents: CustomerConsent[] | null;
-  publisherConsents: Consent[] | null;
+  publisherConsents: CustomFormField[] | null;
+  publisherConsentsLoading: boolean;
   pendingOffer: Offer | null;
   setLoading: (loading: boolean) => void;
   getAccountInfo: () => { customerId: string; customer: Customer; customerConsents: CustomerConsent[] | null };
@@ -25,6 +26,7 @@ export const useAccountStore = createStore<AccountStore>('AccountStore', (set, g
   activePayment: null,
   customerConsents: null,
   publisherConsents: null,
+  publisherConsentsLoading: false,
   pendingOffer: null,
   setLoading: (loading: boolean) => set({ loading }),
   getAccountInfo: () => {

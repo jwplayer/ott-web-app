@@ -5,7 +5,7 @@ import type { MediaOffer } from '@jwp/ott-common/types/media';
 import { getModule } from '@jwp/ott-common/src/modules/container';
 import { useConfigStore } from '@jwp/ott-common/src/stores/ConfigStore';
 import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
-import CheckoutController from '@jwp/ott-common/src/stores/CheckoutController';
+import CheckoutController from '@jwp/ott-common/src/controllers/CheckoutController';
 import { isLocked } from '@jwp/ott-common/src/utils/entitlements';
 import { shallow } from '@jwp/ott-common/src/utils/compare';
 

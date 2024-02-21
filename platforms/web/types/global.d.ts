@@ -2,9 +2,14 @@
 interface Window {
   jwplayer?: jwplayer.JWPlayerStatic;
   jwpltx: Jwpltx;
-  AdyenCheckout: Adyen.AdyenCheckoutStatic;
 }
 
 interface HTMLDivElement {
   inert: boolean;
 }
+
+type OTTConfig = {
+  name: string;
+  shortname: string;
+  description: string;
+};

@@ -5,7 +5,7 @@ import type { EntitlementType } from '@jwp/ott-common/types/entitlement';
 import GenericEntitlementService from '@jwp/ott-common/src/services/GenericEntitlementService';
 import JWPEntitlementService from '@jwp/ott-common/src/services/JWPEntitlementService';
 import { getModule } from '@jwp/ott-common/src/modules/container';
-import AccountController from '@jwp/ott-common/src/stores/AccountController';
+import AccountController from '@jwp/ott-common/src/controllers/AccountController';
 import { useConfigStore } from '@jwp/ott-common/src/stores/ConfigStore';
 import { isTruthyCustomParamValue } from '@jwp/ott-common/src/utils/common';
 

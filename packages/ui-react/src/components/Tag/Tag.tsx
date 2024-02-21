@@ -1,16 +1,16 @@
-import React, { type ReactNode } from 'react';
+import React from 'react';
 import classNames from 'classnames';
 
 import styles from './Tag.module.scss';
 
-type Props = {
+type TagProps = {
   className?: string;
   isLive?: boolean;
-  children?: ReactNode;
+  children?: React.ReactNode;
   size?: 'normal' | 'large';
 };
 
-const Tag: React.FC<Props> = ({ children, className, isLive = false, size = 'normal' }) => {
+const Tag: React.FC<TagProps> = ({ children, className, isLive = false, size = 'normal' }: TagProps) => {
   return (
     <div
       className={classNames(className, styles.tag, styles[size], {

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { getModule } from '@jwp/ott-common/src/modules/container';
 import { useCheckoutStore } from '@jwp/ott-common/src/stores/CheckoutStore';
 import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
-import CheckoutController from '@jwp/ott-common/src/stores/CheckoutController';
+import CheckoutController from '@jwp/ott-common/src/controllers/CheckoutController';
 import { createURL } from '@jwp/ott-common/src/utils/urlFormatting';
 import useQueryParam from '@jwp/ott-ui-react/src/hooks/useQueryParam';
 
@@ -87,7 +87,7 @@ const UpdatePaymentMethod = ({ onCloseButtonClick }: Props) => {
         />
       );
     } else if (paymentMethod?.methodName === 'paypal') {
-      return <PayPal onSubmit={handlePayPalSubmit} error={paymentError} />;
+      return <PayPal onSubmit={handlePayPalSubmit} error={paymentError || null} />;
     }
 
     return null;

@@ -1,6 +1,6 @@
 import type { interfaces } from 'inversify';
 
-import AppController from '../../stores/AppController';
+import AppController from '../../controllers/AppController';
 
 /**
  * This function is used to get the integration type from the AppController and is mainly used for getting named

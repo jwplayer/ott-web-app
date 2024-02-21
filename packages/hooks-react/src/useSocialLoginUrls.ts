@@ -1,6 +1,6 @@
 import { useQuery } from 'react-query';
 import { getModule } from '@jwp/ott-common/src/modules/container';
-import AccountController from '@jwp/ott-common/src/stores/AccountController';
+import AccountController from '@jwp/ott-common/src/controllers/AccountController';
 
 export type SocialLoginURLs = Record<string, string>;
 

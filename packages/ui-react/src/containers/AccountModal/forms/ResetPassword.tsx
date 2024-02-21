@@ -6,7 +6,7 @@ import { shallow } from '@jwp/ott-common/src/utils/compare';
 import type { ForgotPasswordFormData } from '@jwp/ott-common/types/account';
 import { getModule } from '@jwp/ott-common/src/modules/container';
 import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
-import AccountController from '@jwp/ott-common/src/stores/AccountController';
+import AccountController from '@jwp/ott-common/src/controllers/AccountController';
 import { modalURLFromLocation } from '@jwp/ott-ui-react/src/utils/location';
 import { logDev } from '@jwp/ott-common/src/utils/common';
 import useForm, { type UseFormOnSubmitHandler } from '@jwp/ott-hooks-react/src/useForm';
@@ -91,14 +91,14 @@ const ResetPassword: React.FC<Prop> = ({ type }: Prop) => {
     setSubmitting(false);
   };
 
-  const emailForm = useForm(
-    { email: '' },
-    emailSubmitHandler,
-    object().shape({
+  const emailForm = useForm<ForgotPasswordFormData>({
+    initialValues: { email: '' },
+    validationSchema: object().shape({
       email: string().email(t('login.field_is_not_valid_email')).required(t('login.field_required')),
     }),
-    true,
-  );
+    validateOnBlur: true,
+    onSubmit: emailSubmitHandler,
+  });
 
   return (
     <React.Fragment>

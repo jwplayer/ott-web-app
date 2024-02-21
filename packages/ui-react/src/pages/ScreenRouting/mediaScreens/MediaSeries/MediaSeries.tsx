@@ -9,7 +9,6 @@ import { useWatchHistoryStore } from '@jwp/ott-common/src/stores/WatchHistorySto
 import { useConfigStore } from '@jwp/ott-common/src/stores/ConfigStore';
 import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
 import { generateEpisodeJSONLD } from '@jwp/ott-common/src/utils/structuredData';
-import { isLocked } from '@jwp/ott-common/src/utils/entitlements';
 import { getEpisodesInSeason, getFiltersFromSeries } from '@jwp/ott-common/src/utils/series';
 import { formatSeriesMetaString, formatVideoMetaString } from '@jwp/ott-common/src/utils/formatting';
 import { buildLegacySeriesUrlFromMediaItem, mediaURL } from '@jwp/ott-common/src/utils/urlFormatting';
@@ -106,7 +105,9 @@ const MediaSeries: ScreenComponent<PlaylistItem> = ({ data: seriesMedia }) => {
 
   // User, entitlement
   const { user, subscription } = useAccountStore(({ user, subscription }) => ({ user, subscription }), shallow);
-  const { isEntitled } = useEntitlement(episode);
+  const { isEntitled, mediaOffers } = useEntitlement(episode || firstEpisode);
+  const hasMediaOffers = !!mediaOffers.length;
+
   const isLoggedIn = !!user;
   const hasSubscription = !!subscription;
 
@@ -278,7 +279,8 @@ const MediaSeries: ScreenComponent<PlaylistItem> = ({ data: seriesMedia }) => {
               feedId={feedId ?? undefined}
               onPlay={handleInlinePlay}
               startWatchingButton={startWatchingButton}
-              paywall={isLocked(accessModel, isLoggedIn, hasSubscription, episode || firstEpisode)}
+              isEntitled={isEntitled}
+              hasMediaOffers={hasMediaOffers}
               autostart={play || undefined}
             />
           ) : (

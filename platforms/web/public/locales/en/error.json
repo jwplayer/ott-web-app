@@ -9,5 +9,7 @@
   "notfound_error_heading": "Not found",
   "playlist_not_found": "Playlist not found",
   "settings_invalid": "Invalid or missing settings",
-  "video_not_found": "Video not found"
+  "video_not_found": "Video not found",
+  "unknown_error": "Unknown error",
+  "adyen_order_unknown": "Order is unknown"
 }

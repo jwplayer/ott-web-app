@@ -4,10 +4,10 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { shallow } from '@jwp/ott-common/src/utils/compare';
 import DOMPurify from 'dompurify';
 import { useMutation } from 'react-query';
-import type { Consent } from '@jwp/ott-common/types/account';
+import type { CustomFormField } from '@jwp/ott-common/types/account';
 import { getModule } from '@jwp/ott-common/src/modules/container';
 import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
-import AccountController from '@jwp/ott-common/src/stores/AccountController';
+import AccountController from '@jwp/ott-common/src/controllers/AccountController';
 import { isTruthy, isTruthyCustomParamValue, logDev, testId } from '@jwp/ott-common/src/utils/common';
 import { formatConsents, formatConsentsFromValues, formatConsentsToRegisterFields, formatConsentValues } from '@jwp/ott-common/src/utils/collection';
 import useToggle from '@jwp/ott-hooks-react/src/useToggle';
@@ -74,9 +74,18 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
   const isSocialLogin = (registerSource && registerSource !== 'inplayer') || false;
   const shouldAddPassword = (isSocialLogin && !customer?.metadata?.has_password) || false;
 
+  // load consents (move to `useConsents` hook?)
+  useEffect(() => {
+    if (!publisherConsents) {
+      accountController.getPublisherConsents();
+
+      return;
+    }
+  }, [accountController, publisherConsents]);
+
   const [termsConsents, nonTermsConsents] = useMemo(() => {
-    const terms: Consent[] = [];
-    const nonTerms: Consent[] = [];
+    const terms: CustomFormField[] = [];
+    const nonTerms: CustomFormField[] = [];
 
     publisherConsents?.forEach((consent) => {
       if (!consent?.type || consent?.type === 'checkbox') {

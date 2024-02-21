@@ -1,10 +1,11 @@
 import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { getModule } from '@jwp/ott-common/src/modules/container';
-import AccountController from '@jwp/ott-common/src/stores/AccountController';
+import AccountController from '@jwp/ott-common/src/controllers/AccountController';
 import { queryClient } from '@jwp/ott-ui-react/src/containers/QueryProvider/QueryProvider';
 import { simultaneousLoginWarningKey } from '@jwp/ott-common/src/constants';
 import { modalURLFromLocation } from '@jwp/ott-ui-react/src/utils/location';
+import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
 
 enum NotificationsTypes {
   ACCESS_REVOKED = 'access.revoked',
@@ -18,9 +19,10 @@ enum NotificationsTypes {
   ACCOUNT_LOGOUT = 'account.logout',
 }
 
-export default function useNotifications(uuid: string = '') {
+export default function useNotifications() {
   const navigate = useNavigate();
   const location = useLocation();
+  const uuid = useAccountStore((s) => (typeof s.user?.uuid === 'string' ? s.user.uuid : undefined));
 
   const accountController = getModule(AccountController);
   const { hasNotifications } = accountController?.getFeatures() || {};
@@ -45,10 +47,10 @@ export default function useNotifications(uuid: string = '') {
               navigate(modalURLFromLocation(location, null));
               break;
             case NotificationsTypes.SUBSCRIBE_SUCCESS:
-              await accountController.reloadActiveSubscription();
+              await accountController.reloadSubscriptions();
               break;
             case NotificationsTypes.ACCESS_REVOKED:
-              await accountController.reloadActiveSubscription();
+              await accountController.reloadSubscriptions();
               break;
             case NotificationsTypes.CARD_REQUIRES_ACTION:
             case NotificationsTypes.SUBSCRIBE_REQUIRES_ACTION:

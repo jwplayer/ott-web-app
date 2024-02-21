@@ -91,7 +91,135 @@ exports[`<CheckoutForm> > renders and matches snapshot 1`] = `
     <div
       class="_paymentMethods_abc9bc"
     />
-    <div />
+    <div>
+      <div
+        class="_paymentForm_65d7c4"
+      >
+        <form
+          data-testid="payment_form"
+          novalidate=""
+        >
+          <div>
+            <div
+              class="_textField_e16c1b"
+            >
+              <label
+                class="_label_e16c1b"
+                for="text-field_1235_cardholdername"
+              >
+                checkout.card_holder_name
+              </label>
+              <div
+                class="_container_e16c1b"
+              >
+                <input
+                  class="_input_e16c1b"
+                  id="text-field_1235_cardholdername"
+                  name="cardholderName"
+                  placeholder="checkout.credit_card_name"
+                  required=""
+                  type="text"
+                  value=""
+                />
+              </div>
+            </div>
+          </div>
+          <div>
+            <div
+              class="_textField_e16c1b directPostCreditCardNumber"
+            >
+              <label
+                class="_label_e16c1b"
+                for="text-field_1235_cardnumber"
+              >
+                Card number
+              </label>
+              <div
+                class="_container_e16c1b"
+              >
+                <input
+                  class="_input_e16c1b"
+                  id="text-field_1235_cardnumber"
+                  name="cardNumber"
+                  pattern="\\\\d*"
+                  placeholder="1234 5678 9012 3456"
+                  required=""
+                  type="text"
+                  value=""
+                />
+              </div>
+            </div>
+          </div>
+          <div
+            class="_columns_65d7c4"
+          >
+            <div>
+              <div
+                class="_textField_e16c1b directPostExpiryDate"
+              >
+                <label
+                  class="_label_e16c1b"
+                  for="text-field_1235_cardexpiry"
+                >
+                  Expiry date
+                </label>
+                <div
+                  class="_container_e16c1b"
+                >
+                  <input
+                    class="_input_e16c1b"
+                    id="text-field_1235_cardexpiry"
+                    name="cardExpiry"
+                    pattern="\\\\d*"
+                    placeholder="MM/YY"
+                    required=""
+                    type="text"
+                    value=""
+                  />
+                </div>
+              </div>
+            </div>
+            <div>
+              <div
+                class="_textField_e16c1b directPostSecurityCode"
+              >
+                <label
+                  class="_label_e16c1b"
+                  for="text-field_1235_cardcvc"
+                >
+                  payment.security_code
+                </label>
+                <div
+                  class="_container_e16c1b"
+                >
+                  <input
+                    aria-label="payment.security_code"
+                    class="_input_e16c1b"
+                    id="text-field_1235_cardcvc"
+                    name="cardCVC"
+                    pattern="\\\\d*"
+                    placeholder="###"
+                    required=""
+                    type="text"
+                    value=""
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <button
+              class="_button_f8f296 _primary_f8f296 _fullWidth_f8f296 _large_f8f296"
+              type="submit"
+            >
+              <span>
+                checkout.continue
+              </span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
 </div>
 `;

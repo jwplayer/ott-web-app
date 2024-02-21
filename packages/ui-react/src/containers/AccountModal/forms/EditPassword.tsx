@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import type { EditPasswordFormData } from '@jwp/ott-common/types/account';
 import { getModule } from '@jwp/ott-common/src/modules/container';
 import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
-import AccountController from '@jwp/ott-common/src/stores/AccountController';
+import AccountController from '@jwp/ott-common/src/controllers/AccountController';
 import useForm, { type UseFormOnSubmitHandler } from '@jwp/ott-hooks-react/src/useForm';
 import { modalURLFromLocation } from '@jwp/ott-ui-react/src/utils/location';
 import useQueryParam from '@jwp/ott-ui-react/src/hooks/useQueryParam';
@@ -63,19 +63,20 @@ const ResetPassword = ({ type }: { type?: 'add' }) => {
     setSubmitting(false);
   };
 
-  const passwordForm = useForm(
-    { password: '', passwordConfirmation: '' },
-    passwordSubmitHandler,
-    object().shape({
+  const passwordForm = useForm<EditPasswordFormData>({
+    initialValues: { password: '', passwordConfirmation: '' },
+    validationSchema: object().shape({
       email: string(),
       oldPassword: string(),
       password: string()
         .matches(/^(?=.*[a-z])(?=.*[0-9]).{8,}$/, t('registration.invalid_password'))
         .required(t('login.field_required')),
-      passwordConfirmation: string(),
+      passwordConfirmation: string().required(),
+      resetPasswordToken: string(),
     }),
-    true,
-  );
+    validateOnBlur: true,
+    onSubmit: passwordSubmitHandler,
+  });
 
   const resendEmailClickHandler = async () => {
     try {

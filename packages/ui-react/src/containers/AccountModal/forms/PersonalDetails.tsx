@@ -6,7 +6,7 @@ import { useQuery } from 'react-query';
 import type { CaptureCustomAnswer, CleengCaptureQuestionField, PersonalDetailsFormData } from '@jwp/ott-common/types/account';
 import { getModule } from '@jwp/ott-common/src/modules/container';
 import { useConfigStore } from '@jwp/ott-common/src/stores/ConfigStore';
-import AccountController from '@jwp/ott-common/src/stores/AccountController';
+import AccountController from '@jwp/ott-common/src/controllers/AccountController';
 import { modalURLFromLocation } from '@jwp/ott-ui-react/src/utils/location';
 import { ACCESS_MODEL } from '@jwp/ott-common/src/constants';
 import useForm, { type UseFormOnSubmitHandler } from '@jwp/ott-hooks-react/src/useForm';
@@ -27,7 +27,7 @@ const PersonalDetails = () => {
   const { t } = useTranslation('account');
   const accessModel = useConfigStore((s) => s.accessModel);
   const { data, isLoading } = useQuery('captureStatus', accountController.getCaptureStatus);
-  const { hasTVODOffers } = useOffers();
+  const { hasMediaOffers } = useOffers();
   const [questionValues, setQuestionValues] = useState<Record<string, string>>({});
   const [questionErrors, setQuestionErrors] = useState<Record<string, string>>({});
 
@@ -38,10 +38,10 @@ const PersonalDetails = () => {
   );
 
   const nextStep = useCallback(() => {
-    const hasOffers = accessModel === ACCESS_MODEL.SVOD || (accessModel === ACCESS_MODEL.AUTHVOD && hasTVODOffers);
+    const hasOffers = accessModel === ACCESS_MODEL.SVOD || (accessModel === ACCESS_MODEL.AUTHVOD && hasMediaOffers);
 
     navigate(modalURLFromLocation(location, hasOffers ? 'choose-offer' : 'welcome'), { replace: true });
-  }, [navigate, location, accessModel, hasTVODOffers]);
+  }, [navigate, location, accessModel, hasMediaOffers]);
 
   useEffect(() => {
     if (data && (!data.isCaptureEnabled || !data.shouldCaptureBeDisplayed)) nextStep();
@@ -134,7 +134,10 @@ const PersonalDetails = () => {
     setSubmitting(false);
   };
 
-  const { setValue, handleSubmit, handleChange, values, errors, submitting } = useForm<PersonalDetailsFormData>(initialValues, PersonalDetailSubmitHandler);
+  const { setValue, handleSubmit, handleChange, values, errors, submitting } = useForm<PersonalDetailsFormData>({
+    initialValues,
+    onSubmit: PersonalDetailSubmitHandler,
+  });
 
   if (isLoading) {
     return (

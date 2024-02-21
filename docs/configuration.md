@@ -160,8 +160,7 @@ Use the `styling` object to define extra styles for your application.
   "styling": {
     "backgroundColor": null,
     "highlightColor": null,
-    "headerBackground": null,
-    "footerText": "Blender Foundation"
+    "headerBackground": null
 }
 ```
 
@@ -184,12 +183,6 @@ Specify the color in hexadecimal format. For example, if you want bright yellow,
 **styling.headerBackground** (optional)
 
 Use this parameter to change the background color of the header. By default, the header is transparent. Recommended is to use a HEX color (e.g. `#1a1a1a`) so that the contrast color of the buttons and links can be calculated.
-
----
-
-**styling.footerText** (optional)
-
-Text that will be placed in the footer of the site. Markdown links are supported.
 
 ---
 

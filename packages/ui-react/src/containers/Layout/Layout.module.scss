@@ -11,14 +11,14 @@
   flex: 1;
 }
 
-div.footer {
+.footer {
   padding: 20px 40px;
   line-height: 18px;
   letter-spacing: 0.15px;
   text-align: center;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.14), 0 3px 4px rgba(0, 0, 0, 0.12), 0 1px 5px rgba(0, 0, 0, 0.2);
 
-  > div > a,
+  a,
   a:visited,
   a:active,
   a:hover {

@@ -64,12 +64,14 @@ export default class CleengCheckoutService extends CheckoutService {
 
     if (locales.errors.length > 0) throw new Error(locales.errors[0]);
 
+    const customerIP = locales.responseData.ipAddress;
+
     const createOrderPayload: CreateOrderPayload = {
       offerId: payload.offer.offerId,
       customerId: payload.customerId,
       country: payload.country,
       currency: locales?.responseData?.currency || 'EUR',
-      customerIP: payload.customerIP,
+      customerIP,
       paymentMethodId: payload.paymentMethodId,
     };
 

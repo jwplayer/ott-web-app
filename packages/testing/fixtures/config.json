@@ -55,8 +55,7 @@
   "styling": {
     "backgroundColor": null,
     "highlightColor": null,
-    "headerBackground": null,
-    "footerText": "\u00a9 Blender Foundation | [cloud.blender.org](https://cloud.blender.org)"
+    "headerBackground": null
   },
   "description": "Blender demo site",
   "analyticsToken": "lDd_MCg4EeuMunbqcIJccw",

@@ -1,4 +1,4 @@
-import type { CreateProfile, DeleteProfile, EnterProfile, GetProfileDetails, ListProfiles, UpdateProfile } from '../../../types/account';
+import type { CreateProfile, DeleteProfile, EnterProfile, GetProfileDetails, ListProfiles, UpdateProfile } from '../../../types/profiles';
 
 export default abstract class ProfileService {
   abstract listProfiles: ListProfiles;

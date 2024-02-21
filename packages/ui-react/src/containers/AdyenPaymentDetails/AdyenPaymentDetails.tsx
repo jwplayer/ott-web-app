@@ -4,8 +4,8 @@ import type DropinElement from '@adyen/adyen-web/dist/types/components/Dropin/Dr
 import { useLocation, useNavigate } from 'react-router-dom';
 import type { AdyenPaymentSession } from '@jwp/ott-common/types/checkout';
 import { getModule } from '@jwp/ott-common/src/modules/container';
-import AccountController from '@jwp/ott-common/src/stores/AccountController';
-import CheckoutController from '@jwp/ott-common/src/stores/CheckoutController';
+import AccountController from '@jwp/ott-common/src/controllers/AccountController';
+import CheckoutController from '@jwp/ott-common/src/controllers/CheckoutController';
 import { modalURLFromLocation } from '@jwp/ott-ui-react/src/utils/location';
 import { ADYEN_LIVE_CLIENT_KEY, ADYEN_TEST_CLIENT_KEY } from '@jwp/ott-common/src/constants';
 import useQueryParam from '@jwp/ott-ui-react/src/hooks/useQueryParam';
@@ -40,7 +40,7 @@ export default function AdyenPaymentDetails({ setProcessing, type, setPaymentErr
       setProcessing(true);
 
       await checkoutController.finalizeAdyenPaymentDetails({ redirectResult: decodeURI(redirectResult) }, paymentMethodId);
-      await accountController.reloadActiveSubscription({ delay: 2000 });
+      await accountController.reloadSubscriptions({ delay: 2000 });
 
       setProcessing(false);
       navigate(modalURLFromLocation(location, 'payment-method-success'));
@@ -97,7 +97,7 @@ export default function AdyenPaymentDetails({ setProcessing, type, setPaymentErr
           handleAction(result.action);
         }
 
-        await accountController.reloadActiveSubscription({ delay: 2000 });
+        await accountController.reloadSubscriptions({ delay: 2000 });
 
         navigate(paymentSuccessUrl, { replace: true });
       } catch (error: unknown) {

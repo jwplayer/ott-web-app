@@ -1,218 +1,88 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
-import { useTranslation } from 'react-i18next';
-import { shallow } from '@jwp/ott-common/src/utils/compare';
-import { getModule } from '@jwp/ott-common/src/modules/container';
-import { useCheckoutStore } from '@jwp/ott-common/src/stores/CheckoutStore';
-import AccountController from '@jwp/ott-common/src/stores/AccountController';
-import CheckoutController from '@jwp/ott-common/src/stores/CheckoutController';
-import { isSVODOffer } from '@jwp/ott-common/src/utils/subscription';
+import useCheckout from '@jwp/ott-hooks-react/src/useCheckout';
 import { modalURLFromLocation } from '@jwp/ott-ui-react/src/utils/location';
 import useForm from '@jwp/ott-hooks-react/src/useForm';
 import { createURL } from '@jwp/ott-common/src/utils/urlFormatting';
+import { FormValidationError } from '@jwp/ott-common/src/errors/FormValidationError';
 
 import CheckoutForm from '../../../components/CheckoutForm/CheckoutForm';
 import LoadingOverlay from '../../../components/LoadingOverlay/LoadingOverlay';
 import PayPal from '../../../components/PayPal/PayPal';
 import NoPaymentRequired from '../../../components/NoPaymentRequired/NoPaymentRequired';
-import PaymentForm from '../../../components/PaymentForm/PaymentForm';
+import PaymentForm, { PaymentFormData } from '../../../components/PaymentForm/PaymentForm';
 import AdyenInitialPayment from '../../AdyenInitialPayment/AdyenInitialPayment';
 
 const Checkout = () => {
-  const accountController = getModule(AccountController);
-  const checkoutController = getModule(CheckoutController);
-
   const location = useLocation();
-  const { t } = useTranslation('account');
   const navigate = useNavigate();
-  const [paymentError, setPaymentError] = useState<string | undefined>(undefined);
-  const [updatingOrder, setUpdatingOrder] = useState(false);
+  const [adyenUpdating, setAdyenUpdating] = useState(false); // @todo: integrate AdyenInitialPayment into useCheckout
+
   const [couponFormOpen, setCouponFormOpen] = useState(false);
-  const [couponCodeApplied, setCouponCodeApplied] = useState(false);
-  const [paymentMethodId, setPaymentMethodId] = useState<number | undefined>(undefined);
+  const [showCouponCodeSuccess, setShowCouponCodeSuccess] = useState(false);
 
-  const { order, offer, paymentMethods, setOrder } = useCheckoutStore(
-    ({ order, offer, paymentMethods, setOrder }) => ({
-      order,
-      offer,
-      paymentMethods,
-      setOrder,
-    }),
-    shallow,
-  );
+  const chooseOfferUrl = modalURLFromLocation(location, 'choose-offer');
+  const welcomeUrl = modalURLFromLocation(location, 'welcome');
+  const closeModalUrl = modalURLFromLocation(location, null);
 
-  const offerType = offer && !isSVODOffer(offer) ? 'tvod' : 'svod';
+  const backButtonClickHandler = () => navigate(chooseOfferUrl);
 
-  const paymentSuccessUrl = useMemo(() => {
-    return modalURLFromLocation(location, offerType === 'svod' ? 'welcome' : null);
-  }, [location, offerType]);
+  const { offer, offerType, paymentMethods, order, isSubmitting, updateOrder, submitPaymentWithoutDetails, submitPaymentPaypal, submitPaymentStripe } =
+    useCheckout({
+      onUpdateOrderSuccess: () => !!couponCode && setShowCouponCodeSuccess(true),
+      onSubmitPaymentWithoutDetailsSuccess: () => navigate(offerType === 'svod' ? welcomeUrl : closeModalUrl, { replace: true }),
+      onSubmitPaypalPaymentSuccess: ({ redirectUrl }) => {
+        window.location.href = redirectUrl;
+      },
+      onSubmitStripePaymentSuccess: () => navigate(modalURLFromLocation(location, 'waiting-for-payment'), { replace: true }),
+    });
 
-  const couponCodeForm = useForm({ couponCode: '' }, async (values, { setSubmitting, setErrors }) => {
-    setUpdatingOrder(true);
-    setCouponCodeApplied(false);
+  const {
+    values: { couponCode, paymentMethodId },
+    setValue,
+    submitting: couponFormSubmitting,
+    errors,
+    handleChange,
+    handleSubmit,
+  } = useForm({
+    initialValues: { couponCode: '', paymentMethodId: paymentMethods?.[0]?.id?.toString() || '' },
+    onSubmit: async ({ couponCode, paymentMethodId }) => {
+      setShowCouponCodeSuccess(false);
 
-    if (values.couponCode && order) {
-      try {
-        await checkoutController.updateOrder(order, paymentMethodId, values.couponCode);
-        setCouponCodeApplied(true);
-      } catch (error: unknown) {
-        if (error instanceof Error) {
-          if (error.message.includes(`Order with id ${order.id} not found`)) {
-            navigate(modalURLFromLocation(location, 'choose-offer'), { replace: true });
-          } else {
-            setErrors({ couponCode: t('checkout.coupon_not_valid') });
-          }
-        }
+      return await updateOrder.mutateAsync({ couponCode, paymentMethodId: parseInt(paymentMethodId) });
+    },
+    onSubmitSuccess: ({ couponCode }): void => setShowCouponCodeSuccess(!!couponCode),
+    onSubmitError: ({ error }) => {
+      if (error instanceof FormValidationError && error.errors.order?.includes(`Order with id ${order?.id} not found`)) {
+        navigate(modalURLFromLocation(location, 'choose-offer'), { replace: true });
       }
-    }
-
-    setUpdatingOrder(false);
-    setSubmitting(false);
+    },
   });
 
-  const handleCouponFormSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
-    e.preventDefault();
-    setUpdatingOrder(true);
-    setCouponCodeApplied(false);
-    couponCodeForm.setErrors({ couponCode: undefined });
-    if (couponCodeForm.values.couponCode && order) {
-      try {
-        await checkoutController.updateOrder(order, paymentMethodId, couponCodeForm.values.couponCode);
-        setCouponCodeApplied(true);
-      } catch (error: unknown) {
-        if (error instanceof Error) {
-          if (error.message.includes(`Order with id ${order.id} not found`)) {
-            navigate(modalURLFromLocation(location, 'choose-offer'), { replace: true });
-          } else {
-            couponCodeForm.setErrors({ couponCode: t('checkout.coupon_not_valid') });
-          }
-        }
-      }
-    }
-
-    setUpdatingOrder(false);
-    couponCodeForm.setSubmitting(false);
-  };
-
-  useEffect(() => {
-    async function createNewOrder() {
-      if (offer) {
-        setUpdatingOrder(true);
-        setCouponCodeApplied(false);
-        const methods = await checkoutController.getPaymentMethods();
-
-        setPaymentMethodId(methods[0]?.id);
-
-        await checkoutController.createOrder(offer, methods[0]?.id);
-
-        setUpdatingOrder(false);
-      }
-    }
-
-    if (!offer) {
-      return navigate(modalURLFromLocation(location, 'choose-offer'), { replace: true });
-    }
-
-    // noinspection JSIgnoredPromiseFromCall
-    createNewOrder();
-  }, [location, navigate, offer, checkoutController]);
-
-  // clear the order after closing the checkout modal
-  useEffect(() => {
-    return () => setOrder(null);
-  }, [setOrder]);
-
-  const backButtonClickHandler = () => {
-    navigate(modalURLFromLocation(location, 'choose-offer'));
-  };
-
   const handlePaymentMethodChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const toPaymentMethodId = parseInt(event.target.value);
+    handleChange(event);
 
-    setPaymentMethodId(toPaymentMethodId);
-    setPaymentError(undefined);
-
-    if (order && toPaymentMethodId) {
-      setUpdatingOrder(true);
-      setCouponCodeApplied(false);
-      checkoutController
-        .updateOrder(order, toPaymentMethodId, couponCodeForm.values.couponCode)
-        .catch((error: Error) => {
-          if (error.message.includes(`Order with id ${order.id}} not found`)) {
-            navigate(modalURLFromLocation(location, 'choose-offer'));
-          }
-        })
-        .finally(() => setUpdatingOrder(false));
-    }
+    // Always send payment method to backend
+    updateOrder.mutateAsync({ couponCode, paymentMethodId: parseInt(event.target.value) });
   };
 
-  const handleNoPaymentRequiredSubmit = async () => {
-    try {
-      setUpdatingOrder(true);
-      setPaymentError(undefined);
-      await checkoutController.paymentWithoutDetails();
-      await accountController.reloadActiveSubscription({ delay: 1000 });
-      navigate(paymentSuccessUrl, { replace: true });
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        setPaymentError(error.message);
-      }
+  useEffect(() => {
+    if (!offer) {
+      return navigate(chooseOfferUrl, { replace: true });
     }
+  }, [navigate, chooseOfferUrl, offer]);
 
-    setUpdatingOrder(false);
-  };
+  // Pre-select first payment method
+  useEffect(() => {
+    if (!paymentMethods?.length) return;
 
-  const handlePayPalSubmit = async () => {
-    try {
-      setPaymentError(undefined);
-      setUpdatingOrder(true);
-      const cancelUrl = createURL(window.location.href, { u: 'payment-cancelled' });
-      const waitingUrl = createURL(window.location.href, { u: 'waiting-for-payment' });
-      const errorUrl = createURL(window.location.href, { u: 'payment-error' });
-      const successUrl = `${window.location.origin}${paymentSuccessUrl}`;
+    setValue('paymentMethodId', paymentMethods[0].id.toString());
+  }, [paymentMethods, setValue]);
 
-      const response = await checkoutController.paypalPayment(successUrl, waitingUrl, cancelUrl, errorUrl, couponCodeForm.values.couponCode);
-
-      if (response.redirectUrl) {
-        window.location.href = response.redirectUrl;
-      }
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        setPaymentError(error.message);
-      }
-    }
-    setUpdatingOrder(false);
-  };
-
-  const renderPaymentMethod = () => {
-    const paymentMethod = paymentMethods?.find((method) => method.id === paymentMethodId);
-
-    if (!order || !offer) return null;
-
-    if (!order.requiredPaymentDetails) {
-      return <NoPaymentRequired onSubmit={handleNoPaymentRequiredSubmit} error={paymentError} />;
-    }
-
-    if (paymentMethod?.methodName === 'card') {
-      if (paymentMethod?.provider === 'stripe') {
-        return <PaymentForm couponCode={couponCodeForm.values.couponCode} setUpdatingOrder={setUpdatingOrder} />;
-      }
-
-      return (
-        <AdyenInitialPayment
-          paymentSuccessUrl={paymentSuccessUrl}
-          setUpdatingOrder={setUpdatingOrder}
-          setPaymentError={setPaymentError}
-          orderId={order.id}
-          type="card"
-        />
-      );
-    } else if (paymentMethod?.methodName === 'paypal') {
-      return <PayPal onSubmit={handlePayPalSubmit} error={paymentError} />;
-    }
-
-    return null;
-  };
+  // clear after closing the checkout modal
+  useEffect(() => {
+    return () => setShowCouponCodeSuccess(false);
+  }, []);
 
   // loading state
   if (!offer || !order || !paymentMethods || !offerType) {
@@ -223,6 +93,19 @@ const Checkout = () => {
     );
   }
 
+  const cancelUrl = createURL(window.location.href, { u: 'payment-cancelled' });
+  const waitingUrl = createURL(window.location.href, { u: 'waiting-for-payment' });
+  const errorUrl = createURL(window.location.href, { u: 'payment-error' });
+  const successUrl = offerType === 'svod' ? welcomeUrl : closeModalUrl;
+  const successUrlWithOrigin = `${window.location.origin}${successUrl}`;
+  const referrer = window.location.href;
+
+  const paymentMethod = paymentMethods?.find((method) => method.id === parseInt(paymentMethodId));
+  const noPaymentRequired = !order?.requiredPaymentDetails;
+  const isStripePayment = paymentMethod?.methodName === 'card' && paymentMethod?.provider === 'stripe';
+  const isAdyenPayment = paymentMethod?.methodName === 'card' && paymentMethod?.paymentGateway === 'adyen'; // @todo: conversion from controller?
+  const isPayPalPayment = paymentMethod?.methodName === 'paypal';
+
   return (
     <CheckoutForm
       order={order}
@@ -232,18 +115,42 @@ const Checkout = () => {
       paymentMethods={paymentMethods}
       paymentMethodId={paymentMethodId}
       onPaymentMethodChange={handlePaymentMethodChange}
-      onCouponFormSubmit={handleCouponFormSubmit}
-      onCouponInputChange={couponCodeForm.handleChange}
+      onCouponFormSubmit={handleSubmit}
+      onCouponInputChange={handleChange}
       onRedeemCouponButtonClick={() => setCouponFormOpen(true)}
       onCloseCouponFormClick={() => setCouponFormOpen(false)}
-      couponInputValue={couponCodeForm.values.couponCode}
+      couponInputValue={couponCode}
       couponFormOpen={couponFormOpen}
-      couponFormApplied={couponCodeApplied}
-      couponFormSubmitting={couponCodeForm.submitting}
-      couponFormError={couponCodeForm.errors.couponCode}
-      renderPaymentMethod={renderPaymentMethod}
-      submitting={updatingOrder}
-    />
+      couponFormApplied={showCouponCodeSuccess}
+      couponFormSubmitting={couponFormSubmitting}
+      couponFormError={errors.couponCode}
+      submitting={isSubmitting || adyenUpdating}
+    >
+      {noPaymentRequired && <NoPaymentRequired onSubmit={submitPaymentWithoutDetails.mutateAsync} error={submitPaymentWithoutDetails.error?.message || null} />}
+      {isStripePayment && (
+        <PaymentForm
+          onPaymentFormSubmit={async (cardPaymentPayload: PaymentFormData) =>
+            await submitPaymentStripe.mutateAsync({ cardPaymentPayload, referrer, returnUrl: waitingUrl })
+          }
+        />
+      )}
+      {isAdyenPayment && (
+        <>
+          <AdyenInitialPayment
+            paymentSuccessUrl={offerType === 'svod' ? welcomeUrl : closeModalUrl}
+            setUpdatingOrder={setAdyenUpdating}
+            orderId={order.id}
+            type="card"
+          />
+        </>
+      )}
+      {isPayPalPayment && (
+        <PayPal
+          onSubmit={() => submitPaymentPaypal.mutate({ successUrl: successUrlWithOrigin, waitingUrl, cancelUrl, errorUrl, couponCode })}
+          error={submitPaymentPaypal.error?.message || null}
+        />
+      )}
+    </CheckoutForm>
   );
 };
 

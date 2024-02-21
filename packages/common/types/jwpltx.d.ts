@@ -1,4 +1,4 @@
-interface Jwpltx {
+export interface Jwpltx {
   ready: (
     analyticsid: string,
     hostname: string,

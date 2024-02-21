@@ -5,10 +5,13 @@ import { BroadcastChannel } from 'broadcast-channel';
 
 import { IS_DEVELOPMENT_BUILD, logDev } from '../../../utils/common';
 import { PromiseQueue } from '../../../utils/promiseQueue';
-import type { AuthData, GetLocales } from '../../../../types/account';
+import type { AuthData } from '../../../../types/account';
 import StorageService from '../../StorageService';
 import { GET_CUSTOMER_IP } from '../../../modules/types';
 import type { GetCustomerIP } from '../../../../types/get-customer-ip';
+
+import type { GetLocalesResponse } from './types/account';
+import type { Response } from './types/api';
 
 const AUTH_PERSIST_KEY = 'auth';
 
@@ -119,7 +122,7 @@ export default class CleengService {
    */
   private getNewTokens: (tokens: Tokens) => Promise<Tokens | null> = async ({ refreshToken }) => {
     try {
-      const { responseData: newTokens } = await this.post<Promise<ServiceResponse<AuthData>>>('/auths/refresh_token', JSON.stringify({ refreshToken }));
+      const { responseData: newTokens } = await this.post<Response<AuthData>>('/auths/refresh_token', JSON.stringify({ refreshToken }));
 
       return {
         accessToken: newTokens.jwt,
@@ -356,19 +359,19 @@ export default class CleengService {
     return accessToken;
   };
 
-  getLocales: GetLocales = async () => {
+  getLocales = async () => {
     const customerIP = await this.getCustomerIP();
 
-    return this.get(`/locales${customerIP ? '?customerIP=' + customerIP : ''}`);
+    return this.get<GetLocalesResponse>(`/locales${customerIP ? '?customerIP=' + customerIP : ''}`);
   };
 
-  get = <T>(path: string, options?: RequestOptions) => this.performRequest(path, 'GET', undefined, options) as T;
+  get = <T>(path: string, options?: RequestOptions) => this.performRequest(path, 'GET', undefined, options) as Promise<T>;
 
-  patch = <T>(path: string, body?: string, options?: RequestOptions) => this.performRequest(path, 'PATCH', body, options) as T;
+  patch = <T>(path: string, body?: string, options?: RequestOptions) => this.performRequest(path, 'PATCH', body, options) as Promise<T>;
 
-  put = <T>(path: string, body?: string, options?: RequestOptions) => this.performRequest(path, 'PUT', body, options) as T;
+  put = <T>(path: string, body?: string, options?: RequestOptions) => this.performRequest(path, 'PUT', body, options) as Promise<T>;
 
-  post = <T>(path: string, body?: string, options?: RequestOptions) => this.performRequest(path, 'POST', body, options) as T;
+  post = <T>(path: string, body?: string, options?: RequestOptions) => this.performRequest(path, 'POST', body, options) as Promise<T>;
 
-  remove = <T>(path: string, options?: RequestOptions) => this.performRequest(path, 'DELETE', undefined, options) as T;
+  remove = <T>(path: string, options?: RequestOptions) => this.performRequest(path, 'DELETE', undefined, options) as Promise<T>;
 }

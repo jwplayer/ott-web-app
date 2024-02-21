@@ -2,8 +2,8 @@ import { useMutation } from 'react-query';
 import type { Customer } from '@jwp/ott-common/types/account';
 import { getModule } from '@jwp/ott-common/src/modules/container';
 import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
-import AccountController from '@jwp/ott-common/src/stores/AccountController';
-import CheckoutController from '@jwp/ott-common/src/stores/CheckoutController';
+import AccountController from '@jwp/ott-common/src/controllers/AccountController';
+import CheckoutController from '@jwp/ott-common/src/controllers/CheckoutController';
 
 export const useSubscriptionChange = (
   isUpgradeOffer: boolean,

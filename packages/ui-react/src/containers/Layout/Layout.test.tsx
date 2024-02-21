@@ -1,6 +1,6 @@
 import React from 'react';
-import ProfileController from '@jwp/ott-common/src/stores/ProfileController';
-import AccountController from '@jwp/ott-common/src/stores/AccountController';
+import ProfileController from '@jwp/ott-common/src/controllers/ProfileController';
+import AccountController from '@jwp/ott-common/src/controllers/AccountController';
 import { mockService } from '@jwp/ott-common/test/mockService';
 import { DEFAULT_FEATURES } from '@jwp/ott-common/src/constants';
 

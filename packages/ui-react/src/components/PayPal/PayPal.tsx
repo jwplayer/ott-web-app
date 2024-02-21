@@ -8,7 +8,7 @@ import styles from './PayPal.module.scss';
 
 type Props = {
   onSubmit?: () => void;
-  error?: string;
+  error: string | null;
 };
 
 const PayPal: React.FC<Props> = ({ onSubmit, error }) => {

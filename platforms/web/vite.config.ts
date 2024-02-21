@@ -1,6 +1,6 @@
 import path from 'path';
 
-import { defineConfig } from 'vite';
+import { defineConfig, HtmlTagDescriptor } from 'vite';
 import type { ConfigEnv, UserConfigExport } from 'vitest/config';
 import react from '@vitejs/plugin-react';
 import eslintPlugin from 'vite-plugin-eslint';
@@ -20,12 +20,53 @@ export default ({ mode, command }: ConfigEnv): UserConfigExport => {
 
   const localFile = initSettings(mode);
 
+  const app: OTTConfig = {
+    name: process.env.APP_NAME || 'JW OTT Webapp',
+    shortname: process.env.APP_SHORT_NAME || 'JW OTT',
+    description: process.env.APP_DESCRIPTION || 'JW OTT Webapp is an open-source, dynamically generated video website.',
+  };
+
   // Make sure to builds are always production type,
   // otherwise modes other than 'production' get built in dev
   if (command === 'build') {
     process.env.NODE_ENV = 'production';
   }
 
+  const getGoogleScripts = () => {
+    const tags: HtmlTagDescriptor[] = [];
+
+    if (process.env.APP_GOOGLE_SITE_VERIFICATION_ID) {
+      tags.push({
+        tag: 'meta',
+        injectTo: 'head',
+        attrs: {
+          content: process.env.APP_GOOGLE_SITE_VERIFICATION_ID,
+          name: 'google-site-verification',
+        },
+      });
+    }
+    if (process.env.APP_GTM_TAG_ID) {
+      tags.push(
+        {
+          injectTo: 'head',
+          tag: 'script',
+          children: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','${process.env.APP_GTM_TAG_ID}');`,
+        },
+        {
+          injectTo: 'body-prepend',
+          tag: 'noscript',
+          children: `<iframe src="https://www.googletagmanager.com/ns.html?id=${process.env.APP_GTM_TAG_ID}"
+          height="0" width="0" style="display:none;visibility:hidden"></iframe>`,
+        },
+      );
+    }
+
+    return tags;
+  };
   const fileCopyTargets: Target[] = [
     {
       src: localFile,
@@ -58,23 +99,39 @@ export default ({ mode, command }: ConfigEnv): UserConfigExport => {
       eslintPlugin({ emitError: mode === 'production' || mode === 'demo' || mode === 'preview' }), // Move linting to pre-build to match dashboard
       StylelintPlugin(),
       svgr(),
-      VitePWA(),
+      VitePWA({
+        manifestFilename: 'manifest.json',
+        manifest: {
+          name: app.name,
+          description: app.description,
+          short_name: app.shortname,
+          display: 'standalone',
+          start_url: '/',
+          theme_color: '#DD0000',
+          orientation: 'any',
+          background_color: '#000',
+          related_applications: [],
+          prefer_related_applications: false,
+          icons: [
+            {
+              src: 'images/icons/pwa-192x192.png',
+              sizes: '192x192',
+              type: 'image/png',
+            },
+            {
+              src: 'images/icons/pwa-512x512.png',
+              sizes: '512x512',
+              type: 'image/png',
+            },
+          ],
+        },
+      }),
       createHtmlPlugin({
         minify: true,
-        inject: process.env.APP_GOOGLE_SITE_VERIFICATION_ID
-          ? {
-              tags: [
-                {
-                  tag: 'meta',
-                  injectTo: 'head',
-                  attrs: {
-                    content: process.env.APP_GOOGLE_SITE_VERIFICATION_ID,
-                    name: 'google-site-verification',
-                  },
-                },
-              ],
-            }
-          : {},
+        inject: {
+          tags: getGoogleScripts(),
+          data: app,
+        },
       }),
       viteStaticCopy({
         targets: fileCopyTargets,

@@ -7,7 +7,6 @@ import type { PlaylistItem } from '@jwp/ott-common/types/playlist';
 import { useConfigStore } from '@jwp/ott-common/src/stores/ConfigStore';
 import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
 import { MediaStatus } from '@jwp/ott-common/src/utils/liveEvent';
-import { isLocked } from '@jwp/ott-common/src/utils/entitlements';
 import { formatLiveEventMetaString } from '@jwp/ott-common/src/utils/formatting';
 import { mediaURL } from '@jwp/ott-common/src/utils/urlFormatting';
 import { generateMovieJSONLD } from '@jwp/ott-common/src/utils/structuredData';
@@ -61,7 +60,8 @@ const MediaEvent: ScreenComponent<PlaylistItem> = ({ data: media, isLoading }) =
 
   // User, entitlement
   const { user, subscription } = useAccountStore(({ user, subscription }) => ({ user, subscription }), shallow);
-  const { isEntitled } = useEntitlement(media);
+  const { isEntitled, mediaOffers } = useEntitlement(media);
+  const hasMediaOffers = !!mediaOffers.length;
 
   // Handlers
   const goBack = () => media && navigate(mediaURL({ media, playlistId, play: false }));
@@ -168,7 +168,8 @@ const MediaEvent: ScreenComponent<PlaylistItem> = ({ data: media, isLoading }) =
               onComplete={handleComplete}
               feedId={playlistId ?? undefined}
               startWatchingButton={startWatchingButton}
-              paywall={isLocked(accessModel, isLoggedIn, hasSubscription, media)}
+              isEntitled={isEntitled}
+              hasMediaOffers={hasMediaOffers}
               autostart={liveEvent.isPlayable && (play || undefined)}
               playable={liveEvent.isPlayable}
             />

@@ -1,13 +1,13 @@
 import React, { type ReactNode, useState } from 'react';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
-import type { Profile } from '@jwp/ott-common/types/account';
 import useBreakpoint, { Breakpoint } from '@jwp/ott-ui-react/src/hooks/useBreakpoint';
 import type { LanguageDefinition } from '@jwp/ott-common/types/i18n';
 import Menu from '@jwp/ott-theme/assets/icons/menu.svg?react';
 import SearchIcon from '@jwp/ott-theme/assets/icons/search.svg?react';
 import CloseIcon from '@jwp/ott-theme/assets/icons/close.svg?react';
 import AccountCircle from '@jwp/ott-theme/assets/icons/account_circle.svg?react';
+import type { Profile } from '@jwp/ott-common/types/profiles';
 
 import SearchBar, { type Props as SearchBarProps } from '../SearchBar/SearchBar';
 import Logo from '../Logo/Logo';
