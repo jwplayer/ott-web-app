@@ -127,7 +127,7 @@ exports[`<Payment> > renders and matches snapshot 1`] = `
         class="_transactionDetails_c57ff5"
       >
         <div
-          class="_transationPrice_c57ff5"
+          class="_transactionPrice_c57ff5"
         >
           user:payment.price_paid_with
         </div>
@@ -153,7 +153,7 @@ exports[`<Payment> > renders and matches snapshot 1`] = `
         class="_transactionDetails_c57ff5"
       >
         <div
-          class="_transationPrice_c57ff5"
+          class="_transactionPrice_c57ff5"
         >
           user:payment.price_paid_with
         </div>
@@ -179,7 +179,7 @@ exports[`<Payment> > renders and matches snapshot 1`] = `
         class="_transactionDetails_c57ff5"
       >
         <div
-          class="_transationPrice_c57ff5"
+          class="_transactionPrice_c57ff5"
         >
           user:payment.price_paid_with
         </div>

@@ -11,6 +11,7 @@ import ExternalLink from '@jwp/ott-theme/assets/icons/external_link.svg?react';
 import PayPal from '@jwp/ott-theme/assets/icons/paypal.svg?react';
 import useBreakpoint, { Breakpoint } from '@jwp/ott-ui-react/src/hooks/useBreakpoint';
 import useOpaqueId from '@jwp/ott-hooks-react/src/useOpaqueId';
+import classNames from 'classnames';
 
 import IconButton from '../IconButton/IconButton';
 import Alert from '../Alert/Alert';
@@ -315,7 +316,12 @@ const Payment = ({
                   autoComplete="cc-csc"
                 />
               </div>
-              <Button label={t('account:payment.edit_card')} variant="outlined" onClick={onEditCardDetailsClick} />
+              <Button
+                className={classNames({ [styles.editCard]: canUpdatePaymentMethod })}
+                label={t('account:payment.edit_card')}
+                variant="outlined"
+                onClick={onEditCardDetailsClick}
+              />
             </div>
           )
         ) : (
@@ -341,7 +347,7 @@ const Payment = ({
                   <span>{transaction.transactionId}</span>
                 </p>
                 <div className={styles.transactionDetails}>
-                  <div className={styles.transationPrice}>
+                  <div className={styles.transactionPrice}>
                     {!isGrantedSubscription &&
                       t('user:payment.price_paid_with', {
                         price: formatPrice(parseFloat(transaction.transactionPriceInclTax), transaction.transactionCurrency, transaction.customerCountry),
