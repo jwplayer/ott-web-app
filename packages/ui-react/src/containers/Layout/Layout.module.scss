@@ -1,16 +1,6 @@
 @use '@jwp/ott-ui-react/src/styles/variables';
 @use '@jwp/ott-ui-react/src/styles/theme';
 
-.layout {
-  display: flex;
-  flex-grow: 1;
-  flex-direction: column;
-}
-
-.container {
-  flex: 1;
-}
-
 .footer {
   padding: 20px 40px;
   line-height: 18px;
@@ -63,6 +53,7 @@ div.testFixMargin {
       background-color: variables.$white;
       content: '';
     }
+
     body:global(.is-tabbing) & {
       &:focus {
         &::after {

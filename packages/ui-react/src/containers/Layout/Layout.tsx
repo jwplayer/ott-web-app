@@ -144,7 +144,7 @@ const Layout = () => {
   const containerProps = { inert: sideBarOpen ? '' : undefined }; // inert is not yet officially supported in react
 
   return (
-    <div className={styles.layout}>
+    <div>
       <Helmet>
         <title>{siteName}</title>
         <meta name="description" content={metaDescription} />
@@ -153,7 +153,7 @@ const Layout = () => {
         <meta name="twitter:title" content={siteName} />
         <meta name="twitter:description" content={metaDescription} />
       </Helmet>
-      <div className={styles.container} {...containerProps}>
+      <div {...containerProps}>
         <Header
           onMenuButtonClick={() => setSideBarOpen(true)}
           logoSrc={banner}
