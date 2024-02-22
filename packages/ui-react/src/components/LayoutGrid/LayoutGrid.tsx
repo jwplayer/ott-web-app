@@ -70,7 +70,7 @@ const LayoutGrid = <Item extends object>({ className, columnCount, data, renderC
       case 'ArrowUp':
         return focusGridCell(previousRowIndex, currentColumnIndex);
       case 'ArrowDown':
-        return focusGridCell(nextRowIndex, currentColumnIndex);
+        return focusGridCell(nextRowIndex, nextRowIndex === maxRow ? Math.min(currentColumnIndex, maxRightLastRow) : currentColumnIndex);
       case 'Home':
         if (ctrlKey) {
           return focusGridCell(0, 0);
@@ -78,9 +78,9 @@ const LayoutGrid = <Item extends object>({ className, columnCount, data, renderC
         return focusGridCell(currentRowIndex, 0);
       case 'End':
         if (ctrlKey) {
-          return focusGridCell(maxRight, maxRightLastRow);
+          return focusGridCell(maxRow, maxRightLastRow);
         }
-        return focusGridCell(currentRowIndex, maxRow);
+        return focusGridCell(currentRowIndex, maxRight);
       case 'PageUp':
         return focusGridCell(previousRowIndex, currentColumnIndex);
       case 'PageDown':
