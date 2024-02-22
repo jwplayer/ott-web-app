@@ -124,8 +124,8 @@ const Layout = () => {
   };
 
   // useCallbacks are used here to fix a bug in the Popover when using a Reactive onClose callback
-  const openUserMenu = useCallback(() => useUIStore.setState({ userMenuOpen: true }), []);
-  const closeUserMenu = useCallback(() => useUIStore.setState({ userMenuOpen: false }), []);
+  const openUserPanel = useCallback(() => useUIStore.setState({ userMenuOpen: true }), []);
+  const closeUserPanel = useCallback(() => useUIStore.setState({ userMenuOpen: false }), []);
   const openLanguageMenu = useCallback(() => useUIStore.setState({ languageMenuOpen: true }), []);
   const closeLanguageMenu = useCallback(() => useUIStore.setState({ languageMenuOpen: false }), []);
 
@@ -179,8 +179,8 @@ const Layout = () => {
           sideBarOpen={sideBarOpen}
           userMenuOpen={userMenuOpen}
           languageMenuOpen={languageMenuOpen}
-          openUserMenu={openUserMenu}
-          closeUserMenu={closeUserMenu}
+          openUserPanel={openUserPanel}
+          closeUserPanel={closeUserPanel}
           openLanguageMenu={openLanguageMenu}
           closeLanguageMenu={closeLanguageMenu}
           canLogin={canLogin}
