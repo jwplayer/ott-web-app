@@ -10,12 +10,13 @@ import styles from './Modal.module.scss';
 
 type Props = {
   children?: React.ReactNode;
-  AnimationComponent?: React.JSXElementConstructor<{ open?: boolean; duration?: number; delay?: number; children: React.ReactNode }>;
+  AnimationComponent?: React.JSXElementConstructor<{ open?: boolean; duration?: number; delay?: number; children: React.ReactNode; className?: string }>;
   open: boolean;
   onClose?: () => void;
+  animationContainerClassName?: string;
 } & React.AriaAttributes;
 
-const Modal: React.FC<Props> = ({ open, onClose, children, AnimationComponent = Grow, ...ariaAtributes }: Props) => {
+const Modal: React.FC<Props> = ({ open, onClose, children, AnimationComponent = Grow, animationContainerClassName, ...ariaAtributes }: Props) => {
   const [visible, setVisible] = useState(open);
   const lastFocus = useRef<HTMLElement>() as React.MutableRefObject<HTMLElement>;
   const modalRef = useRef<HTMLDivElement>() as React.MutableRefObject<HTMLDivElement>;
@@ -81,7 +82,7 @@ const Modal: React.FC<Props> = ({ open, onClose, children, AnimationComponent = 
       <div className={styles.modal} onKeyDown={keyDownEventHandler} ref={modalRef}>
         <div className={styles.backdrop} onClick={onClose} data-testid={testId('backdrop')} />
         <div className={styles.container} data-testid={testId('container')} aria-modal="true" {...ariaAtributes}>
-          <AnimationComponent open={open} duration={200}>
+          <AnimationComponent open={open} duration={200} className={animationContainerClassName}>
             {children}
           </AnimationComponent>
         </div>

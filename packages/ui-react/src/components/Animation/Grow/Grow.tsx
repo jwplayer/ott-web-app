@@ -9,9 +9,10 @@ type Props = {
   onOpenAnimationEnd?: () => void;
   onCloseAnimationEnd?: () => void;
   children: ReactNode;
+  className?: string;
 };
 
-const Grow = ({ open = true, duration = 250, delay = 0, onOpenAnimationEnd, onCloseAnimationEnd, children }: Props): JSX.Element | null => {
+const Grow = ({ open = true, duration = 250, delay = 0, onOpenAnimationEnd, onCloseAnimationEnd, children, className }: Props): JSX.Element | null => {
   const seconds = duration / 1000;
   const transition = `transform ${seconds}s ease-out`; // todo: -webkit-transform;
   const createStyle = (status: Status): CSSProperties => ({
@@ -27,6 +28,7 @@ const Grow = ({ open = true, duration = 250, delay = 0, onOpenAnimationEnd, onCl
       delay={delay}
       onOpenAnimationEnd={onOpenAnimationEnd}
       onCloseAnimationEnd={onCloseAnimationEnd}
+      className={className}
     >
       {children}
     </Animation>
