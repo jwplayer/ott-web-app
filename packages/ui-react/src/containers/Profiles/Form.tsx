@@ -57,7 +57,6 @@ const Form = ({ initialValues, formHandler, selectedAvatar, showCancelButton = t
     }),
     onSubmit: formHandler,
   });
-  const isDirty = Object.entries(values).some(([k, v]) => v !== initialValues[k as keyof typeof initialValues]);
   useEffect(() => {
     setValue('avatar_url', selectedAvatar?.value || profile?.avatar_url || '');
   }, [profile?.avatar_url, selectedAvatar?.value, setValue]);
@@ -74,14 +73,13 @@ const Form = ({ initialValues, formHandler, selectedAvatar, showCancelButton = t
         <div className={profileStyles.formFields}>
           {errors.form ? <FormFeedback variant="error">{errors.form}</FormFeedback> : null}
           {submitting && <LoadingOverlay />}
-          <h2 className={profileStyles.nameHeading}>{t('name')}</h2>
           <TextField
             required
             name="name"
             label={t('profile.name')}
             value={values?.name}
             onChange={handleChange}
-            error={!!errors.name || !!errors.form}
+            error={!!errors.name}
             helperText={errors.name}
           />
           {showContentRating && (
@@ -99,7 +97,7 @@ const Form = ({ initialValues, formHandler, selectedAvatar, showCancelButton = t
         </div>
         <hr className={profileStyles.divider} />
         <div className={classNames(styles.panelHeader, profileStyles.noBottomBorder)}>
-          <h2>{t('profile.avatar')}</h2>
+          <h3>{t('profile.avatar')}</h3>
           <div className={profileStyles.avatarsContainer}>
             {AVATARS.map((avatarUrl) => (
               <ProfileBox
@@ -115,7 +113,7 @@ const Form = ({ initialValues, formHandler, selectedAvatar, showCancelButton = t
           </div>
         </div>
         <>
-          <Button type="submit" label={t('account.save')} variant="outlined" disabled={!isDirty || submitting} fullWidth={isMobile} />
+          <Button type="submit" label={t('account.save')} variant="outlined" disabled={submitting} fullWidth={isMobile} />
           {showCancelButton && <Button onClick={() => navigate(PATH_USER_PROFILES)} label={t('account.cancel')} variant="text" fullWidth={isMobile} />}
         </>
       </div>
