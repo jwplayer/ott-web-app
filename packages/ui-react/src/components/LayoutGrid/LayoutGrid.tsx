@@ -1,8 +1,6 @@
-// Keyboard-accessible grid layout, with focus management
-
 import { throttle } from '@jwp/ott-common/src/utils/common';
 import useEventCallback from '@jwp/ott-hooks-react/src/useEventCallback';
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import styles from './LayoutGrid.module.scss';
 
@@ -17,16 +15,28 @@ const scrollIntoViewThrottled = throttle(function (focusedElement: HTMLElement) 
   focusedElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }, 300);
 
+// Keyboard-accessible grid layout, with focus management
 const LayoutGrid = <Item extends object>({ className, columnCount, data, renderCell }: Props<Item>) => {
-  const [focused, setFocused] = useState(false);
   const [currentRowIndex, setCurrentRowIndex] = useState(0);
   const [currentColumnIndex, setCurrentColumnIndex] = useState(0);
   const gridRef = useRef<HTMLDivElement>(null);
   const rowCount = Math.ceil(data.length / columnCount);
 
-  const handleKeyDown = useEventCallback((event: KeyboardEvent) => {
-    if (event instanceof KeyboardEvent === false) return;
+  const focusGridCell = (rowIndex: number, columnIndex: number) => {
+    const gridCell = document.getElementById(`layout_grid_${rowIndex}-${columnIndex}`) as HTMLDivElement | null;
+    const focusableElement = gridCell?.querySelector('button, a, input, [tabindex]:not([tabindex="-1"])') as HTMLElement | null;
+    const elementToFocus = focusableElement || gridCell;
 
+    setCurrentRowIndex(rowIndex);
+    setCurrentColumnIndex(columnIndex);
+
+    if (!elementToFocus) return;
+
+    elementToFocus.focus({ preventScroll: true });
+    scrollIntoViewThrottled(elementToFocus);
+  };
+
+  const handleKeyDown = useEventCallback((event: React.KeyboardEvent<HTMLDivElement>) => {
     const { key, ctrlKey } = event;
 
     if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End', 'PageUp', 'PageDown'].includes(key)) return;
@@ -44,109 +54,60 @@ const LayoutGrid = <Item extends object>({ className, columnCount, data, renderC
       case 'ArrowLeft':
         if (isOnFirstColumn && !isOnFirstRow) {
           // Move to last of previous row
-          setCurrentColumnIndex(columnCount - 1);
-          setCurrentRowIndex((current) => Math.max(current - 1, 0));
-
-          return;
+          return focusGridCell(Math.max(currentRowIndex - 1, 0), columnCount - 1);
         }
-        return setCurrentColumnIndex((current) => Math.max(current - 1, 0));
+        return focusGridCell(currentRowIndex, Math.max(currentColumnIndex - 1, 0));
       case 'ArrowRight':
         if (isOnLastColumn && !isOnLastRow) {
           // Move to first of next row
-          setCurrentColumnIndex(0);
-          setCurrentRowIndex((current) => Math.min(current + 1, rowCount - 1));
-
-          return;
+          return focusGridCell(Math.min(currentRowIndex + 1, rowCount - 1), 0);
         }
-        return setCurrentColumnIndex((current) => Math.min(current + 1, maxRight));
+        return focusGridCell(currentRowIndex, Math.min(currentColumnIndex + 1, maxRight));
       case 'ArrowUp':
-        return setCurrentRowIndex((current) => Math.max(current - 1, 0));
+        return focusGridCell(Math.max(currentRowIndex - 1, 0), currentColumnIndex);
       case 'ArrowDown':
-        return setCurrentRowIndex((current) => Math.min(current + 1, rowCount - 1));
+        return focusGridCell(Math.min(currentRowIndex + 1, rowCount - 1), currentColumnIndex);
       case 'Home':
         if (ctrlKey) {
-          setCurrentRowIndex(0);
+          focusGridCell(0, currentColumnIndex);
         }
-        return setCurrentColumnIndex(0);
+        return focusGridCell(currentRowIndex, 0);
       case 'End':
         if (ctrlKey) {
-          setCurrentRowIndex(maxRight);
-          setCurrentColumnIndex(maxRightLastRow);
-
-          return;
+          return focusGridCell(maxRight, maxRightLastRow);
         }
-        return setCurrentColumnIndex(rowCount - 1);
+        return focusGridCell(currentRowIndex, rowCount - 1);
       case 'PageUp':
-        return setCurrentRowIndex((current) => Math.max(current - 1, 0));
+        return focusGridCell(Math.max(currentRowIndex - 1, 0), currentColumnIndex);
       case 'PageDown':
-        return setCurrentRowIndex((current) => Math.min(current + 1, rowCount - 1));
+        return focusGridCell(Math.min(currentRowIndex + 1, rowCount - 1), currentColumnIndex);
       default:
         return;
     }
   });
 
-  const originalScrollBehavior = useRef<string | null>(null);
-
-  useEffect(() => {
-    if (focused) {
-      document.addEventListener('keydown', handleKeyDown);
-
-      // Prevent immediate page scrolling when out-of-viewport element gets focus
-      originalScrollBehavior.current = document.documentElement.style.scrollBehavior;
-      document.documentElement.style.scrollBehavior = 'smooth';
-    }
-
-    return () => {
-      document.documentElement.style.scrollBehavior = originalScrollBehavior.current || '';
-      document.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [focused, handleKeyDown, columnCount, rowCount]);
-
-  // Set DOM focus to a focusable element within the currently focusable grid cell
-  useLayoutEffect(() => {
-    if (!focused) return;
-
-    const gridCell = document.getElementById(`layout_grid_${currentRowIndex}-${currentColumnIndex}`) as HTMLDivElement | null;
-    const focusableElement = gridCell?.querySelector('button, a, input, [tabindex]:not([tabindex="-1"])') as HTMLElement | null;
-    const elementToFocus = focusableElement || gridCell;
-
-    if (!elementToFocus) return;
-
-    elementToFocus.focus();
-    scrollIntoViewThrottled(elementToFocus);
-  }, [focused, currentRowIndex, currentColumnIndex]);
-
   // When the window size changes, correct indexes if necessary
   useEffect(() => {
+    // the focused element is not within the grid element
+    if (!gridRef.current?.contains(document.activeElement)) {
+      return;
+    }
+
     const maxRightLastRow = (data.length % columnCount || columnCount) - 1; // Never go beyond last item
 
     if (currentColumnIndex > columnCount - 1) {
-      setCurrentColumnIndex(columnCount - 1);
+      return focusGridCell(currentRowIndex, columnCount - 1);
     }
+
     if (currentRowIndex === rowCount - 1 && currentColumnIndex > maxRightLastRow) {
-      setCurrentColumnIndex(maxRightLastRow);
+      return focusGridCell(currentRowIndex, maxRightLastRow);
     }
-  }, [currentColumnIndex, currentRowIndex, columnCount, rowCount, data.length]);
+    // this logic should only react when the column count changes
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [columnCount]);
 
   return (
-    <div
-      role="grid"
-      ref={gridRef}
-      aria-rowcount={rowCount}
-      className={className}
-      onFocus={(event) => {
-        // only update the focused state when the `relatedTarget` is not a child of this element
-        if (!event.relatedTarget || !gridRef.current?.contains(event.relatedTarget)) {
-          setFocused(true);
-        }
-      }}
-      onBlur={(event) => {
-        // only update the focused state when the `relatedTarget` is not a child of this element
-        if (!event.relatedTarget || !gridRef.current?.contains(event.relatedTarget)) {
-          setFocused(false);
-        }
-      }}
-    >
+    <div role="grid" ref={gridRef} aria-rowcount={rowCount} className={className} onKeyDown={handleKeyDown}>
       {Array.from({ length: rowCount }).map((_, rowIndex) => (
         <div role="row" key={rowIndex} aria-rowindex={rowIndex} className={styles.row}>
           {data.slice(rowIndex * columnCount, rowIndex * columnCount + columnCount).map((item, columnIndex) => (
