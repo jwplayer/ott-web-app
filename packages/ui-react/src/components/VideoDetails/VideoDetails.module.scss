@@ -141,7 +141,7 @@
 .poster {
   position: absolute;
   top: 0;
-  right: 0;
+  right: -15px;
 
   z-index: -1;
 
@@ -172,9 +172,9 @@
 .posterFade {
   position: absolute;
   top: 0;
+  right: -15px;
   left: 0;
   z-index: -1;
-  width: 100%;
   height: 120px;
   background: linear-gradient(0deg, transparent, var(--body-background-color, variables.$white));
 }

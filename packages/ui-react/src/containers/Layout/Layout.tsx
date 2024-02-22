@@ -147,7 +147,7 @@ const Layout = () => {
   const containerProps = { inert: sideBarOpen ? '' : undefined }; // inert is not yet officially supported in react
 
   return (
-    <div>
+    <div className={styles.layout}>
       <Helmet>
         <title>{siteName}</title>
         <meta name="description" content={metaDescription} />

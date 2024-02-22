@@ -16,9 +16,7 @@ exports[`<Cinema> > renders and matches snapshot 1`] = `
         data-testid="backdrop"
       />
       <div
-        aria-modal="true"
         class="_container_6c6c55"
-        data-testid="container"
       >
         <div
           class="_cinemaContainer_555f3c"
