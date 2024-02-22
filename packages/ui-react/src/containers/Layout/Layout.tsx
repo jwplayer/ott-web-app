@@ -3,7 +3,6 @@ import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
 import { Outlet, useLocation, useNavigate } from 'react-router';
 import { shallow } from '@jwp/ott-common/src/utils/compare';
-import classNames from 'classnames';
 import { getModule } from '@jwp/ott-common/src/modules/container';
 import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
 import { useUIStore } from '@jwp/ott-common/src/stores/UIStore';
@@ -11,7 +10,7 @@ import { useConfigStore } from '@jwp/ott-common/src/stores/ConfigStore';
 import { useProfileStore } from '@jwp/ott-common/src/stores/ProfileStore';
 import ProfileController from '@jwp/ott-common/src/controllers/ProfileController';
 import { modalURLFromLocation } from '@jwp/ott-ui-react/src/utils/location';
-import { IS_DEVELOPMENT_BUILD, unicodeToChar } from '@jwp/ott-common/src/utils/common';
+import { unicodeToChar } from '@jwp/ott-common/src/utils/common';
 import { ACCESS_MODEL } from '@jwp/ott-common/src/constants';
 import useSearchQueryUpdater from '@jwp/ott-ui-react/src/hooks/useSearchQueryUpdater';
 import { useProfiles, useSelectProfile } from '@jwp/ott-hooks-react/src/useProfiles';
@@ -20,12 +19,12 @@ import { PATH_HOME, PATH_USER_PROFILES } from '@jwp/ott-common/src/paths';
 import { playlistURL } from '@jwp/ott-common/src/utils/urlFormatting';
 import env from '@jwp/ott-common/src/env';
 
-import MarkdownComponent from '../../components/MarkdownComponent/MarkdownComponent';
 import Header from '../../components/Header/Header';
 import Sidebar from '../../components/Sidebar/Sidebar';
 import MenuButton from '../../components/MenuButton/MenuButton';
 import UserMenu from '../../components/UserMenu/UserMenu';
 import Button from '../../components/Button/Button';
+import Footer from '../../components/Footer/Footer';
 
 import styles from './Layout.module.scss';
 
@@ -203,15 +202,7 @@ const Layout = () => {
         <main id="content" className={styles.main} tabIndex={-1}>
           <Outlet />
         </main>
-        {!!footerText && (
-          <MarkdownComponent
-            // The extra style below is just to fix the footer on mobile when the dev selector is shown
-            className={classNames(styles.footer, { [styles.testFixMargin]: IS_DEVELOPMENT_BUILD })}
-            markdownString={footerText}
-            tag="footer"
-            inline
-          />
-        )}
+        {!!footerText && <Footer text={footerText} />}
       </div>
       <Sidebar isOpen={sideBarOpen} onClose={() => setSideBarOpen(false)}>
         <ul>
