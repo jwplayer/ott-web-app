@@ -2,7 +2,9 @@
 
 exports[`<Layout /> > renders layout 1`] = `
 <div>
-  <div>
+  <div
+    class="_layout_c71437"
+  >
     <div>
       <header
         class="_header_f4f7a7 _static_f4f7a7"

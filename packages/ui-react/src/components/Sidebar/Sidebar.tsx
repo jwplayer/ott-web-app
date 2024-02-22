@@ -5,6 +5,7 @@ import Close from '@jwp/ott-theme/assets/icons/close.svg?react';
 
 import IconButton from '../IconButton/IconButton';
 import Icon from '../Icon/Icon';
+import scrollbarSize from '../../utils/dom';
 
 import styles from './Sidebar.module.scss';
 
@@ -18,16 +19,41 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, children }) => {
   const { t } = useTranslation('menu');
   const lastFocusedElementRef = useRef<HTMLElement | null>(null);
   const sidebarRef = useRef<HTMLDivElement>(null);
+
   const htmlAttributes = { inert: !isOpen ? '' : undefined }; // inert is not yet officially supported in react. see: https://github.com/facebook/react/pull/24730
 
   useEffect(() => {
     if (isOpen) {
       lastFocusedElementRef.current = document.activeElement as HTMLElement;
       sidebarRef.current?.querySelectorAll('a')[0]?.focus({ preventScroll: true });
+
+      // When opened, adjust the margin-right to accommodate for the scrollbar width to prevent UI shifts in background
+      document.body.style.marginRight = `${scrollbarSize()}px`;
+      document.body.style.overflowY = 'hidden';
+
+      // Scroll the sidebar to the top if the user has previously scrolled down in the sidebar
+      if (sidebarRef.current) {
+        sidebarRef.current.scrollTop = 0;
+      }
     } else {
       lastFocusedElementRef.current?.focus({ preventScroll: true });
+      document.body.style.removeProperty('margin-right');
+      document.body.style.removeProperty('overflow-y');
     }
   }, [isOpen]);
+
+  useEffect(() => {
+    const handleEscKey = (event: KeyboardEvent) => {
+      if (isOpen && event.key === 'Escape') {
+        onClose();
+      }
+    };
+    document.addEventListener('keydown', handleEscKey);
+
+    return () => {
+      document.removeEventListener('keydown', handleEscKey);
+    };
+  }, [isOpen, onClose]);
 
   return (
     <Fragment>

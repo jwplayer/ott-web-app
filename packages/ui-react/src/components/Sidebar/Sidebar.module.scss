@@ -30,6 +30,7 @@
   width: 270px;
   max-width: 90vw;
   height: 100vh;
+  overflow-y: auto;
   background-color: var(--body-background-color);
   transform: translateX(-100%);
   transition: transform 0.3s cubic-bezier(0.52, 0.51, 0.2, 1);
@@ -52,7 +53,6 @@
   flex-direction: column;
   max-height: 100%;
   padding: variables.$base-spacing 0;
-  overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 }
 
