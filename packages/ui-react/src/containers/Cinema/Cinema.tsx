@@ -7,6 +7,7 @@ import IconButton from '../../components/IconButton/IconButton';
 import PlayerContainer from '../PlayerContainer/PlayerContainer';
 import Fade from '../../components/Animation/Fade/Fade';
 import Icon from '../../components/Icon/Icon';
+import Modal from '../../components/Modal/Modal';
 
 import styles from './Cinema.module.scss';
 
@@ -74,36 +75,13 @@ const Cinema: React.FC<Props> = ({
 
   // effects
   useEffect(() => {
-    if (open) {
-      setUserActive(true);
-      document.body.style.overflowY = 'hidden';
-    }
-
-    return () => {
-      document.body.style.overflowY = '';
-    };
+    if (open) setUserActive(true);
   }, [open]);
 
   return (
-    <Fade open={open} className={styles.fade}>
+    <Modal open={open} animationContainerClassName={styles.cinemaContainer} onClose={onClose}>
       <div className={styles.cinema}>
-        <PlayerContainer
-          item={item}
-          seriesItem={seriesItem}
-          feedId={feedId}
-          autostart={true}
-          onPlay={handlePlay}
-          onPause={handlePause}
-          onComplete={handleComplete}
-          onUserActive={handleUserActive}
-          onUserInActive={handleUserInactive}
-          onNext={handleNext}
-          liveEndDateTime={liveEndDateTime}
-          liveFromBeginning={liveFromBeginning}
-          liveStartDateTime={liveStartDateTime}
-        />
-
-        <Fade open={!isPlaying || userActive}>
+        <Fade open={!isPlaying || userActive} keepMounted>
           <div className={styles.playerOverlay}>
             <div className={styles.playerContent}>
               <IconButton aria-label={t('common:back')} onClick={onClose} className={styles.backButton}>
@@ -119,8 +97,23 @@ const Cinema: React.FC<Props> = ({
             </div>
           </div>
         </Fade>
+        <PlayerContainer
+          item={item}
+          seriesItem={seriesItem}
+          feedId={feedId}
+          autostart={true}
+          onPlay={handlePlay}
+          onPause={handlePause}
+          onComplete={handleComplete}
+          onUserActive={handleUserActive}
+          onUserInActive={handleUserInactive}
+          onNext={handleNext}
+          liveEndDateTime={liveEndDateTime}
+          liveFromBeginning={liveFromBeginning}
+          liveStartDateTime={liveStartDateTime}
+        />
       </div>
-    </Fade>
+    </Modal>
   );
 };
 
