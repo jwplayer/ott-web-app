@@ -65,6 +65,7 @@ exports[`<UserMenu> > renders and matches snapshot 1`] = `
     >
       <div
         class="_menuButton_91706b"
+        role="button"
         tabindex="0"
       >
         <div
