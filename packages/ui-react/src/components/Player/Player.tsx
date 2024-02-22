@@ -72,7 +72,16 @@ const Player: React.FC<Props> = ({
   const handleComplete = useEventCallback(onComplete);
   const handleUserActive = useEventCallback(onUserActive);
   const handleUserInactive = useEventCallback(onUserInActive);
-  const handleFirstFrame = useEventCallback(onFirstFrame);
+  const handleFirstFrame = useEventCallback(() => {
+    // a11y: auto focus to play/pause button
+    const playerContainer = playerRef.current?.getContainer();
+    const playPauseButton = playerContainer?.querySelector(
+      '.jw-controlbar [aria-label="Play"], .jw-button-container [aria-label="Pause"]',
+    ) as HTMLDivElement | null;
+    playPauseButton?.focus();
+
+    onFirstFrame?.();
+  });
   const handleRemove = useEventCallback(onRemove);
   const handlePlaylistItem = useEventCallback(onPlaylistItem);
   const handlePlaylistItemCallback = useEventCallback(onPlaylistItemCallback);
