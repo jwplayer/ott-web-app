@@ -43,44 +43,48 @@ const LayoutGrid = <Item extends object>({ className, columnCount, data, renderC
 
     event.preventDefault();
 
+    const maxRow = rowCount - 1;
     const isOnFirstColumn = currentColumnIndex === 0;
     const isOnLastColumn = currentColumnIndex === columnCount - 1;
     const isOnFirstRow = currentRowIndex === 0;
-    const isOnLastRow = currentRowIndex === rowCount - 1;
+    const isOnLastRow = currentRowIndex === maxRow;
     const maxRightLastRow = (data.length % columnCount || columnCount) - 1; // Never go beyond last item
     const maxRight = isOnLastRow ? maxRightLastRow : columnCount - 1;
+
+    const nextRowIndex = Math.min(currentRowIndex + 1, maxRow);
+    const previousRowIndex = Math.max(currentRowIndex - 1, 0);
 
     switch (key) {
       case 'ArrowLeft':
         if (isOnFirstColumn && !isOnFirstRow) {
           // Move to last of previous row
-          return focusGridCell(Math.max(currentRowIndex - 1, 0), columnCount - 1);
+          return focusGridCell(previousRowIndex, columnCount - 1);
         }
         return focusGridCell(currentRowIndex, Math.max(currentColumnIndex - 1, 0));
       case 'ArrowRight':
         if (isOnLastColumn && !isOnLastRow) {
           // Move to first of next row
-          return focusGridCell(Math.min(currentRowIndex + 1, rowCount - 1), 0);
+          return focusGridCell(nextRowIndex, 0);
         }
         return focusGridCell(currentRowIndex, Math.min(currentColumnIndex + 1, maxRight));
       case 'ArrowUp':
-        return focusGridCell(Math.max(currentRowIndex - 1, 0), currentColumnIndex);
+        return focusGridCell(previousRowIndex, currentColumnIndex);
       case 'ArrowDown':
-        return focusGridCell(Math.min(currentRowIndex + 1, rowCount - 1), currentColumnIndex);
+        return focusGridCell(nextRowIndex, currentColumnIndex);
       case 'Home':
         if (ctrlKey) {
-          focusGridCell(0, currentColumnIndex);
+          return focusGridCell(0, 0);
         }
         return focusGridCell(currentRowIndex, 0);
       case 'End':
         if (ctrlKey) {
           return focusGridCell(maxRight, maxRightLastRow);
         }
-        return focusGridCell(currentRowIndex, rowCount - 1);
+        return focusGridCell(currentRowIndex, maxRow);
       case 'PageUp':
-        return focusGridCell(Math.max(currentRowIndex - 1, 0), currentColumnIndex);
+        return focusGridCell(previousRowIndex, currentColumnIndex);
       case 'PageDown':
-        return focusGridCell(Math.min(currentRowIndex + 1, rowCount - 1), currentColumnIndex);
+        return focusGridCell(nextRowIndex, nextRowIndex === maxRow ? Math.min(maxRightLastRow, currentColumnIndex) : currentColumnIndex);
       default:
         return;
     }
