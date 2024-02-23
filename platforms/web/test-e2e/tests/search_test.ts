@@ -5,7 +5,7 @@ import { testConfigs } from '@jwp/ott-testing/constants';
 import constants from '#utils/constants';
 
 const openSearchLocator = { css: 'div[aria-label="Open search"]' };
-const searchBarLocator = { css: 'input[aria-label="Search"]' };
+const searchBarLocator = 'input[type="search"]';
 const emptySearchPrompt = 'Type something in the search box to start searching';
 const clearSearchLocator = { css: 'div[aria-label="Clear search"]' };
 const closeSearchLocator = { css: 'div[aria-label="Close search"]' };
