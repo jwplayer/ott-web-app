@@ -23,7 +23,10 @@ exports[`<Cinema> > renders and matches snapshot 1`] = `
           style="transition: transform 0.2s ease-out; transform: scale(0.7);"
         >
           <div
+            aria-label="videoplayer"
+            aria-modal="true"
             class="_cinema_555f3c"
+            role="dialog"
           >
             <div
               style="transition: opacity 0.25s ease-in-out; opacity: 0;"
