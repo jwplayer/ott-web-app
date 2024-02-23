@@ -71,7 +71,6 @@ const MediaMovie: ScreenComponent<PlaylistItem> = ({ data, isLoading }) => {
     return nextItem && navigate(mediaURL({ media: nextItem, playlistId: features?.recommendationsPlaylist, play: true }));
   }, [id, playlist, navigate, features?.recommendationsPlaylist]);
 
-  // Effects
   useEffect(() => {
     (document.scrollingElement || document.body).scroll({ top: 0 });
     (document.querySelector('#video-details button') as HTMLElement)?.focus();
@@ -83,7 +82,13 @@ const MediaMovie: ScreenComponent<PlaylistItem> = ({ data, isLoading }) => {
 
   const primaryMetadata = <VideoMetaData attributes={createVideoMetadata(data)} />;
   const shareButton = <ShareButton title={data.title} description={data.description} url={canonicalUrl} />;
-  const startWatchingButton = <StartWatchingButton item={data} playUrl={mediaURL({ media: data, playlistId: feedId, play: true })} />;
+  const startWatchingButton = (
+    <StartWatchingButton
+      key={id} // necessary to fix autofocus on TalkBack
+      item={data}
+      playUrl={mediaURL({ media: data, playlistId: feedId, play: true })}
+    />
+  );
 
   const favoriteButton = isFavoritesEnabled && <FavoriteButton item={data} />;
   const trailerButton = (!!trailerItem || isTrailerLoading) && (
