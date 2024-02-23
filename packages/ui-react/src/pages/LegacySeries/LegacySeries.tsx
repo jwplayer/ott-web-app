@@ -133,6 +133,7 @@ const LegacySeries = () => {
   const shareButton = <ShareButton title={selectedItem?.title} description={pageDescription} url={canonicalUrl} />;
   const startWatchingButton = (
     <StartWatchingButton
+      key={episodeId} // necessary to fix autofocus on TalkBack
       item={episode || firstEpisode}
       playUrl={legacySeriesURL({ episodeId: episode?.mediaid || firstEpisode?.mediaid, seriesId, play: true, playlistId: feedId })}
     />

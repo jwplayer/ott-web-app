@@ -165,13 +165,14 @@ const MediaSeries: ScreenComponent<PlaylistItem> = ({ data: seriesMedia }) => {
   const startWatchingButton = useMemo(
     () => (
       <StartWatchingButton
+        key={episodeId} // necessary to fix autofocus on TalkBack
         item={episode || firstEpisode}
         onClick={() => {
           setSearchParams({ ...searchParams, e: (episode || firstEpisode).mediaid, r: feedId || '', play: '1' }, { replace: true });
         }}
       />
     ),
-    [episode, firstEpisode, feedId, searchParams, setSearchParams],
+    [episodeId, episode, firstEpisode, setSearchParams, searchParams, feedId],
   );
 
   // UI
