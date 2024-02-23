@@ -11,6 +11,7 @@ import { mediaURL } from '@jwp/ott-common/src/utils/urlFormatting';
 import useFirstRender from '@jwp/ott-hooks-react/src/useFirstRender';
 import useSearchQueryUpdater from '@jwp/ott-ui-react/src/hooks/useSearchQueryUpdater';
 import usePlaylist from '@jwp/ott-hooks-react/src/usePlaylist';
+import useOpaqueId from '@jwp/ott-hooks-react/src/useOpaqueId';
 
 import CardGrid from '../../components/CardGrid/CardGrid';
 import ErrorPage from '../../components/ErrorPage/ErrorPage';
@@ -21,6 +22,7 @@ const Search = () => {
   const { t } = useTranslation('search');
   const { config, accessModel } = useConfigStore(({ config, accessModel }) => ({ config, accessModel }), shallow);
   const { siteName, features } = config;
+  const headingId = useOpaqueId('search_heading');
 
   const firstRender = useFirstRender();
   const searchQuery = useUIStore((state) => state.searchQuery);
@@ -88,9 +90,17 @@ const Search = () => {
         </title>
       </Helmet>
       <header className={styles.header}>
-        <h2>{t('heading')}</h2>
+        <h2 id={headingId}>{t('heading')}</h2>
       </header>
-      <CardGrid getUrl={getURL} playlist={playlist} isLoading={firstRender} accessModel={accessModel} isLoggedIn={!!user} hasSubscription={!!subscription} />
+      <CardGrid
+        aria-labelledby={headingId}
+        getUrl={getURL}
+        playlist={playlist}
+        isLoading={firstRender}
+        accessModel={accessModel}
+        isLoggedIn={!!user}
+        hasSubscription={!!subscription}
+      />
     </div>
   );
 };

@@ -32,11 +32,12 @@ const ErrorPage = ({ title, message, learnMoreLabel, ...rest }: Props) => {
 
 export const ErrorPageWithoutTranslation = ({ title, children, message, learnMoreLabel, error, helpLink }: Props) => {
   const logo = useConfigStore((s) => s.config?.assets?.banner);
+  const alt = ''; // intentionally empty for a11y, because adjacent text alternative
 
   return (
     <div className={styles.errorPage}>
       <div className={styles.box}>
-        <img className={styles.image} src={logo || '/images/logo.png'} alt={'Logo'} />
+        <img className={styles.image} src={logo || '/images/logo.png'} alt={alt} />
         <h1 className={styles.title}>{title || 'An error occurred'}</h1>
         <div className={styles.main}>
           <p className={styles.message}>{message || 'Try refreshing this page or come back later.'}</p>
