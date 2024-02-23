@@ -9,7 +9,7 @@ exports[`<ErrorPage> > renders and matches snapshot 1`] = `
       class="_box_8c5621"
     >
       <img
-        alt="Logo"
+        alt=""
         class="_image_8c5621"
         src="/images/logo.png"
       />

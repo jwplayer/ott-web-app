@@ -3,7 +3,10 @@
 
 .searchBar {
   position: relative;
-  height: variables.$search-height;
+}
+
+.searchForm {
+    height: variables.$search-height;
 }
 
 .icon {
@@ -47,7 +50,6 @@
 
 .clearButton {
   position: absolute;
-  top: -2px;
   right: 0;
 
   > svg {

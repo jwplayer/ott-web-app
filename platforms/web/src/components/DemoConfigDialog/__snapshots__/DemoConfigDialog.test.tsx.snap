@@ -32,7 +32,7 @@ exports[`<DemoConfigDialog> > renders and matches snapshot error dialog 1`] = `
         class="_box_d73633"
       >
         <img
-          alt="Logo"
+          alt=""
           class="_image_d73633"
           src="/images/logo.png"
         />
