@@ -49,17 +49,6 @@ const Modal: React.FC<Props> = ({ open, onClose, children, AnimationComponent = 
       // prevent scrolling under the modal
       document.body.style.marginRight = `${scrollbarSize()}px`;
       document.body.style.overflowY = 'hidden';
-
-      // focus the first element in the modal, after a short delay to allow the modal to be rendered
-      setTimeout(() => {
-        if (modalRef.current) {
-          const interactiveElement = modalRef.current.querySelectorAll(
-            'div[role="dialog"] input, div[role="dialog"] a, div[role="dialog"] button, div[role="dialog"] [tabindex]',
-          )[0] as HTMLElement | null;
-
-          if (interactiveElement) interactiveElement.focus();
-        }
-      }, 10);
     } else {
       if (appView) {
         appView.inert = false;
@@ -67,13 +56,26 @@ const Modal: React.FC<Props> = ({ open, onClose, children, AnimationComponent = 
 
       document.body.style.removeProperty('margin-right');
       document.body.style.removeProperty('overflow-y');
+    }
+  }, [open]);
 
+  useEffect(() => {
+    if (visible) {
+      // focus the first element in the modal
+      if (modalRef.current) {
+        const interactiveElement = modalRef.current.querySelectorAll(
+          'div[role="dialog"] input, div[role="dialog"] a, div[role="dialog"] button, div[role="dialog"] [tabindex]',
+        )[0] as HTMLElement | null;
+
+        if (interactiveElement) interactiveElement.focus();
+      }
+    } else {
       // restore last focussed element
       if (lastFocus.current) {
         lastFocus.current.focus();
       }
     }
-  }, [open]);
+  }, [visible]);
 
   if (!open && !visible) return null;
 
