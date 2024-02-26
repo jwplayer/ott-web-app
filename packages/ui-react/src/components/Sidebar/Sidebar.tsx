@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useRef, type ReactNode } from 'react';
+import React, { Fragment, useEffect, useRef, useState, type ReactNode } from 'react';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 import Close from '@jwp/ott-theme/assets/icons/close.svg?react';
@@ -19,13 +19,14 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, children }) => {
   const { t } = useTranslation('menu');
   const lastFocusedElementRef = useRef<HTMLElement | null>(null);
   const sidebarRef = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
 
   const htmlAttributes = { inert: !isOpen ? '' : undefined }; // inert is not yet officially supported in react. see: https://github.com/facebook/react/pull/24730
 
   useEffect(() => {
     if (isOpen) {
+      // Before inert on the body is applied in Layout, we need to set this ref
       lastFocusedElementRef.current = document.activeElement as HTMLElement;
-      sidebarRef.current?.querySelectorAll('a')[0]?.focus({ preventScroll: true });
 
       // When opened, adjust the margin-right to accommodate for the scrollbar width to prevent UI shifts in background
       document.body.style.marginRight = `${scrollbarSize()}px`;
@@ -36,7 +37,6 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, children }) => {
         sidebarRef.current.scrollTop = 0;
       }
     } else {
-      lastFocusedElementRef.current?.focus({ preventScroll: true });
       document.body.style.removeProperty('margin-right');
       document.body.style.removeProperty('overflow-y');
     }
@@ -54,6 +54,27 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, children }) => {
       document.removeEventListener('keydown', handleEscKey);
     };
   }, [isOpen, onClose]);
+
+  useEffect(() => {
+    const sidebarElement = sidebarRef.current;
+    const handleTransitionEnd = () => {
+      setVisible(isOpen);
+    };
+
+    sidebarElement?.addEventListener('transitionend', handleTransitionEnd);
+
+    return () => {
+      sidebarElement?.removeEventListener('transitionend', handleTransitionEnd);
+    };
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (visible) {
+      sidebarRef.current?.querySelectorAll('a')[0]?.focus({ preventScroll: true });
+    } else {
+      lastFocusedElementRef.current?.focus({ preventScroll: true });
+    }
+  }, [visible]);
 
   return (
     <Fragment>
