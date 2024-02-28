@@ -106,34 +106,29 @@
 
 .buttonBar {
   display: flex;
+  flex-wrap: wrap;
   justify-content: flex-start;
   align-items: center;
   width: 100%;
-  margin: 0 -6px;
 
   > button {
     justify-content: center;
-    margin: 6px;
-  }
-
-  @include responsive.mobile-and-tablet() {
-    flex-wrap: wrap;
-
-    > button {
+    
+    &:not(:last-child) {
+      margin-right: 12px;
+    }
+    
+    @include responsive.mobile-and-tablet() {
       flex: 1;
-      padding: 0 12px;
-
+      margin: 6px 6px 6px 0;
+      
       &:first-child {
         flex-basis: 100%;
+        margin: 0 0 6px 0;
       }
-    }
-  }
-
-  @include responsive.mobile-only() {
-    flex-wrap: wrap;
-
-    > button:first-child {
-      margin-bottom: 8px;
+      &:last-child {
+        margin-right: 0;
+      }
     }
   }
 }
