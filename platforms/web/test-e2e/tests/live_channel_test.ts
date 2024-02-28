@@ -148,7 +148,7 @@ Scenario('I can select an upcoming program on the same channel', async ({ I }) =
   I.dontSee('LIVE', locate('div').inside(videoDetailsLocator));
   I.see('On Channel 1', locate('div').inside(videoDetailsLocator));
 
-  I.seeElement(locate('button[disabled]').withText('Start watching'));
+  I.seeElement(locate('button[aria-disabled]').withText('Start watching'));
 
   I.seeElement(channel1LiveProgramLocator);
   await isLiveProgram(I, channel1LiveProgramLocator, 'channel 1');
