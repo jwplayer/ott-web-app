@@ -35,6 +35,7 @@ exports[`<Card> > should render anchor tag 1`] = `
           <div
             aria-label="card_lock"
             class="_tag_d75732 _lock_d75732"
+            role="img"
           >
             <svg
               aria-hidden="true"

@@ -122,7 +122,7 @@ function Card({
             {featured && !disabled && heading}
             <div className={styles.tags}>
               {isLocked && (
-                <div className={classNames(styles.tag, styles.lock)} aria-label={t('card_lock')}>
+                <div className={classNames(styles.tag, styles.lock)} aria-label={t('card_lock')} role="img">
                   <Icon icon={Lock} />
                 </div>
               )}
