@@ -17,7 +17,6 @@
     "geo_blocked_description": "We apologize, but this content is currently unavailable in your region.",
     "geo_blocked_title": "Content unavailable"
   },
-  "remove_from_favorites": "Remove from favorites",
   "season": "season",
   "season_number_filter_template": "Season {{seasonNumber}}",
   "series": "Series",

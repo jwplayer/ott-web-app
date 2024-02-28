@@ -40,7 +40,7 @@ const FavoriteButton: React.VFC<Props> = ({ item }) => {
     <>
       <Button
         label={t('video:favorite')}
-        aria-label={isFavorite ? t('video:remove_from_favorites') : t('video:add_to_favorites')}
+        aria-label={t('video:favorite')}
         startIcon={isFavorite ? <Icon icon={Favorite} /> : <Icon icon={FavoriteBorder} />}
         onClick={onFavoriteButtonClick}
         aria-pressed={isFavorite}
