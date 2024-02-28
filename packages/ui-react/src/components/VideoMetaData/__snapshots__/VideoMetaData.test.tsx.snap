@@ -2,26 +2,28 @@
 
 exports[`<VideoMetaData> > renders and matches snapshot 1`] = `
 <div>
-  <span>
-    2023
-  </span>
-  <span
-    aria-hidden="true"
-    class="_separator_1267df"
-  >
-    |
-  </span>
-  <span>
-    Comedy
-  </span>
-  <span
-    aria-hidden="true"
-    class="_separator_1267df"
-  >
-    |
-  </span>
-  <span>
-    something
-  </span>
+  <div>
+    <span>
+      2023
+    </span>
+    <span
+      aria-hidden="true"
+      class="_separator_1267df"
+    >
+      |
+    </span>
+    <span>
+      Comedy
+    </span>
+    <span
+      aria-hidden="true"
+      class="_separator_1267df"
+    >
+      |
+    </span>
+    <span>
+      something
+    </span>
+  </div>
 </div>
 `;

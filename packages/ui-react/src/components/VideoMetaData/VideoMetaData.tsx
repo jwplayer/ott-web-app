@@ -9,7 +9,7 @@ type Props = {
 
 const VideoMetaData: React.FC<Props> = ({ attributes, separator = '•' }: Props) => {
   return (
-    <>
+    <div>
       {attributes.map((value, index) => (
         <React.Fragment key={value}>
           <span>{value}</span>
@@ -20,7 +20,7 @@ const VideoMetaData: React.FC<Props> = ({ attributes, separator = '•' }: Props
           )}
         </React.Fragment>
       ))}
-    </>
+    </div>
   );
 };
 

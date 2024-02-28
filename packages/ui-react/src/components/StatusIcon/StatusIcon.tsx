@@ -17,7 +17,11 @@ export default function StatusIcon({ mediaStatus }: Props) {
   if (mediaStatus === MediaStatus.SCHEDULED || mediaStatus === MediaStatus.VOD) {
     return <Icon icon={Today} className={styles.icon} />;
   } else if (mediaStatus === MediaStatus.LIVE) {
-    return <Tag isLive>{t('live')}</Tag>;
+    return (
+      <Tag isLive className={styles.icon}>
+        {t('live')}
+      </Tag>
+    );
   }
 
   return null;
