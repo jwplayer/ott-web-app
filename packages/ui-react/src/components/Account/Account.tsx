@@ -313,7 +313,7 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
                     disabled={section.isBusy}
                     autoComplete="current-password"
                     rightControl={
-                      <IconButton aria-label={viewPassword ? t('account.hide_password') : t('account.view_password')} onClick={() => toggleViewPassword()}>
+                      <IconButton aria-label={t('account.view_password')} onClick={() => toggleViewPassword()} aria-pressed={viewPassword}>
                         <Icon icon={viewPassword ? Visibility : VisibilityOff} />
                       </IconButton>
                     }

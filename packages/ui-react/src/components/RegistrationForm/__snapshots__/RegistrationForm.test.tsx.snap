@@ -67,6 +67,7 @@ exports[`<RegistrationForm> > renders and matches snapshot 1`] = `
         >
           <div
             aria-label="registration.view_password"
+            aria-pressed="false"
             class="_iconButton_0fef65"
             role="button"
             tabindex="0"

@@ -42,7 +42,7 @@ const PasswordField: React.FC<Props> = ({ value, showToggleView = true, helperTe
       type={viewPassword ? 'text' : 'password'}
       rightControl={
         showToggleView ? (
-          <IconButton aria-label={viewPassword ? t('reset.hide_password') : t('reset.view_password')} onClick={() => toggleViewPassword()}>
+          <IconButton aria-label={t('reset.view_password')} onClick={() => toggleViewPassword()} aria-pressed={viewPassword}>
             <Icon icon={viewPassword ? Visibility : VisibilityOff} />
           </IconButton>
         ) : null

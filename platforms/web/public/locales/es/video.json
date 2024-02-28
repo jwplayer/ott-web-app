@@ -17,7 +17,6 @@
     "geo_blocked_description": "Pedimos disculpas, pero este contenido no está disponible actualmente en tu región.",
     "geo_blocked_title": "Contenido no disponible"
   },
-  "remove_from_favorites": "Eliminar de favoritos",
   "season": "temporada",
   "season_number_filter_template": "Temporada {{seasonNumber}}",
   "series_error": "Se produjo un error al solicitar la serie",

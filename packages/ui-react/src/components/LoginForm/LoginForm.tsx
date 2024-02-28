@@ -86,7 +86,7 @@ const LoginForm: React.FC<Props> = ({ onSubmit, onChange, socialLoginURLs, value
         name="password"
         type={viewPassword ? 'text' : 'password'}
         rightControl={
-          <IconButton aria-label={viewPassword ? t('login.hide_password') : t('login.view_password')} onClick={() => toggleViewPassword()}>
+          <IconButton aria-label={t('login.view_password')} onClick={() => toggleViewPassword()} aria-pressed={viewPassword}>
             <Icon icon={viewPassword ? Visibility : VisibilityOff} />
           </IconButton>
         }
