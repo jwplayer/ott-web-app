@@ -73,7 +73,7 @@ const PersonalDetailsForm: React.FC<Props> = ({
     // Dropdown  <- when there are more than 2 options
 
     if (values.length === 1 && values[0].value === '') {
-      return <TextField value={values[0].value} label={question} {...props} />;
+      return <TextField value={questionValues[key]} label={question} {...props} />;
     } else if (values.length === 1) {
       return <Checkbox checked={!!questionValues[key]} value={values[0].value} header={question} label={values[0].label} {...props} />;
     } else if (values.length === 2) {
