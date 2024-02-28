@@ -73,23 +73,6 @@ export default class JWPAccountService extends AccountService {
     this.storageService = storageService;
   }
 
-  private getCustomerExternalData = async () => {
-    const [favoritesData, historyData] = await Promise.all([InPlayer.Account.getFavorites(), await InPlayer.Account.getWatchHistory({})]);
-
-    const favorites = favoritesData.data?.collection?.map((favorite: FavoritesData) => {
-      return this.formatFavorite(favorite);
-    });
-
-    const history = historyData.data?.collection?.map((history: WatchHistory) => {
-      return this.formatHistoryItem(history);
-    });
-
-    return {
-      favorites,
-      history,
-    };
-  };
-
   private parseJson = (value: string, fallback = {}) => {
     try {
       return JSON.parse(value);
@@ -131,11 +114,6 @@ export default class JWPAccountService extends AccountService {
       lastUserIp: '',
     };
   };
-
-  private async getAccountMetadata(account: AccountData) {
-    const shelves = await this.getCustomerExternalData();
-    return { ...account.metadata, ...shelves };
-  }
 
   private formatAuth(auth: InPlayerAuthData): AuthData {
     const { access_token: jwt } = auth;
@@ -313,7 +291,6 @@ export default class JWPAccountService extends AccountService {
       });
 
       const user = this.formatAccount(data.account);
-      user.metadata = await this.getAccountMetadata(data.account);
 
       return {
         auth: this.formatAuth(data),
@@ -344,7 +321,6 @@ export default class JWPAccountService extends AccountService {
       });
 
       const user = this.formatAccount(data.account);
-      user.metadata = await this.getAccountMetadata(data.account);
 
       return {
         auth: this.formatAuth(data),
@@ -378,7 +354,6 @@ export default class JWPAccountService extends AccountService {
       const { data } = await InPlayer.Account.getAccountInfo();
 
       const user = this.formatAccount(data);
-      user.metadata = await this.getAccountMetadata(data);
 
       return {
         user,
@@ -475,12 +450,12 @@ export default class JWPAccountService extends AccountService {
   };
 
   updateWatchHistory: UpdateWatchHistory = async ({ history }) => {
-    const externalData = await this.getCustomerExternalData();
-    const savedHistory = externalData.history?.map((e) => e.mediaid) || [];
+    const current = await this.getWatchHistory();
+    const savedHistory = current.map((e) => e.mediaid) || [];
 
     await Promise.allSettled(
       history.map(({ mediaid, progress }) => {
-        if (!savedHistory.includes(mediaid) || externalData.history?.some((e) => e.mediaid == mediaid && e.progress != progress)) {
+        if (!savedHistory.includes(mediaid) || current.some((e) => e.mediaid == mediaid && e.progress != progress)) {
           return InPlayer.Account.updateWatchHistory(mediaid, progress);
         }
       }),
@@ -488,8 +463,8 @@ export default class JWPAccountService extends AccountService {
   };
 
   updateFavorites: UpdateFavorites = async ({ favorites }) => {
-    const externalData = await this.getCustomerExternalData();
-    const currentFavoriteIds = externalData?.favorites?.map((e) => e.mediaid) || [];
+    const current = await this.getFavorites();
+    const currentFavoriteIds = current.map((e) => e.mediaid) || [];
     const payloadFavoriteIds = favorites.map((e) => e.mediaid);
 
     // save new favorites
