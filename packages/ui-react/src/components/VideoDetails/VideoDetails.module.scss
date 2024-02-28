@@ -76,7 +76,6 @@
   letter-spacing: 0.15px;
 
   @include responsive.mobile-only() {
-    order: 2;
     font-size: 14px;
   }
 }

@@ -78,21 +78,6 @@ div.title {
   font-size: 16px;
   line-height: variables.$base-line-height;
   letter-spacing: 0.15px;
-
-  > :first-child {
-    display: inline-block;
-    margin-right: 8px;
-
-    @include responsive.mobile-only() {
-      margin: 2px 4px 0 0;
-      padding: 2px 4px;
-    }
-  }
-
-  @include responsive.mobile-and-small-tablet() {
-    margin-bottom: variables.$base-spacing;
-    font-size: 14px;
-  }
 }
 
 .secondaryMetadata {
