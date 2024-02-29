@@ -68,7 +68,8 @@ export default class JWPAccountService extends AccountService {
       canDeleteAccount: true,
       hasNotifications: true,
       hasSocialURLs: true,
-      watchListSizeLimit: MAX_WATCHLIST_ITEMS_COUNT.JWP,
+      // Limit of media_ids length passed to the /apps/watchlists endpoint
+      watchListSizeLimit: 48,
     });
 
     this.storageService = storageService;

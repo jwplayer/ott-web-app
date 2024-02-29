@@ -7,6 +7,7 @@ import type { Customer } from '../../types/account';
 import { getNamedModule } from '../modules/container';
 import { INTEGRATION_TYPE } from '../modules/types';
 import { logDev } from '../utils/common';
+import { MAX_WATCHLIST_ITEMS_COUNT } from '../constants';
 
 import ApiService from './ApiService';
 import StorageService from './StorageService';
@@ -22,7 +23,6 @@ const schema = array(
 @injectable()
 export default class WatchHistoryService {
   private PERSIST_KEY_WATCH_HISTORY = 'history';
-  private MAX_WATCH_HISTORY_COUNT = 48;
 
   private readonly apiService;
   private readonly storageService;
@@ -145,6 +145,10 @@ export default class WatchHistoryService {
     } as WatchHistoryItem;
   };
 
+  getMaxWatchHistoryCount = () => {
+    return this.accountService?.features?.watchListSizeLimit || MAX_WATCHLIST_ITEMS_COUNT;
+  };
+
   /**
    *  If we already have an element with continue watching state, we:
    *    1. Update the progress
@@ -153,13 +157,7 @@ export default class WatchHistoryService {
    *    1. Move the element to the continue watching list start
    *    2. If there are many elements in continue watching state we remove the oldest one
    */
-  saveItem = async (
-    item: PlaylistItem,
-    seriesItem: PlaylistItem | undefined,
-    videoProgress: number | null,
-    watchHistory: WatchHistoryItem[],
-    watchHistoryLimit: number,
-  ) => {
+  saveItem = async (item: PlaylistItem, seriesItem: PlaylistItem | undefined, videoProgress: number | null, watchHistory: WatchHistoryItem[]) => {
     if (!videoProgress) return;
 
     const watchHistoryItem = this.createWatchHistoryItem(seriesItem || item, item.mediaid, seriesItem?.mediaid, videoProgress);
@@ -169,7 +167,7 @@ export default class WatchHistoryService {
     });
 
     updatedHistory.unshift(watchHistoryItem);
-    updatedHistory.splice(watchHistoryLimit);
+    updatedHistory.splice(this.getMaxWatchHistoryCount());
 
     return updatedHistory;
   };

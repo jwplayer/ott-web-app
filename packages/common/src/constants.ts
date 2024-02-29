@@ -23,12 +23,6 @@ export const VideoProgressMinMax = {
 
 export const PLAYLIST_LIMIT = 25;
 
-export const MAX_WATCHLIST_ITEMS_COUNT = {
-  CLEENG: 38, // The 'externalData' attribute of Cleeng can contain max 4000 characters
-  JWP: 50, // Limit of media_ids length passed to the /apps/watchlists endpoint
-  DEFAULT: 38, // Local storage
-};
-
 export const ADYEN_TEST_CLIENT_KEY = 'test_I4OFGUUCEVB5TI222AS3N2Y2LY6PJM3K';
 
 export const ADYEN_LIVE_CLIENT_KEY = 'live_BQDOFBYTGZB3XKF62GBYSLPUJ4YW2TPL';
@@ -65,6 +59,8 @@ export const STALE_TIME = 60 * 1000 * 20;
 
 export const CARD_ASPECT_RATIOS = ['1:1', '2:1', '2:3', '4:3', '5:3', '16:9', '9:13', '9:16'] as const;
 
+export const MAX_WATCHLIST_ITEMS_COUNT = 48; // Default value
+
 export const DEFAULT_FEATURES = {
   canUpdateEmail: false,
   canSupportEmptyFullName: false,
@@ -76,7 +72,7 @@ export const DEFAULT_FEATURES = {
   canShowReceipts: false,
   hasSocialURLs: false,
   hasNotifications: false,
-  watchListSizeLimit: MAX_WATCHLIST_ITEMS_COUNT.DEFAULT,
+  watchListSizeLimit: MAX_WATCHLIST_ITEMS_COUNT,
 };
 
 export const simultaneousLoginWarningKey = 'simultaneous_logins';
