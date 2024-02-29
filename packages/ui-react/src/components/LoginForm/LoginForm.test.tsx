@@ -116,7 +116,7 @@ describe('<LoginForm>', () => {
 
     await waitForWithFakeTimers();
 
-    expect(getByRole('button', { name: 'login.sign_in' })).toBeDisabled();
+    expect(getByRole('button', { name: 'login.sign_in' })).toHaveAttribute('aria-disabled', 'true');
   });
 
   test('calls the onSubmit callback when the form gets submitted', async () => {
