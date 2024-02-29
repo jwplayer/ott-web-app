@@ -1,0 +1,9 @@
+ignores: [
+  # Installed by eslint-config-jwp
+  '@typescript-eslint/parser',
+  '@typescript-eslint/eslint-plugin',
+  'eslint-plugin-import',
+
+  # Installed by inplayer SDK (only used for typings)
+  'axios'
+]

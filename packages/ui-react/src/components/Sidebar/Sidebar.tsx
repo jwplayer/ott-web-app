@@ -1,0 +1,61 @@
+import React, { Fragment, useEffect, useRef, type ReactNode } from 'react';
+import classNames from 'classnames';
+import { useTranslation } from 'react-i18next';
+import Close from '@jwp/ott-theme/assets/icons/close.svg?react';
+
+import IconButton from '../IconButton/IconButton';
+import Icon from '../Icon/Icon';
+
+import styles from './Sidebar.module.scss';
+
+type SidebarProps = {
+  isOpen: boolean;
+  onClose: () => void;
+  children?: ReactNode;
+};
+
+const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, children }) => {
+  const { t } = useTranslation('menu');
+  const lastFocusedElementRef = useRef<HTMLElement | null>(null);
+  const sidebarRef = useRef<HTMLDivElement>(null);
+  const htmlAttributes = { inert: !isOpen ? '' : undefined }; // inert is not yet officially supported in react. see: https://github.com/facebook/react/pull/24730
+
+  useEffect(() => {
+    if (isOpen) {
+      lastFocusedElementRef.current = document.activeElement as HTMLElement;
+      sidebarRef.current?.querySelectorAll('a')[0]?.focus({ preventScroll: true });
+    } else {
+      lastFocusedElementRef.current?.focus({ preventScroll: true });
+    }
+  }, [isOpen]);
+
+  return (
+    <Fragment>
+      <div
+        className={classNames(styles.backdrop, {
+          [styles.visible]: isOpen,
+        })}
+        onClick={onClose}
+      />
+      <div
+        ref={sidebarRef}
+        className={classNames(styles.sidebar, {
+          [styles.open]: isOpen,
+        })}
+        id="sidebar"
+        {...htmlAttributes}
+      >
+        <div className={styles.heading}>
+          <IconButton onClick={onClose} aria-label={t('close_menu')}>
+            <Icon icon={Close} />
+          </IconButton>
+        </div>
+        <nav className={styles.group} onClick={onClose}>
+          {children}
+        </nav>
+      </div>
+    </Fragment>
+  );
+};
+
+export default Sidebar;

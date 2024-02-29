@@ -8,47 +8,47 @@
         "field_type": "select",
         "placeholder": "Select a genre",
         "options": [
-          {"value": "Action", "label": "Action"},
-          {"value": "Thriller", "label": "Thriller"},
-          {"value": "Horror", "label": "Horror"},
-          {"value": "Drama", "label": "Drama"},
-          {"value": "Romance", "label": "Romance"},
-          {"value": "Western", "label": "Western"},
-          {"value": "Comedy", "label": "Comedy"},
-          {"value": "Science fiction", "label": "Science fiction"},
-          {"value": "Adventure", "label": "Adventure"},
-          {"value": "Music", "label": "Music"},
-          {"value": "Animation", "label": "Animation"},
-          {"value": "Crime film", "label": "Crime film"},
-          {"value": "History", "label": "History"},
-          {"value": "Musical genre", "label": "Musical genre"},
-          {"value": "Narrative", "label": "Narrative"},
-          {"value": "Documentary", "label": "Documentary"},
-          {"value": "Mystery", "label": "Mystery"},
-          {"value": "Noir", "label": "Noir"},
-          {"value": "Fantasy", "label": "Fantasy"},
-          {"value": "Romantic comedy", "label": "Romantic comedy"},
-          {"value": "Musical", "label": "Musical"},
-          {"value": "War", "label": "War"},
-          {"value": "Television", "label": "Television"},
-          {"value": "Fiction", "label": "Fiction"},
-          {"value": "Historical drama", "label": "Historical drama"},
-          {"value": "Sports", "label": "Sports"},
-          {"value": "Epic", "label": "Epic"},
-          {"value": "Thriller", "label": "Thriller"},
-          {"value": "Disaster", "label": "Disaster"},
-          {"value": "Martial Arts", "label": "Martial Arts"},
-          {"value": "Hindi cinema", "label": "Hindi cinema"},
-          {"value": "Satire", "label": "Satire"},
-          {"value": "Experimental", "label": "Experimental"},
-          {"value": "Slasher", "label": "Slasher"},
-          {"value": "Short", "label": "Short"},
-          {"value": "Biographical", "label": "Biographical"},
-          {"value": "Animated film", "label": "Animated film"},
-          {"value": "Narrative", "label": "Narrative"},
-          {"value": "Educational", "label": "Educational"},
-          {"value": "Cult film", "label": "Cult film"},
-          {"value": "Action/Adventure", "label": "Action/Adventure"}
+          { "value": "Action", "label": "Action" },
+          { "value": "Thriller", "label": "Thriller" },
+          { "value": "Horror", "label": "Horror" },
+          { "value": "Drama", "label": "Drama" },
+          { "value": "Romance", "label": "Romance" },
+          { "value": "Western", "label": "Western" },
+          { "value": "Comedy", "label": "Comedy" },
+          { "value": "Science fiction", "label": "Science fiction" },
+          { "value": "Adventure", "label": "Adventure" },
+          { "value": "Music", "label": "Music" },
+          { "value": "Animation", "label": "Animation" },
+          { "value": "Crime film", "label": "Crime film" },
+          { "value": "History", "label": "History" },
+          { "value": "Musical genre", "label": "Musical genre" },
+          { "value": "Narrative", "label": "Narrative" },
+          { "value": "Documentary", "label": "Documentary" },
+          { "value": "Mystery", "label": "Mystery" },
+          { "value": "Noir", "label": "Noir" },
+          { "value": "Fantasy", "label": "Fantasy" },
+          { "value": "Romantic comedy", "label": "Romantic comedy" },
+          { "value": "Musical", "label": "Musical" },
+          { "value": "War", "label": "War" },
+          { "value": "Television", "label": "Television" },
+          { "value": "Fiction", "label": "Fiction" },
+          { "value": "Historical drama", "label": "Historical drama" },
+          { "value": "Sports", "label": "Sports" },
+          { "value": "Epic", "label": "Epic" },
+          { "value": "Thriller", "label": "Thriller" },
+          { "value": "Disaster", "label": "Disaster" },
+          { "value": "Martial Arts", "label": "Martial Arts" },
+          { "value": "Hindi cinema", "label": "Hindi cinema" },
+          { "value": "Satire", "label": "Satire" },
+          { "value": "Experimental", "label": "Experimental" },
+          { "value": "Slasher", "label": "Slasher" },
+          { "value": "Short", "label": "Short" },
+          { "value": "Biographical", "label": "Biographical" },
+          { "value": "Animated film", "label": "Animated film" },
+          { "value": "Narrative", "label": "Narrative" },
+          { "value": "Educational", "label": "Educational" },
+          { "value": "Cult film", "label": "Cult film" },
+          { "value": "Action/Adventure", "label": "Action/Adventure" }
         ]
       }
     },
@@ -79,7 +79,7 @@
         ]
       }
     },
-    "trailer_id": {
+    "trailerId": {
       "param": "trailerId",
       "label": "Trailer",
       "description": "If this item has a trailer, select it here",
@@ -87,7 +87,7 @@
         "field_type": "media_select"
       }
     },
-    "product_ids": {
+    "productIds": {
       "param": "productIds",
       "label": "Product IDs",
       "description": "Enter a CSV list of subscription assets that allow access to this content",
@@ -96,7 +96,7 @@
         "placeholder": "CSV subscription IDs"
       }
     },
-    "live_status": {
+    "liveStatus": {
       "param": "VCH.EventState",
       "label": "Status",
       "description": "Do Not Modify - This is the state of the live event (populated automatically)",
@@ -105,7 +105,7 @@
         "placeholder": "This value will be populated automatically"
       }
     },
-    "live_start_time": {
+    "liveStartTime": {
       "param": "VCH.ScheduledStart",
       "label": "Start Time",
       "description": "Do Not Modify - This is the schedules start time of the live event (populated automatically)",
@@ -118,66 +118,20 @@
   "sections": {
     "general": {
       "title": "General",
-      "fields": [
-        "genre",
-        "rating",
-        "trailer_id"
-      ]
+      "fields": ["genre", "rating", "trailerId"]
     },
     "access": {
       "title": "Access",
       "fields": [
         {
           "param": "free",
-          "label": "Free to Watch?",
+          "label": "Free",
           "description": "If this item can be watched for free and doesn't require a login or subscription, you can set this value to true. Otherwise, if you leave this setting false, the application level subscription and authentication level rules will apply.",
           "details": {
             "field_type": "toggle"
           }
         },
-        "product_ids"
-      ]
-    },
-    "live_custom_params": {
-      "title": "Live Params",
-      "fields": [
-        {
-          "param": "VCH.ID",
-          "label": "VCH ID",
-          "description": "Do Not Modify - This is the ID of the live event (populated automatically)",
-          "details": {
-            "field_type": "input",
-            "placeholder": "This value will be populated automatically"
-          }
-        },
-        {
-          "param": "VCH.M3U8",
-          "label": "VCH M3U8",
-          "description": "Do Not Modify - Live event data (populated automatically)",
-          "details": {
-            "field_type": "input",
-            "placeholder": "This value will be populated automatically"
-          }
-        },
-        {
-          "param": "VCH.MPD",
-          "label": "VCH MPD",
-          "description": "Do Not Modify - Live event data (populated automatically)",
-          "details": {
-            "field_type": "input",
-            "placeholder": "This value will be populated automatically"
-          }
-        },
-        {
-          "param": "VCH.SmoothStream",
-          "label": "VCH SmoothStream",
-          "description": "Do Not Modify - Live event data (populated automatically)",
-
-          "details": {
-            "field_type": "input",
-            "placeholder": "This value will be populated automatically"
-          }
-        }
+        "productIds"
       ]
     }
   },
@@ -189,10 +143,7 @@
       "hosting_type": "hosted",
       "is_active": true,
       "is_series": false,
-      "sections": [
-        "general",
-        "access"
-      ]
+      "sections": ["general", "access"]
     },
     {
       "name": "series",
@@ -201,9 +152,7 @@
       "hosting_type": "ott_data",
       "is_active": true,
       "is_series": true,
-      "sections": [
-        "general"
-      ]
+      "sections": ["general"]
     },
     {
       "name": "episode",
@@ -212,30 +161,52 @@
       "hosting_type": "hosted",
       "is_active": true,
       "is_series": false,
-      "sections": [
-        "general",
-        "access"
-      ]
+      "sections": ["access"]
     },
     {
-      "name": "channel",
+      "name": "liveChannel",
       "description": "Live Channel Schema",
       "display_name": "Live Channel",
-      "hosting_type": "external",
+      "hosting_type": "live_bcl",
       "is_active": true,
       "is_series": false,
       "sections": [
         {
           "title": "Status",
+          "fields": ["liveStatus", "liveStartTime"]
+        },
+        {
+          "title": "General",
           "fields": [
-            "live_status",
-            "live_start_time"
+            {
+              "param": "liveChannelsId",
+              "label": "Playlist",
+              "description": "Playlist ID for the dynamic playlist containing your live channels ",
+              "required": true,
+              "details": {
+                "field_type": "playlist_multiselect"
+              }
+            }
           ]
         },
         "access",
         {
-          "title": "Schedule",
+          "title": "Schedule (EPG)",
           "fields": [
+            {
+              "param": "scheduleType",
+              "label": "Schedule Type",
+              "description": "EPG schedule type",
+              "details": {
+                "field_type": "select",
+                "placeholder": "Select a schedule type",
+                "default": "jwp",
+                "options": [
+                  { "value": "jwp", "label": "Default" },
+                  { "value": "viewnexa", "label": "ViewNexa" }
+                ]
+              }
+            },
             {
               "param": "scheduleUrl",
               "label": "EPG Schedule URL",
@@ -246,30 +217,29 @@
             },
             {
               "param": "scheduleDemo",
-              "label": "Use EPG Demo",
+              "label": "Demo Mode",
               "description": "Only enable this for non-production (demo) sites where you want the EPG schedule to loop",
               "details": {
                 "field_type": "toggle"
               }
             }
           ]
-        },
-        "live_custom_params"
+        }
       ]
     },
     {
-      "name": "event",
+      "name": "liveEvent",
       "description": "Live Event Schema",
       "display_name": "Live Event",
-      "hosting_type": "external",
+      "hosting_type": "live_bcl",
       "is_active": true,
       "is_series": false,
       "sections": [
         {
           "title": "Status",
           "fields": [
-            "live_status",
-            "live_start_time",
+            "liveStatus",
+            "liveStartTime",
             {
               "param": "VCH.ScheduledEnd",
               "label": "End Time",
@@ -281,8 +251,7 @@
             }
           ]
         },
-        "access",
-        "live_custom_params"
+        "access"
       ]
     },
     {
@@ -298,8 +267,8 @@
           "fields": [
             {
               "param": "free",
-              "label": "Free to Watch?",
-              "description": "Trailers can usually be watched for free, even if you have subscription based apps. If that is the case, set this value to true. Otherwise, set this value to false if you want to restrict viewing this trailer to only authenticated / paying customers.",
+              "label": "Free",
+              "description": "If this item can be watched for free and doesn't require a login or subscription, you can set this value to true. Otherwise, if you leave this setting false, the application level subscription and authentication level rules will apply.",
               "details": {
                 "field_type": "toggle",
                 "default": true
@@ -327,24 +296,6 @@
               "required": true,
               "details": {
                 "field_type": "playlist_multiselect"
-              }
-            },
-            {
-              "param": "logo",
-              "label": "Logo",
-              "description": "Enter the absolute path to a logo to display for this page",
-              "details": {
-                "field_type": "input",
-                "placeholder": "Enter the url of a logo"
-              }
-            },
-            {
-              "param": "backgroundImage",
-              "label": "Background Image",
-              "description": "Enter the absolute path for a background image to display for this page",
-              "details": {
-                "field_type": "input",
-                "placeholder": "Enter the url of an image for the background"
               }
             }
           ]

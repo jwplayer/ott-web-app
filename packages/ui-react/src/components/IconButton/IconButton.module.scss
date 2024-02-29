@@ -1,0 +1,22 @@
+@use '@jwp/ott-ui-react/src/styles/variables';
+@use '@jwp/ott-ui-react/src/styles/theme';
+
+.iconButton {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 4px;
+  outline: var(--highlight-color, white) none;
+
+  cursor: pointer;
+  opacity: 0.9;
+  transition: transform 0.1s ease;
+
+  &:hover,
+  &:focus {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+}

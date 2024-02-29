@@ -1,0 +1,417 @@
+{
+  "feedid": "KKOhckQL",
+  "title": "Favorites",
+  "playlist": [
+    {
+      "title": "SVOD 002: Caminandes 1 llama drama",
+      "mediaid": "1TJAvj2S",
+      "link": "https://cdn.jwplayer.com/previews/1TJAvj2S",
+      "image": "https://cdn.jwplayer.com/v2/media/1TJAvj2S/poster.jpg?width=720",
+      "images": [
+        {
+          "src": "https://cdn.jwplayer.com/v2/media/1TJAvj2S/poster.jpg?width=320",
+          "width": 320,
+          "type": "image/jpeg"
+        },
+        {
+          "src": "https://cdn.jwplayer.com/v2/media/1TJAvj2S/poster.jpg?width=480",
+          "width": 480,
+          "type": "image/jpeg"
+        },
+        {
+          "src": "https://cdn.jwplayer.com/v2/media/1TJAvj2S/poster.jpg?width=640",
+          "width": 640,
+          "type": "image/jpeg"
+        },
+        {
+          "src": "https://cdn.jwplayer.com/v2/media/1TJAvj2S/poster.jpg?width=720",
+          "width": 720,
+          "type": "image/jpeg"
+        },
+        {
+          "src": "https://cdn.jwplayer.com/v2/media/1TJAvj2S/poster.jpg?width=1280",
+          "width": 1280,
+          "type": "image/jpeg"
+        },
+        {
+          "src": "https://cdn.jwplayer.com/v2/media/1TJAvj2S/poster.jpg?width=1920",
+          "width": 1920,
+          "type": "image/jpeg"
+        }
+      ],
+      "feedid": "bdH6HTUi",
+      "duration": 90,
+      "pubdate": 1703166863,
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur nulla ligula, sollicitudin id felis eu, consequat aliquam ante. Suspendisse lacinia felis a quam laoreet, non tristique quam efficitur. Morbi ultrices, nibh et fringilla aliquet, ligula tortor porta libero, ut elementum nibh nisl vel odio. Praesent ornare luctus arcu nec condimentum. Vestibulum fringilla egestas neque, feugiat sollicitudin eros aliquet non. In enim augue, sodales eget dignissim eget, sagittis sit amet eros. Nulla tristique nisi iaculis dui egestas mollis. Aenean libero odio, vestibulum quis sodales pulvinar, consequat ut nisl.",
+      "tags": "svod",
+      "recommendations": "https://cdn.jwplayer.com/v2/playlists/bdH6HTUi?related_media_id=1TJAvj2S",
+      "sources": [
+        {
+          "file": "https://cdn.jwplayer.com/manifests/1TJAvj2S.m3u8",
+          "type": "application/vnd.apple.mpegurl"
+        },
+        {
+          "file": "https://cdn.jwplayer.com/videos/1TJAvj2S-xAdPQ1TN.m4a",
+          "type": "audio/mp4",
+          "label": "AAC Audio",
+          "bitrate": 113513,
+          "filesize": 1277026
+        },
+        {
+          "file": "https://cdn.jwplayer.com/videos/1TJAvj2S-1Yfbe0HO.mp4",
+          "type": "video/mp4",
+          "height": 180,
+          "width": 320,
+          "label": "180p",
+          "bitrate": 241872,
+          "filesize": 2721071,
+          "framerate": 24
+        },
+        {
+          "file": "https://cdn.jwplayer.com/videos/1TJAvj2S-JjxC7ylo.mp4",
+          "type": "video/mp4",
+          "height": 270,
+          "width": 480,
+          "label": "270p",
+          "bitrate": 356443,
+          "filesize": 4009992,
+          "framerate": 24
+        },
+        {
+          "file": "https://cdn.jwplayer.com/videos/1TJAvj2S-kqEB96Md.mp4",
+          "type": "video/mp4",
+          "height": 360,
+          "width": 640,
+          "label": "360p",
+          "bitrate": 401068,
+          "filesize": 4512018,
+          "framerate": 24
+        },
+        {
+          "file": "https://cdn.jwplayer.com/videos/1TJAvj2S-MskLmv79.mp4",
+          "type": "video/mp4",
+          "height": 406,
+          "width": 720,
+          "label": "406p",
+          "bitrate": 466271,
+          "filesize": 5245549,
+          "framerate": 24
+        },
+        {
+          "file": "https://cdn.jwplayer.com/videos/1TJAvj2S-MCyoQl96.mp4",
+          "type": "video/mp4",
+          "height": 540,
+          "width": 960,
+          "label": "540p",
+          "bitrate": 713837,
+          "filesize": 8030667,
+          "framerate": 24
+        },
+        {
+          "file": "https://cdn.jwplayer.com/videos/1TJAvj2S-yYzmiSbt.mp4",
+          "type": "video/mp4",
+          "height": 720,
+          "width": 1280,
+          "label": "720p",
+          "bitrate": 1088928,
+          "filesize": 12250450,
+          "framerate": 24
+        },
+        {
+          "file": "https://cdn.jwplayer.com/videos/1TJAvj2S-H4t30RCN.mp4",
+          "type": "video/mp4",
+          "height": 1080,
+          "width": 1920,
+          "label": "1080p",
+          "bitrate": 2391552,
+          "filesize": 26904961,
+          "framerate": 24
+        }
+      ],
+      "tracks": [
+        {
+          "file": "https://cdn.jwplayer.com/strips/1TJAvj2S-120.vtt",
+          "kind": "thumbnails"
+        }
+      ],
+      "variations": {},
+      "cardImage": "https://cdn.jwplayer.com/v2/media/1TJAvj2S/images/card.webp?poster_fallback=1",
+      "channelLogoImage": "https://cdn.jwplayer.com/v2/media/1TJAvj2S/images/channel_logo.webp?poster_fallback=1",
+      "backgroundImage": "https://cdn.jwplayer.com/v2/media/1TJAvj2S/images/background.webp?poster_fallback=1"
+    },
+    {
+      "title": "SVOD 003: Caminandes 2 gran dillama",
+      "mediaid": "rnibIt0n",
+      "link": "https://cdn.jwplayer.com/previews/rnibIt0n",
+      "image": "https://cdn.jwplayer.com/v2/media/rnibIt0n/poster.jpg?width=720",
+      "images": [
+        {
+          "src": "https://cdn.jwplayer.com/v2/media/rnibIt0n/poster.jpg?width=320",
+          "width": 320,
+          "type": "image/jpeg"
+        },
+        {
+          "src": "https://cdn.jwplayer.com/v2/media/rnibIt0n/poster.jpg?width=480",
+          "width": 480,
+          "type": "image/jpeg"
+        },
+        {
+          "src": "https://cdn.jwplayer.com/v2/media/rnibIt0n/poster.jpg?width=640",
+          "width": 640,
+          "type": "image/jpeg"
+        },
+        {
+          "src": "https://cdn.jwplayer.com/v2/media/rnibIt0n/poster.jpg?width=720",
+          "width": 720,
+          "type": "image/jpeg"
+        },
+        {
+          "src": "https://cdn.jwplayer.com/v2/media/rnibIt0n/poster.jpg?width=1280",
+          "width": 1280,
+          "type": "image/jpeg"
+        },
+        {
+          "src": "https://cdn.jwplayer.com/v2/media/rnibIt0n/poster.jpg?width=1920",
+          "width": 1920,
+          "type": "image/jpeg"
+        }
+      ],
+      "feedid": "bdH6HTUi",
+      "duration": 146,
+      "pubdate": 1703166863,
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur nulla ligula, sollicitudin id felis eu, consequat aliquam ante. Suspendisse lacinia felis a quam laoreet, non tristique quam efficitur. Morbi ultrices, nibh et fringilla aliquet, ligula tortor porta libero, ut elementum nibh nisl vel odio. Praesent ornare luctus arcu nec condimentum. Vestibulum fringilla egestas neque, feugiat sollicitudin eros aliquet non. In enim augue, sodales eget dignissim eget, sagittis sit amet eros. Nulla tristique nisi iaculis dui egestas mollis. Aenean libero odio, vestibulum quis sodales pulvinar, consequat ut nisl.",
+      "tags": "svod",
+      "recommendations": "https://cdn.jwplayer.com/v2/playlists/bdH6HTUi?related_media_id=rnibIt0n",
+      "sources": [
+        {
+          "file": "https://cdn.jwplayer.com/manifests/rnibIt0n.m3u8",
+          "type": "application/vnd.apple.mpegurl"
+        },
+        {
+          "file": "https://cdn.jwplayer.com/videos/rnibIt0n-xAdPQ1TN.m4a",
+          "type": "audio/mp4",
+          "label": "AAC Audio",
+          "bitrate": 113503,
+          "filesize": 2071433
+        },
+        {
+          "file": "https://cdn.jwplayer.com/videos/rnibIt0n-1Yfbe0HO.mp4",
+          "type": "video/mp4",
+          "height": 180,
+          "width": 320,
+          "label": "180p",
+          "bitrate": 342175,
+          "filesize": 6244705,
+          "framerate": 24
+        },
+        {
+          "file": "https://cdn.jwplayer.com/videos/rnibIt0n-JjxC7ylo.mp4",
+          "type": "video/mp4",
+          "height": 270,
+          "width": 480,
+          "label": "270p",
+          "bitrate": 501738,
+          "filesize": 9156729,
+          "framerate": 24
+        },
+        {
+          "file": "https://cdn.jwplayer.com/videos/rnibIt0n-kqEB96Md.mp4",
+          "type": "video/mp4",
+          "height": 360,
+          "width": 640,
+          "label": "360p",
+          "bitrate": 579321,
+          "filesize": 10572609,
+          "framerate": 24
+        },
+        {
+          "file": "https://cdn.jwplayer.com/videos/rnibIt0n-MskLmv79.mp4",
+          "type": "video/mp4",
+          "height": 406,
+          "width": 720,
+          "label": "406p",
+          "bitrate": 673083,
+          "filesize": 12283769,
+          "framerate": 24
+        },
+        {
+          "file": "https://cdn.jwplayer.com/videos/rnibIt0n-MCyoQl96.mp4",
+          "type": "video/mp4",
+          "height": 540,
+          "width": 960,
+          "label": "540p",
+          "bitrate": 984717,
+          "filesize": 17971095,
+          "framerate": 24
+        },
+        {
+          "file": "https://cdn.jwplayer.com/videos/rnibIt0n-yYzmiSbt.mp4",
+          "type": "video/mp4",
+          "height": 720,
+          "width": 1280,
+          "label": "720p",
+          "bitrate": 1527270,
+          "filesize": 27872694,
+          "framerate": 24
+        },
+        {
+          "file": "https://cdn.jwplayer.com/videos/rnibIt0n-H4t30RCN.mp4",
+          "type": "video/mp4",
+          "height": 1080,
+          "width": 1920,
+          "label": "1080p",
+          "bitrate": 3309652,
+          "filesize": 60401155,
+          "framerate": 24
+        }
+      ],
+      "tracks": [
+        {
+          "file": "https://cdn.jwplayer.com/strips/rnibIt0n-120.vtt",
+          "kind": "thumbnails"
+        }
+      ],
+      "variations": {},
+      "genre": "Animation",
+      "cardImage": "https://cdn.jwplayer.com/v2/media/rnibIt0n/images/card.webp?poster_fallback=1",
+      "channelLogoImage": "https://cdn.jwplayer.com/v2/media/rnibIt0n/images/channel_logo.webp?poster_fallback=1",
+      "backgroundImage": "https://cdn.jwplayer.com/v2/media/rnibIt0n/images/background.webp?poster_fallback=1"
+    },
+    {
+      "title": "SVOD 001: Tears of Steel",
+      "mediaid": "MaCvdQdE",
+      "link": "https://cdn.jwplayer.com/previews/MaCvdQdE",
+      "image": "https://cdn.jwplayer.com/v2/media/MaCvdQdE/poster.jpg?width=720",
+      "images": [
+        {
+          "src": "https://cdn.jwplayer.com/v2/media/MaCvdQdE/poster.jpg?width=320",
+          "width": 320,
+          "type": "image/jpeg"
+        },
+        {
+          "src": "https://cdn.jwplayer.com/v2/media/MaCvdQdE/poster.jpg?width=480",
+          "width": 480,
+          "type": "image/jpeg"
+        },
+        {
+          "src": "https://cdn.jwplayer.com/v2/media/MaCvdQdE/poster.jpg?width=640",
+          "width": 640,
+          "type": "image/jpeg"
+        },
+        {
+          "src": "https://cdn.jwplayer.com/v2/media/MaCvdQdE/poster.jpg?width=720",
+          "width": 720,
+          "type": "image/jpeg"
+        },
+        {
+          "src": "https://cdn.jwplayer.com/v2/media/MaCvdQdE/poster.jpg?width=1280",
+          "width": 1280,
+          "type": "image/jpeg"
+        },
+        {
+          "src": "https://cdn.jwplayer.com/v2/media/MaCvdQdE/poster.jpg?width=1920",
+          "width": 1920,
+          "type": "image/jpeg"
+        }
+      ],
+      "feedid": "E2uaFiUM",
+      "duration": 734,
+      "pubdate": 1703166863,
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur nulla ligula, sollicitudin id felis eu, consequat aliquam ante. Suspendisse lacinia felis a quam laoreet, non tristique quam efficitur. Morbi ultrices, nibh et fringilla aliquet, ligula tortor porta libero, ut elementum nibh nisl vel odio. Praesent ornare luctus arcu nec condimentum. Vestibulum fringilla egestas neque, feugiat sollicitudin eros aliquet non. In enim augue, sodales eget dignissim eget, sagittis sit amet eros. Nulla tristique nisi iaculis dui egestas mollis. Aenean libero odio, vestibulum quis sodales pulvinar, consequat ut nisl.",
+      "tags": "svod",
+      "sources": [
+        {
+          "file": "https://cdn.jwplayer.com/manifests/MaCvdQdE.m3u8",
+          "type": "application/vnd.apple.mpegurl"
+        },
+        {
+          "file": "https://cdn.jwplayer.com/videos/MaCvdQdE-xAdPQ1TN.m4a",
+          "type": "audio/mp4",
+          "label": "AAC Audio",
+          "bitrate": 113413,
+          "filesize": 10405724
+        },
+        {
+          "file": "https://cdn.jwplayer.com/videos/MaCvdQdE-1Yfbe0HO.mp4",
+          "type": "video/mp4",
+          "height": 134,
+          "width": 320,
+          "label": "180p",
+          "bitrate": 388986,
+          "filesize": 35689542,
+          "framerate": 24
+        },
+        {
+          "file": "https://cdn.jwplayer.com/videos/MaCvdQdE-JjxC7ylo.mp4",
+          "type": "video/mp4",
+          "height": 200,
+          "width": 480,
+          "label": "270p",
+          "bitrate": 575378,
+          "filesize": 52790944,
+          "framerate": 24
+        },
+        {
+          "file": "https://cdn.jwplayer.com/videos/MaCvdQdE-kqEB96Md.mp4",
+          "type": "video/mp4",
+          "height": 266,
+          "width": 640,
+          "label": "360p",
+          "bitrate": 617338,
+          "filesize": 56640812,
+          "framerate": 24
+        },
+        {
+          "file": "https://cdn.jwplayer.com/videos/MaCvdQdE-MskLmv79.mp4",
+          "type": "video/mp4",
+          "height": 300,
+          "width": 720,
+          "label": "406p",
+          "bitrate": 715724,
+          "filesize": 65667691,
+          "framerate": 24
+        },
+        {
+          "file": "https://cdn.jwplayer.com/videos/MaCvdQdE-MCyoQl96.mp4",
+          "type": "video/mp4",
+          "height": 400,
+          "width": 960,
+          "label": "540p",
+          "bitrate": 1029707,
+          "filesize": 94475629,
+          "framerate": 24
+        },
+        {
+          "file": "https://cdn.jwplayer.com/videos/MaCvdQdE-yYzmiSbt.mp4",
+          "type": "video/mp4",
+          "height": 534,
+          "width": 1280,
+          "label": "720p",
+          "bitrate": 1570612,
+          "filesize": 144103685,
+          "framerate": 24
+        },
+        {
+          "file": "https://cdn.jwplayer.com/videos/MaCvdQdE-H4t30RCN.mp4",
+          "type": "video/mp4",
+          "height": 800,
+          "width": 1920,
+          "label": "1080p",
+          "bitrate": 3081227,
+          "filesize": 282702650,
+          "framerate": 24
+        }
+      ],
+      "tracks": [
+        {
+          "file": "https://cdn.jwplayer.com/strips/MaCvdQdE-120.vtt",
+          "kind": "thumbnails"
+        }
+      ],
+      "variations": {},
+      "cardImage": "https://cdn.jwplayer.com/v2/media/MaCvdQdE/images/card.webp?poster_fallback=1",
+      "channelLogoImage": "https://cdn.jwplayer.com/v2/media/MaCvdQdE/images/channel_logo.webp?poster_fallback=1",
+      "backgroundImage": "https://cdn.jwplayer.com/v2/media/MaCvdQdE/images/background.webp?poster_fallback=1"
+    }
+  ]
+}

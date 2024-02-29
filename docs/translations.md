@@ -43,7 +43,7 @@ Instead, the language must first be added to the "defined languages" list. This 
 - As OTT Web App we want to be able to include many languages without enabling them all by default
 - For each language, the display name must be defined, which is shown in the language selection menu
 
-Navigate to the `./src/i18n/config.ts` file and find the `DEFINED_LANGUAGES` constant. Each entry specifies the 
+Navigate to the [../platforms/web/src/i18n/config.ts](../platforms/web/src/i18n/config.ts) file and find the `DEFINED_LANGUAGES` constant. Each entry specifies the 
 language code (or LCID string) and display name. 
 
 > If you have added multiple languages using the LCID string identifier, each much be added to the list of defined 

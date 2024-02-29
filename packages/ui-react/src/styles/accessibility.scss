@@ -1,0 +1,79 @@
+@use 'variables';
+
+// This mixin applies focus-visible styling, taking Safari in consideration where focus-visible doesn't work
+// Instead, we apply styles to the focus state first, which solves the purpose, but unwantedly also for the active state
+// We fix this for non-Safari browsers afterwards by resetting to default and then re-applying using focus-visible
+$focus-box-shadow: 0 0 1px 5px var(--highlight-color, variables.$white),
+0 0 12px 6px rgb(0 0 0 / 80%);
+
+@mixin focus-visible($value: $focus-box-shadow, $default-value: none) {
+  @media (hover: hover) and (pointer: fine) {
+    &:not(:disabled) {
+      &:focus {
+        @content ($value);
+      }
+
+      &:focus:not(:focus-visible) {
+        @content ($default-value);
+      }
+
+      &:focus-visible {
+        @content ($value);
+      }
+    }
+  }
+}
+
+@mixin accessibleOutline {
+  body.is-tabbing & {
+    outline: 2px solid var(--highlight-color, #fff);
+    box-shadow: 0 0 2px 3px var(--highlight-contrast-color, #000);
+  }
+}
+
+@mixin accessibleOutlineContrast {
+  body.is-tabbing & {
+    outline: 2px solid var(--highlight-contrast-color, #fff);
+    box-shadow: 0 0 2px 3px var(--highlight-color, #000);
+  }
+}
+
+@mixin globalClassNames {
+  /* Clearly visible focus rectangle (WCAG guidelines). */
+  @media (hover: hover) and (pointer: fine) {
+    a,
+    [role='button'],
+    button,
+    input {
+      &:focus {
+        @include accessibleOutline;
+      }
+    }
+  }
+
+  .hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    border: 0;
+    clip: rect(0, 0, 0, 0);
+  }
+
+  .hideUntilFocus {
+    position: absolute;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+
+    &:focus {
+      position: static;
+      height: auto;
+      overflow: visible;
+      clip: auto;
+    }
+  }
+}

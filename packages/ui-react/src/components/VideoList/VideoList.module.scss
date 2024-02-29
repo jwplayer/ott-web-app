@@ -1,0 +1,23 @@
+@use '@jwp/ott-ui-react/src/styles/variables';
+@use '@jwp/ott-ui-react/src/styles/theme';
+@use '@jwp/ott-ui-react/src/styles/mixins/responsive';
+@use '@jwp/ott-ui-react/src/styles/mixins/typography';
+
+.container {
+  height: 100%;
+}
+
+.content {
+  
+  @include responsive.desktop-only() {
+    height: 100%;
+    padding: 16px 24px;
+    overflow-y: scroll;
+  }
+}
+
+.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}

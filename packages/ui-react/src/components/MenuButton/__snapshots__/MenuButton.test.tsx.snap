@@ -1,0 +1,14 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`<MenuButton> > renders and matches snapshot 1`] = `
+<div>
+  <div
+    class="_menuButton_91706b"
+    tabindex="0"
+  >
+    <span>
+      Label
+    </span>
+  </div>
+</div>
+`;

@@ -4,7 +4,7 @@ In order to map data coming from the JWP delivery pipeline to the correct screen
 we use the concept of 'content types'.
 Basically, a content type is simply a custom parameter named 'contentType' on a media item with a value defining which type the media is (movie, trailer, series, etc.)
 
-In the app, content types often map to specific screens (see [screenMapping.ts](src/screenMapping.ts) and [MediaScreenRouter.tsx](src/pages/ScreenRouting/MediaScreenRouter.tsx).)
+In the app, content types often map to specific screens (see [screenMapping.ts](../platforms/web/src/screenMapping.ts) and [MediaScreenRouter.tsx](src/pages/ScreenRouting/MediaScreenRouter.tsx).)
 Each content type screen often expects different metadata attached to the media item's custom parameters.
 
 # Using content types in the JWP dashboard
@@ -44,6 +44,6 @@ Content types do not change the underlying structure of data returned from the J
 
 ## Boolean custom params
 
-Because custom params are always strings and any non-empty string in javascript converts to truthy, we have by convention decided on a few string values to consider striclty true or false. You can find these values in code: https://github.com/jwplayer/ott-web-app/blob/develop/src/utils/common.ts#L86
+Because custom params are always strings and any non-empty string in javascript converts to truthy, we have by convention decided on a few string values to consider strictly true or false. You can find these values in code: https://github.com/jwplayer/ott-web-app/blob/a95c3a3c9d0c5bc7c98b194928261ffc6fc4286f/src/utils/common.ts#L88-L90
 
 Be careful to use the right version considering the fallback when the value is not matched. For example, if you want the property to only be true when matched and fallback to false, use IsTruthy.

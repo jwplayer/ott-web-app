@@ -1,0 +1,64 @@
+@use '@jwp/ott-ui-react/src/styles/variables';
+@use '@jwp/ott-ui-react/src/styles/theme';
+
+.footer {
+  padding: 20px 40px;
+  line-height: 18px;
+  letter-spacing: 0.15px;
+  text-align: center;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.14), 0 3px 4px rgba(0, 0, 0, 0.12), 0 1px 5px rgba(0, 0, 0, 0.2);
+
+  a,
+  a:visited,
+  a:active,
+  a:hover {
+    color: variables.$white;
+    text-decoration: none;
+  }
+}
+
+div.testFixMargin {
+  margin-bottom: 50px;
+}
+
+.divider {
+  width: 100%;
+  border: none;
+  border-top: 1px solid rgba(variables.$white, 0.12);
+}
+
+.buttonContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 0 variables.$base-spacing;
+
+  > button:first-child {
+    margin-bottom: calc(#{variables.$base-spacing} / 2);
+  }
+}
+
+.main {
+  height: 100%;
+}
+
+.headerButton {
+    overflow: visible;
+
+    &::after {
+      position: absolute;
+      bottom: calc(((variables.$header-height - 36px) / 2) * -1);
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background-color: variables.$white;
+      content: '';
+    }
+
+    body:global(.is-tabbing) & {
+      &:focus {
+        &::after {
+          display: none;
+        }
+      }
+    }
+}

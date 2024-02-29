@@ -1,0 +1,56 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`<RenewSubscriptionForm> > renders and matches snapshot 1`] = `
+<div>
+  <div>
+    <h2
+      class="_title_a290fe"
+    >
+      renew_subscription.renew_your_subscription
+    </h2>
+    <p>
+      renew_subscription.explanation
+    </p>
+    <div
+      class="_infoBox_a290fe"
+    >
+      <p>
+        <strong>
+          Annual subscription (recurring)
+        </strong>
+         
+        <br />
+        renew_subscription.next_billing_date_on
+      </p>
+      <p
+        class="_price_a290fe"
+      >
+        <strong>
+          € 22,15
+        </strong>
+        <small>
+          /
+          periods.year
+        </small>
+      </p>
+    </div>
+    <button
+      aria-disabled="false"
+      class="_button_f8f296 _confirmButton_a290fe _primary_f8f296 _fullWidth_f8f296"
+      type="submit"
+    >
+      <span>
+        renew_subscription.renew_subscription
+      </span>
+    </button>
+    <button
+      class="_button_f8f296 _default_f8f296 _outlined_f8f296 _fullWidth_f8f296"
+      type="button"
+    >
+      <span>
+        renew_subscription.no_thanks
+      </span>
+    </button>
+  </div>
+</div>
+`;

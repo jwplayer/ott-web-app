@@ -54,7 +54,7 @@ function run() {
 
     // Loop through each group (file), and load the json resource into an object
     Object.entries(groups).forEach(([jsonFile, updatedTranslations]) => {
-      const filename = `public/locales/${language}/${jsonFile}`;
+      const filename = `platforms/web/public/locales/${language}/${jsonFile}`;
 
       const json = JSON.parse(fs.readFileSync(filename).toString());
       // Update each translation by key

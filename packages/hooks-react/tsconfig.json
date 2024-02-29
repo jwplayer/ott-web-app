@@ -1,0 +1,17 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "include": [
+    "src",
+    "vitest.setup.ts",
+    "vitest.config.ts",
+    "../common/types"
+  ],
+  "compilerOptions": {
+    "noEmit": true,
+    "types": [
+      "@types/jwplayer",
+      "vi-fetch/matchers",
+      "vitest/globals"
+    ]
+  }
+}

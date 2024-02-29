@@ -1,0 +1,62 @@
+@use '@jwp/ott-ui-react/src/styles/variables';
+@use '@jwp/ott-ui-react/src/styles/theme';
+
+.header {
+  display: flex;
+  margin-bottom: 8px;
+  font-weight: var(--body-font-weight-bold);
+  text-align: left;
+
+  > span.note {
+    margin-left: auto;
+    color: rgba(variables.$white, 0.7);
+    font-weight: normal;
+  }
+}
+
+.radio {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+
+  > label {
+    margin-left: calc(#{variables.$base-spacing} / 2);
+    font-size: 14px;
+    cursor: pointer;
+  }
+
+  > input {
+    position: relative;
+    width: 20px;
+    height: 20px;
+    margin: 0;
+    border-radius: 15px;
+    transition: all 0.1s;
+    appearance: none;
+
+    &:not(:checked) {
+      border: 2px solid theme.$input-resting-border-color;
+      &:hover {
+        border-color: theme.$input-hover-border-color;
+      }
+    }
+
+    &:checked {
+      width: 20px;
+      height: 20px;
+      border: 2px solid var(--primary-color);
+      &::after {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 10px;
+        height: 10px;
+        background-color: var(--primary-color);
+        border: 2px solid transparent;
+        border-radius: 15px;
+        transform: translateX(-50%) translateY(-50%);
+        content: '';
+      }
+    }
+  }
+}

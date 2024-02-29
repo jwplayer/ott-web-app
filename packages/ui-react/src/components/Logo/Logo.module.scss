@@ -1,0 +1,26 @@
+@use '@jwp/ott-ui-react/src/styles/variables';
+@use '@jwp/ott-ui-react/src/styles/theme';
+@use '@jwp/ott-ui-react/src/styles/mixins/responsive';
+
+//
+// Logo
+// --------------------------------
+
+.logo {
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: variables.$header-height - 20px;
+  vertical-align: middle;
+  cursor: pointer;
+}
+
+//
+// mediaQueries
+// --------------------------------
+
+@include responsive.mobile-and-tablet() {
+  .logo {
+    max-height: variables.$header-height-mobile - 20px;
+  }
+}

@@ -1,0 +1,27 @@
+@use '@jwp/ott-ui-react/src/styles/variables';
+@use '@jwp/ott-ui-react/src/styles/theme';
+@use '@jwp/ott-ui-react/src/styles/mixins/responsive';
+
+.filterRow {
+  display: flex;
+  align-items: center;
+  margin-left: 16px;
+
+  > button {
+    margin: 0 4px;
+  }
+}
+
+.dropDown {
+  margin-bottom: 0;
+
+  label {
+    // hide the label and optional label
+    display: none;
+  }
+}
+
+.filterDropDown {
+  display: flex;
+  align-items: flex-end;
+}

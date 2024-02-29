@@ -1,0 +1,115 @@
+@use 'variables';
+
+// Colors
+
+$primary-color: variables.$white !default;
+$secondary-color: variables.$blue !default;
+$dark-color: #2b2c39 !default;
+
+// Body
+
+$body-bg-color: #141523 !default;
+$body-color: variables.$white !default;
+
+// Typography
+
+$body-font-family: Helvetica, Arial, sans-serif !default;
+$body-alt-font-family: Trebuchet MS, Helvetica, Arial, sans-serif !default;
+
+$body-font-weight-regular: 500 !default;
+$body-font-weight-bold: 700 !default;
+
+// Buttons
+
+$btn-default-bg: rgba(0, 0, 0, 0.6) !default;
+$btn-default-color: variables.$white !default;
+
+$btn-primary-bg: variables.$white !default;
+$btn-primary-color: variables.$black !default;
+
+$btn-danger-bg: rgba(0, 0, 0, 0) !default;
+$btn-danger-color: variables.$red-dark !default;
+$btn-danger-outline: 1px solid variables.$red-dark !default;
+
+$btn-delete-bg: variables.$red-dark !default;
+$btn-delete-color: variables.$white !default;
+
+$btn-facebook-bg: #3b5998 !default;
+$btn-twitter-bg: #55acee !default;
+
+$btn-play-icon-color: $primary-color !default;
+$btn-play-border-color: variables.$white !default;
+
+$btn-icon-nested-color: $dark-color !default;
+$btn-icon-active-color: $primary-color !default;
+$btn-icon-nested-active-color: variables.$white !default;
+
+$btn-effect-bg: rgba(variables.$gray-light, 0.1) !default;
+
+// Link
+
+$link-color: #3990ff !default;
+
+// Card
+
+$card-color: variables.$white !default;
+$card-border-hover-color: $primary-color !default;
+$card-tag-bg: $dark-color !default;
+$card-loading-bg-color: $secondary-color !default;
+
+// FormFeedback
+
+$form-feedback-error-bg-color: #FF3535 !default;
+$form-feedback-error-color: variables.$black !default;
+$form-feedback-warning-bg-color: variables.$orange !default;
+$form-feedback-warning-color: variables.$white !default;
+$form-feedback-success-bg-color: variables.$green !default;
+$form-feedback-success-color: variables.$black !default;
+
+// Modal
+
+$modal-bg: #202020 !default;
+$modal-color: variables.$white !default;
+$modal-backdrop-bg: rgba(variables.$black, 0.8) !default;
+
+// Loading
+
+$loading-color: $primary-color !default;
+
+// TextField
+
+$text-field-bg-color: rgba(variables.$black, 0.54) !default;
+$text-field-resting-border-color: rgba(variables.$white, 0.34) !default;
+$text-field-resting-color: rgba(variables.$white, 0.7) !default;
+$text-field-hover-border-color: rgba(variables.$white, 0.7) !default;
+$text-field-hover-bg-color: rgba(variables.$white, 0.08) !default;
+$text-field-active-color: variables.$white !default;
+$text-field-active-border-color: variables.$white !default;
+$text-field-placeholder-color: rgba(variables.$white, 0.7) !default;
+$text-field-error-color: #FF3535 !default;
+
+// Input
+
+$input-resting-border-color: rgba(variables.$white, 0.34) !default;
+$input-hover-border-color: rgba(variables.$white, 0.7) !default;
+$input-field-error-color: #FF3535 !default;
+
+// Toggle
+
+$toggle-default-color: #585858 !default;
+$toggle-checked-color: #adadad !default;
+$toggle-button-bg: variables.$white !default;
+
+// UserScreen
+
+$panel-bg: rgba(255, 255, 255, 0.08);
+$panel-box-shadow: 0 6px 10px rgb(0 0 0 / 14%), 0 1px 18px rgb(0 0 0 / 12%), 0 3px 5px rgb(0 0 0 / 20%);
+$panel-header-border-bottom: 1px solid rgba(255, 255, 255, 0.32);
+
+// EpgChannel
+
+$epg-box-bg: rgba(255, 255, 255, 0.08);
+$epg-title-color: variables.$white;
+$epg-title-selected-color: variables.$black;
+$epg-text-color: rgba(variables.$white, 0.7) !default;
+$epg-text-selected-color: rgba(variables.$black, 0.7) !default;

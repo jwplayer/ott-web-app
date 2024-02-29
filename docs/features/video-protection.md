@@ -11,7 +11,7 @@ This article outlines how such an authorization service should work.
 
 ## Signed URLs
 
-With [URL signing](https://support.jwplayer.com/articles/how-to-enable-url-token-signing) enabled on the JW property, a video client can only access the media URLs from JW backends when it has a valid JWT token:
+With [URL signing](https://docs.jwplayer.com/platform/reference/protect-your-content-with-signed-urls) enabled on the JW property, a video client can only access the media URLs from JW backends when it has a valid JWT token:
 
 ```
 GET media/PEEzDfdA?token=<tokenA>

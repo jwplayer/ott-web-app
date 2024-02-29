@@ -103,7 +103,7 @@ The Web App is optimized to use authentication, payments, and subscription servi
 
 - Identity management
 - Monthly and Yearly Subscriptions
-- Payments with Paypal or Credit Card with 3D secure
+- Payments with PayPal or Credit Card with 3D secure
 
 ## Cleeng MediaStore SDK (Optional)
 

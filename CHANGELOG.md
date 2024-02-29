@@ -1,3 +1,68 @@
+## [5.1.1](https://github.com/jwplayer/ott-web-app/compare/v5.1.0...v5.1.1) (2024-01-24)
+
+
+### Bug Fixes
+
+* lock animation mode on first load ([1b36ae0](https://github.com/jwplayer/ott-web-app/commit/1b36ae0e391d9ec977fdd6e8b0ef3befa43ddc5a))
+* prevent slider from getting stuck in non-anmiated mode ([e827aff](https://github.com/jwplayer/ott-web-app/commit/e827affd97f4cd3dbff4296c8686b77fab4a06b4))
+* **project:** fix dfault schemas ([4f6e4b0](https://github.com/jwplayer/ott-web-app/commit/4f6e4b0af50c26b523c1fc8f12469baa5280f5a1))
+
+## [5.1.0](https://github.com/jwplayer/ott-web-app/compare/v5.0.0...v5.1.0) (2024-01-18)
+
+
+### Features
+
+* add user_id and profile_id for CDN analytics ([114150e](https://github.com/jwplayer/ott-web-app/commit/114150e6cdd8aaf436c06df30ea785f458b641f0))
+* add user_id and profile_id for CDN analytics ([0bacf37](https://github.com/jwplayer/ott-web-app/commit/0bacf37998904278b46bca17d6029f054150fc51))
+* cdn analytics code cleanup ([aeef40f](https://github.com/jwplayer/ott-web-app/commit/aeef40f6f375783cd0820fd27154b616570d3cf0))
+* cdn analytics code cleanup ([d92937d](https://github.com/jwplayer/ott-web-app/commit/d92937da7592c580df8230a4c1ee2fad3765ff55))
+* **epg:** fix live channel casing ([43c487c](https://github.com/jwplayer/ott-web-app/commit/43c487ca72bfdbf5977e6f873f3505fe5bf6011a))
+* **epg:** use getNamedModule ([0394daf](https://github.com/jwplayer/ott-web-app/commit/0394daf6ce8d73103aee5f5667a98fa089325569))
+* **project:** add view nexa epg provider ([9a71457](https://github.com/jwplayer/ott-web-app/commit/9a71457ae51dec38538e5b5ac719426250d3cae4))
+* **project:** change content type default schemas ([e100384](https://github.com/jwplayer/ott-web-app/commit/e1003844da97ba97618ed46e9eba076e49a6159c))
+* **project:** change the way of DI ([4154488](https://github.com/jwplayer/ott-web-app/commit/4154488dbe0e157ea92434382cc5d2d646cdd2bb))
+* **project:** review comments ([3359612](https://github.com/jwplayer/ott-web-app/commit/3359612cd029858a2ea3f596d23cfc835bda2fc8))
+
+
+### Bug Fixes
+
+* **epg:** check lower case, log error ([be774d4](https://github.com/jwplayer/ott-web-app/commit/be774d47780a238800796caf22700c3e4ce7c28f))
+* fix e2e test ([ba1e0de](https://github.com/jwplayer/ott-web-app/commit/ba1e0de5b60c8a5bfed1e52bacaf15d977b69894))
+* missing getState on useConfigStore under updateCardDetails ([#433](https://github.com/jwplayer/ott-web-app/issues/433)) ([ce32908](https://github.com/jwplayer/ott-web-app/commit/ce329084bf8565c475ea37e04006aaa08766c255))
+* place consents in appropriate section ([6281640](https://github.com/jwplayer/ott-web-app/commit/6281640fc4fb0f6f7b3b56cc34749465348cc7a2))
+* transform url to lowerCase ([68d31c4](https://github.com/jwplayer/ott-web-app/commit/68d31c46df3b5999f8bee79ed269e597b30993bf))
+
+## [5.0.0](https://github.com/jwplayer/ott-web-app/compare/v4.31.1...v5.0.0) (2024-01-11)
+
+
+### ⚠ BREAKING CHANGES
+
+* **project:** services and controllers modularization
+
+### Features
+
+* **payment:** generate billing receipt ([#401](https://github.com/jwplayer/ott-web-app/issues/401)) ([621e9e7](https://github.com/jwplayer/ott-web-app/commit/621e9e741530ced0be1739527f5da0b62c303384))
+* **project:** empty commit for services and controllers modularization. ([dda841a](https://github.com/jwplayer/ott-web-app/commit/dda841a92f7696a90f145e2c2d7ee77fdec6b6a3))
+* **project:** modularization docs ([#413](https://github.com/jwplayer/ott-web-app/issues/413)) ([547775e](https://github.com/jwplayer/ott-web-app/commit/547775e68a47d5915677b1ed2ab76c90f5f6ca2e))
+* **project:** services modularization ([#363](https://github.com/jwplayer/ott-web-app/issues/363)) ([6b1285b](https://github.com/jwplayer/ott-web-app/commit/6b1285b6f703e8a6de04b1ad9d7f3a2bb77897a9))
+* **project:** update changelog generation package ([#426](https://github.com/jwplayer/ott-web-app/issues/426)) ([016fd4e](https://github.com/jwplayer/ott-web-app/commit/016fd4e775fbe95df291a9257430b31e1e0e5bd7))
+* **project:** use xml for ad config ([#421](https://github.com/jwplayer/ott-web-app/issues/421)) ([2aec0dd](https://github.com/jwplayer/ott-web-app/commit/2aec0dde9a7624d28494720ca0164f925e983384))
+* **user:** add ability to add password to a social account ([b3aa739](https://github.com/jwplayer/ott-web-app/commit/b3aa7394131227aa2713a5951c6047f2ae7be804))
+
+
+### Bug Fixes
+
+* add truthy param check to evaluation of urlSigning enabled ([#422](https://github.com/jwplayer/ott-web-app/issues/422)) ([527ca02](https://github.com/jwplayer/ott-web-app/commit/527ca02088ba62765db442af66c5bfe6c14b573a))
+* **e2e:** fix cleeng test ([#414](https://github.com/jwplayer/ott-web-app/issues/414)) ([65ea840](https://github.com/jwplayer/ott-web-app/commit/65ea840449444ad0e5652aad76e27db5fa5fe54f))
+* **home:** parse the scheduled date ([#417](https://github.com/jwplayer/ott-web-app/issues/417)) ([de4ff48](https://github.com/jwplayer/ott-web-app/commit/de4ff48019835ea0bbeaa8641ef8bfafb7107bad))
+* **project:** change variable name ([#402](https://github.com/jwplayer/ott-web-app/issues/402)) ([8518460](https://github.com/jwplayer/ott-web-app/commit/85184608dc387675ed73274c56dedac5d57fc8f3))
+* **project:** fix error state for preview and demo modes ([#423](https://github.com/jwplayer/ott-web-app/issues/423)) ([ca9d905](https://github.com/jwplayer/ott-web-app/commit/ca9d905a8af4c49811fb65085520d4a98b9a54af))
+* **project:** pre-release fixes ([#430](https://github.com/jwplayer/ott-web-app/issues/430)) ([d0d86ff](https://github.com/jwplayer/ott-web-app/commit/d0d86ff134c944ee0fb46d4c71221166c670b1cc))
+* **series:** add empty media items filter ([#415](https://github.com/jwplayer/ott-web-app/issues/415)) ([c47ca66](https://github.com/jwplayer/ott-web-app/commit/c47ca66bfb1d757597555ee8d6c7e5373b9a7a70))
+* **series:** fix 'hasMore' param ([#416](https://github.com/jwplayer/ott-web-app/issues/416)) ([111fcfb](https://github.com/jwplayer/ott-web-app/commit/111fcfb548ee162b7e04930626a0c089f88ebcb7))
+* switch to playlist_multiselect ([0885580](https://github.com/jwplayer/ott-web-app/commit/08855805a9292eda3704094e0e9c196132b40738))
+* **user:** missing isCommon error check ([#403](https://github.com/jwplayer/ott-web-app/issues/403)) ([5e2ce14](https://github.com/jwplayer/ott-web-app/commit/5e2ce144ca8b1920df460178632d8448f3226d8a))
+
 ## [4.31.1](https://github.com/jwplayer/ott-web-app/compare/v4.31.0...v4.31.1) (2023-11-28)
 
 

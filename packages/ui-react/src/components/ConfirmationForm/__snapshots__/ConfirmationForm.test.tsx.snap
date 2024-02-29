@@ -1,0 +1,37 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`<ConfirmationForm> > renders and matches snapshot 1`] = `
+<div>
+  <div>
+    <h2
+      class="_title_64b7a0"
+    >
+      reset.link_sent
+    </h2>
+    <p
+      class="_text_64b7a0"
+    >
+      reset.link_sent_text
+    </p>
+    <button
+      class="_button_f8f296 _button_64b7a0 _primary_f8f296 _outlined_f8f296 _fullWidth_f8f296"
+      type="button"
+    >
+      <span>
+        reset.back_login
+      </span>
+    </button>
+    <span
+      class="_notSure_64b7a0"
+    >
+      reset.not_sure
+    </span>
+    <a
+      class="_link_64b7a0"
+      href="/?u=forgot-password"
+    >
+      reset.try_again
+    </a>
+  </div>
+</div>
+`;

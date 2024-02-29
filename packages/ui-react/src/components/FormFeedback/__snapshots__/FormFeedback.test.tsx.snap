@@ -1,0 +1,12 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`<FormFeedback> > renders and matches snapshot 1`] = `
+<div>
+  <div
+    aria-live="assertive"
+    class="_formFeedback_99f247 _error_99f247"
+  >
+    Form feedback
+  </div>
+</div>
+`;

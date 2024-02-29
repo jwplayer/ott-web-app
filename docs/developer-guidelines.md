@@ -1,9 +1,9 @@
 ## When working on this project, keep these in mind:
 
 - Use yarn.
-- Run the server through `yarn start`
+- Run the server through `yarn start` (in the platforms/web directory)
+- Run the e2e tests through `yarn codecept:mobile` and `yarn codecept:desktop` (in the platforms/web directory)
 - Run the tests through `yarn test`
-- Run the e2e tests through `yarn codecept:mobile` and `yarn codecept:desktop`
 - Format the code through `yarn format` (or automatically do it via git hooks)
 - Lint through `yarn lint` (eslint, prettier, stylelint and tsc checks)
 - Run `yarn i18next` to extract all translations keys from source-code
@@ -60,25 +60,7 @@ Please use one of the following:
 
 The scope must specify the location of the commit change. For example `home` or `search`.
 
-The allowed scopes are:
-
-- project
-- home
-- playlist
-- videodetail
-- player
-- series
-- search
-- user
-- watchhistory
-- favorites
-- analytics
-- pwa
-- seo
-- auth
-- menu
-- payment
-- e2e
+The allowed scopes can be found in the [commitlint config file](../.commitlintrc.js).
 
 ### Subject
 
@@ -101,42 +83,17 @@ The footer should contain any information about **Breaking Changes** and is also
 ```
 /.github          - Templates and action workflows for Github
 /.husky           - Husky scripts for running checks on git triggers
-/build*           - Directory where the code is compiled by `yarn build`
-/coverage*        - Location of the C8 coverage report
 /docs             - Documentation
   /_images        - Images used in the docs and README
   /features       - Docs coverage specific product use cases
-/ini              - Directory to group different initialization files
-  /templates      - Template .ini files per mode
 /node_modules*    - Yarn generated dependencies
-/public           - Static files to be hosted with the application
+/packages         - Re-usable code for platfroms (registered in workspace)
+/platforms        - Platform entry points (registered in workspace)
 /scripts          - Dev helper scripts for i18n, deployment, etc.
-/src              - Source code for the application
-  /assets         - Static assets (image, svg, etc.)
-  /components     - Reusable, side-effect free UI components
-  /containers     - UI Containers
-  /hooks          - Custom React hooks
-  /i18n           - Internationalization tools
-    /locales      - Languages specific folders with translation json files
-  /icons          - SVG icons wrapped in React Components
-  /pages          - Main application layout containers per route
-    /ScreenRouting- Mappings from media_type to layout container for medias
-  /services       - Services which connects external data sources to the application
-  /stores         - Zustand stores and controllers
-  /styles         - Global SCSS rules, theming and variables
-  /utils          - Utility functions
-  /App.tsx        - The main React component which renders the app
-  /index.tsx      - The entrypoint
-  /registerSer... - Script or SPA functionality
-/test             - Data and scripts for unit and e2e testing
-/test-e2e         - End to end tests and scripts
-/types            - Global type definitions
-/.env<.mode>      - Environment variables for different Vite modes
 /CHANGELOG.md     - Auto-generated changelog
-/firebase.json    - Config for firebase static hosting
-/index.html       - Main html file entrypoint for the application
 /package.json     - Yarn file for dependencies and scripts
-/vite.config.ts   - Vite build and test configuration file
+/tsconfig.base..  - The base TS configuration file used in most packages and platforms
+/vitest.worksp..  - Vitest workspace configuration file
 
 * = Generated directories, not in source control
 

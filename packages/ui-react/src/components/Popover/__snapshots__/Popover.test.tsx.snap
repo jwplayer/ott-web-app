@@ -1,0 +1,24 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`<Popover> > renders and matches snapshot 1`] = `
+<div>
+  <div
+    style="transition: transform 0.25s ease, opacity 0.25s ease; transform: translate(15px, 0); opacity: 0; z-index: 15; position: relative;"
+  >
+    <div
+      class="_popover_9be12f"
+    >
+      <a
+        aria-current="page"
+        class="_menuButton_91706b _active_91706b"
+        href="/"
+        tabindex="0"
+      >
+        <span>
+          Home
+        </span>
+      </a>
+    </div>
+  </div>
+</div>
+`;

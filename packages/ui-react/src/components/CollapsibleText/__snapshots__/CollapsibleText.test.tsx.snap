@@ -1,0 +1,16 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`<CollapsibleText> > renders and matches snapshot 1`] = `
+<div>
+  <div
+    class="_collapsibleText_561522"
+  >
+    <p
+      class="_textContainer_561522"
+      style="max-height: none;"
+    >
+      Test...
+    </p>
+  </div>
+</div>
+`;

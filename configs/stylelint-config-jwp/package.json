@@ -1,0 +1,17 @@
+{
+  "name": "stylelint-config-jwp",
+  "version": "1.0.0",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "lint:ts": "exit 0",
+    "test": "exit 0"
+  },
+  "devDependencies": {
+    "stylelint": "^15.11.0",
+    "stylelint-config-recommended-scss": "^13.1.0",
+    "stylelint-declaration-strict-value": "^1.9.2",
+    "stylelint-order": "^6.0.3",
+    "stylelint-scss": "^5.3.1"
+  }
+}

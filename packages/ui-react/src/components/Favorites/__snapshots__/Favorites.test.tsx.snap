@@ -1,0 +1,178 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`<Favorites> > renders and matches snapshot 1`] = `
+<div>
+  <div>
+    <div
+      class="_header_546956"
+    >
+      <h1>
+        favorites.title
+      </h1>
+      <button
+        class="_button_f8f296 _default_f8f296 _outlined_f8f296"
+        type="button"
+      >
+        <span>
+          favorites.clear
+        </span>
+      </button>
+    </div>
+    <div>
+      <div
+        aria-rowcount="1"
+        class="_container_7175d1 _cols-3_7175d1"
+        role="grid"
+      >
+        <div
+          aria-rowindex="0"
+          class="_row_19b484"
+          role="row"
+        >
+          <div
+            aria-colindex="0"
+            class="_cell_19b484"
+            id="layout_grid_0-0"
+            role="gridcell"
+            style="width: 33%;"
+          >
+            <a
+              class="_card_d75732"
+              data-testid="SVOD 002: Caminandes 1 llama drama"
+              href="/m/1TJAvj2S/svod-002-caminandes-1-llama-drama?r=bdH6HTUi"
+              role="button"
+              tabindex="0"
+            >
+              <div
+                class="_titleContainer_d75732"
+              >
+                <h3
+                  class="_title_d75732"
+                >
+                  SVOD 002: Caminandes 1 llama drama
+                </h3>
+              </div>
+              <div
+                class="_poster_d75732 _aspect169_d75732"
+              >
+                <img
+                  alt=""
+                  class="_posterImage_d75732 _image_4c41c3"
+                  src="https://cdn.jwplayer.com/v2/media/1TJAvj2S/images/card.webp?poster_fallback=1&width=320"
+                />
+                <div
+                  class="_meta_d75732"
+                >
+                  <div
+                    class="_tags_d75732"
+                  >
+                    <div
+                      class="_tag_d75732"
+                    >
+                      2 min
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+          <div
+            aria-colindex="1"
+            class="_cell_19b484"
+            id="layout_grid_0-1"
+            role="gridcell"
+            style="width: 33%;"
+          >
+            <a
+              class="_card_d75732"
+              data-testid="SVOD 003: Caminandes 2 gran dillama"
+              href="/m/rnibIt0n/svod-003-caminandes-2-gran-dillama?r=bdH6HTUi"
+              role="button"
+              tabindex="-1"
+            >
+              <div
+                class="_titleContainer_d75732"
+              >
+                <h3
+                  class="_title_d75732"
+                >
+                  SVOD 003: Caminandes 2 gran dillama
+                </h3>
+              </div>
+              <div
+                class="_poster_d75732 _aspect169_d75732"
+              >
+                <img
+                  alt=""
+                  class="_posterImage_d75732 _image_4c41c3"
+                  src="https://cdn.jwplayer.com/v2/media/rnibIt0n/images/card.webp?poster_fallback=1&width=320"
+                />
+                <div
+                  class="_meta_d75732"
+                >
+                  <div
+                    class="_tags_d75732"
+                  >
+                    <div
+                      class="_tag_d75732"
+                    >
+                      3 min
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+          <div
+            aria-colindex="2"
+            class="_cell_19b484"
+            id="layout_grid_0-2"
+            role="gridcell"
+            style="width: 33%;"
+          >
+            <a
+              class="_card_d75732"
+              data-testid="SVOD 001: Tears of Steel"
+              href="/m/MaCvdQdE/svod-001-tears-of-steel?r=E2uaFiUM"
+              role="button"
+              tabindex="-1"
+            >
+              <div
+                class="_titleContainer_d75732"
+              >
+                <h3
+                  class="_title_d75732"
+                >
+                  SVOD 001: Tears of Steel
+                </h3>
+              </div>
+              <div
+                class="_poster_d75732 _aspect169_d75732"
+              >
+                <img
+                  alt=""
+                  class="_posterImage_d75732 _image_4c41c3"
+                  src="https://cdn.jwplayer.com/v2/media/MaCvdQdE/images/card.webp?poster_fallback=1&width=320"
+                />
+                <div
+                  class="_meta_d75732"
+                >
+                  <div
+                    class="_tags_d75732"
+                  >
+                    <div
+                      class="_tag_d75732"
+                    >
+                      13 min
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
