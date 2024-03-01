@@ -1,13 +1,13 @@
 {
   "name": "@jwp/ott-common",
   "version": "4.30.0",
-  "main": "./src",
   "private": true,
+  "main": "./src",
   "scripts": {
     "lint:ts": "tsc --pretty --noEmit -p ./",
     "test": "TZ=UTC LC_ALL=en_US.UTF-8 vitest run",
-    "test-watch": "TZ=UTC LC_ALL=en_US.UTF-8 vitest",
-    "test-update": "TZ=UTC LC_ALL=en_US.UTF-8 vitest run --update"
+    "test-update": "TZ=UTC LC_ALL=en_US.UTF-8 vitest run --update",
+    "test-watch": "TZ=UTC LC_ALL=en_US.UTF-8 vitest"
   },
   "dependencies": {
     "@inplayer-org/inplayer.js": "^3.13.24",
