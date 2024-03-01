@@ -1,29 +1,29 @@
 {
   "name": "@jwp/ott-web",
   "version": "4.30.0",
-  "main": "index.js",
-  "author": "JW Player",
   "private": true,
+  "author": "JW Player",
+  "main": "index.js",
   "engines": {
     "node": ">=18.13.0"
   },
   "scripts": {
+    "build": "vite build --mode ${MODE:=prod} && sh scripts/compressIni.sh build/public/.webapp.ini",
+    "codecept-serve:desktop": "yarn codecept:desktop ; yarn serve-report:desktop",
+    "codecept-serve:mobile": "yarn codecept:mobile ; yarn serve-report:mobile",
+    "codecept:desktop": "cd test-e2e && rm -rf \"./output/desktop\" && codeceptjs run-workers --suites ${WORKER_COUNT:=8} --config ./codecept.desktop.js",
+    "codecept:mobile": "cd test-e2e && rm -rf \"./output/mobile\" && codeceptjs run-workers --suites ${WORKER_COUNT:=8} --config ./codecept.mobile.js",
+    "generate-pwa-assets": "pwa-assets-generator",
+    "lint:ts": "tsc --pretty --noEmit -p ./ && tsc --pretty --noEmit -p ./test-e2e",
+    "load-content-types": "npx ts-node ./scripts/content-types/load-content-types",
+    "serve-report:desktop": "cd test-e2e && allure serve \"./output/desktop\"",
+    "serve-report:mobile": "cd test-e2e && allure serve \"./output/mobile\"",
     "start": "vite",
     "start:test": "vite build --mode test && vite preview --port 8080",
-    "build": "vite build --mode ${MODE:=prod} && sh scripts/compressIni.sh build/public/.webapp.ini",
-    "lint:ts": "tsc --pretty --noEmit -p ./ && tsc --pretty --noEmit -p ./test-e2e",
     "test": "TZ=UTC LC_ALL=en_US.UTF-8 vitest run",
-    "test-watch": "TZ=UTC LC_ALL=en_US.UTF-8 vitest",
     "test-coverage": "TZ=UTC LC_ALL=en_US.UTF-8 vitest run --coverage",
     "test-update": "TZ=UTC LC_ALL=en_US.UTF-8 vitest run --update",
-    "codecept:mobile": "cd test-e2e && rm -rf \"./output/mobile\" && codeceptjs run-workers --suites ${WORKER_COUNT:=8} --config ./codecept.mobile.js",
-    "codecept:desktop": "cd test-e2e && rm -rf \"./output/desktop\" && codeceptjs run-workers --suites ${WORKER_COUNT:=8} --config ./codecept.desktop.js",
-    "serve-report:mobile": "cd test-e2e && allure serve \"./output/mobile\"",
-    "serve-report:desktop": "cd test-e2e && allure serve \"./output/desktop\"",
-    "codecept-serve:mobile": "yarn codecept:mobile ; yarn serve-report:mobile",
-    "codecept-serve:desktop": "yarn codecept:desktop ; yarn serve-report:desktop",
-    "load-content-types": "npx ts-node ./scripts/content-types/load-content-types",
-    "generate-pwa-assets": "pwa-assets-generator"
+    "test-watch": "TZ=UTC LC_ALL=en_US.UTF-8 vitest"
   },
   "dependencies": {
     "@codeceptjs/allure-legacy": "^1.0.2",
@@ -76,10 +76,15 @@
     "vite-plugin-pwa": "^0.14.0",
     "vite-plugin-static-copy": "^0.17.0",
     "vite-plugin-stylelint": "^4.3.0",
-    "vite-plugin-svgr": "4.2.0",
+    "vite-plugin-svgr": "^4.2.0",
     "vitest": "^0.34.6",
     "workbox-build": "^6.5.4",
     "workbox-window": "^6.5.4"
+  },
+  "optionalDependencies": {
+    "gh-pages": "^3.2.3",
+    "lighthouse": "^9.6.7",
+    "sharp": "^0.33.2"
   },
   "peerDependencies": {
     "@jwp/ott-common": "*",
@@ -89,10 +94,5 @@
     "@jwp/ott-ui-react": "*",
     "eslint-config-jwp": "*",
     "postcss-config-jwp": "*"
-  },
-  "optionalDependencies": {
-    "gh-pages": "^3.2.3",
-    "lighthouse": "^9.6.7",
-    "sharp": "^0.33.2"
   }
 }
