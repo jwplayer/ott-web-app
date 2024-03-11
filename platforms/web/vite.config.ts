@@ -157,5 +157,10 @@ export default ({ mode, command }: ConfigEnv): UserConfigExport => {
       setupFiles: ['test/vitest.setup.ts'],
       css: true,
     },
+    optimizeDeps: {
+      esbuildOptions: {
+        tsconfig: 'tsconfig.json',
+      },
+    },
   });
 };

@@ -13,7 +13,7 @@
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
-    "importsNotUsedAsValues": "error",
+    "verbatimModuleSyntax": false,
     // Ensure unused code is cleaned up
     "noUnusedParameters": true,
     "noUnusedLocals": true,

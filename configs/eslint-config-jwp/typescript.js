@@ -77,10 +77,6 @@ module.exports = {
     {
       files: ['*.ts', '*.tsx'],
       rules: {
-        // TypeScript 4.0 adds 'any' or 'unknown' type annotation on catch clause variables.
-        // We need to make sure error is of the type we are expecting
-        '@typescript-eslint/no-implicit-any-catch': 'error',
-
         // These are handled by TS
         '@typescript-eslint/no-explicit-any': ['warn', { ignoreRestArgs: true }],
         '@typescript-eslint/explicit-module-boundary-types': 'off',
