@@ -40,7 +40,7 @@ exports[`<SideBar /> > renders sideBar closed 1`] = `
     >
       <a
         aria-current="page"
-        class="_button_f8f296 _default_f8f296 _outlined_f8f296 _active_f8f296 "
+        class="_button_f8f296 _default_f8f296 _outlined_f8f296 _active_f8f296"
         href="/"
       >
         <span>
@@ -91,7 +91,7 @@ exports[`<SideBar /> > renders sideBar opened 1`] = `
     >
       <a
         aria-current="page"
-        class="_button_f8f296 _default_f8f296 _outlined_f8f296 _active_f8f296 "
+        class="_button_f8f296 _default_f8f296 _outlined_f8f296 _active_f8f296"
         href="/"
       >
         <span>
