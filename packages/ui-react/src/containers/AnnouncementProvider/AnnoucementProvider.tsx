@@ -1,5 +1,5 @@
 import { secondsToMilliseconds } from 'date-fns';
-import { PropsWithChildren, createContext, useCallback, useContext, useState } from 'react';
+import { type PropsWithChildren, createContext, useCallback, useContext, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 import FormFeedback from '../../components/FormFeedback/FormFeedback';

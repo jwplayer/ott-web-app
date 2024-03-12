@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import Button from '../Button/Button';
-import { AriaAnnouncerVariant, useAriaAnnouncer } from '../../containers/AnnouncementProvider/AnnoucementProvider';
+import { type AriaAnnouncerVariant, useAriaAnnouncer } from '../../containers/AnnouncementProvider/AnnoucementProvider';
 
 import styles from './UpgradeSubscription.module.scss';
 

@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { AriaAttributes } from 'react';
+import React, { type AriaAttributes } from 'react';
 
 import styles from './IconButton.module.scss';
 
