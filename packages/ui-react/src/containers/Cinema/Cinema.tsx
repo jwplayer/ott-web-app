@@ -49,7 +49,8 @@ const Cinema: React.FC<Props> = ({
   const { t } = useTranslation();
 
   // state
-  const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [overlayHasFocus, setOverlayHasFocus] = useState(false);
   const [userActive, setUserActive] = useState(true);
 
   const handlePlay = useCallback(() => {
@@ -81,8 +82,8 @@ const Cinema: React.FC<Props> = ({
   return (
     <Modal open={open} animationContainerClassName={styles.cinemaContainer} onClose={onClose}>
       <div className={styles.cinema} aria-modal="true" role="dialog" aria-label={t('videoplayer')}>
-        <Fade open={!isPlaying || userActive} keepMounted>
-          <div className={styles.playerOverlay}>
+        <Fade open={!isPlaying || userActive || overlayHasFocus} keepMounted>
+          <div className={styles.playerOverlay} onFocus={() => setOverlayHasFocus(true)} onBlur={() => setOverlayHasFocus(false)}>
             <div className={styles.playerContent}>
               <IconButton aria-label={t('common:back')} onClick={onClose} className={styles.backButton}>
                 <Icon icon={ArrowLeft} />
