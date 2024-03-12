@@ -13,7 +13,7 @@ exports[`<Dialog> > renders and matches snapshot 1`] = `
     </span>
   </div>
   <div
-    style="transition: opacity 0.3s ease-in-out; opacity: 0;"
+    style="transition: opacity 0.3s ease-in-out; opacity: 0; will-change: opacity;"
   >
     <div
       class="_modal_6c6c55"

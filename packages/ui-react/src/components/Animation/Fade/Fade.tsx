@@ -20,6 +20,7 @@ const Fade: React.FC<Props> = ({ className, open = true, duration = 250, delay =
   const createStyle = (status: Status): CSSProperties => ({
     transition,
     opacity: status === 'opening' || status === 'open' ? 1 : 0,
+    willChange: 'opacity',
   });
 
   return (
