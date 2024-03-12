@@ -15,6 +15,11 @@
   background-color: variables.$black;
 }
 
+.overlayFade {
+  position: relative; // make opacity transition work
+  z-index: 1; // ensure overlay is placed above the player
+}
+
 .playerOverlay {
   position: absolute;
   top: 0;

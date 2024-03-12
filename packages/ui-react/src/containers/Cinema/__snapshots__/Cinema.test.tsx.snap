@@ -6,7 +6,7 @@ exports[`<Cinema> > renders and matches snapshot 1`] = `
 >
   <div />
   <div
-    style="transition: opacity 0.3s ease-in-out; opacity: 0;"
+    style="transition: opacity 0.3s ease-in-out; opacity: 0; will-change: opacity;"
   >
     <div
       class="_modal_6c6c55"
@@ -29,7 +29,8 @@ exports[`<Cinema> > renders and matches snapshot 1`] = `
             role="dialog"
           >
             <div
-              style="transition: opacity 0.25s ease-in-out; opacity: 0;"
+              class="_overlayFade_555f3c"
+              style="transition: opacity 0.25s ease-in-out; opacity: 0; will-change: opacity;"
             >
               <div
                 class="_playerOverlay_555f3c"
