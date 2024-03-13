@@ -6,7 +6,7 @@ import { shallow } from '@jwp/ott-common/src/utils/compare';
 import type { PlaylistItem } from '@jwp/ott-common/types/playlist';
 import { useConfigStore } from '@jwp/ott-common/src/stores/ConfigStore';
 import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
-import { createVideoMetadata } from '@jwp/ott-common/src/utils/media';
+import { createVideoMetadata } from '@jwp/ott-common/src/utils/metadata';
 import { mediaURL } from '@jwp/ott-common/src/utils/urlFormatting';
 import { generateMovieJSONLD } from '@jwp/ott-common/src/utils/structuredData';
 import useMedia from '@jwp/ott-hooks-react/src/useMedia';

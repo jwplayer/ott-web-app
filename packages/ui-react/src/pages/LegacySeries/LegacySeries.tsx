@@ -7,7 +7,7 @@ import type { PlaylistItem } from '@jwp/ott-common/types/playlist';
 import { useWatchHistoryStore } from '@jwp/ott-common/src/stores/WatchHistoryStore';
 import { useConfigStore } from '@jwp/ott-common/src/stores/ConfigStore';
 import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
-import { createPlaylistMetadata, createVideoMetadata } from '@jwp/ott-common/src/utils/media';
+import { createPlaylistMetadata, createVideoMetadata } from '@jwp/ott-common/src/utils/metadata';
 import { formatSeriesMetaString } from '@jwp/ott-common/src/utils/formatting';
 import { legacySeriesURL } from '@jwp/ott-common/src/utils/urlFormatting';
 import useEntitlement from '@jwp/ott-hooks-react/src/useEntitlement';

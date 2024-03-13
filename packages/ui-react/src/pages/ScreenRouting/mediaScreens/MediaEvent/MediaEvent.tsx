@@ -7,7 +7,7 @@ import type { PlaylistItem } from '@jwp/ott-common/types/playlist';
 import { useConfigStore } from '@jwp/ott-common/src/stores/ConfigStore';
 import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
 import { MediaStatus } from '@jwp/ott-common/src/utils/liveEvent';
-import { createLiveEventMetadata } from '@jwp/ott-common/src/utils/media';
+import { createLiveEventMetadata } from '@jwp/ott-common/src/utils/metadata';
 import { mediaURL } from '@jwp/ott-common/src/utils/urlFormatting';
 import { generateMovieJSONLD } from '@jwp/ott-common/src/utils/structuredData';
 import useMedia from '@jwp/ott-hooks-react/src/useMedia';
