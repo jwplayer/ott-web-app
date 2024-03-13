@@ -1,5 +1,4 @@
 {
-  "add_to_favorites": "Agregar a favoritos",
   "all_seasons": "Todas las temporadas",
   "buy": "Comprar",
   "buy_to_start_watching": "Compra para empezar a mirar!",
@@ -19,8 +18,8 @@
   },
   "season": "temporada",
   "season_number_filter_template": "Temporada {{seasonNumber}}",
-  "series_error": "Se produjo un error al solicitar la serie",
   "series": "Serie",
+  "series_error": "Se produjo un error al solicitar la serie",
   "share": "Compartir",
   "share_video": "Compartir este video",
   "sign_up_to_start_watching": "¡Regístrate para comenzar a ver!",
