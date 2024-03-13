@@ -10,7 +10,7 @@ import { useConfigStore } from '@jwp/ott-common/src/stores/ConfigStore';
 import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
 import { generateEpisodeJSONLD } from '@jwp/ott-common/src/utils/structuredData';
 import { getEpisodesInSeason, getFiltersFromSeries } from '@jwp/ott-common/src/utils/series';
-import { createVideoMetadata } from '@jwp/ott-common/src/utils/media';
+import { createVideoMetadata } from '@jwp/ott-common/src/utils/metadata';
 import { formatSeriesMetaString } from '@jwp/ott-common/src/utils/formatting';
 import { buildLegacySeriesUrlFromMediaItem, mediaURL } from '@jwp/ott-common/src/utils/urlFormatting';
 import { VideoProgressMinMax } from '@jwp/ott-common/src/constants';
