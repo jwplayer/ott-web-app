@@ -1,5 +1,23 @@
-name: PR Deployment Previews
-run-name: PR - ${{ github.event.pull_request.number || '0' }}
+# Example workflow to deploy the web platform to an AWS S3 bucket on pull requests
+# This workflow is disabled for the OTT Web App
+#
+# See
+# - https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html
+# - https://docs.aws.amazon.com/AmazonS3/latest/userguide/example-policies-s3.html#iam-policy-ex0
+#
+# Create an environment named `Deployment Previews` or change the environment.name below
+#
+# Environment variables:
+# - DEPLOYMENT_PREVIEWS   - Set this any value to enable this workflow
+# - AWS_ACCESS_KEY_ID     - The AWS access key id
+# - AWS_REGION            - The AWS region where the bucket is created. Example `us-west-1`
+# - CLOUDFRONT_ID         - Optionally define the AWS Cloudfront ID to invalidate the cache after the build
+#
+# Environment secrets:
+# - AWS_SECRET_ACCESS_KEY - The AWS secret access key
+
+name: Web - Test - PR Deploy Preview
+run-name: Deploy Preview - PR ${{ github.event.pull_request.number || '0' }}
 
 on:
   pull_request:
@@ -59,6 +77,7 @@ jobs:
           BUCKET: ${{ vars.BUCKET }}
           DIR: ${{ github.event.pull_request.number || '0' }}
       - name: Invalidate cloudfront distribution
+        if: ${{ vars.CLOUDFRONT_ID }}
         run: aws cloudfront create-invalidation --distribution-id $CLOUDFRONT_ID --paths "/$DIR/images/*" "/$DIR/*.*"
         env:
           CLOUDFRONT_ID: ${{ vars.CLOUDFRONT_ID }}
