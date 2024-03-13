@@ -14,14 +14,15 @@
       "error": "Ocurrió un error al eliminar su cuenta. Inténtalo de nuevo.",
       "invalid_credentials": "¡Contraseña incorrecta!",
       "modal": {
+        "description": "Introduce la contraseña para continuar",
         "placeholder": "Ingresa tu contraseña",
         "text_cant_be_undone": "Tenga en cuenta que este proceso no se puede deshacer, así que proceda con precaución.",
         "text_contacts": "Si tiene más preguntas o inquietudes, no dude en ponerse en contacto con nuestro equipo de soporte.",
         "text_data_erasure": "Tenga en cuenta que si elige continuar con este proceso, todos sus datos personales se borrarán de nuestro sistema. Esto incluye cualquier información personal que haya proporcionado durante el proceso de registro, así como cualquier información de ubicación y dispositivo que hayamos recopilado durante el proceso de autenticación. Además, también se eliminará toda otra información personal almacenada en varias partes de nuestra base de datos. Sin embargo, tenga en cuenta que, debido a algunas legislaciones, estamos obligados a mantener ciertos datos personales como parte de los registros de transacciones y suscripciones.",
         "text_revoked_access": "Una vez que se complete el borrado, se revocarán todos sus accesos activos y se cancelarán todas las sesiones de inicio de sesión activas, incluida esta. La información de su cuenta ya no será accesible para nuestro personal de ninguna manera.",
-        "description": "Introduce la contraseña para continuar",
         "warning": "Todas las suscripciones activas que se compraron a través de un navegador web se cancelarán automáticamente al borrar los datos personales. Sin embargo, si compró una suscripción a través de las aplicaciones iOS, Android, Roku o Amazon, tenga en cuenta que no se cancelará automáticamente. En este caso, deberá seguir los pasos habituales de cancelación de suscripción para cada plataforma respectiva para cancelar manualmente la suscripción."
       },
+      "success": "Tu cuenta ha sido eliminada",
       "title": "Borrar cuenta"
     },
     "delete_account_password_warning": {
@@ -32,7 +33,6 @@
     "edit_information": "Editar información",
     "edit_password": "Editar contraseña",
     "email": "Correo electrónico",
-    "update_success": "Tu {{section}} ha sido actualizado con éxito.",
     "errors": {
       "email_exists": "¡El correo electrónico ya existe!",
       "email_update_not_supported": "No se admite la actualización del correo electrónico",
@@ -61,6 +61,7 @@
     "security": "Contraseña",
     "terms_and_tracking": "Jurídico y marketing",
     "update_consents": "Actualizar consentimientos",
+    "update_success": "Tu {{section}} ha sido actualizado con éxito.",
     "view_password": "Ver contraseña",
     "who_is_watching": "¿Quién está mirando?"
   },
@@ -74,7 +75,6 @@
   "login": {
     "field_required": "Este campo es obligatorio, por favor ingresa un {{field}} válido."
   },
-  "name": "Nombre",
   "nav": {
     "account": "Cuenta",
     "add_profile": "Añade un nuevo perfil",
