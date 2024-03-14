@@ -155,8 +155,9 @@ window.jwpltx = window.jwpltx || {};
       return;
     }
 
-    // 0 or negative vd means live stream
-    if (vd < 1) {
+    // 0 or negative vd - Live Stream with DVR
+    // Infinity -> Live Stream without DVR
+    if (vd < 1 || vd === Infinity) {
       // Initial tick means play() event
       if (!uri.pw) {
         uri.vd = 0;
