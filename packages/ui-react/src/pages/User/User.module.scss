@@ -38,7 +38,8 @@
 }
 
 .button span {
-  word-break: break-word;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .logoutLi {
@@ -78,7 +79,8 @@
   padding-bottom: variables.$base-spacing;
   border-bottom: theme.$panel-header-border-bottom;
 
-  > h2 {
+  > h2,
+  > h3 {
     font-weight: var(--body-font-weight-bold);
     font-size: 24px;
     line-height: 26px;

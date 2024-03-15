@@ -19,7 +19,7 @@ describe('<Cinema>', () => {
     mockService(WatchHistoryController, {});
   });
 
-  test('renders and matches snapshot', () => {
+  test('renders and matches snapshot', async () => {
     const item = {
       description: 'Test item description',
       duration: 354,
@@ -38,10 +38,19 @@ describe('<Cinema>', () => {
       tracks: [],
     } as PlaylistItem;
 
-    const { container } = renderWithRouter(
-      <Cinema item={item} onPlay={() => null} onPause={() => null} open={true} title={item.title} primaryMetadata="Primary metadata" />,
+    const { baseElement } = renderWithRouter(
+      <Cinema
+        item={item}
+        onPlay={() => null}
+        onPause={() => null}
+        open
+        title={item.title}
+        primaryMetadata="Primary metadata"
+        onClose={vi.fn()}
+        onNext={vi.fn()}
+      />,
     );
 
-    expect(container).toMatchSnapshot();
+    expect(baseElement).toMatchSnapshot();
   });
 });

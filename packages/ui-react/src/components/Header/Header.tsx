@@ -13,6 +13,7 @@ import SearchBar, { type Props as SearchBarProps } from '../SearchBar/SearchBar'
 import Logo from '../Logo/Logo';
 import Button from '../Button/Button';
 import UserMenu from '../UserMenu/UserMenu';
+import ProfilesMenu from '../ProfilesMenu/ProfilesMenu';
 import IconButton from '../IconButton/IconButton';
 import LanguageMenu from '../LanguageMenu/LanguageMenu';
 import Panel from '../Panel/Panel';
@@ -35,8 +36,8 @@ type Props = {
   onCloseSearchButtonClick?: () => void;
   onLoginButtonClick?: () => void;
   onSignUpButtonClick?: () => void;
-  openUserMenu: () => void;
-  closeUserMenu: () => void;
+  openUserPanel: () => void;
+  closeUserPanel: () => void;
   openLanguageMenu: () => void;
   closeLanguageMenu: () => void;
   children?: ReactNode;
@@ -76,8 +77,8 @@ const Header: React.FC<Props> = ({
   sideBarOpen,
   userMenuOpen,
   languageMenuOpen,
-  openUserMenu,
-  closeUserMenu,
+  openUserPanel,
+  closeUserPanel,
   openLanguageMenu,
   closeLanguageMenu,
   canLogin = false,
@@ -131,10 +132,11 @@ const Header: React.FC<Props> = ({
         <IconButton
           className={classNames(styles.iconButton, styles.actionButton)}
           aria-label={t('open_user_menu')}
-          aria-controls="user_menu_panel"
+          aria-controls="menu_panel"
           aria-expanded={userMenuOpen}
-          onClick={openUserMenu}
-          onBlur={closeUserMenu}
+          aria-haspopup="menu"
+          onClick={openUserPanel}
+          onBlur={closeUserPanel}
         >
           {profilesEnabled && currentProfile ? (
             <ProfileCircle src={currentProfile.avatar_url} alt={currentProfile.name || t('profile_icon')} />
@@ -142,29 +144,35 @@ const Header: React.FC<Props> = ({
             <Icon icon={AccountCircle} />
           )}
         </IconButton>
-        <Popover isOpen={userMenuOpen} onClose={closeUserMenu}>
-          <Panel id="user_menu_panel">
-            <UserMenu
-              focusable={userMenuOpen}
-              onClick={closeUserMenu}
-              onFocus={openUserMenu}
-              onBlur={closeUserMenu}
-              showPaymentsItem={showPaymentsMenuItem}
-              currentProfile={currentProfile}
-              profilesEnabled={profilesEnabled}
-              profiles={profiles}
-              selectProfile={selectProfile}
-              isSelectingProfile={!!isSelectingProfile}
-              favoritesEnabled={favoritesEnabled}
-              small
-            />
+        <Popover isOpen={userMenuOpen} onClose={closeUserPanel}>
+          <Panel id="menu_panel">
+            <div onFocus={openUserPanel} onBlur={closeUserPanel}>
+              {profilesEnabled && (
+                <ProfilesMenu
+                  onButtonClick={closeUserPanel}
+                  profiles={profiles ?? []}
+                  currentProfile={currentProfile}
+                  selectingProfile={!!isSelectingProfile}
+                  selectProfile={selectProfile}
+                  small
+                />
+              )}
+              <UserMenu
+                focusable={userMenuOpen}
+                onButtonClick={closeUserPanel}
+                showPaymentsItem={showPaymentsMenuItem}
+                currentProfile={currentProfile}
+                favoritesEnabled={favoritesEnabled}
+                small
+              />
+            </div>
           </Panel>
         </Popover>
       </React.Fragment>
     ) : (
       <div className={styles.buttonContainer}>
-        <Button onClick={onLoginButtonClick} label={t('sign_in')} />
-        <Button variant="contained" color="primary" onClick={onSignUpButtonClick} label={t('sign_up')} />
+        <Button onClick={onLoginButtonClick} label={t('sign_in')} aria-haspopup="dialog" />
+        <Button variant="contained" color="primary" onClick={onSignUpButtonClick} label={t('sign_up')} aria-haspopup="dialog" />
       </div>
     );
   };
@@ -200,7 +208,7 @@ const Header: React.FC<Props> = ({
             aria-controls="sidebar"
             aria-haspopup="true"
             aria-expanded={sideBarOpen}
-            onClick={onMenuButtonClick}
+            onClick={() => onMenuButtonClick()}
           >
             <Icon icon={Menu} />
           </IconButton>

@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import useCheckout from '@jwp/ott-hooks-react/src/useCheckout';
-import { modalURLFromLocation } from '@jwp/ott-ui-react/src/utils/location';
+import { modalURLFromLocation, modalURLFromWindowLocation } from '@jwp/ott-ui-react/src/utils/location';
 import useForm from '@jwp/ott-hooks-react/src/useForm';
-import { createURL } from '@jwp/ott-common/src/utils/urlFormatting';
 import { FormValidationError } from '@jwp/ott-common/src/errors/FormValidationError';
 import { useTranslation } from 'react-i18next';
 
@@ -11,7 +10,7 @@ import CheckoutForm from '../../../components/CheckoutForm/CheckoutForm';
 import LoadingOverlay from '../../../components/LoadingOverlay/LoadingOverlay';
 import PayPal from '../../../components/PayPal/PayPal';
 import NoPaymentRequired from '../../../components/NoPaymentRequired/NoPaymentRequired';
-import PaymentForm, { PaymentFormData } from '../../../components/PaymentForm/PaymentForm';
+import PaymentForm, { type PaymentFormData } from '../../../components/PaymentForm/PaymentForm';
 import AdyenInitialPayment from '../../AdyenInitialPayment/AdyenInitialPayment';
 import { useAriaAnnouncer } from '../../AnnouncementProvider/AnnoucementProvider';
 
@@ -31,7 +30,7 @@ const Checkout = () => {
 
   const backButtonClickHandler = () => navigate(chooseOfferUrl);
 
-  const { offer, offerType, paymentMethods, order, isSubmitting, updateOrder, submitPaymentWithoutDetails, submitPaymentPaypal, submitPaymentStripe } =
+  const { selectedOffer, offerType, paymentMethods, order, isSubmitting, updateOrder, submitPaymentWithoutDetails, submitPaymentPaypal, submitPaymentStripe } =
     useCheckout({
       onUpdateOrderSuccess: () => !!couponCode && setShowCouponCodeSuccess(true),
       onSubmitPaymentWithoutDetailsSuccess: () => {
@@ -75,10 +74,10 @@ const Checkout = () => {
   };
 
   useEffect(() => {
-    if (!offer) {
+    if (!selectedOffer) {
       return navigate(chooseOfferUrl, { replace: true });
     }
-  }, [navigate, chooseOfferUrl, offer]);
+  }, [navigate, chooseOfferUrl, selectedOffer]);
 
   // Pre-select first payment method
   useEffect(() => {
@@ -93,7 +92,7 @@ const Checkout = () => {
   }, []);
 
   // loading state
-  if (!offer || !order || !paymentMethods || !offerType) {
+  if (!selectedOffer || !order || !paymentMethods || !offerType) {
     return (
       <div style={{ height: 300 }}>
         <LoadingOverlay inline />
@@ -101,23 +100,22 @@ const Checkout = () => {
     );
   }
 
-  const cancelUrl = createURL(window.location.href, { u: 'payment-cancelled' });
-  const waitingUrl = createURL(window.location.href, { u: 'waiting-for-payment' });
-  const errorUrl = createURL(window.location.href, { u: 'payment-error' });
-  const successUrl = offerType === 'svod' ? welcomeUrl : closeModalUrl;
-  const successUrlWithOrigin = `${window.location.origin}${successUrl}`;
+  const cancelUrl = modalURLFromWindowLocation('payment-cancelled');
+  const waitingUrl = modalURLFromWindowLocation('waiting-for-payment', { offerId: selectedOffer?.offerId });
+  const errorUrl = modalURLFromWindowLocation('payment-error');
+  const successUrlPaypal = offerType === 'svod' ? waitingUrl : closeModalUrl;
   const referrer = window.location.href;
 
   const paymentMethod = paymentMethods?.find((method) => method.id === parseInt(paymentMethodId));
   const noPaymentRequired = !order?.requiredPaymentDetails;
   const isStripePayment = paymentMethod?.methodName === 'card' && paymentMethod?.provider === 'stripe';
-  const isAdyenPayment = paymentMethod?.methodName === 'card' && paymentMethod?.paymentGateway === 'adyen'; // @todo: conversion from controller?
+  const isAdyenPayment = paymentMethod?.methodName === 'card' && paymentMethod?.paymentGateway === 'adyen';
   const isPayPalPayment = paymentMethod?.methodName === 'paypal';
 
   return (
     <CheckoutForm
       order={order}
-      offer={offer}
+      offer={selectedOffer}
       offerType={offerType}
       onBackButtonClick={backButtonClickHandler}
       paymentMethods={paymentMethods}
@@ -154,7 +152,7 @@ const Checkout = () => {
       )}
       {isPayPalPayment && (
         <PayPal
-          onSubmit={() => submitPaymentPaypal.mutate({ successUrl: successUrlWithOrigin, waitingUrl, cancelUrl, errorUrl, couponCode })}
+          onSubmit={() => submitPaymentPaypal.mutate({ successUrl: successUrlPaypal, waitingUrl, cancelUrl, errorUrl, couponCode })}
           error={submitPaymentPaypal.error?.message || null}
         />
       )}

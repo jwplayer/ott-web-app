@@ -1,0 +1,29 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`<VideoMetaData> > renders and matches snapshot 1`] = `
+<div>
+  <div>
+    <span>
+      2023
+    </span>
+    <span
+      aria-hidden="true"
+      class="_separator_1267df"
+    >
+      |
+    </span>
+    <span>
+      Comedy
+    </span>
+    <span
+      aria-hidden="true"
+      class="_separator_1267df"
+    >
+      |
+    </span>
+    <span>
+      something
+    </span>
+  </div>
+</div>
+`;

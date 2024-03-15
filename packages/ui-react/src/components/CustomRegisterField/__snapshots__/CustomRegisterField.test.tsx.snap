@@ -19,6 +19,9 @@ exports[`<CustomRegisterField> > renders and matches snapshot <Checkbox> 1`] = `
       <label
         for="check-box_1235_name"
       >
+        <span
+          aria-hidden="true"
+        />
         label
       </label>
     </div>
@@ -101,6 +104,7 @@ exports[`<CustomRegisterField> > renders and matches snapshot <Dropdown type="da
         name="name"
       />
       <input
+        autocomplete="bday-day"
         class="_input_eb6974"
         id="text-field_1235_name-date"
         maxlength="2"
@@ -111,6 +115,7 @@ exports[`<CustomRegisterField> > renders and matches snapshot <Dropdown type="da
       />
        / 
       <input
+        autocomplete="bday-month"
         class="_input_eb6974"
         id="text-field_1235_name-month"
         maxlength="2"
@@ -121,6 +126,7 @@ exports[`<CustomRegisterField> > renders and matches snapshot <Dropdown type="da
       />
        / 
       <input
+        autocomplete="bday-year"
         class="_input_eb6974"
         id="text-field_1235_name-year"
         maxlength="4"
@@ -153,6 +159,9 @@ exports[`<CustomRegisterField> > renders and matches snapshot <Dropdown type="ra
       <label
         for="check-box_1235_name"
       >
+        <span
+          aria-hidden="true"
+        />
         label
       </label>
     </div>
@@ -284,7 +293,6 @@ exports[`<CustomRegisterField> > renders and matches snapshot <TextField> 1`] = 
       <input
         aria-describedby="helper_text_1235_name"
         aria-invalid="false"
-        aria-required="false"
         class="_input_e16c1b"
         id="text-field_1235_name"
         name="name"

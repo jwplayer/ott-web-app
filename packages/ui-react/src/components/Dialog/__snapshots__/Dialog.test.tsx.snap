@@ -13,7 +13,7 @@ exports[`<Dialog> > renders and matches snapshot 1`] = `
     </span>
   </div>
   <div
-    style="transition: opacity 0.3s ease-in-out; opacity: 0;"
+    style="transition: opacity 0.3s ease-in-out; opacity: 0; will-change: opacity;"
   >
     <div
       class="_modal_6c6c55"
@@ -23,15 +23,15 @@ exports[`<Dialog> > renders and matches snapshot 1`] = `
         data-testid="backdrop"
       />
       <div
-        aria-modal="true"
         class="_container_6c6c55"
-        data-testid="container"
       >
         <div
           style="transition: transform 0.2s ease, opacity 0.2s ease; transform: translate(0, -15px); opacity: 0; z-index: 15;"
         >
           <div
+            aria-modal="true"
             class="_dialog_00d559 _small_00d559"
+            data-testid="dialog"
             role="dialog"
           >
             Dialog contents

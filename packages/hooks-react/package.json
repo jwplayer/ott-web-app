@@ -5,8 +5,8 @@
   "scripts": {
     "lint:ts": "tsc --pretty --noEmit -p ./",
     "test": "TZ=UTC LC_ALL=en_US.UTF-8 vitest run",
-    "test-watch": "TZ=UTC LC_ALL=en_US.UTF-8 vitest",
-    "test-update": "TZ=UTC LC_ALL=en_US.UTF-8 vitest run --update"
+    "test-update": "TZ=UTC LC_ALL=en_US.UTF-8 vitest run --update",
+    "test-watch": "TZ=UTC LC_ALL=en_US.UTF-8 vitest"
   },
   "dependencies": {
     "@inplayer-org/inplayer.js": "^3.13.24",
@@ -24,7 +24,7 @@
     "@testing-library/react": "^14.0.0",
     "@types/jwplayer": "^8.2.13",
     "vi-fetch": "^0.8.0",
-    "vitest": "^0.34.6"
+    "vitest": "^1.3.1"
   },
   "peerDependencies": {
     "@jwp/ott-common": "*",

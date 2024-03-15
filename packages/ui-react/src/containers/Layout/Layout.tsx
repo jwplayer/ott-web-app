@@ -3,7 +3,6 @@ import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
 import { Outlet, useLocation, useNavigate } from 'react-router';
 import { shallow } from '@jwp/ott-common/src/utils/compare';
-import classNames from 'classnames';
 import { getModule } from '@jwp/ott-common/src/modules/container';
 import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
 import { useUIStore } from '@jwp/ott-common/src/stores/UIStore';
@@ -11,20 +10,21 @@ import { useConfigStore } from '@jwp/ott-common/src/stores/ConfigStore';
 import { useProfileStore } from '@jwp/ott-common/src/stores/ProfileStore';
 import ProfileController from '@jwp/ott-common/src/controllers/ProfileController';
 import { modalURLFromLocation } from '@jwp/ott-ui-react/src/utils/location';
-import { IS_DEVELOPMENT_BUILD, unicodeToChar } from '@jwp/ott-common/src/utils/common';
+import { unicodeToChar } from '@jwp/ott-common/src/utils/common';
 import { ACCESS_MODEL } from '@jwp/ott-common/src/constants';
 import useSearchQueryUpdater from '@jwp/ott-ui-react/src/hooks/useSearchQueryUpdater';
 import { useProfiles, useSelectProfile } from '@jwp/ott-hooks-react/src/useProfiles';
+import useOpaqueId from '@jwp/ott-hooks-react/src/useOpaqueId';
 import { PATH_HOME, PATH_USER_PROFILES } from '@jwp/ott-common/src/paths';
 import { playlistURL } from '@jwp/ott-common/src/utils/urlFormatting';
 import env from '@jwp/ott-common/src/env';
 
-import MarkdownComponent from '../../components/MarkdownComponent/MarkdownComponent';
 import Header from '../../components/Header/Header';
 import Sidebar from '../../components/Sidebar/Sidebar';
 import MenuButton from '../../components/MenuButton/MenuButton';
 import UserMenu from '../../components/UserMenu/UserMenu';
 import Button from '../../components/Button/Button';
+import Footer from '../../components/Footer/Footer';
 
 import styles from './Layout.module.scss';
 
@@ -37,6 +37,7 @@ const Layout = () => {
     ({ config, accessModel, supportedLanguages }) => ({ config, accessModel, supportedLanguages }),
     shallow,
   );
+  const userMenuTitleId = useOpaqueId('usermenu-title');
   const isLoggedIn = !!useAccountStore(({ user }) => user);
   const favoritesEnabled = !!config.features?.favoritesList;
   const { menu, assets, siteName, description, features, styling } = config;
@@ -123,8 +124,8 @@ const Layout = () => {
   };
 
   // useCallbacks are used here to fix a bug in the Popover when using a Reactive onClose callback
-  const openUserMenu = useCallback(() => useUIStore.setState({ userMenuOpen: true }), []);
-  const closeUserMenu = useCallback(() => useUIStore.setState({ userMenuOpen: false }), []);
+  const openUserPanel = useCallback(() => useUIStore.setState({ userMenuOpen: true }), []);
+  const closeUserPanel = useCallback(() => useUIStore.setState({ userMenuOpen: false }), []);
   const openLanguageMenu = useCallback(() => useUIStore.setState({ languageMenuOpen: true }), []);
   const closeLanguageMenu = useCallback(() => useUIStore.setState({ languageMenuOpen: false }), []);
 
@@ -132,7 +133,9 @@ const Layout = () => {
     if (!canLogin) return null;
 
     return isLoggedIn ? (
-      <UserMenu focusable={sideBarOpen} favoritesEnabled={favoritesEnabled} showPaymentsItem />
+      <section aria-labelledby={userMenuTitleId}>
+        <UserMenu focusable={sideBarOpen} favoritesEnabled={favoritesEnabled} titleId={userMenuTitleId} showPaymentsItem />
+      </section>
     ) : (
       <div className={styles.buttonContainer}>
         <Button tabIndex={sideBarOpen ? 0 : -1} onClick={loginButtonClickHandler} label={t('sign_in')} fullWidth />
@@ -144,7 +147,7 @@ const Layout = () => {
   const containerProps = { inert: sideBarOpen ? '' : undefined }; // inert is not yet officially supported in react
 
   return (
-    <div>
+    <div className={styles.layout}>
       <Helmet>
         <title>{siteName}</title>
         <meta name="description" content={metaDescription} />
@@ -176,8 +179,8 @@ const Layout = () => {
           sideBarOpen={sideBarOpen}
           userMenuOpen={userMenuOpen}
           languageMenuOpen={languageMenuOpen}
-          openUserMenu={openUserMenu}
-          closeUserMenu={closeUserMenu}
+          openUserPanel={openUserPanel}
+          closeUserPanel={closeUserPanel}
           openLanguageMenu={openLanguageMenu}
           closeLanguageMenu={closeLanguageMenu}
           canLogin={canLogin}
@@ -199,22 +202,19 @@ const Layout = () => {
         <main id="content" className={styles.main} tabIndex={-1}>
           <Outlet />
         </main>
-        {!!footerText && (
-          <MarkdownComponent
-            // The extra style below is just to fix the footer on mobile when the dev selector is shown
-            className={classNames(styles.footer, { [styles.testFixMargin]: IS_DEVELOPMENT_BUILD })}
-            markdownString={footerText}
-            tag="footer"
-            inline
-          />
-        )}
+        {!!footerText && <Footer text={footerText} />}
       </div>
       <Sidebar isOpen={sideBarOpen} onClose={() => setSideBarOpen(false)}>
-        <MenuButton label={t('home')} to="/" tabIndex={sideBarOpen ? 0 : -1} />
-        {menu.map((item) => (
-          <MenuButton key={item.contentId} label={item.label} to={playlistURL(item.contentId)} tabIndex={sideBarOpen ? 0 : -1} />
-        ))}
-        <hr className={styles.divider} />
+        <ul>
+          <li>
+            <MenuButton label={t('home')} to="/" />
+          </li>
+          {menu.map((item) => (
+            <li key={item.contentId}>
+              <MenuButton label={item.label} to={playlistURL(item.contentId)} />
+            </li>
+          ))}
+        </ul>
         {renderUserActions(sideBarOpen)}
       </Sidebar>
     </div>

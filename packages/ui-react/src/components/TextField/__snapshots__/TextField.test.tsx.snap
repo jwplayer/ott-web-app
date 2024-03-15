@@ -20,7 +20,6 @@ exports[`<TextField> > renders and matches multiline readonly snapshot 1`] = `
       <textarea
         aria-describedby="helper_text_1235_name"
         aria-invalid="false"
-        aria-required="false"
         class="_input_e16c1b"
         id="text-field_1235_name"
         name="name"
@@ -53,7 +52,6 @@ exports[`<TextField> > renders and matches multiline snapshot 1`] = `
       <textarea
         aria-describedby="helper_text_1235_name"
         aria-invalid="false"
-        aria-required="false"
         class="_input_e16c1b"
         id="text-field_1235_name"
         name="name"
@@ -85,7 +83,6 @@ exports[`<TextField> > renders and matches readonly snapshot 1`] = `
       <input
         aria-describedby="helper_text_1235_name"
         aria-invalid="false"
-        aria-required="false"
         class="_input_e16c1b"
         id="text-field_1235_name"
         name="name"
@@ -119,7 +116,6 @@ exports[`<TextField> > renders and matches snapshot 1`] = `
       <input
         aria-describedby="helper_text_1235_name"
         aria-invalid="false"
-        aria-required="false"
         class="_input_e16c1b"
         id="text-field_1235_name"
         name="name"

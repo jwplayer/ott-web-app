@@ -18,7 +18,7 @@ async function testPasswordToggling(I: CodeceptJS.I, name = 'password') {
 
   await I.writeClipboard('dummy');
 
-  I.click(`input[name="${name}"]+div div[aria-label="Hide password"]`);
+  I.click(`input[name="${name}"]+div div[aria-label="View password"]`);
   await checkPasswordType(I, name, 'password');
 }
 

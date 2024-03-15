@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import classNames from 'classnames';
 import type { Offer, OfferType, Order, PaymentMethod } from '@jwp/ott-common/types/checkout';

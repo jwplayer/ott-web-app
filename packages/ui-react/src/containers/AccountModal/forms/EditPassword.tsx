@@ -48,7 +48,7 @@ const ResetPassword = ({ type }: { type?: 'add' }) => {
         await accountController.changePasswordWithToken(emailParam || '', password, resetToken, passwordConfirmation);
       }
 
-      announce(t('reset.reset_password_succesful'), 'success');
+      announce(t('reset.password_reset_success'), 'success');
       await accountController.logout();
       navigate(modalURLFromLocation(location, 'login'));
     } catch (error: unknown) {
@@ -100,6 +100,7 @@ const ResetPassword = ({ type }: { type?: 'add' }) => {
       onBlur={passwordForm.handleBlur}
       errors={passwordForm.errors}
       onSubmit={passwordForm.handleSubmit}
+      validationError={passwordForm.validationSchemaError}
       showOldPasswordField={!!(user && !resetPasswordTokenParam)}
       showResetTokenField={type === 'add' || (!user && !resetPasswordTokenParam)}
       email={emailParam || email}

@@ -22,7 +22,7 @@ import Form from '../Form/Form';
 import IconButton from '../IconButton/IconButton';
 import TextField from '../TextField/TextField';
 import Checkbox from '../Checkbox/Checkbox';
-import HelperText from '../HelperText/HelperText';
+import FormFeedback from '../FormFeedback/FormFeedback';
 import CustomRegisterField from '../CustomRegisterField/CustomRegisterField';
 import Icon from '../Icon/Icon';
 import { modalURLFromLocation } from '../../utils/location';
@@ -136,28 +136,38 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
       .forEach((error) => {
         switch (error.trim()) {
           case 'Invalid param email':
+            formErrors.form = t('account.errors.validation_error');
             formErrors.email = t('account.errors.invalid_param_email');
             break;
           case 'Customer email already exists':
+            formErrors.form = t('account.errors.validation_error');
             formErrors.email = t('account.errors.email_exists');
             break;
           case 'Please enter a valid e-mail address.':
+            formErrors.form = t('account.errors.validation_error');
             formErrors.email = t('account.errors.please_enter_valid_email');
             break;
           case 'Invalid confirmationPassword': {
+            formErrors.form = t('account.errors.validation_error');
             formErrors.confirmationPassword = t('account.errors.invalid_password');
             break;
           }
           case 'firstName can have max 50 characters.': {
+            formErrors.form = t('account.errors.validation_error');
             formErrors.firstName = t('account.errors.first_name_too_long');
             break;
           }
           case 'lastName can have max 50 characters.': {
+            formErrors.form = t('account.errors.validation_error');
             formErrors.lastName = t('account.errors.last_name_too_long');
             break;
           }
           case 'Email update not supported': {
             formErrors.form = t('account.errors.email_update_not_supported');
+            break;
+          }
+          case 'Wrong email/password combination': {
+            formErrors.form = t('account.errors.wrong_combination');
             break;
           }
           default: {
@@ -185,8 +195,8 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
         // Render the section content, but also add a warning text if there's a form level error
         return (
           <>
+            {formErrors?.form ? <FormFeedback variant="error">{formErrors.form}</FormFeedback> : null}
             {props.content?.({ ...args, errors: formErrors })}
-            <HelperText error={!!formErrors?.form}>{formErrors?.form}</HelperText>
           </>
         );
       },
@@ -242,6 +252,7 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
                   helperText={section.errors?.firstName}
                   disabled={section.isBusy}
                   editing={section.isEditing}
+                  autoComplete="given-name"
                   lang={htmlLang}
                 />
                 <TextField
@@ -253,6 +264,7 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
                   helperText={section.errors?.lastName}
                   disabled={section.isBusy}
                   editing={section.isEditing}
+                  autoComplete="family-name"
                   lang={htmlLang}
                 />
               </>
@@ -261,6 +273,9 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
           formSection({
             label: t('account.email'),
             onSubmit: async (values) => {
+              if (!values.email || !values.confirmationPassword) {
+                throw new Error('Wrong email/password combination');
+              }
               const response = await accountController.updateUser({
                 email: values.email || '',
                 confirmationPassword: values.confirmationPassword,
@@ -270,7 +285,6 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
 
               return response;
             },
-            canSave: (values) => !!(values.email && values.confirmationPassword),
             editButton: t('account.edit_account'),
             readOnly: !canUpdateEmail,
             content: (section) => (
@@ -284,6 +298,7 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
                   helperText={section.errors?.email}
                   disabled={section.isBusy}
                   editing={section.isEditing}
+                  autoComplete="email"
                   required
                 />
                 {section.isEditing && (
@@ -296,8 +311,9 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
                     helperText={section.errors?.confirmationPassword}
                     type={viewPassword ? 'text' : 'password'}
                     disabled={section.isBusy}
+                    autoComplete="current-password"
                     rightControl={
-                      <IconButton aria-label={viewPassword ? t('account.hide_password') : t('account.view_password')} onClick={() => toggleViewPassword()}>
+                      <IconButton aria-label={t('account.view_password')} onClick={() => toggleViewPassword()} aria-pressed={viewPassword}>
                         <Icon icon={viewPassword ? Visibility : VisibilityOff} />
                       </IconButton>
                     }

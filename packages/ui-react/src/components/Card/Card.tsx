@@ -95,7 +95,7 @@ function Card({
     }
   };
 
-  const heading = React.createElement(`h${headingLevel}`, { className: classNames(styles.title, { [styles.loading]: loading }) }, title);
+  const heading = React.createElement(`h${headingLevel}`, { className: classNames(styles.title, { [styles.loading]: loading }) }, loading ? '' : title);
 
   return (
     <Link
@@ -122,7 +122,7 @@ function Card({
             {featured && !disabled && heading}
             <div className={styles.tags}>
               {isLocked && (
-                <div className={classNames(styles.tag, styles.lock)} aria-label={t('card_lock')}>
+                <div className={classNames(styles.tag, styles.lock)} aria-label={t('card_lock')} role="img">
                   <Icon icon={Lock} />
                 </div>
               )}

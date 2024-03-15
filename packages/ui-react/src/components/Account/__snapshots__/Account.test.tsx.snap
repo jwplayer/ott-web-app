@@ -36,7 +36,7 @@ exports[`<Account> > renders and matches snapshot 1`] = `
         <input
           aria-describedby="helper_text_1235_firstname"
           aria-invalid="false"
-          aria-required="false"
+          autocomplete="given-name"
           class="_input_e16c1b"
           id="text-field_1235_firstname"
           lang="en"
@@ -58,7 +58,7 @@ exports[`<Account> > renders and matches snapshot 1`] = `
         <input
           aria-describedby="helper_text_1235_lastname"
           aria-invalid="false"
-          aria-required="false"
+          autocomplete="family-name"
           class="_input_e16c1b"
           id="text-field_1235_lastname"
           lang="en"
@@ -111,7 +111,7 @@ exports[`<Account> > renders and matches snapshot 1`] = `
         <input
           aria-describedby="helper_text_1235_email"
           aria-invalid="false"
-          aria-required="true"
+          autocomplete="email"
           class="_input_e16c1b"
           id="text-field_1235_email"
           name="email"
@@ -199,6 +199,9 @@ exports[`<Account> > renders and matches snapshot 1`] = `
             for="check-box_1235_consentsvalues_marketing"
             lang="en"
           >
+            <span
+              aria-hidden="true"
+            />
             Receive Marketing Emails
           </label>
         </div>

@@ -27,6 +27,8 @@
 }
 
 .menuItemActive {
+  background: rgba(variables.$white, 0.08);
+
   > a {
     font-weight: bold;
   }

@@ -17,11 +17,11 @@ exports[`<CreditCardNumberField> > renders and matches snapshot 1`] = `
       <input
         aria-describedby="helper_text_1235_cardnumber"
         aria-invalid="false"
-        aria-required="true"
+        autocomplete="cc-number"
         class="_input_e16c1b"
         id="text-field_1235_cardnumber"
         name="cardNumber"
-        pattern="\\\\d*"
+        pattern="\\d*"
         placeholder="1234 5678 9012 3456"
         required=""
         type="text"

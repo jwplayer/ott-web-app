@@ -1,0 +1,36 @@
+@use '@jwp/ott-ui-react/src/styles/variables';
+
+.footer {
+  padding: 20px 40px;
+  line-height: variables.$base-line-height;
+  letter-spacing: 0.15px;
+  text-align: center;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.14), 0 3px 4px rgba(0, 0, 0, 0.12), 0 1px 5px rgba(0, 0, 0, 0.2);
+
+  a,
+  a:visited,
+  a:active,
+  a:hover {
+    color: variables.$white;
+    text-decoration: underline;
+  }
+}
+
+.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  li {
+    display: inline-block;
+    padding: 0 3px;
+
+    &:not(:last-child)::after {
+      content: ' | ';
+    }
+  }
+}
+
+.testFixMargin {
+  margin-bottom: 50px;
+}

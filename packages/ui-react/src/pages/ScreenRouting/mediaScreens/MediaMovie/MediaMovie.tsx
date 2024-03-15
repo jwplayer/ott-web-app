@@ -6,7 +6,7 @@ import { shallow } from '@jwp/ott-common/src/utils/compare';
 import type { PlaylistItem } from '@jwp/ott-common/types/playlist';
 import { useConfigStore } from '@jwp/ott-common/src/stores/ConfigStore';
 import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
-import { formatVideoMetaString } from '@jwp/ott-common/src/utils/formatting';
+import { createVideoMetadata } from '@jwp/ott-common/src/utils/metadata';
 import { mediaURL } from '@jwp/ott-common/src/utils/urlFormatting';
 import { generateMovieJSONLD } from '@jwp/ott-common/src/utils/structuredData';
 import useMedia from '@jwp/ott-hooks-react/src/useMedia';
@@ -26,6 +26,7 @@ import FavoriteButton from '../../../../containers/FavoriteButton/FavoriteButton
 import Button from '../../../../components/Button/Button';
 import InlinePlayer from '../../../../containers/InlinePlayer/InlinePlayer';
 import Icon from '../../../../components/Icon/Icon';
+import VideoMetaData from '../../../../components/VideoMetaData/VideoMetaData';
 
 const MediaMovie: ScreenComponent<PlaylistItem> = ({ data, isLoading }) => {
   const { t } = useTranslation('video');
@@ -70,18 +71,24 @@ const MediaMovie: ScreenComponent<PlaylistItem> = ({ data, isLoading }) => {
     return nextItem && navigate(mediaURL({ media: nextItem, playlistId: features?.recommendationsPlaylist, play: true }));
   }, [id, playlist, navigate, features?.recommendationsPlaylist]);
 
-  // Effects
   useEffect(() => {
     (document.scrollingElement || document.body).scroll({ top: 0 });
+    (document.querySelector('#video-details button') as HTMLElement)?.focus();
   }, [id]);
 
   // UI
   const pageTitle = `${data.title} - ${siteName}`;
   const canonicalUrl = data ? `${window.location.origin}${mediaURL({ media: data })}` : window.location.href;
 
-  const primaryMetadata = formatVideoMetaString(data);
+  const primaryMetadata = <VideoMetaData attributes={createVideoMetadata(data)} />;
   const shareButton = <ShareButton title={data.title} description={data.description} url={canonicalUrl} />;
-  const startWatchingButton = <StartWatchingButton item={data} playUrl={mediaURL({ media: data, playlistId: feedId, play: true })} />;
+  const startWatchingButton = (
+    <StartWatchingButton
+      key={id} // necessary to fix autofocus on TalkBack
+      item={data}
+      playUrl={mediaURL({ media: data, playlistId: feedId, play: true })}
+    />
+  );
 
   const favoriteButton = isFavoritesEnabled && <FavoriteButton item={data} />;
   const trailerButton = (!!trailerItem || isTrailerLoading) && (

@@ -1,7 +1,7 @@
-import type { MediaOffer } from '../../types/media';
+import type { Offer, Order } from '../../types/checkout';
 
-export const mergeOfferIds = (mediaOffers: MediaOffer[] = [], svodOfferIds: string[] = []) => {
-  const mediaOfferIds = mediaOffers.map(({ offerId }) => offerId);
+import { formatPrice } from './formatting';
 
-  return [...mediaOfferIds, ...svodOfferIds];
-};
+export const getOfferPrice = (offer: Offer) => formatPrice(offer.customerPriceInclTax, offer.customerCurrency, offer.customerCountry);
+
+export const isSVODOffer = (offer: Offer | Order) => offer.offerId?.[0] === 'S';

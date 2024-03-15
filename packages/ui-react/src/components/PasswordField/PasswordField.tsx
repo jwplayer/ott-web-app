@@ -16,13 +16,14 @@ type Props = {
   value?: string;
   label?: string;
   placeholder?: string;
+  helperText?: React.ReactNode;
   name: string;
   required?: boolean;
   showToggleView?: boolean;
   showHelperText?: boolean;
 };
 
-const PasswordField: React.FC<Props> = ({ value, showToggleView = true, showHelperText = true, ...props }: Props) => {
+const PasswordField: React.FC<Props> = ({ value, showToggleView = true, helperText, showHelperText = true, ...props }: Props) => {
   const { t } = useTranslation('account');
   const [viewPassword, toggleViewPassword] = useToggle();
 
@@ -30,17 +31,18 @@ const PasswordField: React.FC<Props> = ({ value, showToggleView = true, showHelp
     <TextField
       {...props}
       helperText={
-        showHelperText ? (
+        helperText ||
+        (showHelperText ? (
           <React.Fragment>
             <PasswordStrength password={value || ''} />
             {t('reset.password_helper_text')}
           </React.Fragment>
-        ) : null
+        ) : null)
       }
       type={viewPassword ? 'text' : 'password'}
       rightControl={
         showToggleView ? (
-          <IconButton aria-label={viewPassword ? t('reset.hide_password') : t('reset.view_password')} onClick={() => toggleViewPassword()}>
+          <IconButton aria-label={t('reset.view_password')} onClick={() => toggleViewPassword()} aria-pressed={viewPassword}>
             <Icon icon={viewPassword ? Visibility : VisibilityOff} />
           </IconButton>
         ) : null

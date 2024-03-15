@@ -27,7 +27,7 @@ exports[`<RegistrationForm> > renders and matches snapshot 1`] = `
         <input
           aria-describedby="helper_text_1235_email"
           aria-invalid="false"
-          aria-required="true"
+          autocomplete="email"
           class="_input_e16c1b"
           id="text-field_1235_email"
           name="email"
@@ -53,7 +53,7 @@ exports[`<RegistrationForm> > renders and matches snapshot 1`] = `
         <input
           aria-describedby="helper_text_1235_password"
           aria-invalid="false"
-          aria-required="true"
+          autocomplete="new-password"
           class="_input_e16c1b"
           id="text-field_1235_password"
           name="password"
@@ -67,6 +67,7 @@ exports[`<RegistrationForm> > renders and matches snapshot 1`] = `
         >
           <div
             aria-label="registration.view_password"
+            aria-pressed="false"
             class="_iconButton_0fef65"
             role="button"
             tabindex="0"
@@ -85,9 +86,8 @@ exports[`<RegistrationForm> > renders and matches snapshot 1`] = `
         </div>
       </div>
       <div
-        aria-live="polite"
         class="_helperText_da58e0"
-        id="helper_text_1235_password_1235"
+        id="helper_text_1235_password"
       >
         registration.password_helper_text
       </div>

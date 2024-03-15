@@ -34,8 +34,6 @@ exports[`Home Component tests > Home test 1`] = `
             >
               <li
                 aria-hidden="false"
-                aria-posinset="1"
-                aria-setsize="2"
                 class=""
                 style="width: 20%; padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
               >
@@ -76,8 +74,6 @@ exports[`Home Component tests > Home test 1`] = `
               </li>
               <li
                 aria-hidden="false"
-                aria-posinset="2"
-                aria-setsize="2"
                 class=""
                 style="width: 20%; padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
               >
@@ -141,8 +137,6 @@ exports[`Home Component tests > Home test 1`] = `
             >
               <li
                 aria-hidden="false"
-                aria-posinset="1"
-                aria-setsize="2"
                 class=""
                 style="width: 20%; padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
               >
@@ -183,8 +177,6 @@ exports[`Home Component tests > Home test 1`] = `
               </li>
               <li
                 aria-hidden="false"
-                aria-posinset="2"
-                aria-setsize="2"
                 class=""
                 style="width: 20%; padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
               >

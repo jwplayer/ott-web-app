@@ -512,7 +512,7 @@ const stepsObj = {
           direction: scrollToTheRight ? 'left' : 'right',
         });
       } else {
-        this.click({ css: `div[aria-label="Slide ${scrollToTheRight ? 'right' : 'left'}"]` }, shelfLocator);
+        this.click({ css: `div[aria-label="${scrollToTheRight ? 'Next slide' : 'Previous slide'}"]` }, shelfLocator);
       }
 
       this.wait(1);

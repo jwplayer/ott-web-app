@@ -76,30 +76,15 @@ div.title {
   margin-right: auto;
   margin-bottom: 0;
   font-size: 16px;
-  line-height: 18px;
+  line-height: variables.$base-line-height;
   letter-spacing: 0.15px;
-
-  > :first-child {
-    display: inline-block;
-    margin-right: 8px;
-
-    @include responsive.mobile-only() {
-      margin: 2px 4px 0 0;
-      padding: 2px 4px;
-    }
-  }
-
-  @include responsive.mobile-and-small-tablet() {
-    margin-bottom: variables.$base-spacing;
-    font-size: 14px;
-  }
 }
 
 .secondaryMetadata {
   margin-top: 24px;
   margin-bottom: 8px;
   font-size: 20px;
-  line-height: 20px;
+  line-height: variables.$base-line-height;
   letter-spacing: 0.5px;
 
   @include responsive.mobile-only() {
@@ -112,6 +97,6 @@ div.title {
   min-height: 21px;
   margin-bottom: 24px;
   font-size: 18px;
-  line-height: 20px;
+  line-height: variables.$base-line-height;
   letter-spacing: 0.5px;
 }

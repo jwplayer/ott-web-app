@@ -1,0 +1,13 @@
+@use '@jwp/ott-ui-react/src/styles/mixins/responsive';
+
+.icon {
+  margin-right: 8px;
+
+  @include responsive.mobile-only() {
+    padding: 2px 4px;
+  }
+
+  @include responsive.mobile-and-small-tablet() {
+    font-size: 14px;
+  }
+}

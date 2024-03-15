@@ -10,14 +10,18 @@
   padding: calc(#{variables.$base-spacing} / 2) variables.$base-spacing;
 
   font-size: 14px;
-  line-height: 18px;
+  line-height: variables.$base-line-height;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.14), 0 3px 4px rgba(0, 0, 0, 0.12), 0 1px 5px rgba(0, 0, 0, 0.2);
   background: theme.$panel-bg;
   border-radius: 4px;
 
   > strong {
-    line-height: 16px;
     letter-spacing: 0.25px;
+  }
+
+  @include responsive.mobile-only() {
+    flex-direction: column;
+    align-items: flex-start;
   }
 }
 
@@ -40,22 +44,32 @@
   display: flex;
   justify-content: center;
   align-items: center;
+
   > div {
     margin-left: variables.$base-spacing;
+
+    @include responsive.mobile-only() {
+      margin-left: 0;
+    }
+  }
+
+  @include responsive.mobile-only() {
+    justify-content: space-between;
+    width: 100%;
   }
 }
 
-.transationPrice {
+.transactionPrice {
   font-size: 1.25em;
 }
 
 .price {
   font-size: 14px;
-  line-height: 18px;
+  line-height: variables.$base-line-height;
+
   > strong {
     font-weight: var(--body-font-weight-bold);
     font-size: 24px;
-    line-height: 26px;
   }
 }
 
@@ -100,4 +114,8 @@
 
 .changePlanCancelButton {
   margin-left: auto;
+}
+
+.editCard {
+  margin: 0 0 8px;
 }

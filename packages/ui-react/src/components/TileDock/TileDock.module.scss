@@ -9,6 +9,7 @@
 .tileDock li {
   display: inline-block;
   white-space: normal;
+  vertical-align: top;
   list-style-type: none;
 }
 .notInView {
@@ -19,15 +20,15 @@
 }
 .tileDock .leftControl {
   position: absolute;
-  top: calc(50% + 25px);
-  left: 0;
+  top: calc(50% + 22px);
+  left: 1px;
   z-index: 1;
   transform: translateY(-100%);
 }
 .tileDock .rightControl {
   position: absolute;
-  top: calc(50% + 25px);
-  right: 0;
+  top: calc(50% + 22px);
+  right: 1px;
   z-index: 1;
   transform: translateY(-100%);
 }

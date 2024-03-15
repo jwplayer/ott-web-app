@@ -1,5 +1,5 @@
-import { CONTENT_TYPE } from '../constants';
 import type { Playlist, PlaylistItem } from '../../types/playlist';
+import { CONTENT_TYPE } from '../constants';
 
 type RequiredProperties<T, P extends keyof T> = T & Required<Pick<T, P>>;
 

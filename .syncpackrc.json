@@ -1,37 +1,88 @@
 {
   "$schema": "https://unpkg.com/syncpack@11.2.1/dist/schema.json",
+  "sortFirst": [
+    "name",
+    "description",
+    "version",
+    "private",
+    "license",
+    "repository",
+    "author",
+    "main",
+    "exports",
+    "engines",
+    "workspaces",
+    "scripts"
+  ],
   "semverGroups": [
     {
-      "dependencies": ["codeceptjs", "codeceptjs**", "react-router", "react-router-dom"],
-      "packages": ["**"],
+      "dependencies": [
+        "codeceptjs",
+        "codeceptjs**",
+        "react-router",
+        "react-router-dom",
+        "typescript"
+      ],
+      "packages": [
+        "**"
+      ],
       "isIgnored": true
     },
     {
       "range": "^",
-      "dependencies": ["**"],
-      "packages": ["**"],
-      "dependencyTypes": ["prod", "dev", "peer", "resolutions"]
+      "dependencies": [
+        "**"
+      ],
+      "packages": [
+        "**"
+      ],
+      "dependencyTypes": [
+        "prod",
+        "dev",
+        "peer"
+      ]
     }
   ],
   "versionGroups": [
     {
       "label": "Ensure semver ranges for locally developed packages satisfy the local version",
-      "dependencies": ["@jwp/**", "**-config-jwp"],
-      "dependencyTypes": ["peer"],
-      "packages": ["**"],
+      "dependencies": [
+        "@jwp/**",
+        "**-config-jwp"
+      ],
+      "dependencyTypes": [
+        "peer"
+      ],
+      "packages": [
+        "**"
+      ],
       "pinVersion": "*"
     },
     {
       "label": "Ensure local packages are installed as peerDependency",
-      "dependencies": ["@jwp/**", "**-config-jwp"],
-      "dependencyTypes": ["dev", "prod"],
-      "packages": ["**"],
+      "dependencies": [
+        "@jwp/**",
+        "**-config-jwp"
+      ],
+      "dependencyTypes": [
+        "dev",
+        "prod"
+      ],
+      "packages": [
+        "**"
+      ],
       "isBanned": true
     },
     {
-      "dependencies": ["@types/**"],
-      "dependencyTypes": ["!dev"],
-      "packages": ["**"],
+      "dependencies": [
+        "@types/**"
+      ],
+      "dependencyTypes": [
+        "!dev"
+      ],
+      "packages": [
+        "**"
+      ],
       "isBanned": true,
       "label": "@types packages should only be under devDependencies"
     }

@@ -29,9 +29,7 @@ Scenario('I can add a video to my favorites', async ({ I }) => {
 
 Scenario('I can remove a video from my favorites', async ({ I }) => {
   await addVideoToFavorites(I);
-  I.forceClick({ css: 'button[aria-label="Remove from favorites"]' });
-
-  I.seeElement({ css: 'button[aria-label="Add to favorites"]' });
+  I.forceClick({ css: 'button[aria-label="Favorite"]' });
 
   const savedFavorites = await I.executeScript(function () {
     return JSON.parse(localStorage.getItem('jwapp.favorites') || '');
@@ -70,7 +68,7 @@ async function addVideoToFavorites(I) {
   await I.openVideoCard(videoTitle, ShelfId.allFilms, false);
   I.see('Favorite');
 
-  I.scrollTo({ css: 'button[aria-label="Add to favorites"]' });
-  I.forceClick({ css: 'button[aria-label="Add to favorites"]' });
-  I.seeElement({ css: 'button[aria-label="Remove from favorites"]' });
+  I.scrollTo({ css: 'button[aria-label="Favorite"]' });
+  I.forceClick({ css: 'button[aria-label="Favorite"]' });
+  I.seeAttributesOnElements({ css: 'button[aria-label="Favorite"]' }, { 'aria-pressed': 'true' });
 }

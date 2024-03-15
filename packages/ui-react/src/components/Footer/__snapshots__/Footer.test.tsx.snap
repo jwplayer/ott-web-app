@@ -1,0 +1,78 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`<Footer> > renders and matches snapshot 1`] = `
+<div>
+  <footer
+    class="_footer_33bf66 _testFixMargin_33bf66"
+  >
+    <div
+      class="_markdown_e219e2"
+    >
+      Simple
+    </div>
+  </footer>
+</div>
+`;
+
+exports[`<Footer> > renders and matches snapshot with two links 1`] = `
+<div>
+  <footer
+    class="_footer_33bf66 _testFixMargin_33bf66"
+  >
+    <ul
+      class="_list_33bf66"
+    >
+      <li
+        class="_markdown_e219e2"
+      >
+        Two links
+      </li>
+      <li
+        class="_markdown_e219e2"
+      >
+        <a
+          href="https://www.jwplayer.com/"
+          rel="noopener"
+          target="_blank"
+        >
+          jwplayer.com
+        </a>
+      </li>
+      <li
+        class="_markdown_e219e2"
+      >
+        <a
+          href="https://www.jwplayer.com/"
+          rel="noopener"
+          target="_blank"
+        >
+          jwplayer.com
+        </a>
+      </li>
+    </ul>
+  </footer>
+</div>
+`;
+
+exports[`<Footer> > renders and matches snapshot without links 1`] = `
+<div>
+  <footer
+    class="_footer_33bf66 _testFixMargin_33bf66"
+  >
+    <ul
+      class="_list_33bf66"
+    >
+      <li
+        class="_markdown_e219e2"
+      >
+        Text one
+      </li>
+      <li
+        class="_markdown_e219e2"
+      >
+        Text two
+      </li>
+    </ul>
+  </footer>
+</div>
+`;

@@ -50,8 +50,8 @@ const PasswordStrength: React.FC<Props> = ({ password }: Props) => {
     <div className={styles.passwordStrength} data-strength={strength}>
       <div className={styles.passwordStrengthBar}>
         <div className={styles.passwordStrengthFill} />
-      </div>{' '}
-      <span className={styles.label}>{labels[strength]}</span>
+      </div>
+      <span className="hidden">{t('registration.password_strength_prefix')}</span> <span className={styles.label}>{labels[strength]}</span>
     </div>
   );
 };

@@ -47,7 +47,7 @@ const Checkbox: React.FC<Props> = ({ label, name, onChange, header, checked, val
           aria-describedby={helperTextId}
         />
         <label htmlFor={id} lang={lang}>
-          {required ? '* ' : ''}
+          <span aria-hidden="true">{required ? '* ' : ''}</span>
           {label}
         </label>
       </div>

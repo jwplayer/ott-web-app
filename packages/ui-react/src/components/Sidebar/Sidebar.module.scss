@@ -14,7 +14,7 @@
   display: none;
   width: 100%;
   height: 100%;
-  background: rgba(variables.$black, 0.4);
+  background: theme.$modal-backdrop-bg;
   transition: all 0.3s ease;
 }
 
@@ -29,10 +29,18 @@
   display: none;
   width: 270px;
   max-width: 90vw;
-  height: 100vh;
+  height: 100dvh;
+  overflow-y: auto;
   background-color: var(--body-background-color);
   transform: translateX(-100%);
   transition: transform 0.3s cubic-bezier(0.52, 0.51, 0.2, 1);
+
+  ul {
+    margin: 0;
+    padding: 0 0 calc(#{variables.$base-spacing} / 2) 0;
+    list-style-type: none;
+    border-bottom: 1px solid rgba(variables.$white, 0.12);
+  }
 }
 
 .heading {
@@ -45,7 +53,6 @@
   flex-direction: column;
   max-height: 100%;
   padding: variables.$base-spacing 0;
-  overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 }
 
@@ -65,9 +72,11 @@
   .backdrop {
     display: inline-block;
     visibility: hidden;
+    opacity: 0;
 
     &.visible {
       visibility: visible;
+      opacity: 1;
     }
   }
 }

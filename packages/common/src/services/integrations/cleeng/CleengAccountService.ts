@@ -199,10 +199,11 @@ export default class CleengAccountService extends AccountService {
 
     await this.cleengService.setTokens({ accessToken: auth.jwt, refreshToken: auth.refreshToken });
 
-    const { user, customerConsents } = await this.getUser();
+    const { user } = await this.getUser();
 
-    await this.updateCustomerConsents({ consents, customer: user }).catch(() => {
+    const customerConsents = await this.updateCustomerConsents({ consents, customer: user }).catch(() => {
       // error caught while updating the consents, but continue the registration process
+      return [];
     });
 
     return {

@@ -11,6 +11,7 @@ import ExternalLink from '@jwp/ott-theme/assets/icons/external_link.svg?react';
 import PayPal from '@jwp/ott-theme/assets/icons/paypal.svg?react';
 import useBreakpoint, { Breakpoint } from '@jwp/ott-ui-react/src/hooks/useBreakpoint';
 import useOpaqueId from '@jwp/ott-hooks-react/src/useOpaqueId';
+import classNames from 'classnames';
 
 import IconButton from '../IconButton/IconButton';
 import Alert from '../Alert/Alert';
@@ -296,6 +297,7 @@ const Payment = ({
                 value={`•••• •••• •••• ${activePaymentDetail.paymentMethodSpecificParams.lastCardFourDigits || ''}`}
                 aria-label={t('user:payment.card_number_hidden', { number: activePaymentDetail.paymentMethodSpecificParams.lastCardFourDigits })}
                 editing={false}
+                autoComplete="cc-number"
               />
               <div className={styles.cardDetails}>
                 <TextField
@@ -303,6 +305,7 @@ const Payment = ({
                   name="cardExpiry"
                   value={activePaymentDetail.paymentMethodSpecificParams.cardExpirationDate}
                   editing={false}
+                  autoComplete="cc-exp"
                 />
                 <TextField
                   label={t('user:payment.security_code')}
@@ -310,9 +313,15 @@ const Payment = ({
                   value={'******'}
                   editing={false}
                   aria-label={t('user:payment.security_code_hidden')}
+                  autoComplete="cc-csc"
                 />
               </div>
-              <Button label={t('account:payment.edit_card')} variant="outlined" onClick={onEditCardDetailsClick} />
+              <Button
+                className={classNames({ [styles.editCard]: canUpdatePaymentMethod })}
+                label={t('account:payment.edit_card')}
+                variant="outlined"
+                onClick={onEditCardDetailsClick}
+              />
             </div>
           )
         ) : (
@@ -338,7 +347,7 @@ const Payment = ({
                   <span>{transaction.transactionId}</span>
                 </p>
                 <div className={styles.transactionDetails}>
-                  <div className={styles.transationPrice}>
+                  <div className={styles.transactionPrice}>
                     {!isGrantedSubscription &&
                       t('user:payment.price_paid_with', {
                         price: formatPrice(parseFloat(transaction.transactionPriceInclTax), transaction.transactionCurrency, transaction.customerCountry),

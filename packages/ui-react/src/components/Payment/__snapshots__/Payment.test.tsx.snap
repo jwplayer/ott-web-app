@@ -31,7 +31,7 @@ exports[`<Payment> > renders and matches snapshot 1`] = `
           aria-describedby="helper_text_1235_cardnumber"
           aria-invalid="false"
           aria-label="user:payment.card_number_hidden"
-          aria-required="false"
+          autocomplete="cc-number"
           class="_input_e16c1b"
           id="text-field_1235_cardnumber"
           name="cardNumber"
@@ -55,7 +55,7 @@ exports[`<Payment> > renders and matches snapshot 1`] = `
           <input
             aria-describedby="helper_text_1235_cardexpiry"
             aria-invalid="false"
-            aria-required="false"
+            autocomplete="cc-exp"
             class="_input_e16c1b"
             id="text-field_1235_cardexpiry"
             name="cardExpiry"
@@ -77,7 +77,7 @@ exports[`<Payment> > renders and matches snapshot 1`] = `
             aria-describedby="helper_text_1235_cardsecuritycode"
             aria-invalid="false"
             aria-label="user:payment.security_code_hidden"
-            aria-required="false"
+            autocomplete="cc-csc"
             class="_input_e16c1b"
             id="text-field_1235_cardsecuritycode"
             name="cardSecurityCode"
@@ -127,7 +127,7 @@ exports[`<Payment> > renders and matches snapshot 1`] = `
         class="_transactionDetails_c57ff5"
       >
         <div
-          class="_transationPrice_c57ff5"
+          class="_transactionPrice_c57ff5"
         >
           user:payment.price_paid_with
         </div>
@@ -153,7 +153,7 @@ exports[`<Payment> > renders and matches snapshot 1`] = `
         class="_transactionDetails_c57ff5"
       >
         <div
-          class="_transationPrice_c57ff5"
+          class="_transactionPrice_c57ff5"
         >
           user:payment.price_paid_with
         </div>
@@ -179,7 +179,7 @@ exports[`<Payment> > renders and matches snapshot 1`] = `
         class="_transactionDetails_c57ff5"
       >
         <div
-          class="_transationPrice_c57ff5"
+          class="_transactionPrice_c57ff5"
         >
           user:payment.price_paid_with
         </div>

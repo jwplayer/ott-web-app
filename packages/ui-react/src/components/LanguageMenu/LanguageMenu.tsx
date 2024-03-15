@@ -47,6 +47,7 @@ const LanguageMenu = ({ onClick, className, languages, currentLanguage, language
         data-testid={testId('language-menu-button')}
         aria-controls="language-panel"
         aria-expanded={languageMenuOpen}
+        aria-haspopup="menu"
         className={classNames(styles.iconButton, className)}
         aria-label={t('language_menu')}
         onClick={handleMenuToggle}
@@ -58,11 +59,11 @@ const LanguageMenu = ({ onClick, className, languages, currentLanguage, language
         <Panel id="language-panel">
           <ul className={styles.menuItems}>
             {languages.map(({ code, displayName }) => {
-              const menuItemClassname = classNames(styles.menuItem, { [styles.menuItemActive]: currentLanguage?.code === code });
-
+              const isActive = currentLanguage?.code === code;
+              const menuItemClassname = classNames(styles.menuItem, { [styles.menuItemActive]: isActive });
               return (
                 <li key={code} className={menuItemClassname} onClick={(event) => handleLanguageSelect(event, code)}>
-                  <Link onFocus={openLanguageMenu} onBlur={closeLanguageMenu} href="#">
+                  <Link onFocus={openLanguageMenu} onBlur={closeLanguageMenu} href="#" aria-current={isActive}>
                     {displayName}
                   </Link>
                 </li>

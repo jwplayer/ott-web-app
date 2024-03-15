@@ -1,13 +1,13 @@
 {
   "name": "@jwp/ott-ui-react",
   "version": "4.30.0",
-  "main": "./src",
   "private": true,
+  "main": "./src",
   "scripts": {
     "lint:ts": "tsc --pretty --noEmit -p ./",
     "test": "TZ=UTC LC_ALL=en_US.UTF-8 vitest run",
-    "test-watch": "TZ=UTC LC_ALL=en_US.UTF-8 vitest",
-    "test-update": "TZ=UTC LC_ALL=en_US.UTF-8 vitest run --update"
+    "test-update": "TZ=UTC LC_ALL=en_US.UTF-8 vitest run --update",
+    "test-watch": "TZ=UTC LC_ALL=en_US.UTF-8 vitest"
   },
   "dependencies": {
     "@adyen/adyen-web": "^5.42.1",
@@ -44,8 +44,8 @@
     "sass": "^1.49.10",
     "typescript-plugin-css-modules": "^5.0.2",
     "vi-fetch": "^0.8.0",
-    "vite-plugin-svgr": "4.2.0",
-    "vitest": "^0.34.6"
+    "vite-plugin-svgr": "^4.2.0",
+    "vitest": "^1.3.1"
   },
   "peerDependencies": {
     "@jwp/ott-common": "*",

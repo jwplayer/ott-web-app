@@ -41,10 +41,11 @@ const Filter: FC<Props> = ({ name, value, defaultLabel, options, setValue, force
           {options.map((option) => {
             const optionLabel = typeof option === 'string' ? option : option.label;
             const optionValue = typeof option === 'string' ? option : option.value;
+            const active = value === optionValue;
 
-            return <Button label={optionLabel} onClick={() => setValue(optionValue)} key={optionValue} active={value === optionValue} role="option" />;
+            return <Button label={optionLabel} onClick={() => setValue(optionValue)} key={optionValue} active={active} role="option" aria-selected={active} />;
           })}
-          <Button label={defaultLabel} onClick={() => setValue('')} active={value === ''} key={defaultLabel} role="option" />
+          <Button label={defaultLabel} onClick={() => setValue('')} active={value === ''} key={defaultLabel} role="option" aria-selected={value === ''} />
         </div>
       ) : (
         <div className={styles.filterDropDown}>
@@ -57,6 +58,7 @@ const Filter: FC<Props> = ({ name, value, defaultLabel, options, setValue, force
             value={value}
             onChange={handleChange}
             aria-label={t('filter_videos_by', { name })}
+            hideOptional
           />
         </div>
       )}

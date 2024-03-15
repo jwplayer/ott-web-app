@@ -23,7 +23,6 @@ export interface FormSectionProps<TData extends GenericFormValues, TErrors> {
   editButton?: string | ReactElement;
   saveButton?: string;
   cancelButton?: string;
-  canSave?: (values: TData) => boolean;
   onSubmit?: (values: TData) => Promise<{ errors?: string[] }>;
   content?: (args: FormSectionContentArgs<TData, TErrors>) => ReactNode;
   children?: never;
@@ -37,14 +36,13 @@ export function FormSection<TData extends GenericFormValues>({
   editButton,
   saveButton,
   cancelButton,
-  canSave,
   onSubmit,
   content,
   readOnly = false,
 }: FormSectionProps<TData, string[]>): ReactElement<FormSectionProps<TData, string[]>> | null {
   const sectionId = useOpaqueId(label);
   const {
-    formState: { values, activeSectionId, isDirty, errors: formErrors, isBusy },
+    formState: { values, activeSectionId, errors: formErrors, isBusy },
     setFormState,
     isLoading,
     onCancel,
@@ -80,7 +78,6 @@ export function FormSection<TData extends GenericFormValues>({
         return {
           ...oldState,
           values: newValues,
-          isDirty: true,
           activeSectionId: sectionId,
         };
       });
@@ -122,7 +119,6 @@ export function FormSection<TData extends GenericFormValues>({
         return {
           ...s,
           activeSectionId: undefined,
-          isDirty: false,
           isBusy: false,
         };
       });
@@ -166,9 +162,7 @@ export function FormSection<TData extends GenericFormValues>({
         <div className={styles.controls}>
           {isEditing ? (
             <>
-              {saveButton && (
-                <Button label={saveButton} type="submit" onClick={handleSubmit} disabled={!isDirty || isLoading || (canSave && !canSave(values))} />
-              )}
+              {saveButton && <Button label={saveButton} type="submit" onClick={handleSubmit} disabled={isLoading} />}
               {cancelButton && <Button label={cancelButton} type="reset" variant="text" onClick={onCancel} />}
             </>
           ) : (

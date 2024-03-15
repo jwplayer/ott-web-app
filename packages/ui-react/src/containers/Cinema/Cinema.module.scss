@@ -3,26 +3,28 @@
 @use '@jwp/ott-ui-react/src/styles/mixins/responsive';
 @use '@jwp/ott-ui-react/src/styles/mixins/typography';
 
-.fade {
-  position: relative;
-  // make sure the fade animation happens on top of page elements
-  z-index: variables.$player-z-index;
+.cinemaContainer {
+  width: 100%;
+  height: 100%;
 }
 
 .cinema {
-  position: fixed;
-  top: 0;
-  left: 0;
   width: 100vw;
   height: calc(100vh - calc(100vh - 100%));
   overflow: hidden;
   background-color: variables.$black;
 }
 
+.overlayFade {
+  position: relative; // make opacity transition work
+  z-index: 1; // ensure overlay is placed above the player
+}
+
 .playerOverlay {
   position: absolute;
   top: 0;
   left: 0;
+  z-index: 1;
   width: 100%;
   min-height: 100px;
   padding: 24px 56px;
@@ -66,13 +68,14 @@
 }
 
 .primaryMetadata {
+  display: flex;
+  align-items: center;
   margin-bottom: 8px;
   font-size: 16px;
-  line-height: 18px;
+  line-height: variables.$base-line-height;
   letter-spacing: 0.15px;
 
   @include responsive.mobile-only() {
-    order: 2;
     font-size: 14px;
   }
 }
@@ -81,7 +84,7 @@
   margin-top: 4px;
   margin-bottom: 8px;
   font-size: 20px;
-  line-height: 20px;
+  line-height: variables.$base-line-height;
   letter-spacing: 0.5px;
 
   @include responsive.mobile-only() {

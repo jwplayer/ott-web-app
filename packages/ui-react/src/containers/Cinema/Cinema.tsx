@@ -7,6 +7,7 @@ import IconButton from '../../components/IconButton/IconButton';
 import PlayerContainer from '../PlayerContainer/PlayerContainer';
 import Fade from '../../components/Animation/Fade/Fade';
 import Icon from '../../components/Icon/Icon';
+import Modal from '../../components/Modal/Modal';
 
 import styles from './Cinema.module.scss';
 
@@ -48,7 +49,8 @@ const Cinema: React.FC<Props> = ({
   const { t } = useTranslation();
 
   // state
-  const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [overlayHasFocus, setOverlayHasFocus] = useState(false);
   const [userActive, setUserActive] = useState(true);
 
   const handlePlay = useCallback(() => {
@@ -74,19 +76,28 @@ const Cinema: React.FC<Props> = ({
 
   // effects
   useEffect(() => {
-    if (open) {
-      setUserActive(true);
-      document.body.style.overflowY = 'hidden';
-    }
-
-    return () => {
-      document.body.style.overflowY = '';
-    };
+    if (open) setUserActive(true);
   }, [open]);
 
   return (
-    <Fade open={open} className={styles.fade}>
-      <div className={styles.cinema}>
+    <Modal open={open} animationContainerClassName={styles.cinemaContainer} onClose={onClose}>
+      <div className={styles.cinema} aria-modal="true" role="dialog" aria-label={t('videoplayer')}>
+        <Fade className={styles.overlayFade} open={!isPlaying || userActive || overlayHasFocus} keepMounted>
+          <div className={styles.playerOverlay} onFocus={() => setOverlayHasFocus(true)} onBlur={() => setOverlayHasFocus(false)}>
+            <div className={styles.playerContent}>
+              <IconButton aria-label={t('common:back')} onClick={onClose} className={styles.backButton}>
+                <Icon icon={ArrowLeft} />
+              </IconButton>
+              <div>
+                <h1 className={styles.title}>{title}</h1>
+                <div className={styles.metaContainer}>
+                  {secondaryMetadata && <div className={styles.secondaryMetadata}>{secondaryMetadata}</div>}
+                  <div className={styles.primaryMetadata}>{primaryMetadata}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Fade>
         <PlayerContainer
           item={item}
           seriesItem={seriesItem}
@@ -102,25 +113,8 @@ const Cinema: React.FC<Props> = ({
           liveFromBeginning={liveFromBeginning}
           liveStartDateTime={liveStartDateTime}
         />
-
-        <Fade open={!isPlaying || userActive}>
-          <div className={styles.playerOverlay}>
-            <div className={styles.playerContent}>
-              <IconButton aria-label={t('common:back')} onClick={onClose} className={styles.backButton}>
-                <Icon icon={ArrowLeft} />
-              </IconButton>
-              <div>
-                <h1 className={styles.title}>{title}</h1>
-                <div className={styles.metaContainer}>
-                  {secondaryMetadata && <div className={styles.secondaryMetadata}>{secondaryMetadata}</div>}
-                  <div className={styles.primaryMetadata}>{primaryMetadata}</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </Fade>
       </div>
-    </Fade>
+    </Modal>
   );
 };
 

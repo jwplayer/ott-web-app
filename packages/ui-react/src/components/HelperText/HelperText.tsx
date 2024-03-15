@@ -12,10 +12,10 @@ type Props = {
 };
 
 const HelperText: React.FC<Props> = ({ children, className, error, id }: Props) => {
-  const fallbackId = useOpaqueId((id && id) || 'helper_text');
+  const helperId = useOpaqueId('helper_text', undefined, id);
 
   return children ? (
-    <div id={fallbackId} aria-live={error ? 'assertive' : 'polite'} className={classNames(styles.helperText, { [styles.error]: error }, className)}>
+    <div id={helperId} className={classNames(styles.helperText, { [styles.error]: error }, className)}>
       {children}
     </div>
   ) : null;

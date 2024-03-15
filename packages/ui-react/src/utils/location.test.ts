@@ -1,6 +1,6 @@
 import type { Location } from 'react-router-dom';
 
-import { createURLFromLocation, modalURLFromLocation } from './location';
+import { createURLFromLocation, modalURLFromLocation, modalURLFromWindowLocation } from './location';
 
 describe('url from location', () => {
   test('valid url from a location', async () => {
@@ -114,5 +114,18 @@ describe('modal urls from location', () => {
     const url = modalURLFromLocation(location, 'login', { foo: 'bar' });
 
     expect(url).toEqual('/test?test-param=1&u=login&foo=bar');
+  });
+
+  describe('modal urls from window.location', () => {
+    test('valid modal url from window.location', async () => {
+      const url = modalURLFromWindowLocation('login');
+
+      expect(url).toEqual('http://localhost:3000/?u=login');
+    });
+    test('valid modal url from window.location with query params', async () => {
+      const url = modalURLFromWindowLocation('waiting-for-payment', { offerId: '123' });
+
+      expect(url).toEqual('http://localhost:3000/?u=waiting-for-payment&offerId=123');
+    });
   });
 });

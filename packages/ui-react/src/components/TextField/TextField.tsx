@@ -69,8 +69,7 @@ const TextField: React.FC<Props> = ({
     const inputType = 'type' in otherInputProps ? otherInputProps.type : 'text';
 
     const ariaAttributes = {
-      'aria-required': !!required,
-      'aria-invalid': Boolean(required && error && value !== ''),
+      'aria-invalid': Boolean(error && !value),
       'aria-describedby': helperTextId,
     } as const;
 

@@ -23,6 +23,7 @@ export type TileDockProps<T> = {
   renderLeftControl?: (handleClick: () => void) => ReactNode;
   renderRightControl?: (handleClick: () => void) => ReactNode;
   renderPaginationDots?: (index: number, pageIndex: number) => ReactNode;
+  renderPageIndicator?: (pageIndex: number, pages: number) => ReactNode;
 };
 
 type Tile<T> = {
@@ -74,6 +75,7 @@ function TileDock<T>({
   renderLeftControl,
   renderRightControl,
   renderPaginationDots,
+  renderPageIndicator,
 }: TileDockProps<T>) {
   const [index, setIndex] = useState(0);
   const [slideToIndex, setSlideToIndex] = useState(0);
@@ -254,6 +256,7 @@ function TileDock<T>({
           {wrapWithEmptyTiles ? (
             <li
               className={styles.emptyTile}
+              aria-hidden="true"
               style={{
                 width: `${tileWidth}%`,
                 paddingLeft: spacing / 2,
@@ -263,14 +266,11 @@ function TileDock<T>({
             />
           ) : null}
           {tileList.map((tile: Tile<T>, listIndex) => {
-            const posInSet = items.findIndex((item) => item === tile.item); // TODO optimize this for performances
             const isInView = !isMultiPage || (listIndex > tilesToShow - slideOffset && listIndex < tilesToShow * 2 + 1 - slideOffset);
 
             return (
               <li
                 key={tile.key}
-                aria-setsize={items.length}
-                aria-posinset={posInSet + 1}
                 aria-hidden={!isInView}
                 className={classNames({ [styles.notInView]: !isInView })}
                 style={{
@@ -288,6 +288,7 @@ function TileDock<T>({
           {wrapWithEmptyTiles ? (
             <li
               className={styles.emptyTile}
+              aria-hidden="true"
               style={{
                 width: `${tileWidth}%`,
                 paddingLeft: spacing / 2,
@@ -300,6 +301,7 @@ function TileDock<T>({
         {showRightControl && !!renderRightControl && <div className={styles.rightControl}>{renderRightControl(() => slide('right'))}</div>}
       </div>
       {paginationDots()}
+      {isMultiPage && renderPageIndicator && renderPageIndicator(Math.ceil(index / tilesToShow), Math.ceil(pages))}
     </React.Fragment>
   );
 }

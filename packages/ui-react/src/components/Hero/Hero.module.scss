@@ -4,20 +4,49 @@
 @use '@jwp/ott-ui-react/src/styles/mixins/typography';
 
 .hero {
-  height: 40vh;
+  display: flex;
+  max-width: 100vw;
+  min-height: 40vh;
+  color: var(--primary-color);
+  font-family: var(--body-font-family);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.75);
 }
 
-.content {
-  max-width: 60vw;
+.heroPadding {
   padding: 37px 56px 0;
 
+    @include responsive.desktop-small-only() {
+      padding: 34px 36px 36px;
+    }
+
+    @include responsive.tablet-only() {
+      padding: 34px 24px 24px;
+    }
+
+    @include responsive.mobile-only() {
+      padding: 16px;
+  }
+}
+
+.info {
+  position: relative;
+  width: 50%;
+  max-width: 650px;
+  min-height: 440px;
+
+  @include responsive.desktop-small-only() {
+    min-height: 335px;
+  }
+
   @include responsive.tablet-only() {
-    padding: 32px;
+    width: 350px;
+    min-height: 335px;
   }
 
   @include responsive.mobile-only() {
-    max-width: none;
-    padding: 16px;
+    width: 100%;
+    min-height: 380px;
+    padding-top: 225px;
   }
 }
 
@@ -25,7 +54,14 @@
   @include typography.video-title-base;
 }
 
-.image {
+.description {
+  font-family: var(--body-font-family);
+  font-size: 18px;
+  line-height: variables.$base-line-height;
+  letter-spacing: 0.15px;
+}
+
+.poster {
   position: absolute;
   top: 0;
   right: 0;
@@ -46,4 +82,14 @@
     width: 110vw;
     height: calc(180vw / 16 * 9);
   }
+}
+
+.posterFade {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: -1;
+  height: 120px;
+  background: linear-gradient(0deg, transparent, var(--body-background-color, variables.$white));
 }
