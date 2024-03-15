@@ -1,4 +1,0 @@
-ignores: [
-  # Dynamically loaded in the postcss config
-  'postcss-scss'
-]

@@ -1,8 +1,0 @@
-ignores: [
-  # Dynamically loaded in the eslint config
-  '@typescript-eslint/eslint-plugin',
-  '@typescript-eslint/parser',
-  'eslint-plugin-import',
-  'eslint-plugin-react',
-  'eslint-plugin-react-hooks'
-]
