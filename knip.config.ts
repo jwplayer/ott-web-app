@@ -20,7 +20,11 @@ const config: KnipConfig = {
         'codecept:*',
       ],
     },
+    'packages/common': {
+      entry: ['src/**/*']
+    },
     'packages/ui-react': {
+      entry: ['src/**/*'],
       ignoreDependencies: [
         'sass', // Used in css
       ],

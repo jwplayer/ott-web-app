@@ -2,9 +2,6 @@
   "name": "@jwp/ott-common",
   "version": "4.30.0",
   "private": true,
-  "exports": {
-    "./*": "./src/**/*"
-  },
   "scripts": {
     "lint:ts": "tsc --pretty --noEmit -p ./",
     "test": "TZ=UTC LC_ALL=en_US.UTF-8 vitest run",
