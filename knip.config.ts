@@ -21,7 +21,7 @@ const config: KnipConfig = {
       ],
     },
     'packages/common': {
-      entry: ['src/**/*']
+      entry: ['src/**/*'],
     },
     'packages/ui-react': {
       entry: ['src/**/*'],
