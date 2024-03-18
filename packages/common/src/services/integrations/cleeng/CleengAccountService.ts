@@ -68,9 +68,11 @@ export default class CleengAccountService extends AccountService {
       canExportAccountData: false,
       canDeleteAccount: false,
       canUpdatePaymentMethod: true,
-      canShowReceipts: true,
+      canShowReceipts: false,
       hasSocialURLs: false,
       hasNotifications: false,
+      // The 'externalData' attribute of Cleeng can contain max 4000 characters
+      watchListSizeLimit: 48,
     });
 
     this.cleengService = cleengService;

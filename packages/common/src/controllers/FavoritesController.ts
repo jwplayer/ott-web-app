@@ -74,7 +74,7 @@ export default class FavoritesController {
     }
 
     // If we exceed the max available number of favorites, we show a warning
-    if (this.favoritesService.hasReachedFavoritesLimit(favorites)) {
+    if (favorites.length > this.favoritesService.getMaxFavoritesCount()) {
       setWarning(i18next.t('video:favorites_warning', { maxCount: this.favoritesService.getMaxFavoritesCount() }));
       return;
     }
