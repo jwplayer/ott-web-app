@@ -29,6 +29,7 @@
     "lint:prettier": "prettier --check \"{**/*,*}.{js,ts,jsx,tsx}\"",
     "lint:stylelint": "stylelint '**/*.{css,scss}'",
     "lint:ts": "tsc --pretty --noEmit -p ./scripts && yarn workspaces run lint:ts",
+    "load-content-types": "ts-node ./scripts/content-types/load-content-types",
     "pre-commit": "yarn depcheck && lint-staged",
     "prepare": "husky install",
     "test": "TZ=UTC LC_ALL=en_US.UTF-8 vitest run",

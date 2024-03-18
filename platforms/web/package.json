@@ -15,7 +15,6 @@
     "codecept:mobile": "cd test-e2e && rm -rf \"./output/mobile\" && codeceptjs run-workers --suites ${WORKER_COUNT:=8} --config ./codecept.mobile.cjs",
     "generate-pwa-assets": "pwa-assets-generator",
     "lint:ts": "tsc --pretty --noEmit -p ./ && tsc --pretty --noEmit -p ./test-e2e",
-    "load-content-types": "npx ts-node ./scripts/content-types/load-content-types",
     "serve-report:desktop": "cd test-e2e && allure serve \"./output/desktop\"",
     "serve-report:mobile": "cd test-e2e && allure serve \"./output/mobile\"",
     "start": "vite",
