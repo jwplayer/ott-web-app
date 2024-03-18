@@ -7,6 +7,7 @@ import type { Customer } from '../../types/account';
 import { getNamedModule } from '../modules/container';
 import { INTEGRATION_TYPE } from '../modules/types';
 import { logDev } from '../utils/common';
+import { MAX_WATCHLIST_ITEMS_COUNT } from '../constants';
 
 import ApiService from './ApiService';
 import StorageService from './StorageService';
@@ -22,7 +23,6 @@ const schema = array(
 @injectable()
 export default class WatchHistoryService {
   private PERSIST_KEY_WATCH_HISTORY = 'history';
-  private MAX_WATCH_HISTORY_COUNT = 48;
 
   private readonly apiService;
   private readonly storageService;
@@ -145,6 +145,10 @@ export default class WatchHistoryService {
     } as WatchHistoryItem;
   };
 
+  getMaxWatchHistoryCount = () => {
+    return this.accountService?.features?.watchListSizeLimit || MAX_WATCHLIST_ITEMS_COUNT;
+  };
+
   /**
    *  If we already have an element with continue watching state, we:
    *    1. Update the progress
@@ -163,8 +167,7 @@ export default class WatchHistoryService {
     });
 
     updatedHistory.unshift(watchHistoryItem);
-
-    updatedHistory.splice(this.MAX_WATCH_HISTORY_COUNT);
+    updatedHistory.splice(this.getMaxWatchHistoryCount());
 
     return updatedHistory;
   };

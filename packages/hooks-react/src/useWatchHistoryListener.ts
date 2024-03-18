@@ -57,7 +57,7 @@ export const useWatchHistoryListener = (player: jwplayer.JWPlayer | undefined, i
     // live streams have a negative duration, we ignore these for now
     if (event.duration < 0) return;
 
-    const progress = event.position / event.duration;
+    const progress = Number((event.position / event.duration).toFixed(5));
 
     if (!isNaN(progress) && isFinite(progress)) {
       queuedWatchProgress.current = {

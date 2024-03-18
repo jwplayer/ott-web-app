@@ -1,13 +1,13 @@
 import { inject, injectable } from 'inversify';
 import { object, array, string } from 'yup';
 
-import { MAX_WATCHLIST_ITEMS_COUNT } from '../constants';
 import type { Favorite, SerializedFavorite } from '../../types/favorite';
 import type { PlaylistItem } from '../../types/playlist';
 import type { Customer } from '../../types/account';
 import { getNamedModule } from '../modules/container';
 import { INTEGRATION_TYPE } from '../modules/types';
 import { logDev } from '../utils/common';
+import { MAX_WATCHLIST_ITEMS_COUNT } from '../constants';
 
 import ApiService from './ApiService';
 import StorageService from './StorageService';
@@ -21,7 +21,6 @@ const schema = array(
 
 @injectable()
 export default class FavoriteService {
-  private MAX_FAVORITES_COUNT = 48;
   private PERSIST_KEY_FAVORITES = 'favorites';
 
   private readonly apiService;
@@ -89,11 +88,7 @@ export default class FavoriteService {
   };
 
   getMaxFavoritesCount = () => {
-    return this.MAX_FAVORITES_COUNT;
-  };
-
-  hasReachedFavoritesLimit = (favorites: Favorite[]) => {
-    return favorites?.length >= MAX_WATCHLIST_ITEMS_COUNT;
+    return this.accountService?.features?.watchListSizeLimit || MAX_WATCHLIST_ITEMS_COUNT;
   };
 
   createFavorite = (item: PlaylistItem): Favorite => {
