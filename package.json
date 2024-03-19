@@ -32,7 +32,8 @@
     "pre-commit": "yarn depcheck && lint-staged",
     "prepare": "husky install",
     "test": "TZ=UTC LC_ALL=en_US.UTF-8 vitest run",
-    "test-watch": "TZ=UTC LC_ALL=en_US.UTF-8 vitest"
+    "test-watch": "TZ=UTC LC_ALL=en_US.UTF-8 vitest",
+    "web": "yarn --cwd platforms/web"
   },
   "devDependencies": {
     "@commitlint/cli": "^12.1.1",

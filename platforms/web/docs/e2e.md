@@ -32,21 +32,23 @@ Each test suite is a separate file located in the `platforms/web/tests` folder. 
 
 We use several workers to launch tests for each platform. That increases the speed and guaranties the autonomy of each Scenario.
 
-**(!)** In order to support allure reports it is necessary to install Java 8.
+**(!)** In order to support allure reports, it is necessary to install Java 8.
 
 Basic commands:
 
 - `cd platforms/web` - run the following commands from the web platform
 - `yarn codecept:mobile` - to run tests for a mobile device
 - `yarn codecept:desktop` - to run tests for desktop
-- `yarn serve-report:mobile` - to serve allure report from "./output/mobile" folder
+- `yarn serve-report:mobile` - to serve an allure report from "./output/mobile" folder
 - `yarn serve-report:desktop` - to serve allure report from "./output/desktop" folder
 - `yarn codecept-serve:mobile` - to run desktop tests and serve the report
 - `yarn codecept-serve:desktop` - to run mobile tests and serve the report
 
 ## GitHub Actions
 
-We have two actions: one for desktop and one for mobile device. Each one runs independently. After the action run it is possible to download an artifact with an allure report and build a nice report locally.
+We have two actions: one for desktop and one for mobile devices. 
+Each one runs independently.
+After the actions run, it is possible to download an artifact with an allure report and build a nice report locally.
 
 To do it on Mac: `allure serve ~/Downloads/allure-report-desktop`
 

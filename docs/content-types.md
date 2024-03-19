@@ -13,7 +13,7 @@ To help ensure that content editors use the right content types and custom param
 You can upload the schema for the content types that your app expects.
 Content editors will then be able to choose a content type for each media item and will see the expected metadata when they are editing the item on the dashboard.
 
-> Note: Content types on the JWP dashboard requires a specific entitlement. Please speak with your account rep to enable this feature for your account.
+> Note: Content types on the JWP dashboard require a specific entitlement. Please speak with your account rep to enable this feature for your account.
 
 ## Uploading content types to the dashboard
 
@@ -29,12 +29,12 @@ You can modify this file in your fork of the web app code or optionally specify 
 The upload file should be a json property with the schemas defined as an array on the `schemas` property on the root object.
 Please refer to [content-types.json](../scripts/content-types/content-types.json) and the JWP documentation for the schema format.
 
-To avoid unnecessary duplication the file also allows some basic abstraction.
+To avoid unnecessary duplication, the file also allows some basic abstraction.
 You can define reused fields and sections as key-value entries on the `fields` and `sections` properties respectively.
 Then you can include these reusable entities by putting their string key into schemas the same way that you would for inline fields or sections.
 There are many examples in the included [content-types.json](../scripts/content-types/content-types.json)
 
-> Note: Although the upload file allows you to define reused fields and sections, when these are uploaded they become distinct copies for each instance in the schemas where they are used.
+> Note: Although the upload file allows you to define reused fields and sections, when these are uploaded, they become distinct copies for each instance in the schemas where they are used.
 > That means that changing fields and sections via the api after they are uploaded must be done individually for each schema.
 > Alternatively, you can re-upload and overwrite the existing schemas, but use caution because you will lose any other manual changes you have made.
 
