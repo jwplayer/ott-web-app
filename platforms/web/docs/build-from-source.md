@@ -82,7 +82,7 @@ These values are then defacto constants, which means code optimizations can remo
 
 For non-sensitive values, you can add them directly to the appropriate .env file for each mode.
 
-For sensitive values, if building with github actions we recommend using [github secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets) and setting them in the [build action environment](https://docs.github.com/en/actions/learn-github-actions/variables).
+For sensitive values, if building with GitHub actions, we recommend using [GitHub secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets) and setting them in the [build action environment](https://docs.github.com/en/actions/learn-github-actions/variables).
 You can see an example of how these are used in our [Firebase Live / Preview actions.](https://github.com/jwplayer/ott-web-app/blob/develop/.github/workflows/firebase-live.yml#L14)
 
 If building manually, you can create an .env.[mode].local file and add the values there. These files are git ignored which will prevent leaking your secrets to version control.
@@ -117,7 +117,7 @@ The value to use can be found labeled 'License Key' in the 'Self-Hosted Web Play
 
 If you link directly to your JWP cloud player using the [APP_PLAYER_ID](#app_player_id) environment variable or the [playerId ini setting](initialization-file.md#playerid), you do not need to provide a value for `APP_PLAYER_LICENSE_KEY`.
 
-It is recommended that this value be provided via a .env.local file or a github secret to avoid saving it in version control.
+It is recommended that this value be provided via a .env.local file or a GitHub secret to avoid saving it in version control.
 
 If you are using pre-compiled builds instead of building the code yourself, you can also set this value with the [playerLicenseKey ini setting](initialization-file.md#playerLicenseKey).
 Keep in mind, if the [playerLicenseKey ini setting](initialization-file.md#playerLicenseKey) is provided, it will be used even if the `APP_PLAYER_LICENSE_KEY` environment variable is set.

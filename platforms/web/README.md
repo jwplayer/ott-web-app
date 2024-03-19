@@ -13,13 +13,13 @@
 ## Create favicons / pwa icons
 
 First override the source icon with another image here [./public/images/icons/app-icon.png`](./public/images/icons/app-icon.png)
-Use a high quality image square-sized image. We suggest a dimension 1024x1024 or higher
+Use a high-quality square-sized image.
+We suggest a dimension 1024x1024 or higher
 
 - Navigate to the platform directory `cd platforms/web`
 - Perform `yarn generate-pwa-assets`
 
-Instal `sharp` if you get the following error: Could not load the "sharp" module using the ... runtime.
-And run `yarn generate-pwa-assets` afterwards
+Install `sharp` if you get the following error: Could not load the "sharp" module using the ... runtime and run `yarn generate-pwa-assets` afterward
 
 The different icon formats are defined here [pwa-assets.config.ts](./pwa-assets.config.ts)
 

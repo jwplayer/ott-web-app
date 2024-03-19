@@ -3,7 +3,7 @@
 ## Why workspaces?
 
 The JW OTT Web App is an open-source repository that showcases an OTT app implementing JWP services. The OTT Web App, as
-the name implies, originates as a web only repository. But much of the source-code can be re-used for many different
+the name implies, originates as a web-only repository. But much of the source-code can be re-used for many different
 platforms, such as CapacitorJS, React Native, LightningJS and other frameworks based on TypeScript.
 
 Using the previous codebase, it would be quite challenging to re-use the services because of the dependencies and
@@ -19,11 +19,12 @@ This means that we need to:
 
 ## The solution
 
-Based on the re-usability of parts of the existing codebase, we've created separate modules using Yarn Workspaces.
+Based on the re-usability of the existing codebase, we've created separate modules using Yarn Workspaces.
 This will combine all similar code and prevent installing redundant or conflicting dependencies.
 
 For example, all components, containers, and pages are combined into the `packages/ui-react` module, which depends on
-react and react-dom. To create a React Native app, you could add a `packages/ui-react-native` module and configure
+React and React DOM. 
+To create a React Native app, you could add a `packages/ui-react-native` module and configure
 aliases to use the correct module.
 
 ## Packages & Platforms
@@ -80,8 +81,9 @@ CodeceptJS/Playwright-specific code.
 
 Name: `@jwp/ott-theme`
 
-The most important theming comes from the app config, but many other SCSS variables can be abstracted into generic (
-JSON) tokens. These tokens can be used across multiple frameworks.
+The most important theming comes from the app config, but many other SCSS variables can be abstracted into generic 
+(JSON) tokens. 
+These tokens can be used across multiple frameworks.
 
 Raw SVG icons are added here as well.
 
@@ -102,14 +104,14 @@ The web folder is located in the platforms directory in the project's root folde
 platform-specific code. In the case of the web platform, this is all the Vite.js configuration and App.tsx for
 bootstrapping the app.
 
-We can add more platforms by adding a folder to the platforms folder.
+We can add more platforms by adding a folder to the `../platforms` folder.
 
 Each platform is a standalone application that may use other modules defined in the packages folder as dependencies.
 
-### Eslint, PostCSS and Stylelint
+### ESLint, PostCSS and Stylelint
 
-Besides the mentioned packages there are also three utility packages listed in the packages folder. These utility
-packages exist to align linting dependencies and configuration between the different packages.
+Besides the mentioned packages, there are also three utility packages listed in the configs folder.
+These utility packages exist to align linting dependencies and configurations between the different packages and apps.
 
 All packages depend on Eslint and need a configuration. The recommended way of doing this in a monorepo is by creating
 a local package.

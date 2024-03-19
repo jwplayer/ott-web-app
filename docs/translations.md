@@ -28,7 +28,7 @@ extracts all namespaces and translation keys from the source code. Refrain from 
 removing keys) of translation files manually because this is prone to mistakes.
 
 To add a new language, create a new subdirectory in the `./platforms/web/public/locales` directory using the language
-code or LCID string if the language is region specific. For example, using the `fr` language code will be available for
+code or LCID string if the language is region-specific. For example, using the `fr` language code will be available for
 all French-speaking regions (e.g., Belgium, Canada, France, Luxembourg, etc.). But if you have different translations
 for one or more French-speaking regions, use the LCID string (e.g., `fr-be`, `fr-ca`, `fr-lu`, or `fr-fr`) instead of
 the language code. The downside of this, when having multiple French-speaking regions, a lot of translations will be
@@ -42,10 +42,10 @@ language(s) translation files. You can now translate each key for the added lang
 When a language is added to the `./platforms/web/public/locales` folder, the OTT Web App doesn't automatically recognize
 this. Instead, the language must first be added to the "defined languages" list. This is for two reasons:
 
-- As OTT Web App we want to be able to include many languages without enabling them all by default
+- As OTT Web App, we want to be able to include many languages without enabling them all by default
 - For each language, the display name must be defined, which is shown in the language selection menu
 
-Navigate to the `./platforms/web/src/i18n/config.ts` file and find the `DEFINED_LANGUAGES` constant. Each entry 
+Navigate to the `./platforms/web/src/i18n/config.ts` file and find the `DEFINED_LANGUAGES` constant. Each entry
 specifies the language code (or LCID string) and display name.
 
 > If you have added multiple languages using the LCID string identifier, each much be added to the list of defined
@@ -96,7 +96,7 @@ OTT Web App will try to predict the user language by looking at the Browser lang
 predicted, or there is no support for the Browser language, the default language will be used. By default, this is set
 to `en`.
 
-The default language can be changed in the `/platforms/web/.env` file as well or by adding the `APP_DEFAULT_LANGUAGE` 
+The default language can be changed in the `/platforms/web/.env` file as well or by adding the `APP_DEFAULT_LANGUAGE`
 environment variable to the start/build commands.
 
 Build an OTT Web App with English and French translations, but default to French when the language couldn't be
