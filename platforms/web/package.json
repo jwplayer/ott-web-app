@@ -67,6 +67,7 @@
     "sass": "^1.49.10",
     "sharp": "^0.33.2",
     "stylelint": "^15.11.0",
+    "stylelint-config-jwp": "*",
     "ts-node": "^10.9.1",
     "tsconfig-paths": "^4.1.0",
     "vi-fetch": "^0.8.0",

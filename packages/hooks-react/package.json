@@ -23,6 +23,7 @@
   "devDependencies": {
     "@testing-library/react": "^14.0.0",
     "@types/jwplayer": "^8.2.13",
+    "jsdom": "^22.1.0",
     "vi-fetch": "^0.8.0",
     "vitest": "^1.3.1"
   },
