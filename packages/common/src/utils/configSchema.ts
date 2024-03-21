@@ -50,6 +50,7 @@ export const configSchema: SchemaOf<Config> = object({
   description: string().defined(),
   analyticsToken: string().nullable(),
   adSchedule: string().nullable(),
+  siteId: string().defined(),
   assets: object({
     banner: string().notRequired().nullable(),
   }).notRequired(),

@@ -246,13 +246,16 @@ export default class ApiService {
     return (await getDataOrThrow(response)) as AdSchedule;
   };
 
-  getMediaAds = async (url: string, mediaId: string): Promise<AdSchedule | undefined> => {
-    const urlWithQuery = createURL(url, {
-      media_id: mediaId,
+  getAppContentSearch = async (siteId: string, searchQuery: string | undefined) => {
+    const pathname = `/v2/sites/${siteId}/app_content/media/search`;
+
+    const url = createURL(`${env.APP_API_BASE_URL}${pathname}`, {
+      search_query: searchQuery,
     });
 
-    const response = await fetch(urlWithQuery, { credentials: 'omit' });
+    const response = await fetch(url);
+    const data = (await getDataOrThrow(response)) as Playlist;
 
-    return (await getDataOrThrow(response)) as AdSchedule;
+    return this.transformPlaylist(data);
   };
 }

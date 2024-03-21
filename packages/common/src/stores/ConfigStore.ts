@@ -21,6 +21,7 @@ export const useConfigStore = createStore<ConfigState>('ConfigStore', () => ({
     siteName: '',
     description: '',
     player: '',
+    siteId: '',
     assets: {},
     content: [],
     menu: [],

@@ -22,6 +22,7 @@ export type Config = {
   custom?: Record<string, unknown>;
   contentSigningService?: ContentSigningConfig;
   contentProtection?: ContentProtection;
+  siteId: string;
 };
 
 export type ContentSigningConfig = {

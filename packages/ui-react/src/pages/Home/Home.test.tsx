@@ -9,6 +9,7 @@ describe('Home Component tests', () => {
   test('Home test', () => {
     useConfigStore.setState({
       config: {
+        siteId: 'test',
         description: '',
         integrations: {},
         assets: {},
