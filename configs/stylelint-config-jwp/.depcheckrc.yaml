@@ -1,8 +1,0 @@
-ignores: [
-  # Dynamically loaded in the stylelint config
-  'stylelint',
-  'stylelint-order',
-  'stylelint-config-recommended-scss',
-  'stylelint-declaration-strict-value',
-  'stylelint-scss'
-]

@@ -2,7 +2,6 @@
   "name": "@jwp/ott-ui-react",
   "version": "4.30.0",
   "private": true,
-  "main": "./src",
   "scripts": {
     "lint:ts": "tsc --pretty --noEmit -p ./",
     "test": "TZ=UTC LC_ALL=en_US.UTF-8 vitest run",
@@ -41,6 +40,7 @@
     "@types/payment": "^2.1.4",
     "@types/react-infinite-scroller": "^1.2.3",
     "@vitejs/plugin-react": "^4.0.4",
+    "jsdom": "^22.1.0",
     "sass": "^1.49.10",
     "typescript-plugin-css-modules": "^5.0.2",
     "vi-fetch": "^0.8.0",
