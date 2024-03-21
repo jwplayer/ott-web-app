@@ -10,7 +10,7 @@ import { useConfigStore } from '@jwp/ott-common/src/stores/ConfigStore';
 import { useProfileStore } from '@jwp/ott-common/src/stores/ProfileStore';
 import ProfileController from '@jwp/ott-common/src/controllers/ProfileController';
 import { modalURLFromLocation } from '@jwp/ott-ui-react/src/utils/location';
-import { unicodeToChar } from '@jwp/ott-common/src/utils/common';
+import { isTruthyCustomParamValue, unicodeToChar } from '@jwp/ott-common/src/utils/common';
 import { ACCESS_MODEL } from '@jwp/ott-common/src/constants';
 import useSearchQueryUpdater from '@jwp/ott-ui-react/src/hooks/useSearchQueryUpdater';
 import { useProfiles, useSelectProfile } from '@jwp/ott-hooks-react/src/useProfiles';
@@ -40,7 +40,7 @@ const Layout = () => {
   const userMenuTitleId = useOpaqueId('usermenu-title');
   const isLoggedIn = !!useAccountStore(({ user }) => user);
   const favoritesEnabled = !!config.features?.favoritesList;
-  const { menu, assets, siteName, description, features, styling } = config;
+  const { menu, assets, siteName, description, features, styling, custom } = config;
   const metaDescription = description || t('default_description');
   const { footerText: configFooterText } = styling || {};
   const footerText = configFooterText || unicodeToChar(env.APP_FOOTER_TEXT);
@@ -48,6 +48,9 @@ const Layout = () => {
   const profileController = getModule(ProfileController, false);
 
   const { searchPlaylist } = features || {};
+  const hasAppContentSearch = isTruthyCustomParamValue(custom?.appContentSearch);
+  const searchEnabled = !!searchPlaylist || hasAppContentSearch;
+
   const currentLanguage = useMemo(() => supportedLanguages.find(({ code }) => code === i18n.language), [i18n.language, supportedLanguages]);
 
   const {
@@ -160,7 +163,7 @@ const Layout = () => {
         <Header
           onMenuButtonClick={() => setSideBarOpen(true)}
           logoSrc={banner}
-          searchEnabled={!!searchPlaylist}
+          searchEnabled={searchEnabled}
           searchBarProps={{
             query: searchQuery,
             onQueryChange: (event) => updateSearchQuery(event.target.value),

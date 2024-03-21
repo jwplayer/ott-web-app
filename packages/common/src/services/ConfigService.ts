@@ -22,6 +22,7 @@ export default class ConfigService {
     id: '',
     siteName: '',
     description: '',
+    siteId: '',
     assets: {
       banner: '/images/logo.png',
     },

@@ -10,7 +10,7 @@ import { useConfigStore } from '@jwp/ott-common/src/stores/ConfigStore';
 import { mediaURL } from '@jwp/ott-common/src/utils/urlFormatting';
 import useFirstRender from '@jwp/ott-hooks-react/src/useFirstRender';
 import useSearchQueryUpdater from '@jwp/ott-ui-react/src/hooks/useSearchQueryUpdater';
-import usePlaylist from '@jwp/ott-hooks-react/src/usePlaylist';
+import { useSearch } from '@jwp/ott-hooks-react/src/useSearch';
 import useOpaqueId from '@jwp/ott-hooks-react/src/useOpaqueId';
 
 import CardGrid from '../../components/CardGrid/CardGrid';
@@ -29,7 +29,7 @@ const Search = () => {
   const { updateSearchQuery } = useSearchQueryUpdater();
   const params = useParams();
   const query = params['*'];
-  const { isFetching, error, data: playlist } = usePlaylist(features?.searchPlaylist || '', { search: query || '' }, true, !!query);
+  const { isFetching, error, data: playlist } = useSearch(query || '');
 
   // User
   const { user, subscription } = useAccountStore(({ user, subscription }) => ({ user, subscription }), shallow);
