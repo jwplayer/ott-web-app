@@ -4,4 +4,5 @@ export type Settings = {
   playerLicenseKey?: string;
   additionalAllowedConfigSources?: string[];
   UNSAFE_allowAnyConfigSource?: boolean;
+  vendorId?: string;
 };
