@@ -148,7 +148,7 @@
     "password_helper_text": "Use a minimum of 8 characters (case sensitive) with at least one number",
     "password_strength": {
       "fair": "Fair",
-      "invalid": "",
+      "invalid": "Invalid",
       "strong": "Strong",
       "very_strong": "Very strong",
       "weak": "Weak"
@@ -192,7 +192,6 @@
     "password_helper_text": "Use a minimum of 8 characters (case sensitive) with at least one number",
     "password_reset": "Password reset",
     "password_reset_success": "Password reset successful",
-    "password_reset_text": "",
     "password_strength": "Although your password meets the criteria for a strong password, it includes elements that are not advisable, such as prohibited phrases or repeated words. Please modify it to ensure account safety.",
     "passwords_do_not_match": "Passwords do not match",
     "repeat_new_password": "Repeat new password",

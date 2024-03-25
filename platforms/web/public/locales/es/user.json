@@ -104,7 +104,6 @@
     "expiry_date": "Fecha de vencimiento",
     "granted_subscription": "Suscripción otorgada",
     "hidden_transactions_one": "Una transacción más",
-    "hidden_transactions_many": "",
     "hidden_transactions_other": "{{count}} transacciones más",
     "longer_than_usual": "El pago está tardando más de lo habitual. Por favor, inténtelo de nuevo más tarde.",
     "monthly_subscription": "Suscripción mensual",

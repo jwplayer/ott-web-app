@@ -18,10 +18,8 @@
     "credit_card": "Tarjeta de crédito",
     "credit_card_name": "Nombre de la tarjeta de crédito",
     "days_trial_one": "Se te cobrará mañana.",
-    "days_trial_many": "",
     "days_trial_other": "Se te cobrará después de {{count}} días.",
     "discount_period_one": "Durante el primer {{period}}",
-    "discount_period_many": "",
     "discount_period_other": "Durante los primeros {{count}} {{period}}",
     "free_trial_discount": "Prueba gratuita",
     "go_back_to_checkout": "Volver a la caja",
@@ -39,7 +37,6 @@
     "paypal": "PayPal",
     "paypal_instructions": "Al hacer clic en 'Continuar', serás redirigido al sitio de PayPal.",
     "periods_trial_one": "Se te cobrará después de un {{period}}.",
-    "periods_trial_many": "",
     "periods_trial_other": "Se te cobrará después de {{count}} {{period}}.",
     "redeem_coupon": "Canjear cupón",
     "save": "Ahorrar",
@@ -60,10 +57,8 @@
     "benefits": {
       "cancel_anytime": "Cancelar en cualquier momento",
       "first_days_free_one": "Primer día gratis",
-      "first_days_free_many": "",
       "first_days_free_other": "Primeros {{count}} días gratis",
       "first_periods_free_one": "Primer {{period}} gratis",
-      "first_periods_free_many": "",
       "first_periods_free_other": "Primeros {{count}} {{period}} gratis",
       "watch_on_all_devices": "Ver en todos los dispositivos"
     },
@@ -76,7 +71,6 @@
     "subscription": "Suscripción",
     "title": "Elige un plan",
     "tvod_access_one": "Acceso de {{count}} {{period}}",
-    "tvod_access_many": "",
     "tvod_access_other": "Acceso de {{count}} {{period}}",
     "watch_this_on_platform": "Ver esto en {{siteName}}",
     "yearly": "Anual",
@@ -112,18 +106,14 @@
   },
   "periods": {
     "day_one": "día",
-    "day_many": "",
     "day_other": "días",
     "month": "mensual",
     "month_one": "mes",
-    "month_many": "",
     "month_other": "meses",
     "week_one": "semana",
-    "week_many": "",
     "week_other": "semanas",
     "year": "anual",
     "year_one": "año",
-    "year_many": "",
     "year_other": "años"
   },
   "personal_details": {
@@ -158,7 +148,7 @@
     "password_helper_text": "Utiliza un mínimo de 8 caracteres (distingue entre mayúsculas y minúsculas) con al menos un número",
     "password_strength": {
       "fair": "Regular",
-      "invalid": "",
+      "invalid": "Invalida",
       "strong": "Fuerte",
       "very_strong": "Muy fuerte",
       "weak": "Débil"
@@ -202,7 +192,6 @@
     "password_helper_text": "Utiliza un mínimo de 8 caracteres (distingue entre mayúsculas y minúsculas) con al menos un número",
     "password_reset": "Restablecimiento de contraseña",
     "password_reset_success": "Contraseña restablecida",
-    "password_reset_text": "",
     "password_strength": "Aunque tu contraseña cumple con los criterios de una contraseña segura, incluye elementos que no son recomendables, como frases prohibidas o palabras repetidas. Por favor, modifícala para garantizar la seguridad de tu cuenta.",
     "passwords_do_not_match": "Las contraseñas no coinciden",
     "repeat_new_password": "Repetir nueva contraseña",
