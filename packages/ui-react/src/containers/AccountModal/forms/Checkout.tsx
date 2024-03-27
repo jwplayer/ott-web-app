@@ -53,10 +53,10 @@ const Checkout = () => {
     handleSubmit,
   } = useForm({
     initialValues: { couponCode: '', paymentMethodId: paymentMethods?.[0]?.id?.toString() || '' },
-    onSubmit: async ({ couponCode, paymentMethodId }) => {
+    onSubmit: ({ couponCode, paymentMethodId }) => {
       setShowCouponCodeSuccess(false);
 
-      return await updateOrder.mutateAsync({ couponCode, paymentMethodId: parseInt(paymentMethodId) });
+      return updateOrder.mutateAsync({ couponCode, paymentMethodId: parseInt(paymentMethodId) });
     },
     onSubmitSuccess: ({ couponCode }): void => setShowCouponCodeSuccess(!!couponCode),
     onSubmitError: ({ error }) => {
@@ -117,6 +117,7 @@ const Checkout = () => {
       order={order}
       offer={selectedOffer}
       offerType={offerType}
+      error={errors.form}
       onBackButtonClick={backButtonClickHandler}
       paymentMethods={paymentMethods}
       paymentMethodId={paymentMethodId}

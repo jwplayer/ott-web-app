@@ -193,7 +193,7 @@ export default class CleengService {
       return await resp.json();
     } catch (error: unknown) {
       return {
-        errors: Array.of(error as string),
+        errors: Array.of(error instanceof Error ? error.message : String(error)),
       };
     }
   };

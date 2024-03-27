@@ -20,11 +20,13 @@ import type {
   PaymentWithPayPal,
   SwitchSubscription,
   UpdateOrder,
+  UpdateOrderResponse,
   UpdatePaymentWithPayPal,
 } from '../../../../types/checkout';
 import CheckoutService from '../CheckoutService';
 import { GET_CUSTOMER_IP } from '../../../modules/types';
 import type { GetCustomerIP } from '../../../../types/get-customer-ip';
+import type { ServiceResponse } from '../../../../types/service';
 
 import CleengService from './CleengService';
 
@@ -83,7 +85,21 @@ export default class CleengCheckoutService extends CheckoutService {
   };
 
   updateOrder: UpdateOrder = async ({ order, ...payload }) => {
-    return this.cleengService.patch(`/orders/${order.id}`, JSON.stringify(payload), { authenticate: true });
+    const response = await this.cleengService.patch<ServiceResponse<UpdateOrderResponse>>(`/orders/${order.id}`, JSON.stringify(payload), {
+      authenticate: true,
+    });
+
+    if (response.errors.length) {
+      if (response.errors[0].includes(`Order with ${order.id} not found`)) {
+        throw new Error('Order not found');
+      }
+
+      if (response.errors[0].includes(`Coupon ${payload.couponCode} not found`)) {
+        throw new Error('Invalid coupon code');
+      }
+    }
+
+    return response;
   };
 
   getPaymentMethods: GetPaymentMethods = async () => {
