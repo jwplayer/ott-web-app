@@ -1,0 +1,156 @@
+@use '@jwp/ott-ui-react/src/styles/variables';
+@use '@jwp/ott-ui-react/src/styles/theme';
+@use '@jwp/ott-ui-react/src/styles/accessibility';
+@use '@jwp/ott-ui-react/src/styles/mixins/responsive';
+
+$small-button-height: 28px;
+$medium-button-height: 36px;
+$large-button-height: 40px;
+
+.button {
+  position: relative;
+  display: inline-flex;
+  justify-content: inherit;
+  align-items: center;
+  height: $medium-button-height;
+  padding: 0 16px;
+  overflow: hidden;
+
+  font-family: var(--body-alt-font-family);
+  font-weight: var(--body-font-weight-bold);
+  font-size: 16px;
+  line-height: 18px;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 4px;
+  outline: none;
+  cursor: pointer;
+  transition: background-color 0.1s ease, transform 0.1s ease;
+
+  @media (hover: hover) and (pointer: fine) {
+    &:not(.disabled) {
+      &:hover,
+      &:focus {
+        z-index: 1;
+        transform: scale(1.05);
+      }
+    }
+  }
+
+  &.disabled {
+    cursor: default;
+    opacity: 0.5;
+  }
+
+  &.small {
+    height: $small-button-height;
+  }
+
+  &.large {
+    height: $large-button-height;
+  }
+
+  &.default {
+    color: currentColor;
+    background-color: theme.$btn-default-bg;
+  }
+
+  &.primary {
+    color: var(--highlight-contrast-color, theme.$btn-primary-color);
+    background-color: var(--highlight-color, theme.$btn-primary-bg);
+
+    &:focus {
+      @include accessibility.accessibleOutlineContrast;
+    }
+  }
+
+  &.outlined {
+    border: 1px solid rgba(255, 255, 255, 0.3);
+
+    &:not(.disabled) {
+      &.active,
+      &:focus {
+        color: var(--highlight-contrast-color, theme.$btn-primary-color);
+        background-color: var(--highlight-color, theme.$btn-primary-bg);
+        border-color: var(--highlight-color, theme.$btn-primary-bg);
+        outline: none;
+      }
+    }
+  }
+
+  &.text {
+    background: none;
+    opacity: 0.9;
+
+    &:not(.disabled) {
+      &.active,
+      &:focus {
+        opacity: 1;
+      }
+
+      &:hover {
+        z-index: 1;
+        background: theme.$btn-default-bg;
+        opacity: 1;
+      }
+    }
+  }
+
+  &.danger {
+    color: theme.$btn-danger-color;
+    background-color: theme.$btn-danger-bg;
+    outline: theme.$btn-danger-outline;
+  }
+
+  &.delete {
+    color: theme.$btn-delete-color;
+    background-color: theme.$btn-delete-bg;
+    outline: none;
+  }
+
+  &.fullWidth {
+    justify-content: center;
+    width: 100%;
+
+    @media (hover: hover) and (pointer: fine) {
+      &:hover:not(.disabled) {
+        transform: scale(1.04);
+      }
+    }
+  }
+
+  > svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+.startIcon {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  margin-right: 11px;
+
+  > svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+
+    @include responsive.tablet-only() {
+      width: 18px;
+      height: 18px;
+    }
+  }
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+.centerAbsolute {
+  position: absolute;
+  right: 0;
+  left: 0;
+  margin: auto;
+  transform: translate(-5px, -5px);
+}

@@ -1,0 +1,51 @@
+@use '@jwp/ott-ui-react/src/styles/variables';
+
+.heading {
+  margin: 24px 0;
+  font-weight: var(--body-font-weight-bold);
+  font-size: 26px;
+}
+
+.paragraph {
+  margin: 0 0 variables.$base-spacing;
+}
+
+.disclaimer {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+
+  p {
+    width: 100%;
+    margin: 0;
+    color: variables.$gray-white;
+    font-size: 14px;
+    line-height: 20px;
+  }
+}
+
+.buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+  margin-top: 24px;
+  gap: 16px;
+
+  &.stacked {
+    flex-direction: column;
+    justify-content: initial;
+    gap: 8px;
+  }
+}
+
+.warningBox {
+  display: flex;
+  flex-direction: column;
+  padding: 8px 16px 8px 16px;
+  background-color: variables.$brown-dark;
+  border-radius: 4px;
+  gap: 16px;
+}

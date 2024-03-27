@@ -1,0 +1,229 @@
+@use '@jwp/ott-ui-react/src/styles/variables';
+@use '@jwp/ott-ui-react/src/styles/theme';
+@use '@jwp/ott-ui-react/src/styles/accessibility';
+@use '@jwp/ott-ui-react/src/styles/mixins/responsive';
+@use '@jwp/ott-ui-react/src/styles/mixins/utils';
+
+//
+// Header
+// --------------------------------
+
+.header {
+  height: variables.$header-height;
+  padding: 10px calc(#{variables.$base-spacing} * 2);
+  color: var(--header-contrast-color, variables.$white);
+  background: var(--header-background, transparent);
+
+  //
+  // Make header fixed
+  //
+  &.fixed {
+    position: fixed;
+    z-index: variables.$header-z-index;
+    width: 100%;
+  }
+
+  //
+  // Make header static
+  //
+  &.static {
+    position: static;
+    width: 100%;
+  }
+}
+
+//
+// Header container
+//
+.container {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+}
+
+//
+// Header menu
+//
+.menu {
+  display: none;
+}
+
+//
+// Header menu
+//
+.iconButton {
+  width: 36px;
+  height: 36px;
+
+  > svg {
+    fill: currentColor;
+  }
+}
+
+//
+// Header brand
+//
+.brand {
+  align-self: center;
+  margin-right: variables.$base-spacing;
+}
+
+//
+// Header navigation
+//
+.nav {
+  display: inline-block;
+  flex: 1;
+  align-items: center;
+
+  > a {
+    height: 36px;
+    min-height: 36px;
+    margin: 0 6px;
+    padding: 0 calc(#{variables.$base-spacing} / 2);
+    font-weight: var(--body-font-weight-bold);
+    font-size: 18px;
+  }
+}
+
+.skipToContent {
+  @include accessibility.focus-visible() using ($value) {
+    box-shadow: $value;
+  }
+
+  position: absolute;
+  top: 50px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  color: var(--highlight-contrast-color, black);
+  font-weight: bold;
+  border-radius: 20px;
+  clip: rect(1px, 1px, 1px, 1px);
+
+  &:focus {
+    z-index: 1;
+    width: auto;
+    height: auto;
+    padding: calc(#{variables.$base-spacing} / 2);
+    white-space: nowrap;
+    text-decoration: none;
+    background: var(--highlight-color, white);
+    box-shadow: theme.$panel-box-shadow;
+    clip: auto;
+  }
+}
+
+//
+// Header actions
+//
+.actions {
+  position: relative;
+  display: flex;
+
+  @include responsive.mobile-and-tablet() {
+    // the search container wants to position itself against the header
+    position: static;
+  }
+}
+
+.actionButton {
+  margin-left: calc(#{variables.$base-spacing} / 2);
+}
+
+//
+// Header search
+//
+.search {
+  max-width: 180px;
+}
+
+//
+// Header search container
+//
+.searchContainer {
+  position: absolute;
+  left: -#{variables.$search-bar-width-desktop};
+  display: flex;
+  width: variables.$search-bar-width-desktop;
+
+  > div:first-child {
+    flex: 1;
+  }
+
+  @include responsive.mobile-and-tablet() {
+    right: 0;
+    left: 0;
+    width: auto;
+  }
+}
+
+//
+// Container for the user button(s)
+//
+.buttonContainer {
+  // this is a visual fix for putting a button with background besides a transparent button
+  margin-left: variables.$base-spacing;
+
+  > button:first-child {
+    margin-right: calc(#{variables.$base-spacing} / 2);
+  }
+}
+
+.brandCentered {
+  .brand {
+    text-align: center;
+  }
+}
+
+//
+// mediaQueries
+// --------------------------------
+
+@include responsive.mobile-and-tablet() {
+  .header {
+    height: variables.$header-height-mobile;
+    padding: 10px calc(#{variables.$base-spacing} * 2);
+  }
+
+  .menu {
+    display: block;
+  }
+
+  .brand {
+    flex: 1;
+    margin-left: variables.$base-spacing;
+  }
+
+  .nav {
+    display: none;
+  }
+
+  .searchActive {
+    .menu,
+    .brand,
+    .buttonContainer,
+    .actionButton {
+      display: none;
+    }
+  }
+}
+
+@include responsive.mobile-only() {
+  .header {
+    padding: 10px variables.$base-spacing;
+  }
+
+  .brand {
+    margin-right: 0;
+    margin-left: 0;
+    text-align: center;
+  }
+
+  .menu,
+  .actions {
+    justify-content: flex-end;
+    width: 80px;
+  }
+}

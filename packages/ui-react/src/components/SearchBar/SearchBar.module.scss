@@ -1,0 +1,59 @@
+@use '@jwp/ott-ui-react/src/styles/variables';
+@use '@jwp/ott-ui-react/src/styles/theme';
+
+.searchBar {
+  position: relative;
+}
+
+.searchForm {
+    height: variables.$search-height;
+}
+
+.icon {
+  position: absolute;
+  margin: 6px 8px;
+  pointer-events: none;
+}
+
+.input {
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+  padding: 0 36px 0 36px;
+
+  color: currentColor;
+  font-weight: var(--body-font-weight-bold);
+  font-size: 16px;
+
+  background: variables.$black;
+
+  border: 1px solid rgba(variables.$white, 0.32);
+  border-radius: 4px;
+
+  transition: border 0.1s ease, background 0.1s ease;
+
+  &::-webkit-input-placeholder {
+    color: currentColor;
+    opacity: 0.5;
+  }
+
+  &::-webkit-search-cancel-button{
+    display: none;
+  }
+
+  &:focus,
+  &:active {
+    border-color: variables.$white;
+    outline: none;
+  }
+}
+
+.clearButton {
+  position: absolute;
+  right: 0;
+
+  > svg {
+    width: 18px;
+    height: 18px;
+  }
+}

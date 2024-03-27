@@ -1,0 +1,74 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`<Radio> > renders and matches snapshot 1`] = `
+<div>
+  <div>
+    <label
+      class="_header_d50e6e"
+      data-testid="radio-header"
+      for="radio_1235_radio"
+    >
+      <span>
+        Choose a Value
+      </span>
+      <span
+        class="_note_d50e6e"
+      >
+        optional
+      </span>
+    </label>
+    <div
+      class="_radio_d50e6e"
+    >
+      <input
+        checked=""
+        id="radio_1235_radio0"
+        name="radio"
+        type="radio"
+        value="value1"
+      />
+      <label
+        for="radio_1235_radio0"
+      >
+        Label 1 
+      </label>
+    </div>
+    <div
+      class="_radio_d50e6e"
+    >
+      <input
+        id="radio_1235_radio1"
+        name="radio"
+        type="radio"
+        value="value2"
+      />
+      <label
+        for="radio_1235_radio1"
+      >
+        Label 2 
+      </label>
+    </div>
+    <div
+      class="_radio_d50e6e"
+    >
+      <input
+        id="radio_1235_radio2"
+        name="radio"
+        type="radio"
+        value="value3"
+      />
+      <label
+        for="radio_1235_radio2"
+      >
+        Label 3 
+      </label>
+    </div>
+    <div
+      class="_helperText_da58e0"
+      id="helper_text_1235"
+    >
+      This is required!
+    </div>
+  </div>
+</div>
+`;

@@ -1,0 +1,35 @@
+@use 'sass:color';
+@use '@jwp/ott-ui-react/src/styles/variables';
+@use '@jwp/ott-ui-react/src/styles/theme';
+
+.menuItems {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+.header {
+  margin: 8px 0;
+  padding: 0 18px;
+  color: color.adjust(theme.$primary-color, $lightness: -40%);
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.menuItem {
+  padding: 0 18px;
+
+  > a {
+    margin: 6px 0;
+    font-weight: normal;
+    text-decoration: none;
+  }
+}
+
+.menuItemActive {
+  background: rgba(variables.$white, 0.08);
+
+  > a {
+    font-weight: bold;
+  }
+}

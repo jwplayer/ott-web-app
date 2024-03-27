@@ -15,7 +15,7 @@ const changes: {
 function run() {
   execSync('git fetch');
 
-  const fileChanges = execSync('git diff -U200000 --no-prefix origin/release..origin/release-candidate public/locales')
+  const fileChanges = execSync('git diff -U200000 --no-prefix origin/release..origin/release-candidate platforms/web/public/locales')
     .toString()
     .split('\n')
     .filter((s) => !!s)

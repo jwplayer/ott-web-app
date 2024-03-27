@@ -1,0 +1,43 @@
+@use '@jwp/ott-ui-react/src/styles/variables';
+@use '@jwp/ott-ui-react/src/styles/theme';
+
+.layout {
+  position: relative;
+  z-index: 0;
+}
+
+.buttonContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 0 variables.$base-spacing;
+
+  > button:first-child {
+    margin-bottom: calc(#{variables.$base-spacing} / 2);
+  }
+}
+
+.main {
+  height: 100%;
+}
+
+.headerButton {
+    overflow: visible;
+
+    &::after {
+      position: absolute;
+      bottom: calc(((variables.$header-height - 36px) / 2) * -1);
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background-color: variables.$white;
+      content: '';
+    }
+
+    body:global(.is-tabbing) & {
+      &:focus {
+        &::after {
+          display: none;
+        }
+      }
+    }
+}

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title><% name %></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="description" content="<% description %>" data-react-helmet="true" />
+  <meta name="twitter:card" content="summary" data-react-helmet="true"  />
+  <meta property="og:title" content="<% name %>" data-react-helmet="true" >
+  <meta property="og:description" content="<% description %>" data-react-helmet="true">
+  <meta property="og:image" content="/images/icons/app-icon.png" data-react-helmet="true">
+
+  <link rel="icon" href="/images/icons/favicon.ico" type="image/x-icon" sizes="any">
+  <%- favicons %>
+
+  <!-- Pre-connect JW Player origins -->
+  <link rel="preconnect" href="https://content.jwplatform.com"/>
+  <link rel="preconnect" href="https://cdn.jwplayer.com"/>
+
+  <!-- Safari web app -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+
+  <!-- Chrome, Firefox OS and Opera -->
+  <meta name="theme-color" content="#000000">
+  <!-- iOS Safari -->
+  <meta name="apple-mobile-web-app-status-bar-style" content="#000000">
+
+  <!-- Manifest -->
+  <link rel="manifest" href="/manifest.json" />
+</head>
+<body>
+  <div id="root"></div>
+  <noscript>You need to enable JavaScript to run this app.</noscript>
+  <script type="module" src="/src/index.tsx"></script>
+</body>
+</html>

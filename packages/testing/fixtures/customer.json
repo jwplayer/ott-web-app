@@ -1,0 +1,31 @@
+{
+  "id": "362344331",
+  "email": "email@domain.com",
+  "firstName": "John",
+  "lastName": "Doe",
+  "country": "NL",
+  "regDate": "2021-04-28 13:03:26",
+  "lastLoginDate": "2021-07-26 16:54:38",
+  "lastUserIp": "123.123.123.123",
+  "externalId": "",
+  "metadata": {
+    "history": [
+      {
+        "mediaid": "YzUqQnrx",
+        "progress": 0.3710328907847994
+      },
+      {
+        "mediaid": "k6K5ugEC",
+        "progress": 0.448087431693989
+      }
+    ],
+    "favorites": [
+      {
+        "mediaid": "2v7rOqOE"
+      },
+      {
+        "mediaid": "5cMy3jIp"
+      }
+    ]
+  }
+}

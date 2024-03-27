@@ -1,0 +1,49 @@
+@use '@jwp/ott-ui-react/src/styles/mixins/responsive';
+
+.tileDock ul {
+  display: block;
+  margin: 0;
+  padding: 0;
+  white-space: nowrap;
+}
+.tileDock li {
+  display: inline-block;
+  white-space: normal;
+  vertical-align: top;
+  list-style-type: none;
+}
+.notInView {
+  opacity: 0.5;
+  @media (hover: hover) and (pointer: fine) {
+    opacity: 0.3;
+  }
+}
+.tileDock .leftControl {
+  position: absolute;
+  top: calc(50% + 22px);
+  left: 1px;
+  z-index: 1;
+  transform: translateY(-100%);
+}
+.tileDock .rightControl {
+  position: absolute;
+  top: calc(50% + 22px);
+  right: 1px;
+  z-index: 1;
+  transform: translateY(-100%);
+}
+.emptyTile::before {
+  content: '';
+  display: block;
+  padding-top: 56.25%;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 4px;
+}
+
+.dots {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 12px;
+}

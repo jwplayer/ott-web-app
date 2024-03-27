@@ -1,0 +1,95 @@
+@use '@jwp/ott-ui-react/src/styles/variables';
+@use '@jwp/ott-ui-react/src/styles/theme';
+@use '@jwp/ott-ui-react/src/styles/mixins/responsive';
+@use '@jwp/ott-ui-react/src/styles/mixins/typography';
+
+.hero {
+  display: flex;
+  max-width: 100vw;
+  min-height: 40vh;
+  color: var(--primary-color);
+  font-family: var(--body-font-family);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.75);
+}
+
+.heroPadding {
+  padding: 37px 56px 0;
+
+    @include responsive.desktop-small-only() {
+      padding: 34px 36px 36px;
+    }
+
+    @include responsive.tablet-only() {
+      padding: 34px 24px 24px;
+    }
+
+    @include responsive.mobile-only() {
+      padding: 16px;
+  }
+}
+
+.info {
+  position: relative;
+  width: 50%;
+  max-width: 650px;
+  min-height: 440px;
+
+  @include responsive.desktop-small-only() {
+    min-height: 335px;
+  }
+
+  @include responsive.tablet-only() {
+    width: 350px;
+    min-height: 335px;
+  }
+
+  @include responsive.mobile-only() {
+    width: 100%;
+    min-height: 380px;
+    padding-top: 225px;
+  }
+}
+
+.title {
+  @include typography.video-title-base;
+}
+
+.description {
+  font-family: var(--body-font-family);
+  font-size: 18px;
+  line-height: variables.$base-line-height;
+  letter-spacing: 0.15px;
+}
+
+.poster {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: -1;
+  width: 80vw;
+  height: calc(85vw / 16 * 9);
+
+  mask-image: radial-gradient(farthest-corner at 80% 20%, rgba(0, 0, 0, 1) 30%, rgba(0, 0, 0, 0) 60%);
+  //noinspection CssInvalidPropertyValue
+  -webkit-mask-image: radial-gradient(farthest-corner at 80% 20%, rgba(0, 0, 0, 1) 30%, rgba(0, 0, 0, 0) 60%); /* stylelint-disable-line */
+
+  @include responsive.tablet-only() {
+    width: 80vw;
+    height: calc(140vw / 16 * 9);
+  }
+
+  @include responsive.mobile-only() {
+    width: 110vw;
+    height: calc(180vw / 16 * 9);
+  }
+}
+
+.posterFade {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: -1;
+  height: 120px;
+  background: linear-gradient(0deg, transparent, var(--body-background-color, variables.$white));
+}

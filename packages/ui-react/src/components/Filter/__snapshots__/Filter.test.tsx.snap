@@ -1,0 +1,52 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`<Filter> > renders Filter 1`] = `
+<div>
+  <div
+    aria-label="filter_videos_by"
+    class="_filterRow_2153bc"
+    role="listbox"
+  >
+    <button
+      aria-selected="false"
+      class="_button_f8f296 _default_f8f296 _outlined_f8f296"
+      role="option"
+      type="button"
+    >
+      <span>
+        x
+      </span>
+    </button>
+    <button
+      aria-selected="false"
+      class="_button_f8f296 _default_f8f296 _outlined_f8f296"
+      role="option"
+      type="button"
+    >
+      <span>
+        y
+      </span>
+    </button>
+    <button
+      aria-selected="false"
+      class="_button_f8f296 _default_f8f296 _outlined_f8f296"
+      role="option"
+      type="button"
+    >
+      <span>
+        z
+      </span>
+    </button>
+    <button
+      aria-selected="false"
+      class="_button_f8f296 _default_f8f296 _outlined_f8f296"
+      role="option"
+      type="button"
+    >
+      <span>
+        bb
+      </span>
+    </button>
+  </div>
+</div>
+`;

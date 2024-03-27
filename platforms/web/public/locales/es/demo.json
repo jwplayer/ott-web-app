@@ -1,0 +1,16 @@
+{
+  "app_config_learn_more": "Más información sobre App Configs",
+  "app_config_not_found": "App Config inválida o no encontrada",
+  "cancel_config_id": "Cancelar",
+  "click_to_unselect_config": "(haz clic aquí para deseleccionar esta configuración)",
+  "currently_previewing_config": "Actualmente estás previsualizando la configuración: '{{configSource}}'",
+  "demo_note": "Nota: El ID de configuración de aplicación seleccionado se almacenará localmente solo en este navegador. Utiliza el enlace en la parte inferior de la página principal para borrar la configuración y volver a este diálogo.",
+  "enter_8_digits": "El ID de configuración de aplicación debe tener 8 dígitos. Corrige tu entrada e intenta nuevamente.",
+  "enter_a_value": "Por favor, ingresa un ID de configuración de aplicación",
+  "invalid_config_id_format": "El ID de configuración de aplicación debe consistir solo en números y letras minúsculas. Verifica tu entrada e intenta nuevamente.",
+  "please_enter_config_id": "Por favor, ingresa un ID de configuración de aplicación de tu cuenta de JW",
+  "submit_config_id": "Enviar",
+  "use_the_jwp_dashboard": "¿No tienes una configuración? Utiliza el panel de control de JWP para crear una configuración de aplicación o haz clic en Cancelar para ver una demostración genérica.",
+  "view_generic_demo": "¿Ver demostración genérica?",
+  "viewing_config_demo": "Esto te redirigirá a una aplicación de demostración genérica. ¿Estás seguro de que quieres continuar?"
+}

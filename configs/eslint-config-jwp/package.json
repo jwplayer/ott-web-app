@@ -1,0 +1,17 @@
+{
+  "name": "eslint-config-jwp",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "lint:ts": "exit 0",
+    "test": "exit 0"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^7.1.1",
+    "@typescript-eslint/parser": "^7.1.1",
+    "confusing-browser-globals": "^1.0.10",
+    "eslint-plugin-import": "^2.23.4",
+    "eslint-plugin-react": "^7.24.0",
+    "eslint-plugin-react-hooks": "^4.2.0"
+  }
+}

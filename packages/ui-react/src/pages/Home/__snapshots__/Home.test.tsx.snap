@@ -1,0 +1,225 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Home Component tests > Home test 1`] = `
+<div>
+  <h1
+    class="hideUntilFocus"
+  >
+    home
+  </h1>
+  <div
+    class="_shelfList_a0651b"
+  >
+    <div
+      style="overflow: hidden;"
+    >
+      <section
+        aria-label="This is a playlist"
+        class="_shelfContainer_a0651b"
+        data-testid="shelf-this-is-a-playlist"
+      >
+        <div
+          class="_shelf_81910b"
+        >
+          <h2
+            class="_title_81910b"
+          >
+            This is a playlist
+          </h2>
+          <div
+            class="_tileDock_22abb0"
+          >
+            <ul
+              style="transform: translate3d(0%, 0, 0); margin-left: -4px; margin-right: -4px;"
+            >
+              <li
+                aria-hidden="false"
+                class=""
+                style="width: 20%; padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
+              >
+                <a
+                  class="_card_d75732"
+                  data-testid="My video"
+                  href="/m/abcddabc/my-video"
+                  role="button"
+                  tabindex="0"
+                >
+                  <div
+                    class="_titleContainer_d75732"
+                  >
+                    <h3
+                      class="_title_d75732"
+                    >
+                      My video
+                    </h3>
+                  </div>
+                  <div
+                    class="_poster_d75732 _aspect169_d75732"
+                  >
+                    <div
+                      class="_meta_d75732"
+                    >
+                      <div
+                        class="_tags_d75732"
+                      >
+                        <div
+                          class="_tag_d75732"
+                        >
+                          6 min
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              </li>
+              <li
+                aria-hidden="false"
+                class=""
+                style="width: 20%; padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
+              >
+                <a
+                  class="_card_d75732"
+                  data-testid="Other Vids"
+                  href="/m/zzzaaazz/other-vids"
+                  role="button"
+                  tabindex="0"
+                >
+                  <div
+                    class="_titleContainer_d75732"
+                  >
+                    <h3
+                      class="_title_d75732"
+                    >
+                      Other Vids
+                    </h3>
+                  </div>
+                  <div
+                    class="_poster_d75732 _aspect169_d75732"
+                  >
+                    <div
+                      class="_meta_d75732"
+                    >
+                      <div
+                        class="_tags_d75732"
+                      >
+                        <div
+                          class="_tag_d75732"
+                        >
+                          6 min
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+      <section
+        aria-label="Second Playlist"
+        class="_shelfContainer_a0651b"
+        data-testid="shelf-second-playlist"
+      >
+        <div
+          class="_shelf_81910b"
+        >
+          <h2
+            class="_title_81910b"
+          >
+            Second Playlist
+          </h2>
+          <div
+            class="_tileDock_22abb0"
+          >
+            <ul
+              style="transform: translate3d(0%, 0, 0); margin-left: -4px; margin-right: -4px;"
+            >
+              <li
+                aria-hidden="false"
+                class=""
+                style="width: 20%; padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
+              >
+                <a
+                  class="_card_d75732"
+                  data-testid="My video"
+                  href="/m/abcddabc/my-video"
+                  role="button"
+                  tabindex="0"
+                >
+                  <div
+                    class="_titleContainer_d75732"
+                  >
+                    <h3
+                      class="_title_d75732"
+                    >
+                      My video
+                    </h3>
+                  </div>
+                  <div
+                    class="_poster_d75732 _aspect169_d75732"
+                  >
+                    <div
+                      class="_meta_d75732"
+                    >
+                      <div
+                        class="_tags_d75732"
+                      >
+                        <div
+                          class="_tag_d75732"
+                        >
+                          6 min
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              </li>
+              <li
+                aria-hidden="false"
+                class=""
+                style="width: 20%; padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
+              >
+                <a
+                  class="_card_d75732"
+                  data-testid="Other Vids"
+                  href="/m/zzzaaazz/other-vids"
+                  role="button"
+                  tabindex="0"
+                >
+                  <div
+                    class="_titleContainer_d75732"
+                  >
+                    <h3
+                      class="_title_d75732"
+                    >
+                      Other Vids
+                    </h3>
+                  </div>
+                  <div
+                    class="_poster_d75732 _aspect169_d75732"
+                  >
+                    <div
+                      class="_meta_d75732"
+                    >
+                      <div
+                        class="_tags_d75732"
+                      >
+                        <div
+                          class="_tag_d75732"
+                        >
+                          6 min
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+`;

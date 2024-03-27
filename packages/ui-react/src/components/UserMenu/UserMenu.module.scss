@@ -1,0 +1,55 @@
+@use '@jwp/ott-ui-react/src/styles/variables';
+@use '@jwp/ott-ui-react/src/styles/theme';
+
+@mixin divider-before($marginY, $marginX, $background-opacity) {
+  position: relative;
+  margin-top: $marginY;
+
+  &::before {
+    position: absolute;
+    top: calc(#{$marginY} * -0.5);
+    right: $marginX;
+    left: $marginX;
+    height: 1px;
+    background-color: rgba(variables.$white, $background-opacity);
+    content: '';
+  }
+}
+
+.menuItems {
+  width: auto;
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+
+  > li > a {
+    padding: 0 18px;
+    font-size: 16px;
+  }
+}
+
+.button {
+  margin-bottom: variables.$base-spacing;
+}
+
+.divider {
+  @include divider-before(variables.$base-spacing, 0, 0.12);
+
+  &.small {
+    @include divider-before(variables.$base-spacing, variables.$base-spacing, 0.32);
+  }
+}
+
+.sectionHeader {
+  width: 100%;
+  padding: 12px 0 12px 24px;
+  color: variables.$white;
+  font-weight: 700;
+  font-size: 12px;
+  text-transform: uppercase;
+  opacity: 0.7;
+
+  .menuItems + & {
+    @include divider-before(variables.$base-spacing, variables.$base-spacing, 0.32);
+  }
+}

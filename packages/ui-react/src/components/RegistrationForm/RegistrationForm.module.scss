@@ -1,0 +1,34 @@
+@use '@jwp/ott-ui-react/src/styles/variables';
+@use '@jwp/ott-ui-react/src/styles/theme';
+
+.title {
+  margin-bottom: 24px;
+  font-weight: var(--body-font-weight-bold);
+  font-size: 24px;
+}
+
+.continue {
+  margin: variables.$base-spacing 0;
+}
+
+.bottom {
+  padding: variables.$base-spacing 0;
+  text-align: center;
+}
+
+.alreadyAccount {
+  font-size: 16px;
+}
+
+.login {
+  margin-left: 6px;
+  font-weight: var(--body-font-weight-bold);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.customFields {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}

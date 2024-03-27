@@ -41,7 +41,7 @@ The app sends the following events (param `e`) to JW platform:
 
 ## Event JS Script
 
-The event trigger implementation for the ott web app can be found at [jwpltx.js](/public/jwpltx.js)
+The event trigger implementation for the ott web app can be found at [jwpltx.js](/web/public/jwpltx.js)
 
 Note that `navigator.sendBeacon()` is used to call the endpoints. The browser will not do CORS checks on this operation. It furthermore minimizes performance impact as the browser doesn't wait for the response of the server.
 
@@ -51,7 +51,7 @@ It also lets us to use `beforeunload` event in order to send remaining data to a
 
 A special data parameter is the Analytics ID (`aid`). It determines to which JW Player account & property the events belong. Each property has its unique analytics ID and is provided by a JW PLayer Solution Engineer or Account manager.
 
-For the OTT Web App the Analytics ID is stored in [`config.json`](/public/config.json) as `analyticsToken`
+For the OTT Web App the Analytics ID is stored in [`config.json`](/web/public/config.json) as `analyticsToken`
 
 ## Metrics
 

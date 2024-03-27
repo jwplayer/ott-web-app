@@ -1,0 +1,121 @@
+@use '@jwp/ott-ui-react/src/styles/variables';
+@use '@jwp/ott-ui-react/src/styles/theme';
+@use '@jwp/ott-ui-react/src/styles/accessibility';
+@use '@jwp/ott-ui-react/src/styles/mixins/responsive';
+
+.infoBox {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: variables.$base-spacing;
+  padding: calc(#{variables.$base-spacing} / 2) variables.$base-spacing;
+
+  font-size: 14px;
+  line-height: variables.$base-line-height;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.14), 0 3px 4px rgba(0, 0, 0, 0.12), 0 1px 5px rgba(0, 0, 0, 0.2);
+  background: theme.$panel-bg;
+  border-radius: 4px;
+
+  > strong {
+    letter-spacing: 0.25px;
+  }
+
+  @include responsive.mobile-only() {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+.transactionItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25em;
+
+  > span {
+    color: variables.$gray-light;
+  }
+}
+
+.pendingSwitch {
+  display: inline-block;
+  margin-top: variables.$base-spacing;
+}
+
+.transactionDetails {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  > div {
+    margin-left: variables.$base-spacing;
+
+    @include responsive.mobile-only() {
+      margin-left: 0;
+    }
+  }
+
+  @include responsive.mobile-only() {
+    justify-content: space-between;
+    width: 100%;
+  }
+}
+
+.transactionPrice {
+  font-size: 1.25em;
+}
+
+.price {
+  font-size: 14px;
+  line-height: variables.$base-line-height;
+
+  > strong {
+    font-weight: var(--body-font-weight-bold);
+    font-size: 24px;
+  }
+}
+
+.cardDetails {
+  display: flex;
+  margin-top: calc(#{variables.$base-spacing} * 2);
+}
+
+.paypal {
+  display: flex;
+  align-items: center;
+  margin-bottom: variables.$base-spacing;
+  font-weight: var(--body-font-weight-bold);
+  font-size: 24px;
+  font-style: italic;
+
+  > svg {
+    margin-right: 4px;
+  }
+}
+
+.upgradeSubscription {
+  margin-right: 8px;
+
+  @include responsive.mobile-only() {
+    margin: 0 0 8px;
+  }
+}
+
+.changePlanContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.changePlanButtons {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  gap: 12px;
+}
+
+.changePlanCancelButton {
+  margin-left: auto;
+}
+
+.editCard {
+  margin: 0 0 8px;
+}

@@ -1,0 +1,146 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`<DemoConfigDialog> > renders and matches snapshot 1`] = `
+<div>
+  <div
+    class="_note_561a54"
+  >
+    <div>
+      currently_previewing_config
+    </div>
+    <button
+      class="_button_e29948 _default_e29948 _text_e29948"
+      type="button"
+    >
+      <span>
+        click_to_unselect_config
+      </span>
+    </button>
+  </div>
+</div>
+`;
+
+exports[`<DemoConfigDialog> > renders and matches snapshot error dialog 1`] = `
+<div>
+  <div
+    class="_configModal_561a54"
+  >
+    <div
+      class="_errorPage_d73633"
+    >
+      <div
+        class="_box_d73633"
+      >
+        <img
+          alt=""
+          class="_image_d73633"
+          src="/images/logo.png"
+        />
+        <h1
+          class="_title_d73633"
+        >
+          app_config_not_found
+        </h1>
+        <div
+          class="_main_d73633"
+        >
+          <p
+            class="_message_d73633"
+          >
+            generic_error_description
+          </p>
+          <form
+            method="GET"
+            target="/"
+          >
+            <div
+              class="_textField_25c745 _error_25c745 _maxWidth_561a54"
+            >
+              <label
+                class="_label_25c745"
+                for="text-field_1235_app-config"
+              />
+              <div
+                class="_container_25c745"
+              >
+                <input
+                  aria-describedby="helper_text_1235_app-config"
+                  aria-invalid="false"
+                  autocapitalize="none"
+                  class="_input_25c745"
+                  id="text-field_1235_app-config"
+                  maxlength="8"
+                  name="app-config"
+                  placeholder="please_enter_config_id"
+                  required=""
+                  type="text"
+                  value="aaaaaaaa"
+                />
+              </div>
+              <div
+                class="_helperText_edc1c5 _error_edc1c5"
+                id="helper_text_1235_app-config"
+              >
+                <span>
+                  smth
+                  <br />
+                  <br />
+                  <a>
+                    Show Stack Trace
+                  </a>
+                </span>
+              </div>
+            </div>
+            <div
+              class="_controls_561a54"
+            >
+              <button
+                aria-disabled="false"
+                class="_button_e29948 _default_e29948 _outlined_e29948"
+                type="submit"
+              >
+                <span>
+                  submit_config_id
+                </span>
+              </button>
+              <button
+                aria-disabled="false"
+                class="_button_e29948 _default_e29948 _outlined_e29948"
+                type="button"
+              >
+                <span>
+                  cancel_config_id
+                </span>
+              </button>
+            </div>
+          </form>
+          <p>
+            use_the_jwp_dashboard
+          </p>
+          <p>
+            demo_note
+          </p>
+          <div
+            class="_links_d73633"
+          >
+            <a
+              href="https://docs.jwplayer.com/platform/docs/ott-create-an-app-config"
+              rel="noreferrer"
+              target="_blank"
+            >
+              app_config_learn_more
+            </a>
+            <span
+              class="_stack_d73633"
+            >
+              <a>
+                Show Stack Trace
+              </a>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

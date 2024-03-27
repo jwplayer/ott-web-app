@@ -1,0 +1,146 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`<CardGrid> > renders and matches snapshot 1`] = `
+<div>
+  <div>
+    <div
+      aria-rowcount="1"
+      class="_container_7175d1 _cols-5_7175d1"
+      role="grid"
+    >
+      <div
+        aria-rowindex="0"
+        class="_row_19b484"
+        role="row"
+      >
+        <div
+          aria-colindex="0"
+          class="_cell_19b484"
+          id="layout_grid_0-0"
+          role="gridcell"
+          style="width: 20%;"
+        >
+          <a
+            class="_card_d75732"
+            data-testid="Agent 327"
+            href="/m/uB8aRnu6"
+            role="button"
+            tabindex="0"
+          >
+            <div
+              class="_titleContainer_d75732"
+            >
+              <h3
+                class="_title_d75732"
+              >
+                Agent 327
+              </h3>
+            </div>
+            <div
+              class="_poster_d75732 _aspect169_d75732"
+            >
+              <div
+                class="_meta_d75732"
+              >
+                <div
+                  class="_tags_d75732"
+                >
+                  <div
+                    class="_tag_d75732"
+                  >
+                    4 min
+                  </div>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+        <div
+          aria-colindex="1"
+          class="_cell_19b484"
+          id="layout_grid_0-1"
+          role="gridcell"
+          style="width: 20%;"
+        >
+          <a
+            class="_card_d75732"
+            data-testid="Big Buck Bunny"
+            href="/m/awWEFyPu"
+            role="button"
+            tabindex="-1"
+          >
+            <div
+              class="_titleContainer_d75732"
+            >
+              <h3
+                class="_title_d75732"
+              >
+                Big Buck Bunny
+              </h3>
+            </div>
+            <div
+              class="_poster_d75732 _aspect169_d75732"
+            >
+              <div
+                class="_meta_d75732"
+              >
+                <div
+                  class="_tags_d75732"
+                >
+                  <div
+                    class="_tag_d75732"
+                  >
+                    10 min
+                  </div>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+        <div
+          aria-colindex="2"
+          class="_cell_19b484"
+          id="layout_grid_0-2"
+          role="gridcell"
+          style="width: 20%;"
+        >
+          <a
+            class="_card_d75732"
+            data-testid="Elephants Dream"
+            href="/m/eFPH2tVG"
+            role="button"
+            tabindex="-1"
+          >
+            <div
+              class="_titleContainer_d75732"
+            >
+              <h3
+                class="_title_d75732"
+              >
+                Elephants Dream
+              </h3>
+            </div>
+            <div
+              class="_poster_d75732 _aspect169_d75732"
+            >
+              <div
+                class="_meta_d75732"
+              >
+                <div
+                  class="_tags_d75732"
+                >
+                  <div
+                    class="_tag_d75732"
+                  >
+                    11 min
+                  </div>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

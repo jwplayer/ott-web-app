@@ -1,0 +1,84 @@
+# Example workflow to deploy the web platform to an AWS S3 bucket on pull requests
+# This workflow is disabled for the OTT Web App
+#
+# See
+# - https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html
+# - https://docs.aws.amazon.com/AmazonS3/latest/userguide/example-policies-s3.html#iam-policy-ex0
+#
+# Create an environment named `Deployment Previews` or change the environment.name below
+#
+# Environment variables:
+# - DEPLOYMENT_PREVIEWS   - Set this any value to enable this workflow
+# - AWS_ACCESS_KEY_ID     - The AWS access key id
+# - AWS_REGION            - The AWS region where the bucket is created. Example `us-west-1`
+# - CLOUDFRONT_ID         - Optionally define the AWS Cloudfront ID to invalidate the cache after the build
+#
+# Environment secrets:
+# - AWS_SECRET_ACCESS_KEY - The AWS secret access key
+
+name: Web - Test - PR Deploy Preview
+run-name: Deploy Preview - PR ${{ github.event.pull_request.number || '0' }}
+
+on:
+  pull_request:
+
+defaults:
+  run:
+    working-directory: ./platforms/web
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment:
+      name: Deployment Previews
+      url: ${{ format('https://pr-{0}.{1}?app-config={2}', github.event.pull_request.number || '0' , vars.PREVIEW_DOMAIN, vars.PREVIEW_DEFAULT_CONFIG) }}
+    if:  ${{ vars.DEPLOYMENT_PREVIEWS != '' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install packages
+        run: yarn install --frozen-lockfile
+      - name: Build
+        run: |
+          yarn build
+        env:
+          MODE: demo
+          APP_GTM_TAG_ID: ${{ vars.APP_GTM_TAG_ID }}
+          APP_FOOTER_TEXT: ${{ vars.APP_FOOTER_TEXT }}
+          APP_BODY_FONT_FAMILY: ${{ vars.APP_BODY_FONT_FAMILY }}
+          APP_BODY_ALT_FONT_FAMILY: ${{ vars.APP_BODY_ALT_FONT_FAMILY }}
+          APP_DEFAULT_CONFIG_SOURCE: ${{ vars.APP_DEFAULT_CONFIG_SOURCE }}
+          APP_PLAYER_LICENSE_KEY: ${{ vars.APP_PLAYER_LICENSE_KEY }}
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ vars.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ vars.AWS_REGION }}
+      - name: Copy dist files to S3 Bucket
+        run: |
+          aws s3 sync build/public s3://$BUCKET/$DIR --cache-control max-age=60 --delete
+        env:
+          BUCKET: ${{ vars.BUCKET }}
+          DIR: ${{ github.event.pull_request.number || '0' }}
+      - name: Set different cache control for index.html
+        run: |
+          aws s3 cp build/public/index.html s3://$BUCKET/$DIR/index.html --cache-control max-age=0,no-cache
+        env:
+          BUCKET: ${{ vars.BUCKET }}
+          DIR: ${{ github.event.pull_request.number || '0' }}
+      - name: Set different cache control for files in assets folder
+        run: |
+          aws s3 cp build/public/assets s3://$BUCKET/$DIR/assets --cache-control max-age=31536000 --recursive
+        env:
+          BUCKET: ${{ vars.BUCKET }}
+          DIR: ${{ github.event.pull_request.number || '0' }}
+      - name: Invalidate cloudfront distribution
+        if: ${{ vars.CLOUDFRONT_ID }}
+        run: aws cloudfront create-invalidation --distribution-id $CLOUDFRONT_ID --paths "/$DIR/images/*" "/$DIR/*.*"
+        env:
+          CLOUDFRONT_ID: ${{ vars.CLOUDFRONT_ID }}
+          DIR: ${{ github.event.pull_request.number || '0' }}

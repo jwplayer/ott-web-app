@@ -1,0 +1,129 @@
+@use '@jwp/ott-ui-react/src/styles/variables';
+@use '@jwp/ott-ui-react/src/styles/theme';
+@use '@jwp/ott-ui-react/src/styles/mixins/responsive';
+
+.epgProgramBox {
+  position: absolute;
+  padding: 8px 4px;
+  overflow: hidden;
+}
+
+.epgProgram {
+  position: relative;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  padding: variables.$base-spacing;
+  overflow: hidden;
+  text-shadow: none;
+  background-color: theme.$epg-box-bg;
+  border: 2px solid transparent;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.4s ease-in-out, transform 0.1s ease, border 0.1s ease;
+  will-change: transform;
+
+  &.disabled {
+    cursor: default;
+    opacity: 0.4;
+  }
+
+  &.live {
+    border: 2px solid theme.$primary-color;
+  }
+
+  &.selected {
+    background-color: var(--highlight-color, theme.$primary-color);
+
+    .epgProgramTitle {
+      color: theme.$epg-title-selected-color;
+    }
+
+    .epgProgramText {
+      color: theme.$epg-text-selected-color;
+    }
+  }
+
+  &:not(.disabled):hover {
+    border: 2px solid theme.$primary-color;
+    transform: scale(1.01);
+  }
+
+  @include responsive.mobile-only {
+    padding: calc(#{variables.$base-spacing} / 2);
+  }
+}
+
+.epgLiveTag {
+  position: absolute;
+  bottom: 20px;
+  left: 68px;
+  display: flex;
+  align-items: center;
+  padding: 2px 6px;
+  color: var(--card-color);
+  font-family: var(--body-font-family);
+  font-weight: 600;
+  font-size: 14px;
+  white-space: nowrap;
+  background-color: variables.$red;
+  border-radius: 4px;
+
+  @include responsive.mobile-only {
+    position: relative;
+    bottom: initial;
+    left: initial;
+    justify-content: center;
+    width: 35px;
+    padding: initial;
+    font-size: 10px;
+  }
+}
+
+.epgProgramContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.epgProgramTitle {
+  overflow: hidden;
+  color: theme.$epg-title-color;
+  font-family: var(--body-font-family);
+  font-weight: theme.$body-font-weight-bold;
+  font-size: 16px;
+  line-height: variables.$base-line-height;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+
+  @include responsive.mobile-only {
+    margin: auto 0;
+    font-size: 14px;
+  }
+}
+
+.epgProgramText {
+  overflow: hidden;
+  color: theme.$epg-text-color;
+  font-family: var(--body-font-family);
+  font-size: 14px;
+  line-height: variables.$base-line-height;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+
+  @include responsive.mobile-only {
+    margin-top: auto;
+    font-size: 12px;
+  }
+}
+
+.epgProgramImage {
+  width: 100px;
+  margin-right: variables.$base-spacing;
+  border-radius: 4px;
+}

@@ -1,0 +1,24 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`<SubscriptionRenewed> > renders and matches snapshot 1`] = `
+<div>
+  <div>
+    <h2
+      class="_title_d9af9c"
+    >
+      subscription_renewed.title
+    </h2>
+    <p>
+      subscription_renewed.message
+    </p>
+    <button
+      class="_button_f8f296 _default_f8f296 _outlined_f8f296 _fullWidth_f8f296"
+      type="button"
+    >
+      <span>
+        subscription_renewed.back_to_profile
+      </span>
+    </button>
+  </div>
+</div>
+`;

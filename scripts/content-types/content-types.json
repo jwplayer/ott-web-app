@@ -99,19 +99,20 @@
     "liveStatus": {
       "param": "VCH.EventState",
       "label": "Status",
-      "description": "Do Not Modify - This is the state of the live event (populated automatically)",
+      "read_only": true,
+      "description": "This field will be populated automatically",
       "details": {
         "field_type": "input",
-        "placeholder": "This value will be populated automatically"
+        "placeholder": "Populated automatically"
       }
     },
     "liveStartTime": {
       "param": "VCH.ScheduledStart",
       "label": "Start Time",
-      "description": "Do Not Modify - This is the schedules start time of the live event (populated automatically)",
+      "read_only": true,
+      "description": "This field will be populated automatically",
       "details": {
-        "field_type": "input",
-        "placeholder": "This value will be populated automatically"
+        "field_type": "date_time"
       }
     }
   },
@@ -243,10 +244,10 @@
             {
               "param": "VCH.ScheduledEnd",
               "label": "End Time",
-              "description": "Do not Modify - Live event start time (populated automatically)",
+              "read_only": true,
+              "description": "This field will be populated automatically",
               "details": {
-                "field_type": "input",
-                "placeholder": "This value will be populated automatically"
+                "field_type": "date_time"
               }
             }
           ]
