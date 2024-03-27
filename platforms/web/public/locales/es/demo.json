@@ -1,6 +1,6 @@
 {
   "app_config_learn_more": "Más información sobre App Configs",
-  "app_config_not_found": "Configuración de aplicación inválida o no encontrada",
+  "app_config_not_found": "App Config inválida o no encontrada",
   "cancel_config_id": "Cancelar",
   "click_to_unselect_config": "(haz clic aquí para deseleccionar esta configuración)",
   "currently_previewing_config": "Actualmente estás previsualizando la configuración: '{{configSource}}'",

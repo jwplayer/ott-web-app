@@ -12,7 +12,7 @@
     "delete_account": {
       "body": "Elimine permanentemente su cuenta y todo su contenido.",
       "error": "Ocurrió un error al eliminar su cuenta. Inténtalo de nuevo.",
-      "invalid_credentials": "¡Contraseña incorrecta!",
+      "invalid_credentials": "La contraseña ingresada no es válida",
       "modal": {
         "description": "Introduce la contraseña para continuar",
         "placeholder": "Ingresa tu contraseña",
@@ -104,7 +104,6 @@
     "expiry_date": "Fecha de vencimiento",
     "granted_subscription": "Suscripción otorgada",
     "hidden_transactions_one": "Una transacción más",
-    "hidden_transactions_many": "",
     "hidden_transactions_other": "{{count}} transacciones más",
     "longer_than_usual": "El pago está tardando más de lo habitual. Por favor, inténtelo de nuevo más tarde.",
     "monthly_subscription": "Suscripción mensual",

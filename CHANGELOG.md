@@ -1,3 +1,66 @@
+## [6.0.0](https://github.com/jwplayer/ott-web-app/compare/v5.1.1...v6.0.0) (2024-03-25)
+
+
+### ⚠ BREAKING CHANGES
+
+* **project:** restructure for multiplatforms with workspaces (#435)
+
+### Features
+
+* **a11y:** many accessibility optimisations ([cc02259](https://github.com/jwplayer/ott-web-app/commit/cc02259ddb8faeed27813ddce850b5653fe1d0d3)), closes [#48](https://github.com/jwplayer/ott-web-app/issues/48) [#47](https://github.com/jwplayer/ott-web-app/issues/47) [#46](https://github.com/jwplayer/ott-web-app/issues/46)
+* **a11y:** update font colors for contrast and adjust active state in header ([#76](https://github.com/jwplayer/ott-web-app/issues/76)) ([6444282](https://github.com/jwplayer/ott-web-app/commit/6444282c6c2adedb93980904ba968c8d5bf2680d))
+* accessibility improvements and bug fixes ([82b5967](https://github.com/jwplayer/ott-web-app/commit/82b5967dcf9415aba21e8f6c7bdaabd57f1589af)), closes [#127](https://github.com/jwplayer/ott-web-app/issues/127) [#109](https://github.com/jwplayer/ott-web-app/issues/109) [#115](https://github.com/jwplayer/ott-web-app/issues/115) [#117](https://github.com/jwplayer/ott-web-app/issues/117) [#116](https://github.com/jwplayer/ott-web-app/issues/116) [#121](https://github.com/jwplayer/ott-web-app/issues/121) [#125](https://github.com/jwplayer/ott-web-app/issues/125)
+* **payment:** disable deprecated receipts cleeng ([#458](https://github.com/jwplayer/ott-web-app/issues/458)) ([d37905d](https://github.com/jwplayer/ott-web-app/commit/d37905df4022103e3fdf62ad936d58af6e12617c))
+* **project:** add app content search ([71433ab](https://github.com/jwplayer/ott-web-app/commit/71433abfca80431243effc246afdbe8c6901521e))
+* **project:** customizable footer through env-var ([9d8ff15](https://github.com/jwplayer/ott-web-app/commit/9d8ff150dc298880bd4cdc1323a4fc68f8d0fcba))
+* **project:** dynamic gtm snippet ([6babace](https://github.com/jwplayer/ott-web-app/commit/6babacefc3ae56191625207436fc6faaaca10445))
+* **project:** favicons in different sizes ([a1c6188](https://github.com/jwplayer/ott-web-app/commit/a1c6188ae0e6b634977d9ac0642bad437a31df3b))
+* **project:** restructure for multiplatforms with workspaces ([#435](https://github.com/jwplayer/ott-web-app/issues/435)) ([3e3e2b1](https://github.com/jwplayer/ott-web-app/commit/3e3e2b14c4926e596fad46c2ea7cc99dbced05f0)), closes [#8](https://github.com/jwplayer/ott-web-app/issues/8)
+* **project:** update default content-type schemas ([0a9817a](https://github.com/jwplayer/ott-web-app/commit/0a9817a9b6f5bbfaae5ce5967bbf3c16436d2f15))
+* underline for active header item and add lineair gradient ([1d2f25f](https://github.com/jwplayer/ott-web-app/commit/1d2f25f04dc06463a0a37aa4c6fddabab455cdcf))
+* **watchhistory:** change max items limit ([#418](https://github.com/jwplayer/ott-web-app/issues/418)) ([d7db57a](https://github.com/jwplayer/ott-web-app/commit/d7db57ab330630c270412ca8fa39ea94052d7675))
+
+
+### Bug Fixes
+
+* **a11y:** close search bar when pressing escape ([7a14497](https://github.com/jwplayer/ott-web-app/commit/7a14497224bc8d159bda1ac3238cc0eb566b5437))
+* **a11y:** constrast enhancement for search field ([b4c3230](https://github.com/jwplayer/ott-web-app/commit/b4c323026bc713519fcd6e1ac8efbb68dc8f8fff))
+* **a11y:** format date call caused an error to be raised ([aef1415](https://github.com/jwplayer/ott-web-app/commit/aef1415229901704af0e15b57fd3a0d42040cbe7))
+* **a11y:** prevent duplicate global a11y selectors ([b3ccaff](https://github.com/jwplayer/ott-web-app/commit/b3ccaffe4ea1249d7ad5a80cfe6e8e20a94ef3b7))
+* **a11y:** remove outline when user is not tabbing ([5fe1665](https://github.com/jwplayer/ott-web-app/commit/5fe1665ad30e08dd7eed234c93243da7df748cce))
+* **a11y:** shelf item navigation with screen reader ([91dc66c](https://github.com/jwplayer/ott-web-app/commit/91dc66cd6b6bdbae3b48c0454fe1da335acc9f91))
+* **account:** delete account error ([a2885eb](https://github.com/jwplayer/ott-web-app/commit/a2885eb34598b413e4b81f9cdbb542bbbd849a64))
+* **auth:** capture error to prevent misleading “wrong combination” error ([588f69a](https://github.com/jwplayer/ott-web-app/commit/588f69ac9034736ddf7804bbebaddb141fe30860))
+* click not working in layout grid ([2ded57b](https://github.com/jwplayer/ott-web-app/commit/2ded57b41bbac7a08f5c1d0eeccb149fdcde3242))
+* e2e test optimisations and small fixes ([b700fbb](https://github.com/jwplayer/ott-web-app/commit/b700fbb7ea31cde67740bab99246a0b705058c55))
+* e2e tests for a11y ([c4d09c5](https://github.com/jwplayer/ott-web-app/commit/c4d09c52494b20e0d8e31fb4595f898729817255))
+* enter key not closing the account modal ([1791b4c](https://github.com/jwplayer/ott-web-app/commit/1791b4ca91e161250e354ae96e1d32f0b7bf30c9))
+* favorites and history validation error ([3deabfc](https://github.com/jwplayer/ott-web-app/commit/3deabfc766a75c12ab122a775376449e316ff232))
+* footer overlap fix ([bf79d10](https://github.com/jwplayer/ott-web-app/commit/bf79d108356418c80cfe7a9ddc2496977ae9bb17))
+* hide start watching button in avod platform ([86b461f](https://github.com/jwplayer/ott-web-app/commit/86b461fc9df4b92401055b8c56d8e9d5aec13c99))
+* language menu icon not centered ([ddcfc91](https://github.com/jwplayer/ott-web-app/commit/ddcfc91973548d6cdacc084dd6b88bb3453c6d36))
+* layout grid arrow down and end problem ([6a291a7](https://github.com/jwplayer/ott-web-app/commit/6a291a77f51626c46c082f268f454ff00cde9310))
+* layout grid home and page down problem ([a6305ef](https://github.com/jwplayer/ott-web-app/commit/a6305efbe94b0261786a2adcb76a6530aff3e4cc))
+* logo and header layout issues ([a0cca10](https://github.com/jwplayer/ott-web-app/commit/a0cca10419b9a74b4761d5701e242db2c4e8d562))
+* **menu:** ensure logo does not exceed width of the header ([ea4af42](https://github.com/jwplayer/ott-web-app/commit/ea4af42e23ddefce292a0784c8a0db9b98e4895d))
+* **payment:** incorrect couponCode success message ([c97c59b](https://github.com/jwplayer/ott-web-app/commit/c97c59b7268d540ee37cdb0bb41beb72d8946a7e))
+* **payment:** redirect after incorrect couponcode entry ([ca71f29](https://github.com/jwplayer/ott-web-app/commit/ca71f29298ea6c4af2f5c2b6c4f6379d68385df0))
+* **payment:** subscription offer panel shown for authvod+tvod ([d63b056](https://github.com/jwplayer/ott-web-app/commit/d63b0562e74c624bae0690048467442595928fe2))
+* **payment:** tvod offer not showing in AuthVOD platform ([d01d1b7](https://github.com/jwplayer/ott-web-app/commit/d01d1b71aba628feeb4510cb9b0b9d4132af3cb7))
+* personal shelves restoration ([2741eac](https://github.com/jwplayer/ott-web-app/commit/2741eac5331657ed6156a9e5fba1906c8623227b))
+* **player:** inlineplayer not supporting tvod ([bb593e9](https://github.com/jwplayer/ott-web-app/commit/bb593e97ce2635d9c33c1d027da51075509a7462))
+* **project:** ensure modals obscure underlying elements ([f52a0f3](https://github.com/jwplayer/ott-web-app/commit/f52a0f3377ed1c0d22e47f27995c597d7ec71e55))
+* **project:** fix live stream duration check for ott plugin ([#460](https://github.com/jwplayer/ott-web-app/issues/460)) ([69eff3c](https://github.com/jwplayer/ott-web-app/commit/69eff3c1e9763d2b80e1669809323ee9c1de5f63))
+* **project:** show footer when custom footer is provided ([6503267](https://github.com/jwplayer/ott-web-app/commit/65032674e0ca75e129e5d6fca35e54fc6b690f3d))
+* **project:** undouble serieIds to prevent crash ([ca3d38e](https://github.com/jwplayer/ott-web-app/commit/ca3d38e2ad82235a84cb658da0174095c2eed10e))
+* **project:** unused dep ([72325a6](https://github.com/jwplayer/ott-web-app/commit/72325a63d43ca19f43b9ac1d76a024037889aab0))
+* related videos title layout issue ([361c58a](https://github.com/jwplayer/ott-web-app/commit/361c58a53cb6ae56b84cb6751c7b4ad3d64c702b))
+* restore personal shelves after registration ([3fdb220](https://github.com/jwplayer/ott-web-app/commit/3fdb220ef988383e6af80b72efb7c7d27e6bccb7))
+* root error screen for unexpected errors ([320fe44](https://github.com/jwplayer/ott-web-app/commit/320fe4402f7338816825471de52c21aedb95a144))
+* set wrong loading state in early return ([0837944](https://github.com/jwplayer/ott-web-app/commit/0837944dc4d022ecfe95d6e3f30959d943be9e99))
+* update order error handling ([bf3e5b5](https://github.com/jwplayer/ott-web-app/commit/bf3e5b575624580a38301968a63023748bd9a6df))
+* **user:** tvod subscription not reloaded after login for authvod/avod ([7de84ae](https://github.com/jwplayer/ott-web-app/commit/7de84ae37f174c04bdea26af1818721dfe9956d8))
+
 ## [5.1.1](https://github.com/jwplayer/ott-web-app/compare/v5.1.0...v5.1.1) (2024-01-24)
 
 
