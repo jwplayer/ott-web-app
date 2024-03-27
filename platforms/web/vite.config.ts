@@ -59,6 +59,7 @@ export default ({ mode, command }: ConfigEnv): UserConfigExport => {
       StylelintPlugin(),
       svgr(),
       VitePWA({
+        registerType: 'autoUpdate',
         manifestFilename: 'manifest.json',
         manifest: {
           name: app.name,
