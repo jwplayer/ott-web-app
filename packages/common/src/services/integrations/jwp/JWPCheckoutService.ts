@@ -72,6 +72,7 @@ export default class JWPCheckoutService extends CheckoutService {
       totalPrice: payload.offer.customerPriceInclTax,
       priceBreakdown: {
         offerPrice: payload.offer.customerPriceInclTax,
+        // @TODO is this correct?
         discountAmount: payload.offer.customerPriceInclTax,
         discountedPrice: payload.offer.customerPriceInclTax,
         paymentMethodFee: 0,
@@ -181,14 +182,14 @@ export default class JWPCheckoutService extends CheckoutService {
         accessFeeId: order.id,
       });
 
-      const discountedAmount = order.totalPrice - response.data.amount;
-      const updatedOrder = {
+      const discountAmount = order.totalPrice - response.data.amount;
+      const updatedOrder: Order = {
         ...order,
         totalPrice: response.data.amount,
         priceBreakdown: {
           ...order.priceBreakdown,
-          discountedAmount,
-          discountedPrice: discountedAmount,
+          discountAmount,
+          discountedPrice: discountAmount,
         },
         discount: {
           applied: true,
