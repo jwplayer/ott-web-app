@@ -25,6 +25,7 @@ type Props = {
   onCouponInputChange: React.ChangeEventHandler<HTMLInputElement>;
   onRedeemCouponButtonClick: () => void;
   onCloseCouponFormClick: () => void;
+  error?: string;
   couponFormOpen: boolean;
   couponFormError?: string;
   couponFormApplied?: boolean;
@@ -45,6 +46,7 @@ const CheckoutForm: React.FC<Props> = ({
   offerType,
   onBackButtonClick,
   onPaymentMethodChange,
+  error,
   couponFormOpen,
   couponInputValue,
   couponFormError,
@@ -89,6 +91,7 @@ const CheckoutForm: React.FC<Props> = ({
   const orderTitle = offerType === 'svod' ? (offer.period === 'month' ? t('checkout.monthly') : t('checkout.yearly')) : offer.offerTitle;
   return (
     <div>
+      {error ? <FormFeedback variant="error">{error}</FormFeedback> : null}
       <h1 className={styles.title}>{t('checkout.payment_method')}</h1>
       <div className={styles.order}>
         <div className={styles.orderInfo}>

@@ -21,6 +21,7 @@ import type {
 } from '../../../../types/checkout';
 import CheckoutService from '../CheckoutService';
 import type { ServiceResponse } from '../../../../types/service';
+import { isCommonError } from '../../../utils/api';
 
 @injectable()
 export default class JWPCheckoutService extends CheckoutService {
@@ -71,6 +72,7 @@ export default class JWPCheckoutService extends CheckoutService {
       totalPrice: payload.offer.customerPriceInclTax,
       priceBreakdown: {
         offerPrice: payload.offer.customerPriceInclTax,
+        // @TODO is this correct?
         discountAmount: payload.offer.customerPriceInclTax,
         discountedPrice: payload.offer.customerPriceInclTax,
         paymentMethodFee: 0,
@@ -179,26 +181,37 @@ export default class JWPCheckoutService extends CheckoutService {
         voucherCode: `${couponCode}`,
         accessFeeId: order.id,
       });
-      order.discount = {
-        applied: true,
-        type: 'coupon',
-        periods: response.data.discount_duration,
+
+      const discountAmount = order.totalPrice - response.data.amount;
+      const updatedOrder: Order = {
+        ...order,
+        totalPrice: response.data.amount,
+        priceBreakdown: {
+          ...order.priceBreakdown,
+          discountAmount,
+          discountedPrice: discountAmount,
+        },
+        discount: {
+          applied: true,
+          type: 'coupon',
+          periods: response.data.discount_duration,
+        },
       };
 
-      const discountedAmount = order.totalPrice - response.data.amount;
-      order.totalPrice = response.data.amount;
-      order.priceBreakdown.discountAmount = discountedAmount;
-      order.priceBreakdown.discountedPrice = discountedAmount;
       return {
         errors: [],
         responseData: {
           message: 'successfully updated',
-          order: order,
+          order: updatedOrder,
           success: true,
         },
       };
-    } catch {
-      throw new Error('Invalid coupon code');
+    } catch (error: unknown) {
+      if (isCommonError(error) && error.response.data.message === 'Voucher not found') {
+        throw new Error('Invalid coupon code');
+      }
+
+      throw new Error('An unknown error occurred');
     }
   };
 
