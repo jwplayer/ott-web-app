@@ -12,7 +12,7 @@
     "delete_account": {
       "body": "Elimine permanentemente su cuenta y todo su contenido.",
       "error": "Ocurrió un error al eliminar su cuenta. Inténtalo de nuevo.",
-      "invalid_credentials": "¡Contraseña incorrecta!",
+      "invalid_credentials": "La contraseña ingresada no es válida",
       "modal": {
         "description": "Introduce la contraseña para continuar",
         "placeholder": "Ingresa tu contraseña",

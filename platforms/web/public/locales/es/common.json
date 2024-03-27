@@ -1,7 +1,7 @@
 {
   "alert": {
     "close": "Cerrar",
-    "success": "Success",
+    "success": "Éxito",
     "title": "Se produjo un error"
   },
   "back": "Atrás",
@@ -11,7 +11,7 @@
     "close": "Cancelar",
     "confirm": "Sí"
   },
-  "default_description": "La OTT WebApp de JW es un sitio web de videos de código abierto generado dinamicamente.",
+  "default_description": "OTT WebApp de JW es un sitio web de videos de código abierto generado dinamicamente.",
   "default_site_name": "Mi aplicación OTT",
   "filter_videos_by": "Filtrar videos por {{name}}",
   "filter_videos_by_genre": "Filtrar videos por género",
