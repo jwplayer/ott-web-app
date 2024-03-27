@@ -79,7 +79,6 @@ const Registration = () => {
       announce(t('registration.success'), 'success');
       navigate(modalURLFromLocation(location, 'personal-details'));
     },
-    onSubmitError: ({ resetValue }) => resetValue('password'),
   });
 
   return (

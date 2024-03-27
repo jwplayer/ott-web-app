@@ -42,7 +42,6 @@ const Login: React.FC<Props> = ({ messageKey }: Props) => {
 
       navigate(modalURLFromLocation(location, null));
     },
-    onSubmitError: ({ resetValue }) => resetValue('password'),
   });
 
   return (
