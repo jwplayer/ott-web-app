@@ -10,6 +10,7 @@ import type { Config } from '../../types/config';
 import type { CalculateIntegrationType } from '../../types/calculate-integration-type';
 import { DETERMINE_INTEGRATION_TYPE } from '../modules/types';
 import { useConfigStore } from '../stores/ConfigStore';
+import { useAccountStore } from '../stores/AccountStore';
 
 import WatchHistoryController from './WatchHistoryController';
 import FavoritesController from './FavoritesController';
@@ -89,6 +90,11 @@ export default class AppController {
 
     if (config.features?.favoritesList && config.content.some((el) => el.type === PersonalShelf.Favorites)) {
       await getModule(FavoritesController).initialize();
+    }
+
+    // when there is no integration, clear the loading state in the AccountStore
+    if (!integrationType) {
+      useAccountStore.setState({ loading: false });
     }
 
     return { config, settings, configSource };
