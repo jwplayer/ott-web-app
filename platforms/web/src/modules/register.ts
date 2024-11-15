@@ -1,11 +1,12 @@
 import '@jwp/ott-common/src/modules/register';
 import { container } from '@jwp/ott-common/src/modules/container';
 import StorageService from '@jwp/ott-common/src/services/StorageService';
-import { GET_CUSTOMER_IP } from '@jwp/ott-common/src/modules/types';
+import { BROADCAST_CHANNEL, GET_CUSTOMER_IP } from '@jwp/ott-common/src/modules/types';
 import type { GetCustomerIP } from '@jwp/ott-common/types/get-customer-ip';
 import LogTransporter from '@jwp/ott-common/src/services/logging/LogTransporter';
 import ConsoleTransporter from '@jwp/ott-common/src/services/logging/ConsoleTransporter';
 import { LogLevel } from '@jwp/ott-common/src/services/logging/LogLevel';
+import { BroadcastChannel } from 'broadcast-channel';
 
 import { getOverrideIP } from '#src/utils/ip';
 import { LocalStorageService } from '#src/services/LocalStorageService';
@@ -30,6 +31,8 @@ import { LocalStorageService } from '#src/services/LocalStorageService';
  */
 
 container.bind(StorageService).to(LocalStorageService);
+
+container.bind(BROADCAST_CHANNEL).toConstantValue(new BroadcastChannel('jwp-refresh-token-channel'));
 
 // Currently, this is only used for e2e testing to override the customer ip from a browser cookie
 container.bind<GetCustomerIP>(GET_CUSTOMER_IP).toConstantValue(async () => getOverrideIP());

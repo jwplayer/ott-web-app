@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "@inplayer-org/inplayer.js": "^3.13.28",
-    "broadcast-channel": "^7.0.0",
     "date-fns": "^3.6.0",
     "fast-xml-parser": "^4.5.0",
     "i18next": "^22.5.1",
