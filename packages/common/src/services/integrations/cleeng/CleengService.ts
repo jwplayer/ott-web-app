@@ -1,6 +1,6 @@
 import { jwtDecode } from 'jwt-decode';
 import { object, string } from 'yup';
-import { inject, injectable } from 'inversify';
+import { inject, injectable, optional } from 'inversify';
 
 import { IS_DEVELOPMENT_BUILD } from '../../../utils/common';
 import { PromiseQueue } from '../../../utils/promiseQueue';
@@ -93,7 +93,7 @@ export default class CleengService {
   constructor(
     @inject(StorageService) storageService: StorageService,
     @inject(GET_CUSTOMER_IP) getCustomerIP: GetCustomerIP,
-    @inject(BROADCAST_CHANNEL) channel?: BroadcastChannel<MessageData>,
+    @inject(BROADCAST_CHANNEL) @optional() channel?: BroadcastChannel<MessageData>,
   ) {
     this.storageService = storageService;
     this.getCustomerIP = getCustomerIP;
