@@ -25,12 +25,12 @@ exports[`<Favorites> > renders and matches snapshot 1`] = `
         role="grid"
       >
         <div
-          aria-rowindex="0"
+          aria-rowindex="1"
           class="_row_19b484"
           role="row"
         >
           <div
-            aria-colindex="0"
+            aria-colindex="1"
             class="_cell_19b484"
             id="layout_grid_0-0"
             role="gridcell"
@@ -77,7 +77,7 @@ exports[`<Favorites> > renders and matches snapshot 1`] = `
             </a>
           </div>
           <div
-            aria-colindex="1"
+            aria-colindex="2"
             class="_cell_19b484"
             id="layout_grid_0-1"
             role="gridcell"
@@ -124,7 +124,7 @@ exports[`<Favorites> > renders and matches snapshot 1`] = `
             </a>
           </div>
           <div
-            aria-colindex="2"
+            aria-colindex="3"
             class="_cell_19b484"
             id="layout_grid_0-2"
             role="gridcell"

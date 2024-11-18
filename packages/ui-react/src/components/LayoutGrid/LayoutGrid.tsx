@@ -116,13 +116,13 @@ const LayoutGrid = <Item extends object>({ className, columnCount, data, renderC
   return (
     <div role="grid" ref={gridRef} aria-rowcount={rowCount} className={className} onKeyDown={handleKeyDown}>
       {Array.from({ length: rowCount }).map((_, rowIndex) => (
-        <div role="row" key={rowIndex} aria-rowindex={rowIndex} className={styles.row}>
+        <div role="row" key={rowIndex} aria-rowindex={rowIndex + 1} className={styles.row}>
           {data.slice(rowIndex * columnCount, rowIndex * columnCount + columnCount).map((item, columnIndex) => (
             <div
               role="gridcell"
               id={`layout_grid_${rowIndex}-${columnIndex}`}
               key={getCellKey(item)}
-              aria-colindex={columnIndex}
+              aria-colindex={columnIndex + 1}
               className={styles.cell}
               style={gridCellStyle}
             >
