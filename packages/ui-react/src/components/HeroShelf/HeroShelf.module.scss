@@ -285,7 +285,7 @@ $mobile-landscape-height: 100vh;
   }
 
   &:hover {
-    transform: scale(1.2) translateY(-50%);;
+    transform: scale(1.2) translateY(-50%);
   }
 
   &:disabled {
@@ -361,7 +361,7 @@ $mobile-landscape-height: 100vh;
     }
   }
 
-  &[aria-hidden="true"] {
+  &[disabled] {
     cursor: default;
   }
 }
