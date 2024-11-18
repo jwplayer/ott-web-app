@@ -348,7 +348,7 @@ $mobile-landscape-height: 100vh;
     }
   }
 
-  &[aria-hidden="true"] {
+  &[disabled] {
     cursor: default;
   }
 }
