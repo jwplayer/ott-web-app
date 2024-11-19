@@ -12,6 +12,7 @@ import TruncatedText from '../TruncatedText/TruncatedText';
 import StartWatchingButton from '../../containers/StartWatchingButton/StartWatchingButton';
 import Button from '../Button/Button';
 import Icon from '../Icon/Icon';
+import useBreakpoint, { Breakpoint } from '../../hooks/useBreakpoint';
 
 import styles from './HeroShelf.module.scss';
 
@@ -21,17 +22,17 @@ const HeroShelfMetadata = ({
   playlistId,
   style,
   hidden,
-  isMobile,
 }: {
   item: PlaylistItem | null;
   loading: boolean;
   playlistId: string | undefined;
-  style?: CSSProperties;
+  style: CSSProperties;
   hidden?: boolean;
-  isMobile?: boolean;
 }) => {
   const navigate = useNavigate();
   const { t } = useTranslation('common');
+  const breakpoint = useBreakpoint();
+  const isMobile = breakpoint < Breakpoint.sm;
 
   if (!item) return null;
 

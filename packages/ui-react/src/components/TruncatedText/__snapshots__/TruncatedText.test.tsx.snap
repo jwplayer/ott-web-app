@@ -4,7 +4,7 @@ exports[`<TruncatedText> > renders and matches snapshot 1`] = `
 <div>
   <div
     class="_truncatedText_b1c064"
-    style="max-height: calc(1.5em * 8); -webkit-line-clamp: 8;"
+    style="max-height: calc(1.5em * 8); -webkit-line-clamp: 8; line-clamp: 8; display: -webkit-box;"
   >
     <div
       class="_markdown_e219e2 _inline_e219e2"

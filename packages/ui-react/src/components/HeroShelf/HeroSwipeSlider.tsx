@@ -1,25 +1,40 @@
-import type { PlaylistItem } from '@jwp/ott-common/types/playlist';
 import useEventCallback from '@jwp/ott-hooks-react/src/useEventCallback';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import classNames from 'classnames';
 
-import HeroShelfMetadata from './HeroShelfMetadata';
+import useBreakpoint, { Breakpoint } from '../../hooks/useBreakpoint';
+
 import styles from './HeroShelf.module.scss';
 
 type Props = {
-  item: PlaylistItem;
-  leftItem: PlaylistItem | null;
-  rightItem: PlaylistItem | null;
-  playlistId: string | undefined;
+  hasLeftItem: boolean;
+  hasRightItem: boolean;
+  renderLeftItem: (isSwiping: boolean) => React.ReactNode;
+  renderItem: () => React.ReactNode;
+  renderRightItem: (isSwiping: boolean) => React.ReactNode;
   loading: boolean;
   direction: 'left' | 'right' | null;
-  onSlideLeft: () => void;
-  onSlideRight: () => void;
+  isSwipeAnimation: boolean;
+  onSwipeLeft: () => void;
+  onSwipeRight: () => void;
 };
 
-const HeroShelfMetadataMobile = ({ item, leftItem, rightItem, playlistId, loading, direction, onSlideLeft, onSlideRight }: Props) => {
+const HeroSwipeSlider = ({
+  hasLeftItem,
+  hasRightItem,
+  renderItem,
+  renderLeftItem,
+  renderRightItem,
+  direction,
+  isSwipeAnimation,
+  onSwipeLeft,
+  onSwipeRight,
+}: Props) => {
   const movementRef = useRef({ x: 0, y: 0, start: Date.now() });
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [swipeAction, setSwipeAction] = useState<'slide' | 'scroll' | null>(null);
+  const breakpoint = useBreakpoint();
+  const isMobile = breakpoint <= Breakpoint.sm;
 
   const handleTouchStart = useEventCallback((event: TouchEvent) => {
     if (direction) return;
@@ -43,8 +58,8 @@ const HeroShelfMetadataMobile = ({ item, leftItem, rightItem, playlistId, loadin
     event.stopPropagation();
 
     // Follow touch horizontally
-    const maxLeft = rightItem ? -window.innerWidth : 0;
-    const maxRight = leftItem ? window.innerWidth : 0;
+    const maxLeft = hasRightItem ? -window.innerWidth : 0;
+    const maxRight = hasLeftItem ? window.innerWidth : 0;
     const limitedMovementX = Math.max(Math.min(movementX, maxRight), maxLeft);
 
     containerRef.current.style.transform = `translateX(${limitedMovementX}px)`;
@@ -60,10 +75,10 @@ const HeroShelfMetadataMobile = ({ item, leftItem, rightItem, playlistId, loadin
     const velocity = Math.round((movementX / (Date.now() - movementRef.current.start)) * 100);
     const velocityTreshold = 80;
 
-    if (rightItem && (movementX > window.innerWidth / 2 || velocity > velocityTreshold)) {
-      onSlideRight();
-    } else if (leftItem && (movementX < -window.innerWidth / 2 || velocity < -velocityTreshold)) {
-      onSlideLeft();
+    if (hasRightItem && (movementX > window.innerWidth / 2 || velocity > velocityTreshold)) {
+      onSwipeRight();
+    } else if (hasLeftItem && (movementX < -window.innerWidth / 2 || velocity < -velocityTreshold)) {
+      onSwipeLeft();
     } else {
       containerRef.current.style.transition = 'transform 0.2s ease-out';
       containerRef.current.style.transform = 'translateX(0)';
@@ -73,18 +88,17 @@ const HeroShelfMetadataMobile = ({ item, leftItem, rightItem, playlistId, loadin
 
   useLayoutEffect(() => {
     if (!containerRef.current) return;
-
-    if (direction === 'left') {
+    if (isSwipeAnimation && direction === 'left') {
       containerRef.current.style.transition = 'transform 0.2s ease-out';
       containerRef.current.style.transform = `translateX(100%)`;
-    } else if (direction === 'right') {
+    } else if (isSwipeAnimation && direction === 'right') {
       containerRef.current.style.transition = 'transform 0.2s ease-out';
       containerRef.current.style.transform = `translateX(-100%)`;
     } else {
       containerRef.current.style.transform = 'translateX(0)';
       containerRef.current.style.transition = 'none';
     }
-  }, [direction]);
+  }, [direction, isSwipeAnimation]);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -102,26 +116,12 @@ const HeroShelfMetadataMobile = ({ item, leftItem, rightItem, playlistId, loadin
   }, [handleTouchStart, handleTouchMove, handleTouchEnd]);
 
   return (
-    <div ref={containerRef} className={styles.metadataMobile}>
-      <HeroShelfMetadata
-        loading={loading}
-        item={leftItem}
-        playlistId={playlistId}
-        style={{ left: '-100%' }}
-        hidden={direction !== 'left' && swipeAction !== 'slide'}
-        isMobile
-      />
-      <HeroShelfMetadata loading={loading} item={item} playlistId={playlistId} isMobile />
-      <HeroShelfMetadata
-        loading={loading}
-        item={rightItem}
-        playlistId={playlistId}
-        style={{ left: '100%' }}
-        hidden={direction !== 'right' && swipeAction !== 'slide'}
-        isMobile
-      />
+    <div ref={containerRef} className={classNames(styles.swipeSlider, isMobile && styles.swipeSliderMobile)}>
+      {renderLeftItem(swipeAction === 'slide')}
+      {renderItem()}
+      {renderRightItem(swipeAction === 'slide')}
     </div>
   );
 };
 
-export default HeroShelfMetadataMobile;
+export default HeroSwipeSlider;

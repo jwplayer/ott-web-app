@@ -35,19 +35,9 @@ type Props = {
   setIndex: (index: number) => void;
   range?: number;
   animationDuration?: number;
-  className?: string;
 };
 
-const HeroShelfPagination = ({
-  playlist,
-  index: indexIn,
-  direction,
-  nextIndex: nextIndexIn,
-  setIndex,
-  range = 3,
-  animationDuration = 200,
-  className,
-}: Props) => {
+const HeroShelfPagination = ({ playlist, index: indexIn, direction, nextIndex: nextIndexIn, setIndex, range = 3, animationDuration = 200 }: Props) => {
   const { t } = useTranslation('common');
   const placeholderCount = range + 1; // Placeholders are used to keep a stable amount of DOM elements
   const index = indexIn + placeholderCount;
@@ -60,7 +50,7 @@ const HeroShelfPagination = ({
   }, [playlist.playlist, placeholderCount]);
 
   return (
-    <nav className={classNames(styles.dots, styles.undimmed, className)}>
+    <nav className={styles.dots}>
       <div aria-live="polite" className="hidden">
         {t('slide_indicator', { page: indexIn + 1, pages: playlist.playlist.length })}
       </div>

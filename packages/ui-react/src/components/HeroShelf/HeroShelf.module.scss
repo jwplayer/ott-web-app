@@ -8,7 +8,7 @@ $desktop-max-height: 700px;
 $desktop-min-height: 275px;
 
 $tablet-height: 70vw;
-$tablet-min-height: 375px;
+$tablet-min-height: 550px;
 
 $mobile-height: 70vh;
 $mobile-min-height: 450px;
@@ -47,12 +47,13 @@ $mobile-landscape-height: 100vh;
   }
 
   @include responsive.mobile-only() {
-    height: calc($mobile-height - variables.$header-height - var(--safe-area-top, 0));
+    height: calc($mobile-height - variables.$header-height - var(--safe-area-top, 0px));
     min-height: calc($mobile-min-height - variables.$header-height);
   }
 
   @include responsive.mobile-only-landscape() {
     height: calc($mobile-landscape-height - variables.$header-height);
+    min-height: initial;
     padding: 0;
   }
 }
@@ -106,20 +107,13 @@ $mobile-landscape-height: 100vh;
   @include responsive.mobile-only() {
     height: $mobile-height;
     min-height: $mobile-min-height;
+    margin-top: var(--safe-area-top, 0);
   }
 
   @include responsive.mobile-only-landscape() {
     height: $mobile-landscape-height;
+    min-height: initial;
   }
-}
-
-.undimmed {
-  opacity: 1;
-  transition: opacity ease-out 0.3s;
-}
-
-.dimmed {
-  opacity: 0.01;
 }
 
 .background {
@@ -145,13 +139,13 @@ $mobile-landscape-height: 100vh;
   }
 
   @include responsive.tablet-small-only() {
-    -webkit-mask-image: linear-gradient(190deg, black, rgba(0, 0, 0, 0.8) 40%, transparent 90%);
-    mask-image: linear-gradient(190deg, black, rgba(0, 0, 0, 0.8) 40%, transparent 90%);
+    -webkit-mask-image: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0, 0, 0, 1) 30%, transparent 90%);
+    mask-image: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0, 0, 0, 1) 30%, transparent 90%);
   }
 
   @include responsive.mobile-only() {
-    -webkit-mask-image: linear-gradient(190deg, black, rgba(0, 0, 0, 0.8) 40%, transparent 85%);
-    mask-image: linear-gradient(190deg, black, rgba(0, 0, 0, 0.8) 40%, transparent 85%);
+    -webkit-mask-image: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0, 0, 0, 1) 30%, transparent 75%);
+    mask-image: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0, 0, 0, 1) 30%, transparent 75%);
   }
 }
 
@@ -184,7 +178,14 @@ $mobile-landscape-height: 100vh;
   }
 }
 
-.metadataMobile {
+.swipeSlider {
+  display: flex;
+  align-items: flex-end;
+  width: 100%;
+  height: 100%;
+}
+
+.swipeSliderMobile {
   width: 100%;
   height: 100%;
 }
@@ -194,7 +195,8 @@ $mobile-landscape-height: 100vh;
   display: flex;
   flex-direction: column;
   gap: 24px;
-  max-width: 46%;
+  min-width: 50%;
+  max-width: 50%;
   padding-left: calc(variables.$base-spacing * 4);
 
   > h2 {
@@ -230,12 +232,23 @@ $mobile-landscape-height: 100vh;
   }
 
   @include responsive.mobile-only-landscape() {
-    max-width: 70%;
+    min-height: initial;
     padding: 0 calc(variables.$base-spacing * 3) calc(variables.$base-spacing * 3) calc(variables.$base-spacing * 3);
+
+    > h2 {
+      font-size: 24px;
+    }
+    > div {
+      font-size: 14px;
+    }
   }
 
   @include responsive.tablet-small-only() {
     padding: 0 calc(variables.$base-spacing * 3) calc(variables.$base-spacing * 3) calc(variables.$base-spacing * 3);
+
+    > div > button {
+      width: auto !important; // Override StartWatchingButton fullWidth prop
+    }
   }
 
   @include responsive.mobile-only() {

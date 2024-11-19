@@ -13,6 +13,7 @@ import useLiveChannels from '@jwp/ott-hooks-react/src/useLiveChannels';
 import useEntitlement from '@jwp/ott-hooks-react/src/useEntitlement';
 import useLiveProgram from '@jwp/ott-hooks-react/src/useLiveProgram';
 import Play from '@jwp/ott-theme/assets/icons/play.svg?react';
+import env from '@jwp/ott-common/src/env';
 
 import type { ScreenComponent } from '../../../../../types/screens';
 import Epg from '../../../../components/Epg/Epg';
@@ -127,7 +128,7 @@ const PlaylistLiveChannels: ScreenComponent<Playlist> = ({ data: { feedid, playl
 
   // SEO (for channels)
   // const getUrl = (id: string) => liveChannelsURL(feedid, id);
-  const canonicalUrl = `${window.location.origin}${liveChannelsURL(feedid, channel.id)}`;
+  const canonicalUrl = `${env.APP_PUBLIC_URL}${liveChannelsURL(feedid, channel.id)}`;
   const pageTitle = `${channel.title} - ${siteName}`;
 
   const shareButton = channelMediaItem ? (
@@ -187,7 +188,7 @@ const PlaylistLiveChannels: ScreenComponent<Playlist> = ({ data: { feedid, playl
         {channelMediaItem?.tags?.split(',').map((tag) => (
           <meta property="og:video:tag" content={tag} key={tag} />
         ))}
-        {channelMediaItem ? <script type="application/ld+json">{generateMovieJSONLD(channelMediaItem, window.location.origin)}</script> : null}
+        {channelMediaItem ? <script type="application/ld+json">{generateMovieJSONLD(channelMediaItem, env.APP_PUBLIC_URL)}</script> : null}
       </Helmet>
       <VideoDetails
         title={videoDetails.title}

@@ -17,6 +17,7 @@ import useEntitlement from '@jwp/ott-hooks-react/src/useEntitlement';
 import useBreakpoint, { Breakpoint } from '@jwp/ott-ui-react/src/hooks/useBreakpoint';
 import PlayTrailer from '@jwp/ott-theme/assets/icons/play_trailer.svg?react';
 import useQueryParam from '@jwp/ott-ui-react/src/hooks/useQueryParam';
+import env from '@jwp/ott-common/src/env';
 
 import type { ScreenComponent } from '../../../../../types/screens';
 import VideoLayout from '../../../../components/VideoLayout/VideoLayout';
@@ -90,7 +91,7 @@ const MediaEvent: ScreenComponent<PlaylistItem> = ({ data: media, isLoading }) =
   // UI
   const { title, mediaid } = media;
   const pageTitle = `${title} - ${siteName}`;
-  const canonicalUrl = media ? `${window.location.origin}${mediaURL({ id: mediaid, title })}` : window.location.href;
+  const canonicalUrl = media ? `${env.APP_PUBLIC_URL}${mediaURL({ id: mediaid, title })}` : window.location.href;
 
   const primaryMetadata = (
     <>
@@ -149,7 +150,7 @@ const MediaEvent: ScreenComponent<PlaylistItem> = ({ data: media, isLoading }) =
         {media.tags?.split(',').map((tag) => (
           <meta property="og:video:tag" content={tag} key={tag} />
         ))}
-        {media ? <script type="application/ld+json">{generateMovieJSONLD(media, window.location.origin)}</script> : null}
+        {media ? <script type="application/ld+json">{generateMovieJSONLD(media, env.APP_PUBLIC_URL)}</script> : null}
       </Helmet>
       <VideoLayout
         item={media}

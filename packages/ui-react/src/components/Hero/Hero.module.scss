@@ -32,7 +32,7 @@
 }
 
 .poster {
-  position: absolute;
+  position: fixed;
   top: 0;
   right: 0;
   z-index: -1;
@@ -41,13 +41,14 @@
   max-height: 700px;
   object-fit: cover;
   object-position: center 30%;
+  transition: opacity ease-out 0.3s;
 
   -webkit-mask-image: radial-gradient(farthest-corner at 80% 30%, rgba(0, 0, 0, 0.8) 20%, rgb(0 0 0 / 21%) 45%, rgb(0 0 0 / 0%) 73%);
   mask-image: radial-gradient(farthest-corner at 80% 30%, rgba(0, 0, 0, 0.8) 20%, rgb(0 0 0 / 21%) 45%, rgb(0 0 0 / 0%) 73%);
 }
 
 .posterFade {
-  position: absolute;
+  position: fixed;
   top: 0;
   right: 0;
   left: 0;

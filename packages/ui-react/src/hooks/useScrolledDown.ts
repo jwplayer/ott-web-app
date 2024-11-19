@@ -1,28 +1,22 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect } from 'react';
 import useEventCallback from '@jwp/ott-hooks-react/src/useEventCallback';
 
-export const useScrolledDown = (scrollUpHeight = 300, scrollDownHeight = 30) => {
-  const scrollingElement = document.scrollingElement || document.body;
-  const scrollTopRef = useRef(scrollingElement.scrollTop);
-  const [scrolledDown, setScrolledDown] = useState(false);
-
+export const useScrolledDown = (start = 300, end = 30, onChange: (progress: number) => void) => {
   const handleScroll = useEventCallback(() => {
-    const scrollPosition = scrollingElement.scrollTop;
-    const direction = scrollTopRef.current > scrollPosition ? 'up' : 'down';
+    const scrollTarget = document.scrollingElement || document.body;
+    const scrollPosition = scrollTarget.scrollTop;
+    const progress = Math.max(0, Math.min(1, (scrollPosition - start) / (end - start)));
 
-    scrollTopRef.current = scrollPosition;
-
-    // toggle the scrolledDown based on the direction to
-    setScrolledDown((direction === 'up' && scrollPosition > scrollUpHeight) || (direction === 'down' && scrollPosition > scrollDownHeight));
+    onChange(progress);
   });
 
   useEffect(() => {
-    window.addEventListener('scroll', handleScroll, { passive: true });
+    const { scrollingElement, documentElement, body } = document;
+    const listenerElement = scrollingElement && scrollingElement !== documentElement && scrollingElement !== body ? scrollingElement : window;
 
+    listenerElement.addEventListener('scroll', handleScroll, { passive: true });
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      listenerElement.removeEventListener('scroll', handleScroll);
     };
   }, [handleScroll]);
-
-  return scrolledDown;
 };

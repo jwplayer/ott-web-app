@@ -18,6 +18,8 @@ const TruncatedText: React.FC<TruncatedTextProps> = ({ text, maximumLines, class
       style={{
         maxHeight: `calc(1.5em * ${maximumLines})`,
         WebkitLineClamp: maximumLines,
+        lineClamp: maximumLines,
+        display: '-webkit-box',
       }}
     >
       <MarkdownComponent markdownString={text} inline />

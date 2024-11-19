@@ -1,15 +1,15 @@
 import { jwtDecode } from 'jwt-decode';
 import { object, string } from 'yup';
-import { inject, injectable } from 'inversify';
-import { BroadcastChannel } from 'broadcast-channel';
+import { inject, injectable, optional } from 'inversify';
 
 import { IS_DEVELOPMENT_BUILD } from '../../../utils/common';
 import { PromiseQueue } from '../../../utils/promiseQueue';
 import type { AuthData } from '../../../../types/account';
 import StorageService from '../../StorageService';
-import { GET_CUSTOMER_IP } from '../../../modules/types';
+import { BROADCAST_CHANNEL, GET_CUSTOMER_IP } from '../../../modules/types';
 import type { GetCustomerIP } from '../../../../types/get-customer-ip';
 import { logDebug, logError } from '../../../logger';
+import type { BroadcastChannel } from '../../../../types/broadcast-channel';
 
 import type { GetLocalesResponse } from './types/account';
 import type { Response } from './types/api';
@@ -82,7 +82,7 @@ const getTokenExpiration = (token: string) => {
 export default class CleengService {
   protected readonly storageService;
   protected readonly getCustomerIP;
-  protected readonly channel: BroadcastChannel<MessageData>;
+  protected readonly channel: BroadcastChannel<MessageData> | undefined;
   protected readonly queue = new PromiseQueue();
   protected isRefreshing = false;
   protected expiration = -1;
@@ -90,12 +90,16 @@ export default class CleengService {
   sandbox = false;
   tokens: Tokens | null = null;
 
-  constructor(@inject(StorageService) storageService: StorageService, @inject(GET_CUSTOMER_IP) getCustomerIP: GetCustomerIP) {
+  constructor(
+    @inject(StorageService) storageService: StorageService,
+    @inject(GET_CUSTOMER_IP) getCustomerIP: GetCustomerIP,
+    @inject(BROADCAST_CHANNEL) @optional() channel?: BroadcastChannel<MessageData>,
+  ) {
     this.storageService = storageService;
     this.getCustomerIP = getCustomerIP;
 
-    this.channel = new BroadcastChannel<MessageData>('jwp-refresh-token-channel');
-    this.channel.addEventListener('message', this.handleBroadcastMessage);
+    this.channel = channel;
+    this.channel?.addEventListener('message', this.handleBroadcastMessage);
   }
 
   /**
@@ -168,6 +172,8 @@ export default class CleengService {
    * Notify other browser tabs about a change in the auth state
    */
   private sendBroadcastMessage = (state: MessageAction, tokens?: Tokens) => {
+    if (!this.channel) return;
+
     const message: MessageData = {
       action: state,
       tokens,

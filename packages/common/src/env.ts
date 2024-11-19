@@ -5,6 +5,7 @@ export type Env = {
   APP_PLAYER_ID: string;
   APP_FOOTER_TEXT: string;
   APP_DEFAULT_LANGUAGE: string;
+  APP_PUBLIC_URL: string;
 
   APP_DEFAULT_CONFIG_SOURCE?: string;
   APP_PLAYER_LICENSE_KEY?: string;
@@ -20,6 +21,7 @@ const env: Env = {
   APP_PLAYER_ID: 'M4qoGvUk',
   APP_FOOTER_TEXT: '',
   APP_DEFAULT_LANGUAGE: 'en',
+  APP_PUBLIC_URL: '',
 };
 
 export const configureEnv = (options: Partial<Env>) => {
@@ -29,6 +31,7 @@ export const configureEnv = (options: Partial<Env>) => {
   env.APP_PLAYER_ID = options.APP_PLAYER_ID || env.APP_PLAYER_ID;
   env.APP_FOOTER_TEXT = options.APP_FOOTER_TEXT || env.APP_FOOTER_TEXT;
   env.APP_DEFAULT_LANGUAGE = options.APP_DEFAULT_LANGUAGE || env.APP_DEFAULT_LANGUAGE;
+  env.APP_PUBLIC_URL = options.APP_PUBLIC_URL || env.APP_PUBLIC_URL;
 
   env.APP_DEFAULT_CONFIG_SOURCE ||= options.APP_DEFAULT_CONFIG_SOURCE;
   env.APP_PLAYER_LICENSE_KEY ||= options.APP_PLAYER_LICENSE_KEY;

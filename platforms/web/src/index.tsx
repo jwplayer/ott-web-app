@@ -24,6 +24,7 @@ configureEnv({
   APP_FOOTER_TEXT: import.meta.env.APP_FOOTER_TEXT,
   APP_BODY_FONT: import.meta.env.APP_BODY_FONT,
   APP_BODY_ALT_FONT: import.meta.env.APP_BODY_ALT_FONT,
+  APP_PUBLIC_URL: import.meta.env.APP_PUBLIC_URL || window.location.origin,
 });
 
 attachAccessibilityListener();

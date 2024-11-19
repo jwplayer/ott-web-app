@@ -3,6 +3,7 @@ import type { Playlist, PlaylistItem } from '@jwp/ott-common/types/playlist';
 import type { EpisodeMetadata } from '@jwp/ott-common/types/series';
 import { legacySeriesURL } from '@jwp/ott-common/src/utils/urlFormatting';
 import { secondsToISO8601 } from '@jwp/ott-common/src/utils/datetime';
+import env from '@jwp/ott-common/src/env';
 
 /**
  * Get an array of options for a season filter
@@ -57,7 +58,7 @@ export const getEpisodesInSeason = (episode: PlaylistItem | undefined, seriesPla
 
 export const generateLegacySeriesMetadata = (seriesPlaylist: Playlist, seriesId: string | undefined) => {
   // Use playlist for old flow and media id for a new flow
-  const seriesCanonical = `${window.location.origin}/s/${seriesId}`;
+  const seriesCanonical = `${env.APP_PUBLIC_URL}/s/${seriesId}`;
 
   return {
     '@type': 'TVSeries',
@@ -78,7 +79,7 @@ export const generateLegacyEpisodeJSONLD = (
   episodeMetadata: EpisodeMetadata | undefined,
   seriesId: string,
 ) => {
-  const episodeCanonical = `${window.location.origin}${legacySeriesURL({ episodeId: episode?.mediaid, seriesId })}`;
+  const episodeCanonical = `${env.APP_PUBLIC_URL}${legacySeriesURL({ episodeId: episode?.mediaid, seriesId })}`;
   const seriesMetadata = generateLegacySeriesMetadata(seriesPlaylist, seriesId);
 
   if (!episode) {

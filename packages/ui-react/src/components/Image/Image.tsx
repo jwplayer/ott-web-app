@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { forwardRef, useEffect, useState } from 'react';
 import { createURL } from '@jwp/ott-common/src/utils/urlFormatting';
 import { logInfo } from '@jwp/ott-common/src/logger';
 
@@ -42,7 +42,7 @@ const resolveImageURL = async (imgUrl: string, width: number) => {
   return url;
 };
 
-const Image = ({ className, image, onLoad, alt = '', width = 640 }: Props) => {
+const Image = forwardRef<HTMLImageElement, Props>(({ className, image, onLoad, alt = '', width = 640 }, ref) => {
   const [src, setSrc] = useState<string | null>(null);
 
   useEffect(() => {
@@ -65,7 +65,7 @@ const Image = ({ className, image, onLoad, alt = '', width = 640 }: Props) => {
 
   if (!src) return null;
 
-  return <img className={`${className} ${styles.image}`} src={src} alt={alt} />;
-};
+  return <img ref={ref} className={`${className} ${styles.image}`} src={src} alt={alt} />;
+});
 
 export default React.memo(Image);

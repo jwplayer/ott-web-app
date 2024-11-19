@@ -75,7 +75,7 @@ const ShelfList = ({ rows }: Props) => {
           const posterAspect = parseAspectRatio(playlist.cardImageAspectRatio || playlist.shelfImageAspectRatio);
           const visibleTilesDelta = parseTilesDelta(posterAspect);
 
-          const translatedKey = custom?.[`title-${language}`];
+          const translatedKey = custom?.[`title-${language}`] || (playlist?.[`title-${language}`] as string);
           const translatedTitle = translatedKey || title || playlist?.title;
 
           const isHero = custom?.layoutType === SHELF_LAYOUT_TYPE.hero && index === 0;
