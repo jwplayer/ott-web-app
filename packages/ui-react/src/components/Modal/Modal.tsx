@@ -40,6 +40,7 @@ const Modal: React.FC<Props> = ({
   ...ariaAttributes
 }: Props) => {
   const modalRef = useRef<HTMLDialogElement>() as React.MutableRefObject<HTMLDialogElement>;
+  const mouseEventTargetsPairRef = useRef<Record<'downTarget' | 'upTarget', HTMLElement | null>>({ downTarget: null, upTarget: null });
 
   const { handleOpen, handleClose } = useModal();
 
@@ -89,6 +90,15 @@ const Modal: React.FC<Props> = ({
   }, [openModalEvent, closeModalEvent, open]);
 
   const clickHandler: ReactEventHandler<HTMLDialogElement> = (event) => {
+    const {
+      current: { downTarget, upTarget },
+    } = mouseEventTargetsPairRef;
+
+    // modal should only close if both mousedown and mouseup are done on the overlay
+    if (downTarget !== upTarget) {
+      return;
+    }
+
     // Backdrop click (the dialog itself) will close the modal
     if (event.target === modalRef.current) {
       onClose?.();
@@ -102,6 +112,12 @@ const Modal: React.FC<Props> = ({
       onKeyDown={keyDownHandler}
       onClose={closeHandler}
       onClick={clickHandler}
+      onMouseDown={(e) => {
+        mouseEventTargetsPairRef.current.downTarget = e.target as HTMLElement;
+      }}
+      onMouseUp={(e) => {
+        mouseEventTargetsPairRef.current.upTarget = e.target as HTMLElement;
+      }}
       ref={modalRef}
       role={role}
       {...ariaAttributes}
