@@ -32,24 +32,23 @@ const ResetPassword = ({ type }: { type?: 'add' }) => {
 
       return setSubmitting(false);
     }
-    let resetToken = resetPasswordTokenParam;
-    if (resetPasswordToken) {
-      resetToken = resetPasswordToken;
-    }
-    try {
-      if (user && !resetToken) {
-        await accountController.changePasswordWithOldPassword(oldPassword || '', password, passwordConfirmation);
-      } else {
-        if (!resetToken) {
-          setErrors({ form: t('reset.invalid_link') });
 
+    const resetToken = resetPasswordToken || resetPasswordTokenParam;
+
+    try {
+      if (resetToken) {
+        await accountController.changePasswordWithToken(emailParam || '', password, resetToken, passwordConfirmation);
+      } else {
+        if (!user) {
+          setErrors({ form: t('reset.invalid_link') });
           return setSubmitting(false);
         }
-        await accountController.changePasswordWithToken(emailParam || '', password, resetToken, passwordConfirmation);
+
+        await accountController.changePasswordWithOldPassword(oldPassword || '', password, passwordConfirmation);
+        await accountController.logout();
       }
 
       announce(t('reset.password_reset_success'), 'success');
-      await accountController.logout();
       navigate(modalURLFromLocation(location, 'login'));
     } catch (error: unknown) {
       if (error instanceof Error) {

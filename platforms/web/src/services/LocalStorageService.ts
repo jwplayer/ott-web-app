@@ -10,8 +10,8 @@ export class LocalStorageService extends StorageService {
     this.prefix = prefix;
   }
 
-  getStorageKey(key: string) {
-    return `${this.prefix}.${key}`;
+  getStorageKey(key: string, usePrefix = true) {
+    return usePrefix ? `${this.prefix}.${key}` : key;
   }
 
   async getItem(key: string, parse: boolean, usePrefix = true) {
@@ -32,9 +32,9 @@ export class LocalStorageService extends StorageService {
     }
   }
 
-  async removeItem(key: string) {
+  async removeItem(key: string, usePrefix = true) {
     try {
-      window.localStorage.removeItem(this.getStorageKey(key));
+      window.localStorage.removeItem(this.getStorageKey(key, usePrefix));
     } catch (error: unknown) {
       logError('LocalStorageService', 'Failed to remove localStorage entry', { error });
     }
