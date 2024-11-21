@@ -119,7 +119,13 @@ const LegacySeries = () => {
   const backgroundImage = (selectedItem.backgroundImage as string) || undefined;
 
   const primaryMetadata = episode ? (
-    <VideoMetaData attributes={createVideoMetadata(episode, t('video:total_episodes', { count: seriesPlaylist?.playlist?.length }))} />
+    <VideoMetaData
+      attributes={createVideoMetadata(episode, {
+        episodesLabel: t('video:total_episodes', { count: seriesPlaylist?.playlist?.length }),
+        hoursAbbreviation: t('common:abbreviation.hours'),
+        minutesAbbreviation: t('common:abbreviation.minutes'),
+      })}
+    />
   ) : (
     <VideoMetaData attributes={createPlaylistMetadata(seriesPlaylist, t('video:total_episodes', { count: seriesPlaylist?.playlist?.length }))} />
   );

@@ -81,7 +81,7 @@ function Card({
     } else if (episodeNumber) {
       return <div className={styles.tag}>{formatSeriesMetaString(seasonNumber, episodeNumber)}</div>;
     } else if (duration) {
-      return <div className={styles.tag}>{formatDurationTag(duration)}</div>;
+      return <div className={styles.tag}>{formatDurationTag(duration, { minutesAbbreviation: t('common:abbreviation.minutes') })}</div>;
     } else if (isLive) {
       return <div className={classNames(styles.tag, styles.live)}>{t('live')}</div>;
     } else if (isScheduled) {

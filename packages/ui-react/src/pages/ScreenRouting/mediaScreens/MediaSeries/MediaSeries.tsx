@@ -196,7 +196,15 @@ const MediaSeries: ScreenComponent<PlaylistItem> = ({ data: seriesMedia }) => {
   const pageTitle = `${selectedItem.title} - ${siteName}`;
   const canonicalUrl = `${env.APP_PUBLIC_URL}${mediaURL({ id: seriesMedia.mediaid, title: seriesMedia.title, episodeId: episode?.mediaid })}`;
 
-  const primaryMetadata = <VideoMetaData attributes={createVideoMetadata(selectedItem, t('video:total_episodes', { count: series.episode_count }))} />;
+  const primaryMetadata = (
+    <VideoMetaData
+      attributes={createVideoMetadata(selectedItem, {
+        episodesLabel: t('video:total_episodes', { count: series.episode_count }),
+        hoursAbbreviation: t('common:abbreviation.hours'),
+        minutesAbbreviation: t('common:abbreviation.minutes'),
+      })}
+    />
+  );
   const secondaryMetadata = episodeMetadata && episode && (
     <>
       <strong>{formatSeriesMetaString(episodeMetadata.seasonNumber, episodeMetadata.episodeNumber)}</strong> - {episode.title}

@@ -64,7 +64,7 @@ exports[`Shelf Component tests > Featured shelf 1`] = `
                     <div
                       class="_tag_d75732"
                     >
-                      21 min
+                      21 common:abbreviation.minutes
                     </div>
                   </div>
                 </div>
@@ -100,7 +100,7 @@ exports[`Shelf Component tests > Featured shelf 1`] = `
                     <div
                       class="_tag_d75732"
                     >
-                      1 min
+                      1 common:abbreviation.minutes
                     </div>
                   </div>
                 </div>
@@ -136,7 +136,7 @@ exports[`Shelf Component tests > Featured shelf 1`] = `
                     <div
                       class="_tag_d75732"
                     >
-                      1 min
+                      1 common:abbreviation.minutes
                     </div>
                   </div>
                 </div>
@@ -246,7 +246,7 @@ exports[`Shelf Component tests > Regular shelf 1`] = `
                     <div
                       class="_tag_d75732"
                     >
-                      1 min
+                      1 common:abbreviation.minutes
                     </div>
                   </div>
                 </div>
@@ -286,7 +286,7 @@ exports[`Shelf Component tests > Regular shelf 1`] = `
                     <div
                       class="_tag_d75732"
                     >
-                      1 min
+                      1 common:abbreviation.minutes
                     </div>
                   </div>
                 </div>
@@ -326,7 +326,7 @@ exports[`Shelf Component tests > Regular shelf 1`] = `
                     <div
                       class="_tag_d75732"
                     >
-                      1 min
+                      1 common:abbreviation.minutes
                     </div>
                   </div>
                 </div>
@@ -366,7 +366,7 @@ exports[`Shelf Component tests > Regular shelf 1`] = `
                     <div
                       class="_tag_d75732"
                     >
-                      21 min
+                      21 common:abbreviation.minutes
                     </div>
                   </div>
                 </div>

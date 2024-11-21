@@ -4,6 +4,8 @@
   "logo_alt": "Página de inicio de {{siteName}}",
   "open_menu": "Abrir menú",
   "open_user_menu": "Abrir menú de usuario",
+  "search_close": "Cerrar búsqueda",
+  "search_open": "Abrir búsqueda",
   "sign_in": "Iniciar sesión",
   "sign_up": "Registrarse",
   "skip_to_content": "Saltar al contenido"

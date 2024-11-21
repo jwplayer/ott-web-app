@@ -81,7 +81,11 @@ const MediaMovie: ScreenComponent<PlaylistItem> = ({ data, isLoading }) => {
   const pageTitle = `${data.title} - ${siteName}`;
   const canonicalUrl = data ? `${env.APP_PUBLIC_URL}${mediaURL({ id: data.mediaid, title: data.title })}` : window.location.href;
 
-  const primaryMetadata = <VideoMetaData attributes={createVideoMetadata(data)} />;
+  const primaryMetadata = (
+    <VideoMetaData
+      attributes={createVideoMetadata(data, { hoursAbbreviation: t('common:abbreviation.hours'), minutesAbbreviation: t('common:abbreviation.minutes') })}
+    />
+  );
   const shareButton = <ShareButton title={data.title} description={data.description} url={canonicalUrl} />;
   const startWatchingButton = (
     <StartWatchingButton

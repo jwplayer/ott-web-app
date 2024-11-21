@@ -33,7 +33,7 @@ import VideoMetaData from '../../../../components/VideoMetaData/VideoMetaData';
 import Icon from '../../../../components/Icon/Icon';
 
 const MediaEvent: ScreenComponent<PlaylistItem> = ({ data: media, isLoading }) => {
-  const { t, i18n } = useTranslation('video');
+  const { t, i18n } = useTranslation(['video', 'common']);
 
   const [playTrailer, setPlayTrailer] = useState<boolean>(false);
   const breakpoint = useBreakpoint();
@@ -96,7 +96,12 @@ const MediaEvent: ScreenComponent<PlaylistItem> = ({ data: media, isLoading }) =
   const primaryMetadata = (
     <>
       <StatusIcon mediaStatus={media.mediaStatus} />
-      <VideoMetaData attributes={createLiveEventMetadata(media, i18n.language)} />
+      <VideoMetaData
+        attributes={createLiveEventMetadata(media, i18n.language, {
+          minutesAbbreviation: t('common:abbreviation.minutes'),
+          hoursAbbreviation: t('common:abbreviation.hours'),
+        })}
+      />
     </>
   );
 

@@ -1,4 +1,8 @@
 {
+  "abbreviation": {
+    "hours": "hrs",
+    "minutes": "min"
+  },
   "alert": {
     "close": "Close",
     "success": "Success",

@@ -69,7 +69,7 @@ exports[`<Favorites> > renders and matches snapshot 1`] = `
                     <div
                       class="_tag_d75732"
                     >
-                      2 min
+                      2 common:abbreviation.minutes
                     </div>
                   </div>
                 </div>
@@ -116,7 +116,7 @@ exports[`<Favorites> > renders and matches snapshot 1`] = `
                     <div
                       class="_tag_d75732"
                     >
-                      3 min
+                      3 common:abbreviation.minutes
                     </div>
                   </div>
                 </div>
@@ -163,7 +163,7 @@ exports[`<Favorites> > renders and matches snapshot 1`] = `
                     <div
                       class="_tag_d75732"
                     >
-                      13 min
+                      13 common:abbreviation.minutes
                     </div>
                   </div>
                 </div>

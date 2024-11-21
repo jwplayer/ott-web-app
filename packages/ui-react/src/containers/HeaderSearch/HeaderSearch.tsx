@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router';
 import { useConfigStore } from '@jwp/ott-common/src/stores/ConfigStore';
 import { shallow } from '@jwp/ott-common/src/utils/compare';
@@ -15,6 +16,7 @@ import HeaderActionButton from '../../components/Header/HeaderActionButton';
 import styles from './HeaderSearch.module.scss';
 
 const HeaderSearch = () => {
+  const { t } = useTranslation('menu');
   const location = useLocation();
   const searchInputRef = useRef<HTMLInputElement>(null) as React.MutableRefObject<HTMLInputElement>;
 
@@ -68,12 +70,12 @@ const HeaderSearch = () => {
         inputRef={searchInputRef}
         onClose={closeSearchButtonClickHandler}
       />
-      <HeaderActionButton aria-label="Close search" onClick={closeSearchButtonClickHandler}>
+      <HeaderActionButton aria-label={t('search_close')} onClick={closeSearchButtonClickHandler}>
         <Icon icon={CloseIcon} />
       </HeaderActionButton>
     </div>
   ) : (
-    <HeaderActionButton aria-label="Open search" onClick={searchButtonClickHandler}>
+    <HeaderActionButton aria-label={t('search_open')} onClick={searchButtonClickHandler}>
       <Icon icon={SearchIcon} />
     </HeaderActionButton>
   );

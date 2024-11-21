@@ -455,7 +455,7 @@ exports[`User Component tests > Favorites Page 1`] = `
                         <div
                           class="_tag_d75732"
                         >
-                          1 min
+                          1 common:abbreviation.minutes
                         </div>
                       </div>
                     </div>
@@ -497,7 +497,7 @@ exports[`User Component tests > Favorites Page 1`] = `
                         <div
                           class="_tag_d75732"
                         >
-                          100 min
+                          100 common:abbreviation.minutes
                         </div>
                       </div>
                     </div>
@@ -539,7 +539,7 @@ exports[`User Component tests > Favorites Page 1`] = `
                         <div
                           class="_tag_d75732"
                         >
-                          11 min
+                          11 common:abbreviation.minutes
                         </div>
                       </div>
                     </div>
