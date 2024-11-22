@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet';
+import { useTranslation } from 'react-i18next';
 import { shallow } from '@jwp/ott-common/src/utils/compare';
 import type { Playlist, PlaylistItem } from '@jwp/ott-common/types/playlist';
 import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
@@ -14,6 +15,7 @@ import Filter from '../../../../components/Filter/Filter';
 import styles from './PlaylistGrid.module.scss';
 
 const PlaylistGrid: ScreenComponent<Playlist> = ({ data, isLoading }) => {
+  const { i18n } = useTranslation();
   const { config, accessModel } = useConfigStore(({ config, accessModel }) => ({ config, accessModel }), shallow);
 
   const [filter, setFilter] = useState<string>('');
@@ -30,7 +32,8 @@ const PlaylistGrid: ScreenComponent<Playlist> = ({ data, isLoading }) => {
     setFilter('');
   }, [data.feedid]);
 
-  const pageTitle = `${data.title} - ${config.siteName}`;
+  const title = (data?.[`title-${i18n.language}`] as string) || data.title;
+  const pageTitle = `${title} - ${config.siteName}`;
 
   const getUrl = (playlistItem: PlaylistItem) =>
     mediaURL({
@@ -47,7 +50,7 @@ const PlaylistGrid: ScreenComponent<Playlist> = ({ data, isLoading }) => {
         <meta name="twitter:title" content={pageTitle} />
       </Helmet>
       <header className={styles.header}>
-        <h1>{data.title}</h1>
+        <h1>{title}</h1>
         {shouldShowFilter && <Filter name="genre" value={filter} defaultLabel="All" options={categories} setValue={setFilter} />}
       </header>
       <CardGrid
