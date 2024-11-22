@@ -1,0 +1,31 @@
+{
+  "all_seasons": "Alle seizoenen",
+  "buy": "Koop",
+  "buy_to_start_watching": "Koop om te beginnen met kijken!",
+  "complete_your_subscription": "Voltooi je abonnement",
+  "continue_watching": "Doorgaan met kijken",
+  "copied_url": "URL gekopieerd",
+  "current_episode": "Huidige aflevering",
+  "current_video": "Huidige video",
+  "episode": "aflevering",
+  "episodes": "Afleveringen",
+  "favorite": "Favoriet",
+  "favorites_warning": "Maximale aantal favoriete video's overschreden. Je kunt maximaal {{maxCount}} favoriete video's toevoegen. Verwijder er één en herhaal de bewerking.",
+  "live": "Live",
+  "player_error": {
+    "geo_blocked_description": "Onze excuses, maar deze content is momenteel niet beschikbaar in je regio.",
+    "geo_blocked_title": "Content niet beschikbaar"
+  },
+  "season": "seizoen",
+  "season_number_filter_template": "Seizoen {{seasonNumber}}",
+  "series": "Serie",
+  "series_error": "Er is een fout opgetreden bij het aanvragen van de serie",
+  "share": "Delen",
+  "share_video": "Deel deze video",
+  "sign_up_to_start_watching": "Registreer je om te beginnen met kijken!",
+  "start_watching": "Begin met kijken",
+  "total_episodes_one": "{{count}} aflevering",
+  "total_episodes_other": "{{count}} afleveringen",
+  "trailer": "Trailer",
+  "watch_trailer": "Bekijk de trailer"
+}

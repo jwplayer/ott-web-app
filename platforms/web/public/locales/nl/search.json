@@ -1,0 +1,19 @@
+{
+  "error_description": "Herladen deze pagina of probeer het later opnieuw.",
+  "error_heading": "Er is iets misgegaan",
+  "error_subheading": "Het lijkt erop dat er een probleem was bij het laden van deze pagina...",
+  "heading": "Zoekresultaten",
+  "no_results_heading": "Geen resultaten gevonden voor \"{{query}}\"",
+  "search_bar": {
+    "clear_search_label": "Zoekopdracht wissen",
+    "search_label": "Zoeken",
+    "search_placeholder": "Zoeken..."
+  },
+  "start_typing": "Typ iets in het zoekvak om te beginnen met zoeken",
+  "suggestions": "Suggesties:",
+  "tip_one": "Controleer of alle woorden correct zijn gespeld",
+  "tip_two": "Maak zoektermen algemener",
+  "tip_three": "Probeer andere zoektermen",
+  "title_one": "{{count}} resultaat voor \"{{query}}\"",
+  "title_other": "{{count}} resultaten voor \"{{query}}\""
+}

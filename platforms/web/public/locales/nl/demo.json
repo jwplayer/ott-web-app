@@ -1,0 +1,16 @@
+{
+  "app_config_learn_more": "Meer informatie over App-configuraties",
+  "app_config_not_found": "Ongeldige of ontbrekende App-configuratie",
+  "cancel_config_id": "Annuleren",
+  "click_to_unselect_config": "(klik hier om deze configuratie te deselecteren)",
+  "currently_previewing_config": "U bekijkt momenteel de configuratie: '{{configSource}}'",
+  "demo_note": "Opmerking: De gekozen App-configuratie-ID wordt lokaal opgeslagen in deze browser. Gebruik de link onderaan de hoofdpagina om de instelling te wissen en terug te keren naar dit dialoogvenster.",
+  "enter_8_digits": "De App-configuratie-ID moet 8 cijfers lang zijn. Corrigeer uw invoer en probeer het opnieuw.",
+  "enter_a_value": "Voer een App-configuratie-ID in",
+  "invalid_config_id_format": "De App-configuratie-ID mag alleen uit cijfers en kleine letters bestaan. Controleer uw invoer en probeer het opnieuw.",
+  "please_enter_config_id": "Voer een App-configuratie-ID in van uw JW-account",
+  "submit_config_id": "Indienen",
+  "use_the_jwp_dashboard": "Geen configuratie? Gebruik het JWP-dashboard om een App-configuratie te maken of klik op Annuleren om een generieke demo te bekijken.",
+  "view_generic_demo": "Generieke demo bekijken?",
+  "viewing_config_demo": "Dit zal u doorsturen naar een generieke demo-app. Weet u zeker dat u wilt doorgaan?"
+}

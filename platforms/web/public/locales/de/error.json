@@ -1,0 +1,21 @@
+{
+  "adyen_order_unknown": "Bestellung ist unbekannt",
+  "check_your_config": "Es gab ein Problem beim Abrufen der Anwendungs-Konfiguration. Versuchen Sie es später erneut. Wenn das Problem weiterhin besteht, kontaktieren Sie den technischen Support.",
+  "check_your_settings": "Es gab ein Problem beim Laden der Standardeinstellungen. Versuchen Sie es später erneut. Wenn das Problem weiterhin besteht, kontaktieren Sie den technischen Support.",
+  "config_invalid": "Ungültige oder fehlende Konfiguration",
+  "empty_shelves_description": "Es tut uns leid, aber es sind keine Inhalte in Ihrer Region verfügbar.",
+  "empty_shelves_heading": "Keine Inhalte verfügbar",
+  "generic_error_description": "Versuchen Sie, diese Seite zu aktualisieren oder kommen Sie später zurück.",
+  "generic_error_heading": "Es gab ein Problem beim Laden der Anwendung",
+  "learn_more": "Mehr erfahren",
+  "notfound_error_description": "Diese Seite existiert nicht.",
+  "notfound_error_heading": "Nicht gefunden",
+  "playlist_not_found": "Playlist nicht gefunden",
+  "settings_invalid": "Ungültige oder fehlende Einstellungen",
+  "unknown_error": "Unbekannter Fehler",
+  "validation_form_error": {
+    "other": "Bitte korrigieren Sie Ihre Fehler, bevor Sie fortfahren.",
+    "required": "Bitte füllen Sie alle erforderlichen Felder aus, bevor Sie fortfahren."
+  },
+  "video_not_found": "Video nicht gefunden"
+}

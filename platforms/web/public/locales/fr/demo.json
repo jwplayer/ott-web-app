@@ -1,0 +1,16 @@
+{
+  "app_config_learn_more": "En savoir plus sur les configurations de l'application",
+  "app_config_not_found": "Configuration de l'application invalide ou manquante",
+  "cancel_config_id": "Annuler",
+  "click_to_unselect_config": "(cliquez ici pour désélectionner cette configuration)",
+  "currently_previewing_config": "Vous prévisualisez actuellement la configuration : '{{configSource}}'",
+  "demo_note": "Remarque : L'ID de configuration choisi sera stocké localement dans ce navigateur uniquement. Utilisez le lien en bas de la page principale pour effacer ce paramètre et revenir à cette boîte de dialogue.",
+  "enter_8_digits": "L'ID de configuration de l'application doit comporter 8 chiffres. Veuillez corriger votre saisie et réessayer.",
+  "enter_a_value": "Veuillez entrer un ID de configuration de l'application",
+  "invalid_config_id_format": "L'ID de configuration de l'application doit être composé uniquement de chiffres et de lettres minuscules. Veuillez vérifier votre saisie et réessayer.",
+  "please_enter_config_id": "Veuillez entrer un ID de configuration de l'application depuis votre compte JW",
+  "submit_config_id": "Soumettre",
+  "use_the_jwp_dashboard": "Vous n'avez pas de configuration ? Utilisez le tableau de bord JWP pour créer une configuration d'application ou cliquez sur Annuler pour afficher une démo générique.",
+  "view_generic_demo": "Afficher une démo générique ?",
+  "viewing_config_demo": "Cela vous redirigera vers une application démo générique. Êtes-vous sûr de vouloir continuer ?"
+}

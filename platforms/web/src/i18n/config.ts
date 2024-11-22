@@ -20,6 +20,18 @@ export const DEFINED_LANGUAGES: LanguageDefinition[] = [
     code: 'es',
     displayName: 'Español',
   },
+  {
+    code: 'nl',
+    displayName: 'Nederlands',
+  },
+  {
+    code: 'fr',
+    displayName: 'Français',
+  },
+  {
+    code: 'de',
+    displayName: 'Deutsch',
+  },
 ];
 
 const initI18n = async () => {

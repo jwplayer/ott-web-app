@@ -1,0 +1,31 @@
+{
+  "all_seasons": "Toutes les saisons",
+  "buy": "Acheter",
+  "buy_to_start_watching": "Achetez pour commencer à regarder !",
+  "complete_your_subscription": "Complétez votre abonnement",
+  "continue_watching": "Continuer à regarder",
+  "copied_url": "URL copiée",
+  "current_episode": "Épisode actuel",
+  "current_video": "Vidéo actuelle",
+  "episode": "épisode",
+  "episodes": "Épisodes",
+  "favorite": "Favori",
+  "favorites_warning": "Le nombre maximal de vidéos favorites a été dépassé. Vous pouvez ajouter jusqu'à {{maxCount}} vidéos favorites. Veuillez en supprimer une et répéter l'opération.",
+  "live": "En direct",
+  "player_error": {
+    "geo_blocked_description": "Nous nous excusons, mais ce contenu est actuellement indisponible dans votre région.",
+    "geo_blocked_title": "Contenu indisponible"
+  },
+  "season": "saison",
+  "season_number_filter_template": "Saison {{seasonNumber}}",
+  "series": "Séries",
+  "series_error": "Une erreur est survenue lors de la demande de séries",
+  "share": "Partager",
+  "share_video": "Partager cette vidéo",
+  "sign_up_to_start_watching": "Inscrivez-vous pour commencer à regarder !",
+  "start_watching": "Commencer à regarder",
+  "total_episodes_one": "{{count}} épisode",
+  "total_episodes_other": "{{count}} épisodes",
+  "trailer": "Bande-annonce",
+  "watch_trailer": "Regarder la bande-annonce"
+}

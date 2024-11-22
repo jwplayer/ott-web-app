@@ -1,0 +1,19 @@
+{
+  "error_description": "Laden Sie diese Seite neu oder versuchen Sie es später erneut.",
+  "error_heading": "Etwas ist schief gelaufen",
+  "error_subheading": "Es scheint ein Problem beim Laden dieser Seite gegeben zu haben...",
+  "heading": "Suchergebnisse",
+  "no_results_heading": "Keine Ergebnisse gefunden für \"{{query}}\"",
+  "search_bar": {
+    "clear_search_label": "Suche löschen",
+    "search_label": "Suchen",
+    "search_placeholder": "Suche..."
+  },
+  "start_typing": "Geben Sie etwas in das Suchfeld ein, um mit der Suche zu beginnen",
+  "suggestions": "Vorschläge:",
+  "tip_one": "Stellen Sie sicher, dass alle Wörter korrekt geschrieben sind",
+  "tip_two": "Machen Sie die Suchbegriffe allgemeiner",
+  "tip_three": "Versuchen Sie es mit anderen Suchbegriffen",
+  "title_one": "{{count}} Ergebnis für \"{{query}}\"",
+  "title_other": "{{count}} Ergebnisse für \"{{query}}\""
+}

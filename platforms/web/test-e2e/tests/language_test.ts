@@ -27,8 +27,8 @@ const localStorageKey = 'jwapp.language';
 
 Feature('languages').retry(Number(process.env.TEST_RETRY_COUNT) || 0);
 
-Scenario('English language is selected when the locale is `nl-NL`', async ({ I }) => {
-  I.restartBrowser({ locale: 'nl-NL' });
+Scenario('English language is selected when the locale is `pl-PL`', async ({ I }) => {
+  I.restartBrowser({ locale: 'pl-PL' });
   I.useConfig(testConfigs.basicNoAuth);
 
   await assertActiveLanguage(I, 'en');

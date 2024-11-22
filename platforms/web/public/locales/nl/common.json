@@ -1,0 +1,37 @@
+{
+  "abbreviation": {
+    "hours": "uur",
+    "minutes": "min"
+  },
+  "alert": {
+    "close": "Sluiten",
+    "success": "Succes",
+    "title": "Er is een fout opgetreden"
+  },
+  "back": "Terug",
+  "card_lock": "Item vergrendeld",
+  "close_modal": "Paneel sluiten",
+  "confirmation_dialog": {
+    "close": "Annuleren",
+    "confirm": "Ja"
+  },
+  "default_description": "JW OTT Webapp is een open-source, dynamisch gegenereerde videowebsite.",
+  "default_site_name": "Mijn OTT-toepassing",
+  "filter_videos_by": "Filter video's op {{name}}",
+  "filter_videos_by_genre": "Filter video's op genre",
+  "home": "Home",
+  "live": "LIVE",
+  "more_info": "Meer info",
+  "now": "Nu",
+  "play_item": "Speel {{title}} af",
+  "scheduled": "Gepland",
+  "sign_in": "Inloggen",
+  "sign_up": "Registreren",
+  "slide_indicator": "Pagina {{page}} van {{pages}}",
+  "slide_left": "Schuif naar links",
+  "slide_next": "Volgende dia",
+  "slide_previous": "Vorige dia",
+  "slide_right": "Schuif naar rechts",
+  "slide_to": "Schuif naar item {{item}} van {{items}}",
+  "videoplayer": "Videospeler"
+}
