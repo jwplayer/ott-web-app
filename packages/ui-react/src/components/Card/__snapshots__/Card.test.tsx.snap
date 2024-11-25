@@ -52,7 +52,7 @@ exports[`<Card> > should render anchor tag 1`] = `
           <div
             class="_tag_d75732"
           >
-            2 min
+            2 common:abbreviation.minutes
           </div>
         </div>
       </div>

@@ -1,9 +1,11 @@
-export const formatDurationTag = (seconds: number) => {
+import type { DurationAbbreviation } from '../../types/i18n';
+
+export const formatDurationTag = (seconds: number, { minutesAbbreviation }: Pick<DurationAbbreviation, 'minutesAbbreviation'>) => {
   if (!seconds) return '';
 
   const minutes = Math.ceil(seconds / 60);
 
-  return `${minutes} min`;
+  return `${minutes} ${minutesAbbreviation}`;
 };
 
 /**
@@ -16,14 +18,14 @@ export const formatDurationTag = (seconds: number) => {
  * @returns string, such as '2hrs 24min' or '31min'
  */
 
-export const formatDuration = (duration: number) => {
+export const formatDuration = (duration: number, { hoursAbbreviation, minutesAbbreviation }: DurationAbbreviation) => {
   if (!duration) return '';
 
   const hours = Math.floor(duration / 3600);
   const minutes = Math.round((duration - hours * 3600) / 60);
 
-  const hoursString = hours ? `${hours}hrs` : '';
-  const minutesString = minutes ? `${minutes}min` : '';
+  const hoursString = hours ? `${hours}${hoursAbbreviation}` : '';
+  const minutesString = minutes ? `${minutes}${minutesAbbreviation}` : '';
 
   return [hoursString, minutesString].filter(Boolean).join(' ');
 };

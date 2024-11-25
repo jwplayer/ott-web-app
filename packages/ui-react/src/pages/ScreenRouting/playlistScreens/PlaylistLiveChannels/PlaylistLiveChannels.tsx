@@ -88,7 +88,7 @@ const PlaylistLiveChannels: ScreenComponent<Playlist> = ({ data: { feedid, playl
     const startTime = new Date(program.startTime);
     const endTime = new Date(program.endTime);
     const durationInSeconds = differenceInSeconds(endTime, startTime);
-    const duration = formatDurationTag(durationInSeconds);
+    const duration = formatDurationTag(durationInSeconds, { minutesAbbreviation: t('common:abbreviation.minutes') });
     const attributes = [t('on_channel', { name: channel.title }), duration].filter(Boolean);
 
     return (

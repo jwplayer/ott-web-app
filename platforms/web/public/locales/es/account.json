@@ -104,6 +104,8 @@
   "payment": {
     "back_to_profile": "Volver al perfil",
     "credit_card": "Tarjeta de crédito",
+    "credit_card_expiry_date": "Fecha de caducidad",
+    "credit_card_number": "Número de tarjeta",
     "edit_card": "Editar tarjeta",
     "longer_than_usual": "El pago está tardando más de lo habitual. Por favor, inténtelo de nuevo más tarde.",
     "paypal": "PayPal",

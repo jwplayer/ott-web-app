@@ -98,6 +98,8 @@
   "payment": {
     "back_to_profile": "Back to profile",
     "credit_card": "Credit card",
+    "credit_card_expiry_date": "Expiry date",
+    "credit_card_number": "Card number",
     "edit_card": "Edit card",
     "longer_than_usual": "The payment is taking longer than usual. Please try again later.",
     "paypal": "PayPal",

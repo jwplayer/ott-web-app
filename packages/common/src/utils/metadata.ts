@@ -1,14 +1,15 @@
 import type { Playlist, PlaylistItem } from '../../types/playlist';
+import type { DurationAbbreviation } from '../../types/i18n';
 
 import { formatDuration, formatVideoSchedule } from './formatting';
 
-export const createVideoMetadata = (media: PlaylistItem, episodesLabel?: string) => {
+export const createVideoMetadata = (media: PlaylistItem, i18n: DurationAbbreviation & { episodesLabel?: string }) => {
   const metaData = [];
-  const duration = formatDuration(media.duration);
+  const duration = formatDuration(media.duration, i18n);
 
   if (media.pubdate) metaData.push(String(new Date(media.pubdate * 1000).getFullYear()));
-  if (!episodesLabel && duration) metaData.push(duration);
-  if (episodesLabel) metaData.push(episodesLabel);
+  if (!i18n.episodesLabel && duration) metaData.push(duration);
+  if (i18n.episodesLabel) metaData.push(i18n.episodesLabel);
   if (media.genre) metaData.push(media.genre);
   if (media.rating) metaData.push(media.rating);
 
@@ -23,10 +24,10 @@ export const createPlaylistMetadata = (playlist: Playlist, episodesLabel?: strin
 
   return metaData;
 };
-export const createLiveEventMetadata = (media: PlaylistItem, locale: string) => {
+export const createLiveEventMetadata = (media: PlaylistItem, locale: string, i18n: DurationAbbreviation) => {
   const metaData = [];
   const scheduled = formatVideoSchedule(locale, media.scheduledStart, media.scheduledEnd);
-  const duration = formatDuration(media.duration);
+  const duration = formatDuration(media.duration, i18n);
 
   if (scheduled) metaData.push(scheduled);
   if (duration) metaData.push(duration);

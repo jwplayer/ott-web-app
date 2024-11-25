@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import Payment from 'payment';
 
 import TextField from '../TextField/TextField';
@@ -25,6 +26,7 @@ const cardIssuers: { [key: string]: string } = {
 };
 
 const CreditCardNumberField: React.FC<Props> = ({ value, error, onChange, onBlur, ...props }: Props) => {
+  const { t } = useTranslation('account');
   const [cardIssuer, setCardIssuer] = useState<JSX.Element | null>(null);
 
   const formatCreditCardNumber: React.ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -62,7 +64,7 @@ const CreditCardNumberField: React.FC<Props> = ({ value, error, onChange, onBlur
     <TextField
       value={value}
       name="cardNumber"
-      label={`Card number`}
+      label={t('payment.credit_card_number')}
       className="directPostCreditCardNumber"
       onChange={formatCreditCardNumber}
       onBlur={onBlur}
