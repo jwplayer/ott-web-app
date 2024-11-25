@@ -1,12 +1,12 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { useTranslation } from 'react-i18next';
 import { shallow } from '@jwp/ott-common/src/utils/compare';
 import type { Playlist, PlaylistItem } from '@jwp/ott-common/types/playlist';
 import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
 import { useConfigStore } from '@jwp/ott-common/src/stores/ConfigStore';
 import { filterPlaylist, getFiltersFromConfig } from '@jwp/ott-common/src/utils/collection';
 import { mediaURL } from '@jwp/ott-common/src/utils/urlFormatting';
+import { useTranslationKey } from '@jwp/ott-hooks-react/src/useTranslationKey';
 
 import type { ScreenComponent } from '../../../../../types/screens';
 import CardGrid from '../../../../components/CardGrid/CardGrid';
@@ -15,7 +15,7 @@ import Filter from '../../../../components/Filter/Filter';
 import styles from './PlaylistGrid.module.scss';
 
 const PlaylistGrid: ScreenComponent<Playlist> = ({ data, isLoading }) => {
-  const { i18n } = useTranslation();
+  const translationKey = useTranslationKey('title');
   const { config, accessModel } = useConfigStore(({ config, accessModel }) => ({ config, accessModel }), shallow);
 
   const [filter, setFilter] = useState<string>('');
@@ -32,7 +32,7 @@ const PlaylistGrid: ScreenComponent<Playlist> = ({ data, isLoading }) => {
     setFilter('');
   }, [data.feedid]);
 
-  const title = (data?.[`title-${i18n.language}`] as string) || data.title;
+  const title = (data?.[translationKey] as string) || data.title;
   const pageTitle = `${title} - ${config.siteName}`;
 
   const getUrl = (playlistItem: PlaylistItem) =>

@@ -7,6 +7,7 @@ import { useLocation, useNavigate } from 'react-router';
 import { ACCESS_MODEL } from '@jwp/ott-common/src/constants';
 import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
 import { determinePath } from '@jwp/ott-common/src/utils/urlFormatting';
+import { useTranslationKey } from '@jwp/ott-hooks-react/src/useTranslationKey';
 
 import Button from '../../components/Button/Button';
 import Sidebar from '../../components/Sidebar/Sidebar';
@@ -49,8 +50,8 @@ const SidebarUserActions = ({
 };
 
 const SidebarContainer = () => {
-  const { t, i18n } = useTranslation('common');
-  const language = i18n.language;
+  const { t } = useTranslation('common');
+  const translationKey = useTranslationKey('title');
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -85,7 +86,7 @@ const SidebarContainer = () => {
         </li>
         {menu.map(({ contentId, type, label, custom }) => (
           <li key={contentId}>
-            <MenuButton label={custom?.[`label-${language}`] || label} to={determinePath({ type, contentId })} />
+            <MenuButton label={custom?.[translationKey] || label} to={determinePath({ type, contentId })} />
           </li>
         ))}
       </ul>
