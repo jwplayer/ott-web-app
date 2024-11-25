@@ -1,14 +1,7 @@
 import type { PlaylistItem, Source } from '@jwp/ott-common/types/playlist';
 import type { Config } from '@jwp/ott-common/types/config';
 import type { Customer } from '@jwp/ott-common/types/account';
-
-const isVODManifestType = (sourceUrl: string, baseUrl: string, mediaId: string, extensions: ('m3u8' | 'mpd')[]) => {
-  return extensions.some((ext) => sourceUrl === `${baseUrl}/manifests/${mediaId}.${ext}`);
-};
-
-const isBCLManifestType = (sourceUrl: string, baseUrl: string, mediaId: string, extensions: ('m3u8' | 'mpd')[]) => {
-  return extensions.some((ext) => sourceUrl === `${baseUrl}/live/broadcast/${mediaId}.${ext}`);
-};
+import { MANIFEST_TYPE } from '@jwp/ott-common/src/constants';
 
 export const getSources = ({
   item,
@@ -32,19 +25,16 @@ export const getSources = ({
   return sources.map((source: Source) => {
     const url = new URL(source.file);
 
-    const sourceUrl = url.href;
+    const isDRM = (url.searchParams.has('exp') && url.searchParams.has('sig')) || source.drm;
 
-    const isBCLManifest = isBCLManifestType(sourceUrl, baseUrl, mediaid, ['m3u8', 'mpd']);
-    const isVODManifest = isVODManifestType(sourceUrl, baseUrl, mediaid, ['m3u8', 'mpd']);
-    const isDRM = url.searchParams.has('exp') && url.searchParams.has('sig');
-
-    // Use SSAI URL for configs with server side ads, DRM is not supported
-    if (isVODManifest && hasServerAds && !isDRM) {
-      // Only HLS is supported now
-      url.href = `${baseUrl}/v2/sites/${siteId}/media/${mediaid}/ssai.m3u8`;
+    // Use SSAI URL for configs with server side ads, DRM is not supported yet
+    if (hasServerAds && !isDRM) {
+      url.href = `${baseUrl}/v2/sites/${siteId}/media/${mediaid}/ssai.${MANIFEST_TYPE.dash === source.type ? 'mpd' : 'm3u8'}`;
       url.searchParams.set('ad_config_id', adConfig);
-      // Attach user_id only for VOD and BCL SaaS Live Streams (doesn't work with SSAI items)
-    } else if ((isVODManifest || isBCLManifest) && userId) {
+    }
+
+    // Attach user_id for VOD and BCL SaaS Live Streams
+    if (userId) {
       url.searchParams.set('user_id', userId);
     }
 
@@ -55,6 +45,7 @@ export const getSources = ({
     }
 
     source.file = url.toString();
+
     return source;
   });
 };

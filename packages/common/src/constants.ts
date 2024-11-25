@@ -102,3 +102,8 @@ export const APP_CONFIG_ITEM_TYPE = {
   content_list: 'content_list',
   media: 'media',
 } as const;
+
+export const MANIFEST_TYPE = {
+  dash: 'application/dash+xml"',
+  hls: 'application/vnd.apple.mpegurl',
+};
