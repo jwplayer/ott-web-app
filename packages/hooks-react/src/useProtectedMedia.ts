@@ -4,12 +4,15 @@ import ApiService from '@jwp/ott-common/src/services/ApiService';
 import { getModule } from '@jwp/ott-common/src/modules/container';
 import AccessController from '@jwp/ott-common/src/controllers/AccessController';
 import { useConfigStore } from '@jwp/ott-common/src/stores/ConfigStore';
+import { useTranslation } from 'react-i18next';
 
 import useContentProtection from './useContentProtection';
 
 export default function useProtectedMedia(item: PlaylistItem) {
   const apiService = getModule(ApiService);
   const accessController = getModule(AccessController);
+  const { i18n } = useTranslation();
+  const { language } = i18n;
 
   const { isAccessBridgeEnabled } = useConfigStore(({ settings }) => ({
     isAccessBridgeEnabled: !!settings?.apiAccessBridgeUrl,
@@ -23,7 +26,7 @@ export default function useProtectedMedia(item: PlaylistItem) {
     }
 
     // If Access Bridge is not enabled, retrieve the media using the provided DRM token and policy ID.
-    return apiService.getMediaById({ id: item.mediaid, token, drmPolicyId });
+    return apiService.getMediaById({ id: item.mediaid, token, drmPolicyId, language });
   });
 
   const { isLoading, data: isGeoBlocked } = useQuery(
