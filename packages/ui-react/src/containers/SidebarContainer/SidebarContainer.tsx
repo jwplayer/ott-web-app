@@ -51,7 +51,7 @@ const SidebarUserActions = ({
 
 const SidebarContainer = () => {
   const { t } = useTranslation('common');
-  const translationKey = useTranslationKey('title');
+  const translationKey = useTranslationKey('label');
   const navigate = useNavigate();
   const location = useLocation();
 
