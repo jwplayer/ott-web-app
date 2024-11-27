@@ -36,6 +36,8 @@ const ResetPassword = ({ type }: { type?: 'add' }) => {
     const resetToken = resetPasswordToken || resetPasswordTokenParam;
 
     try {
+      let pathname = location.pathname;
+
       if (resetToken) {
         await accountController.changePasswordWithToken(emailParam || '', password, resetToken, passwordConfirmation);
       } else {
@@ -44,12 +46,14 @@ const ResetPassword = ({ type }: { type?: 'add' }) => {
           return setSubmitting(false);
         }
 
+        pathname = '/';
+
         await accountController.changePasswordWithOldPassword(oldPassword || '', password, passwordConfirmation);
         await accountController.logout();
       }
 
       announce(t('reset.password_reset_success'), 'success');
-      navigate(modalURLFromLocation(location, 'login'));
+      navigate(modalURLFromLocation({ ...location, pathname }, 'login'));
     } catch (error: unknown) {
       if (error instanceof Error) {
         if (error.message.includes('invalid param password')) {
