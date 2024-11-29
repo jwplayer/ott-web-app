@@ -59,6 +59,7 @@
   "resolutions": {
     "codeceptjs/**/fast-xml-parser": "^4.5.0",
     "micromatch": ">=4.0.8",
+    "vitest/**/vite": "^5.4.11",
     "ws": ">=5.2.4"
   }
 }
