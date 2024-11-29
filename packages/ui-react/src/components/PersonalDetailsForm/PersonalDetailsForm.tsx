@@ -51,7 +51,6 @@ const PersonalDetailsForm: React.FC<Props> = ({ initialValues, onSubmit, fields,
       error: !!questionErrors[key],
       helperText: questionErrors[key],
       required,
-      key,
     };
 
     // The rendered field is determined by the given available options for each question:
