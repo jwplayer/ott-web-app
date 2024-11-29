@@ -24,7 +24,7 @@
     "@types/jwplayer": "^8.31.1",
     "jsdom": "^22.1.0",
     "vi-fetch": "^0.8.0",
-    "vitest": "^1.6.0"
+    "vitest": "^2.1.6"
   },
   "peerDependencies": {
     "@jwp/ott-common": "*",

@@ -51,7 +51,7 @@
     "read": "^2.1.0",
     "ts-node": "^10.9.2",
     "typescript": "5.3.3",
-    "vitest": "^1.6.0"
+    "vitest": "^2.1.6"
   },
   "peerDependencies": {
     "eslint-config-jwp": "*"

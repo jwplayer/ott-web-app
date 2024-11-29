@@ -84,7 +84,7 @@
     "vite-plugin-static-copy": "^0.17.1",
     "vite-plugin-stylelint": "^5.3.1",
     "vite-plugin-svgr": "^4.2.0",
-    "vitest": "^1.6.0",
+    "vitest": "^2.1.6",
     "vitest-axe": "^1.0.0-pre.3",
     "workbox-build": "^6.6.1",
     "workbox-window": "^6.6.1"

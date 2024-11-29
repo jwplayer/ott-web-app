@@ -46,7 +46,7 @@
     "typescript-plugin-css-modules": "^5.1.0",
     "vi-fetch": "^0.8.0",
     "vite-plugin-svgr": "^4.2.0",
-    "vitest": "^1.6.0",
+    "vitest": "^2.1.6",
     "vitest-axe": "^1.0.0-pre.3",
     "wicg-inert": "^3.1.3"
   },
