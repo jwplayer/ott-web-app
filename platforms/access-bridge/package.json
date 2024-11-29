@@ -24,7 +24,7 @@
     "@types/node": "^20.14.10",
     "eslint-config-jwp": "*",
     "typescript": "^5.5.3",
-    "vite": "^5.3.1",
+    "vite": "^5.4.11",
     "vite-plugin-node": "^3.1.0",
     "vitest": "^1.6.0"
   },
