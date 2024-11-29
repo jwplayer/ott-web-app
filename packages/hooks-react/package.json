@@ -9,7 +9,7 @@
     "test-watch": "TZ=UTC LC_ALL=en_US.UTF-8 vitest"
   },
   "dependencies": {
-    "date-fns": "^3.6.0",
+    "date-fns": "^4.1.0",
     "i18next": "^22.5.1",
     "planby": "^0.3.0",
     "react": "^18.3.1",
