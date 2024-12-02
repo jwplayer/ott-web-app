@@ -37,8 +37,8 @@
     "access-bridge": "yarn --cwd platforms/access-bridge"
   },
   "devDependencies": {
-    "@commitlint/cli": "^17.8.1",
-    "@commitlint/config-conventional": "^17.8.1",
+    "@commitlint/cli": "^19.6.0",
+    "@commitlint/config-conventional": "^19.6.0",
     "@types/node": "^18.19.37",
     "csv-parse": "^5.5.6",
     "eslint": "^8.57.0",
