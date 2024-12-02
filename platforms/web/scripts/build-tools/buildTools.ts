@@ -42,7 +42,7 @@ export const getFileCopyTargets = (mode: string): Target[] => {
 
 export const getMetaTags = (tagData: Record<string, string | undefined>): HtmlTagDescriptor[] => {
   return Object.entries(tagData)
-    .filter(([_, value]) => !!value)
+    .filter(([, value]) => !!value)
     .map(([name, content]) => ({
       tag: 'meta',
       injectTo: 'head',

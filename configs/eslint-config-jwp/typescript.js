@@ -71,7 +71,7 @@ module.exports = {
       },
       rules: {
         // `require` is still allowed/recommended in JS
-        '@typescript-eslint/no-var-requires': 'off',
+        '@typescript-eslint/no-require-imports': 'off',
       },
     },
     {
@@ -79,9 +79,6 @@ module.exports = {
       rules: {
         // These are handled by TS
         '@typescript-eslint/no-explicit-any': ['warn', { ignoreRestArgs: true }],
-        '@typescript-eslint/explicit-module-boundary-types': 'off',
-        '@typescript-eslint/no-inferrable-types': 'off',
-        '@typescript-eslint/ban-ts-comment': 'off',
         '@typescript-eslint/no-unused-vars': 'off',
         'import/no-unresolved': 'off',
       },

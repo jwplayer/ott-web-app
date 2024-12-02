@@ -28,7 +28,7 @@ const LanguageMenu = ({ onClick, className, languages, currentLanguage, language
 
   const handleLanguageSelect = (event: MouseEvent<HTMLElement>, code: string) => {
     event.preventDefault();
-    onClick && onClick(code);
+    onClick?.(code);
 
     closeLanguageMenu();
   };

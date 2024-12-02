@@ -13,7 +13,7 @@ describe('<DemoConfigDialog>', () => {
       refetch: () => Promise.resolve(null),
     };
 
-    // @ts-expect-error
+    // @ts-expect-error the mocked query argument is not complete
     const { container } = renderWithRouter(<DemoConfigDialog query={query} />);
 
     expect(container).toMatchSnapshot();
@@ -28,7 +28,7 @@ describe('<DemoConfigDialog>', () => {
       refetch: () => Promise.resolve(null),
     };
 
-    // @ts-expect-error
+    // @ts-expect-error the mocked query argument is not complete
     const { container } = renderWithRouter(<DemoConfigDialog query={query} />);
 
     expect(container).toMatchSnapshot();

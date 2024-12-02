@@ -55,20 +55,20 @@ const Cinema: React.FC<Props> = ({
 
   const handlePlay = useCallback(() => {
     setIsPlaying(true);
-    onPlay && onPlay();
+    onPlay?.();
   }, [onPlay]);
 
   const handlePause = useCallback(() => {
     setIsPlaying(false);
-    onPause && onPause();
+    onPause?.();
   }, [onPause]);
 
   const handleComplete = useCallback(() => {
-    onComplete && onComplete();
+    onComplete?.();
   }, [onComplete]);
 
   const handleNext = useCallback(() => {
-    onNext && onNext();
+    onNext?.();
   }, [onNext]);
 
   const handleUserActive = useCallback(() => setUserActive(true), []);

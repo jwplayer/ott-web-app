@@ -48,7 +48,7 @@ describe('<CustomRegisterField>', () => {
   });
 
   test('renders and matches snapshot <Dropdown type="randomstring">', () => {
-    // @ts-ignore
+    // @ts-expect-error `type` typing mismatch
     const { container } = render(<CustomRegisterField type="randomstring" label="label" name="name" value="value" onChange={vi.fn()} />);
 
     expect(container).toMatchSnapshot();

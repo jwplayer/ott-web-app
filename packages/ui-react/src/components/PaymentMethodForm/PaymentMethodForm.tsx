@@ -38,7 +38,9 @@ const PaymentMethodForm: React.FC<Props> = ({
   const paypalPaymentMethod = paymentMethods?.find((method) => method.methodName === 'paypal');
 
   useEffect(() => {
-    updateSuccess && announce(t('checkout.payment_success'), 'success');
+    if (updateSuccess) {
+      announce(t('checkout.payment_success'), 'success');
+    }
   }, [updateSuccess, announce, t]);
 
   return (

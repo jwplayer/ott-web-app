@@ -1,6 +1,5 @@
 import * as fs from 'fs';
 
-// @ts-ignore
 import { ColumnOption, parse } from 'csv-parse/sync';
 
 interface Line {

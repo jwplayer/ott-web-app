@@ -19,7 +19,7 @@ const useEventCallback = <T extends (...args: any[]) => unknown>(callback?: T): 
     fnRef.current = callback;
   }, [callback]);
 
-  // @ts-ignore
+  // @ts-expect-error type mismatch
   // ignore since we just want to pass all arguments to the callback function (which we don't know)
   return useCallback((...args) => {
     if (typeof fnRef.current === 'function') {
