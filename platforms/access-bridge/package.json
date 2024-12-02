@@ -21,9 +21,7 @@
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
     "@types/jsonwebtoken": "^9.0.6",
-    "@types/node": "^20.14.10",
     "eslint-config-jwp": "*",
-    "typescript": "^5.5.3",
     "vite": "^5.4.11",
     "vite-plugin-node": "^3.1.0",
     "vitest": "^2.1.6"

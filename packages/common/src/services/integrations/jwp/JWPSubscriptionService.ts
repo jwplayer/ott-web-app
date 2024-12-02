@@ -124,7 +124,8 @@ export default class JWPSubscriptionService extends SubscriptionService {
       case 'canceled':
         status = 'cancelled';
         break;
-      case 'incomplete_expired' || 'ended':
+      case 'incomplete_expired':
+      case 'ended':
         status = 'expired';
         break;
       default:
