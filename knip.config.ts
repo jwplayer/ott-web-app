@@ -23,6 +23,7 @@ const config: KnipConfig = {
       entry: ['src/**/*'],
       ignoreDependencies: [
         'sass', // Used in css
+        'postcss-config-jwp', // Used in postcss.config
       ],
     },
     'platforms/web': {
@@ -31,6 +32,7 @@ const config: KnipConfig = {
         '@codeceptjs/configure', // Used in e2e tests
         '@babel/plugin-proposal-decorators', // Used to build with decorators for ioc resolution
         '@babel/core', // Required peer dependency for babel plugins
+        '@jwp/ott-testing', // Used in e2e testing
         '@types/luxon', // Used in tests
         'babel-plugin-transform-typescript-metadata', // Used to build with decorators for ioc resolution
         'core-js', // Conditionally imported at build time

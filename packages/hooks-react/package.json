@@ -9,6 +9,7 @@
     "test-watch": "TZ=UTC LC_ALL=en_US.UTF-8 vitest"
   },
   "dependencies": {
+    "@jwp/ott-common": "*",
     "date-fns": "^4.1.0",
     "i18next": "^24.0.2",
     "planby": "^0.3.0",
@@ -20,15 +21,12 @@
     "yup": "^1.4.0"
   },
   "devDependencies": {
+    "@jwp/ott-testing": "*",
     "@testing-library/react": "^14.3.1",
     "@types/jwplayer": "^8.31.1",
+    "eslint-config-jwp": "*",
     "jsdom": "^22.1.0",
     "vi-fetch": "^0.8.0",
     "vitest": "^2.1.6"
-  },
-  "peerDependencies": {
-    "@jwp/ott-common": "*",
-    "@jwp/ott-testing": "*",
-    "eslint-config-jwp": "*"
   }
 }
