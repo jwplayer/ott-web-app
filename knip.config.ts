@@ -11,7 +11,6 @@ const config: KnipConfig = {
       ignoreBinaries: [
         // false positives from yarn scripts in github actions
         'build',
-        'global',
         'start:test',
         'codecept:*',
       ],
@@ -40,10 +39,7 @@ const config: KnipConfig = {
         'i18next-parser',
         'luxon', // Used in tests
         'playwright', // Used in test configs
-        'sharp', // Requirement for @vite-pwa/assets-generator
         'tsconfig-paths', // Used for e2e test setup
-        'virtual:pwa-register', // Service Worker code is injected at build time
-        'virtual:polyfills', // Polyfills are conditionally injected
       ],
     },
     'configs/eslint-config-jwp': {

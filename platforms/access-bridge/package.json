@@ -33,7 +33,7 @@
     "@sentry/vite-plugin": "^2.22.2",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
-    "express": "^4.19.2",
+    "express": "^4.21.1",
     "jsonwebtoken": "^9.0.2",
     "stripe": "^16.8.0"
   }
