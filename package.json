@@ -40,8 +40,8 @@
     "@commitlint/cli": "^19.6.0",
     "@commitlint/config-conventional": "^19.6.0",
     "@types/node": "^22.10.1",
-    "csv-parse": "^5.5.6",
-    "eslint": "^8.57.0",
+    "csv-parse": "^5.6.0",
+    "eslint": "^8.57.1",
     "eslint-config-jwp": "*",
     "husky": "^6.0.0",
     "i18next-parser-workspaces": "^0.2.0",
@@ -52,7 +52,7 @@
     "read": "^2.1.0",
     "ts-node": "^10.9.2",
     "typescript": "5.7.2",
-    "vitest": "^2.1.6"
+    "vitest": "^2.1.8"
   },
   "resolutions": {
     "axios": "^0.29.0",
