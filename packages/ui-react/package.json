@@ -48,7 +48,7 @@
     "@vitejs/plugin-react": "^4.3.4",
     "jsdom": "^22.1.0",
     "postcss-config-jwp": "*",
-    "sass": "^1.81.1",
+    "sass-embedded": "^1.81.1",
     "typescript-plugin-css-modules": "^5.1.0",
     "vi-fetch": "^0.8.0",
     "vite-plugin-svgr": "^4.3.0",

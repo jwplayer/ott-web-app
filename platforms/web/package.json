@@ -71,7 +71,7 @@
     "postcss-config-jwp": "*",
     "react-app-polyfill": "^3.0.0",
     "reflect-metadata": "^0.2.2",
-    "sass": "^1.81.1",
+    "sass-embedded": "^1.81.1",
     "stylelint": "^15.11.0",
     "stylelint-config-jwp": "*",
     "tsconfig-paths": "^4.2.0",

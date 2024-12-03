@@ -21,7 +21,7 @@ const config: KnipConfig = {
     'packages/ui-react': {
       entry: ['src/**/*'],
       ignoreDependencies: [
-        'sass', // Used in css
+        'sass-embedded', // Used in Vite
         'postcss-config-jwp', // Used in postcss.config
       ],
     },

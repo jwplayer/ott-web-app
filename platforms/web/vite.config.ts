@@ -10,14 +10,14 @@ import { createHtmlPlugin } from 'vite-plugin-html';
 import svgr from 'vite-plugin-svgr';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
 
-import { basePath, favIconSizes, appleIconSizes } from './pwa-assets.config';
+import { appleIconSizes, basePath, favIconSizes } from './pwa-assets.config';
 import { legacyBrowserPlugin } from './scripts/build-tools/plugins';
 import {
   extractExternalFonts,
+  generateIconTags,
   getFileCopyTargets,
   getGoogleFontTags,
   getGtmTags,
-  generateIconTags,
   getMetaTags,
   getRelatedApplications,
 } from './scripts/build-tools/buildTools';
@@ -57,7 +57,10 @@ export default ({ mode, command }: ConfigEnv): UserConfigExport => {
   });
   const tags = [fontTags, metaTags, getGtmTags(env)].flat();
 
-  const related_applications = getRelatedApplications({ appleAppId: env.APP_APPLE_ITUNES_APP, googleAppId: env.APP_GOOGLE_RELATED_APPLICATION_ID });
+  const related_applications = getRelatedApplications({
+    appleAppId: env.APP_APPLE_ITUNES_APP,
+    googleAppId: env.APP_GOOGLE_RELATED_APPLICATION_ID,
+  });
 
   const favicons = generateIconTags(basePath, favIconSizes, appleIconSizes);
 
@@ -157,6 +160,11 @@ export default ({ mode, command }: ConfigEnv): UserConfigExport => {
     },
     css: {
       devSourcemap: true,
+      preprocessorOptions: {
+        scss: {
+          api: 'modern-compiler',
+        },
+      },
     },
     resolve: {
       alias: {
