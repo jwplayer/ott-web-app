@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { act } from 'react';
 import type { PlaylistItem } from '@jwp/ott-common/types/playlist';
 import { beforeEach } from 'vitest';
 import { mockService } from '@jwp/ott-common/test/mockService';
@@ -7,7 +7,6 @@ import AccessController from '@jwp/ott-common/src/controllers/AccessController';
 import GenericEntitlementService from '@jwp/ott-common/src/services/GenericEntitlementService';
 import JWPEntitlementService from '@jwp/ott-common/src/services/JWPEntitlementService';
 import WatchHistoryController from '@jwp/ott-common/src/controllers/WatchHistoryController';
-import { act } from '@testing-library/react';
 
 import { renderWithRouter } from '../../../test/utils';
 

@@ -1,5 +1,5 @@
-import React from 'react';
-import { act, render } from '@testing-library/react';
+import React, { act } from 'react';
+import { render } from '@testing-library/react';
 import { axe } from 'vitest-axe';
 
 import { renderWithRouter } from '../../../test/utils';
@@ -43,6 +43,8 @@ describe('<Modal>', () => {
       </Modal>,
     );
 
-    expect(await axe(container, { runOnly: ['wcag21a', 'wcag21aa', 'wcag22aa'] })).toHaveNoViolations();
+    await act(async () => {
+      expect(await axe(container, { runOnly: ['wcag21a', 'wcag21aa', 'wcag22aa'] })).toHaveNoViolations();
+    });
   });
 });

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { act } from 'react';
 import { axe } from 'vitest-axe';
 
 import { renderWithRouter } from '../../../test/utils';
@@ -26,6 +26,8 @@ describe('<Popover>', () => {
       </Popover>,
     );
 
-    expect(await axe(container, { runOnly: ['wcag21a', 'wcag21aa', 'wcag22aa'] })).toHaveNoViolations();
+    await act(async () => {
+      expect(await axe(container, { runOnly: ['wcag21a', 'wcag21aa', 'wcag22aa'] })).toHaveNoViolations();
+    });
   });
 });

@@ -1,7 +1,7 @@
+import React, { act, type ReactElement, type ReactNode } from 'react';
 import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from 'react-router-dom';
-import React, { type ReactElement, type ReactNode } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { act, render, type RenderOptions } from '@testing-library/react';
+import { render, type RenderOptions } from '@testing-library/react';
 
 import QueryProvider from '../src/containers/QueryProvider/QueryProvider';
 import { AriaAnnouncerProvider } from '../src/containers/AnnouncementProvider/AnnoucementProvider';
