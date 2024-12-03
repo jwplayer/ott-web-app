@@ -38,8 +38,9 @@
 }
 
 .title {
-  @include typography.video-title-base;
-  margin-bottom: variables.$base-spacing;
+  @include typography.video-title-base() {
+    margin-bottom: variables.$base-spacing;
+  }
 
   @include responsive.mobile-only() {
     margin-bottom: 0;

@@ -66,18 +66,19 @@
 }
 
 .activeLabel {
-  @include typography.video-title-base;
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-  font-size: 18px;
-  background-color: rgba(0, 0, 0, 0.54);
+  @include typography.video-title-base() {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    font-size: 18px;
+    background-color: rgba(0, 0, 0, 0.54);
+  }
 
   @include responsive.mobile-only {
     font-size: 16px;
