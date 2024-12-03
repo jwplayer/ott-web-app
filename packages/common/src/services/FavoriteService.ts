@@ -17,7 +17,7 @@ const schema = array(
   object().shape({
     mediaid: string(),
   }),
-);
+).nullable();
 
 @injectable()
 export default class FavoriteService {
