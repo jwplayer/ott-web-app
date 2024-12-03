@@ -70,12 +70,12 @@ const PlayerContainer: React.FC<Props> = ({
 
   const handlePlaylistItemCallback = usePlaylistItemCallback(liveStartDateTime, liveEndDateTime);
 
-  if (!playableItem || isLoading || isAdsLoading) {
-    return <LoadingOverlay inline />;
-  }
-
   if (error instanceof Error && error.message === 'access blocked') {
     return <PlayerError error={PlayerErrorState.GEO_BLOCKED} />;
+  }
+
+  if (!playableItem || isLoading || isAdsLoading) {
+    return <LoadingOverlay inline />;
   }
 
   return (
