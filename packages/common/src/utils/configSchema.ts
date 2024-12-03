@@ -71,10 +71,6 @@ export const configSchema: ObjectSchema<Config> = object({
     jwp: jwpSchema.optional(),
   }),
   custom: object().notRequired(),
-  contentSigningService: object().shape({
-    host: string().required(),
-    drmPolicyId: string().optional(),
-  }),
   contentProtection: object()
     .shape({
       accessModel: string().oneOf(['free', 'freeauth', 'authvod', 'svod']).defined(),

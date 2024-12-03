@@ -4,8 +4,7 @@ import { beforeEach } from 'vitest';
 import { mockService } from '@jwp/ott-common/test/mockService';
 import ApiService from '@jwp/ott-common/src/services/ApiService';
 import AccessController from '@jwp/ott-common/src/controllers/AccessController';
-import GenericEntitlementService from '@jwp/ott-common/src/services/GenericEntitlementService';
-import JWPEntitlementService from '@jwp/ott-common/src/services/JWPEntitlementService';
+import EntitlementController from '@jwp/ott-common/src/controllers/EntitlementController';
 import WatchHistoryController from '@jwp/ott-common/src/controllers/WatchHistoryController';
 
 import { renderWithRouter } from '../../../test/utils';
@@ -15,8 +14,7 @@ import Cinema from './Cinema';
 describe('<Cinema>', () => {
   beforeEach(() => {
     mockService(ApiService, {});
-    mockService(GenericEntitlementService, {});
-    mockService(JWPEntitlementService, {});
+    mockService(EntitlementController, {});
     mockService(WatchHistoryController, {});
     mockService(AccessController, {});
   });

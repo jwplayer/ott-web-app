@@ -24,14 +24,8 @@ export type Config = {
   styling?: Styling | null;
   features?: Features | null;
   custom?: Record<string, unknown> | null;
-  contentSigningService?: ContentSigningConfig;
   contentProtection?: ContentProtection;
   siteId: string;
-};
-
-export type ContentSigningConfig = {
-  host: string;
-  drmPolicyId?: string;
 };
 
 export type ContentProtection = {

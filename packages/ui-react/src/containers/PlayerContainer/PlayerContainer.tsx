@@ -46,7 +46,8 @@ const PlayerContainer: React.FC<Props> = ({
 }: Props) => {
   // data
   const { data: adsData, isLoading: isAdsLoading } = useAds({ mediaId: item?.mediaid });
-  const { data: playableItem, isLoading, isGeoBlocked } = useProtectedMedia(item);
+  const { data: playableItem, isLoading, error } = useProtectedMedia(item);
+
   // state
   const [playerInstance, setPlayerInstance] = useState<JWPlayer>();
 
@@ -73,7 +74,7 @@ const PlayerContainer: React.FC<Props> = ({
     return <LoadingOverlay inline />;
   }
 
-  if (isGeoBlocked) {
+  if (error instanceof Error && error.message === 'access blocked') {
     return <PlayerError error={PlayerErrorState.GEO_BLOCKED} />;
   }
 

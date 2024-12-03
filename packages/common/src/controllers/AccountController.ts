@@ -6,7 +6,7 @@ import type { IntegrationType } from '../../types/config';
 import CheckoutService from '../services/integrations/CheckoutService';
 import AccountService, { type AccountServiceFeatures } from '../services/integrations/AccountService';
 import SubscriptionService from '../services/integrations/SubscriptionService';
-import JWPEntitlementService from '../services/JWPEntitlementService';
+import JWPEntitlementService from '../services/entitlement/JWPEntitlementService';
 import type { Offer } from '../../types/checkout';
 import type { Plan } from '../../types/plans';
 import type {
