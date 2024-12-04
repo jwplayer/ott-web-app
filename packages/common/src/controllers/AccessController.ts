@@ -19,7 +19,7 @@ const ACCESS_TOKENS = 'access_tokens';
 export default class AccessController {
   private readonly apiService: ApiService;
   private readonly accessService: AccessService;
-  private readonly accountService: AccountService;
+  private readonly accountService?: AccountService;
   private readonly storageService: StorageService;
 
   private siteId: string = '';
@@ -33,7 +33,7 @@ export default class AccessController {
     this.apiService = apiService;
     this.accessService = accessService;
     this.storageService = storageService;
-    this.accountService = getNamedModule(AccountService, integrationType);
+    this.accountService = getNamedModule(AccountService, integrationType, false);
   }
 
   initialize = async () => {
@@ -112,7 +112,7 @@ export default class AccessController {
       return null;
     }
 
-    const auth = await this.accountService.getAuthData();
+    const auth = await this.accountService?.getAuthData();
 
     const accessTokens = await this.accessService.generateAccessTokens(this.siteId, auth?.jwt);
     if (accessTokens) {

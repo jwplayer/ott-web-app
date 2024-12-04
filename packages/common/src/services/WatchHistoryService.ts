@@ -26,7 +26,7 @@ export default class WatchHistoryService {
 
   protected readonly apiService;
   protected readonly storageService;
-  protected readonly accountService;
+  protected readonly accountService?;
 
   constructor(
     @inject(INTEGRATION_TYPE) integrationType: string,
@@ -35,7 +35,7 @@ export default class WatchHistoryService {
   ) {
     this.apiService = apiService;
     this.storageService = storageService;
-    this.accountService = getNamedModule(AccountService, integrationType);
+    this.accountService = getNamedModule(AccountService, integrationType, false);
   }
 
   // Retrieve watch history media items info using a provided watch list
@@ -78,7 +78,7 @@ export default class WatchHistoryService {
   }
 
   protected async getWatchHistoryFromAccount(user: Customer) {
-    const history = await this.accountService.getWatchHistory({ user });
+    const history = await this.accountService?.getWatchHistory({ user });
 
     return this.validateWatchHistory(history);
   }

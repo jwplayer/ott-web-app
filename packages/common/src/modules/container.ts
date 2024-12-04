@@ -24,6 +24,10 @@ export function getNamedModule<T>(constructorFunction: interfaces.ServiceIdentif
 export function getNamedModule<T>(constructorFunction: interfaces.ServiceIdentifier<T>, name: string | null): T;
 export function getNamedModule<T>(constructorFunction: interfaces.ServiceIdentifier<T>, name: string | null, required = true): T | undefined {
   if (!name) {
+    // if no name is given we throw an error to satisfy the non-nullable return type
+    if (required) {
+      throw new Error(`Service not found '${String(constructorFunction)}' with name '${name}'`);
+    }
     return;
   }
 

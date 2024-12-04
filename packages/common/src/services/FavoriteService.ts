@@ -25,7 +25,7 @@ export default class FavoriteService {
 
   protected readonly apiService;
   protected readonly storageService;
-  protected readonly accountService;
+  protected readonly accountService?;
 
   constructor(
     @inject(INTEGRATION_TYPE) integrationType: string,
