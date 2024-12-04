@@ -55,7 +55,7 @@ export default class AccessController {
    * If no access tokens exist, it attempts to generate them, if the passport token is expired, it attempts to refresh them.
    * If an access token retrieval fails or the user is not entitled to the content, an error is thrown.
    */
-  getMediaById = async (mediaId: string) => {
+  getMediaById = async (mediaId: string, language?: string) => {
     const { entitledPlan } = useAccountStore.getState();
 
     if (!this.siteId || !entitledPlan) {
@@ -67,13 +67,25 @@ export default class AccessController {
       if (!accessTokens?.passport) {
         throw new Error('Failed to get / generate access tokens and retrieve media.');
       }
-      return await this.apiService.getMediaByIdWithPassport({ id: mediaId, siteId: this.siteId, planId: entitledPlan.id, passport: accessTokens.passport });
+      return await this.apiService.getMediaByIdWithPassport({
+        id: mediaId,
+        siteId: this.siteId,
+        planId: entitledPlan.id,
+        passport: accessTokens.passport,
+        language,
+      });
     } catch (error: unknown) {
       if (error instanceof ApiError && error.code === 403) {
         // If the passport is invalid or expired, refresh the access tokens and try to get the media again.
         const accessTokens = await this.refreshAccessTokens();
         if (accessTokens?.passport) {
-          return await this.apiService.getMediaByIdWithPassport({ id: mediaId, siteId: this.siteId, planId: entitledPlan.id, passport: accessTokens.passport });
+          return await this.apiService.getMediaByIdWithPassport({
+            id: mediaId,
+            siteId: this.siteId,
+            planId: entitledPlan.id,
+            passport: accessTokens.passport,
+            language,
+          });
         }
 
         throw new Error('Failed to refresh access tokens and retrieve media.');
@@ -160,7 +172,11 @@ export default class AccessController {
    * Retrieves the access tokens from local storage (if any) along with their expiration timestamp.
    */
   getAccessTokens = async (): Promise<(AccessTokens & { expires: number }) | null> => {
-    const accessTokens = await this.storageService.getItem<AccessTokens & { expires: number }>(ACCESS_TOKENS, true, true);
+    const accessTokens = await this.storageService.getItem<
+      AccessTokens & {
+        expires: number;
+      }
+    >(ACCESS_TOKENS, true, true);
     if (accessTokens) {
       useAccessStore.setState({ passport: accessTokens.passport });
     }

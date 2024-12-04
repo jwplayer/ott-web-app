@@ -82,10 +82,10 @@ describe('entitlementController', () => {
         supportedLanguages: [],
       });
 
-      const result = await entitlementController.getSignedMedia('uB8aRnu6');
+      const result = await entitlementController.getSignedMedia('uB8aRnu6', 'en');
 
       expect(result?.mediaid).toEqual('uB8aRnu6');
-      expect(getMediaById).toBeCalledWith({ id: 'uB8aRnu6', token: undefined, drmPolicyId: undefined });
+      expect(getMediaById).toBeCalledWith({ id: 'uB8aRnu6', token: undefined, drmPolicyId: undefined, language: 'en' });
 
       expect(getMediaByIdAccessController).not.toBeCalled();
       expect(getMediaTokenGeneric).not.toBeCalled();
@@ -110,11 +110,11 @@ describe('entitlementController', () => {
         supportedLanguages: [],
       });
 
-      const result = await entitlementController.getSignedMedia('uB8aRnu6');
+      const result = await entitlementController.getSignedMedia('uB8aRnu6', 'nl');
 
       expect(result?.mediaid).toEqual('uB8aRnu6');
       expect(getMediaTokenJwp).toBeCalledWith(jwpSigningConfig, 'uB8aRnu6', 'jwttoken', undefined, undefined);
-      expect(getMediaById).toBeCalledWith({ id: 'uB8aRnu6', token: 'jwpmediatoken', drmPolicyId: undefined });
+      expect(getMediaById).toBeCalledWith({ id: 'uB8aRnu6', token: 'jwpmediatoken', drmPolicyId: undefined, language: 'nl' });
 
       expect(getMediaByIdAccessController).not.toBeCalled();
       expect(getMediaTokenGeneric).not.toBeCalled();
@@ -240,10 +240,10 @@ describe('entitlementController', () => {
         supportedLanguages: [],
       });
 
-      const result = await entitlementController.getSignedMedia('uB8aRnu6');
+      const result = await entitlementController.getSignedMedia('uB8aRnu6', 'de');
 
       expect(result?.mediaid).toEqual('uB8aRnu6');
-      expect(getMediaByIdAccessController).toBeCalledWith('uB8aRnu6');
+      expect(getMediaByIdAccessController).toBeCalledWith('uB8aRnu6', 'de');
     });
   });
 });

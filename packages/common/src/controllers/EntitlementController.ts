@@ -65,7 +65,7 @@ export default class EntitlementController {
     }
   };
 
-  getSignedMedia = async (id: string, params?: GetMediaParams) => {
+  getSignedMedia = async (id: string, language?: string, params?: GetMediaParams) => {
     const { config, settings } = useConfigStore.getState();
     const { custom, contentProtection } = config;
 
@@ -76,13 +76,13 @@ export default class EntitlementController {
 
     // signing is handled by access bridge
     if (isAccessBridgeEnabled) {
-      signedMediaItem = await this.accessController.getMediaById(id);
+      signedMediaItem = await this.accessController.getMediaById(id, language);
     } else {
       const authData = await this.accountController.getAuthData();
       const entitlementService = this.getEntitlementService();
       const token = await entitlementService?.getMediaToken(config, id, authData?.jwt, params, drmPolicyId);
 
-      signedMediaItem = await this.apiService.getMediaById({ id, token, drmPolicyId });
+      signedMediaItem = await this.apiService.getMediaById({ id, token, drmPolicyId, language });
     }
 
     await this.validateGeoRestriction(signedMediaItem);
