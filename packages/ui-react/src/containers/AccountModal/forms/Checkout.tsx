@@ -113,9 +113,9 @@ const Checkout = () => {
 
   const paymentMethod = paymentMethods?.find((method) => method.id === parseInt(paymentMethodId));
   const noPaymentRequired = !order?.requiredPaymentDetails;
-  const isStripePayment = paymentMethod?.methodName === 'card' && paymentMethod?.provider === 'stripe';
-  const isAdyenPayment = paymentMethod?.methodName === 'card' && paymentMethod?.paymentGateway === 'adyen';
-  const isPayPalPayment = paymentMethod?.methodName === 'paypal';
+  const isStripePayment = !noPaymentRequired && paymentMethod?.methodName === 'card' && paymentMethod?.provider === 'stripe';
+  const isAdyenPayment = !noPaymentRequired && paymentMethod?.methodName === 'card' && paymentMethod?.paymentGateway === 'adyen';
+  const isPayPalPayment = !noPaymentRequired && paymentMethod?.methodName === 'paypal';
 
   return (
     <CheckoutForm

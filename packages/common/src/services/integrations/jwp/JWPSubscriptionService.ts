@@ -50,7 +50,7 @@ export default class JWPSubscriptionService extends SubscriptionService {
   protected readonly accountService: JWPAccountService;
   protected readonly apiService: JWPAPIService;
 
-  constructor(@named('JWP') accountService: AccountService, @inject(JWPAPIService) apiService: JWPAPIService) {
+  constructor(@named('JWP') @inject(AccountService) accountService: AccountService, @inject(JWPAPIService) apiService: JWPAPIService) {
     super();
 
     this.accountService = accountService as JWPAccountService;
