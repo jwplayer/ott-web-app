@@ -18,7 +18,7 @@ const schema = array(
     mediaid: string(),
     progress: number(),
   }),
-).nullable();
+);
 
 @injectable()
 export default class WatchHistoryService {

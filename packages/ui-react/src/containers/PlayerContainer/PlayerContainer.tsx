@@ -70,12 +70,19 @@ const PlayerContainer: React.FC<Props> = ({
 
   const handlePlaylistItemCallback = usePlaylistItemCallback(liveStartDateTime, liveEndDateTime);
 
-  if (error instanceof Error && error.message === 'access blocked') {
-    return <PlayerError error={PlayerErrorState.GEO_BLOCKED} />;
+  if (isLoading || isAdsLoading) {
+    return <LoadingOverlay inline />;
   }
 
-  if (!playableItem || isLoading || isAdsLoading) {
-    return <LoadingOverlay inline />;
+  if (!playableItem || error instanceof Error) {
+    let playerError = PlayerErrorState.UNKNOWN;
+
+    if (error instanceof Error) {
+      if (error.message.toLowerCase() === 'access blocked') playerError = PlayerErrorState.GEO_BLOCKED;
+      if (error.message.toLowerCase() === 'unauthorized') playerError = PlayerErrorState.UNAUTHORIZED;
+    }
+
+    return <PlayerError error={playerError} />;
   }
 
   return (
