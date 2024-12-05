@@ -7,7 +7,7 @@ import type { Customer } from '../../types/account';
 import { getNamedModule } from '../modules/container';
 import { INTEGRATION_TYPE } from '../modules/types';
 import { MAX_WATCHLIST_ITEMS_COUNT } from '../constants';
-import { logError } from '../logger';
+import { logDebug, logError } from '../logger';
 
 import ApiService from './ApiService';
 import StorageService from './StorageService';
@@ -17,11 +17,12 @@ const schema = array(
   object().shape({
     mediaid: string(),
   }),
-);
+).nullable();
 
 @injectable()
 export default class FavoriteService {
   private PERSIST_KEY_FAVORITES = 'favorites';
+  private hasErrors = false;
 
   protected readonly apiService;
   protected readonly storageService;
@@ -38,8 +39,13 @@ export default class FavoriteService {
   }
 
   protected validateFavorites(favorites: unknown) {
-    if (favorites && schema.validateSync(favorites)) {
-      return favorites as SerializedFavorite[];
+    try {
+      if (favorites && schema.validateSync(favorites)) {
+        return favorites as SerializedFavorite[];
+      }
+    } catch (error: unknown) {
+      this.hasErrors = true;
+      logError('FavoritesService', 'Failed to validate favorites', { error });
     }
 
     return [];
@@ -66,7 +72,11 @@ export default class FavoriteService {
     }
 
     try {
-      const playlistItems = await this.apiService.getMediaByWatchlist({ playlistId: favoritesList, mediaIds, language });
+      const playlistItems = await this.apiService.getMediaByWatchlist({
+        playlistId: favoritesList,
+        mediaIds,
+        language,
+      });
 
       return (playlistItems || []).map((item) => this.createFavorite(item));
     } catch (error: unknown) {
@@ -81,6 +91,10 @@ export default class FavoriteService {
   };
 
   persistFavorites = async (favorites: Favorite[], user: Customer | null) => {
+    if (this.hasErrors) {
+      return logDebug('FavoritesService', 'persist prevented due to an encountered problem while validating the stored favorites');
+    }
+
     if (user) {
       return this.accountService?.updateFavorites({
         favorites: this.serializeFavorites(favorites),
