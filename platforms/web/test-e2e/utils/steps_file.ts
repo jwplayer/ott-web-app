@@ -4,7 +4,7 @@ import { TestConfig } from '@jwp/ott-testing/constants';
 
 import { randomDate } from './randomizers';
 
-import constants, { makeShelfXpath, normalTimeout, ShelfId } from '#utils/constants';
+import constants, { longTimeout, makeShelfXpath, normalTimeout, ShelfId } from '#utils/constants';
 import passwordUtils, { LoginContext } from '#utils/password_utils';
 
 const configFileQueryKey = 'app-config';
@@ -235,7 +235,7 @@ const stepsObj = {
     });
   },
   waitForLoaderDone: function (this: CodeceptJS.I) {
-    this.dontSeeElement(loaderElement);
+    this.limitTime(longTimeout).dontSeeElement(loaderElement);
   },
   openSignUpModal: async function (this: CodeceptJS.I) {
     const { isMobile } = await this.openSignInMenu();

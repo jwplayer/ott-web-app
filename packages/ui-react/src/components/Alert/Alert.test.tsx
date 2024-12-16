@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { act } from 'react';
 import { axe } from 'vitest-axe';
 import { render } from '@testing-library/react';
 
@@ -15,6 +15,8 @@ describe('<Alert>', () => {
   test('WCAG 2.2 (AA) compliant', async () => {
     const { container } = render(<Alert message="Body" open={true} onClose={vi.fn()} />);
 
-    expect(await axe(container, { runOnly: ['wcag21a', 'wcag21aa', 'wcag22aa'] })).toHaveNoViolations();
+    await act(async () => {
+      expect(await axe(container, { runOnly: ['wcag21a', 'wcag21aa', 'wcag22aa'] })).toHaveNoViolations();
+    });
   });
 });

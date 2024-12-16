@@ -4,7 +4,6 @@
     "module": "NodeNext",
     "noEmit": true,
     "types": [
-      "./content-types/lib/content-type-types",
       "node"
     ]
   },

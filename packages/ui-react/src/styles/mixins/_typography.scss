@@ -10,6 +10,8 @@
 
   text-shadow: var(--body-text-shadow);
 
+  @content;
+
   @include responsive.mobile-only() {
     font-size: $font-size * 0.8;
     line-height: $font-size * 0.8;

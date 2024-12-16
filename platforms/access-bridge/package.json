@@ -20,23 +20,21 @@
   "devDependencies": {
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
-    "@types/jsonwebtoken": "^9.0.6",
-    "@types/node": "^20.14.10",
+    "@types/jsonwebtoken": "^9.0.7",
     "eslint-config-jwp": "*",
-    "typescript": "^5.5.3",
-    "vite": "^5.3.1",
+    "vite": "^5.4.11",
     "vite-plugin-node": "^3.1.0",
-    "vitest": "^1.6.0"
+    "vitest": "^2.1.8"
   },
   "dependencies": {
     "@jwp/ott-common": "*",
-    "@sentry/node": "^8.26.0",
-    "@sentry/profiling-node": "^8.26.0",
-    "@sentry/vite-plugin": "^2.22.2",
+    "@sentry/node": "^8.42.0",
+    "@sentry/profiling-node": "^8.42.0",
+    "@sentry/vite-plugin": "^2.22.6",
     "cors": "^2.8.5",
-    "dotenv": "^16.4.5",
-    "express": "^4.19.2",
+    "dotenv": "^16.4.6",
+    "express": "^4.21.1",
     "jsonwebtoken": "^9.0.2",
-    "stripe": "^16.8.0"
+    "stripe": "^16.12.0"
   }
 }

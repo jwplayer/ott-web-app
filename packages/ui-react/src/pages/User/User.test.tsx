@@ -1,4 +1,4 @@
-import { act } from '@testing-library/react';
+import React, { act } from 'react';
 import type { Playlist, PlaylistItem } from '@jwp/ott-common/types/playlist';
 import type { Config } from '@jwp/ott-common/types/config';
 import type { PaymentDetail, Subscription, Transaction } from '@jwp/ott-common/types/subscription';
@@ -12,7 +12,6 @@ import FavoritesController from '@jwp/ott-common/src/controllers/FavoritesContro
 import CheckoutController from '@jwp/ott-common/src/controllers/CheckoutController';
 import { ACCESS_MODEL, DEFAULT_FEATURES } from '@jwp/ott-common/src/constants';
 import { Route, Routes } from 'react-router-dom';
-import React from 'react';
 
 import { mockWindowLocation, renderWithRouter } from '../../../test/utils';
 

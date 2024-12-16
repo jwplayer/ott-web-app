@@ -8,10 +8,10 @@ exports[`<ErrorPage> > renders and matches snapshot 1`] = `
     <h2
       class="_title_41dece"
     >
-      player_error.geo_blocked_title
+      player_error.geo_blocked.title
     </h2>
     <p>
-      player_error.geo_blocked_description
+      player_error.geo_blocked.description
     </p>
   </div>
 </div>

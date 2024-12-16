@@ -6,7 +6,7 @@ import type { IntegrationType } from '../../types/config';
 import CheckoutService from '../services/integrations/CheckoutService';
 import AccountService, { type AccountServiceFeatures } from '../services/integrations/AccountService';
 import SubscriptionService from '../services/integrations/SubscriptionService';
-import JWPEntitlementService from '../services/JWPEntitlementService';
+import JWPEntitlementService from '../services/entitlement/JWPEntitlementService';
 import type { Offer } from '../../types/checkout';
 import type { Plan } from '../../types/plans';
 import type {
@@ -32,9 +32,9 @@ import AccessController from './AccessController';
 
 @injectable()
 export default class AccountController {
-  private readonly checkoutService: CheckoutService;
-  private readonly accountService: AccountService;
-  private readonly subscriptionService: SubscriptionService;
+  private readonly checkoutService?: CheckoutService;
+  private readonly accountService?: AccountService;
+  private readonly subscriptionService?: SubscriptionService;
   private readonly entitlementService: JWPEntitlementService;
   private readonly accessController: AccessController;
   private readonly favoritesController: FavoritesController;
@@ -50,9 +50,9 @@ export default class AccountController {
     favoritesController: FavoritesController,
     watchHistoryController: WatchHistoryController,
   ) {
-    this.checkoutService = getNamedModule(CheckoutService, integrationType);
-    this.accountService = getNamedModule(AccountService, integrationType);
-    this.subscriptionService = getNamedModule(SubscriptionService, integrationType);
+    this.checkoutService = getNamedModule(CheckoutService, integrationType, false);
+    this.accountService = getNamedModule(AccountService, integrationType, false);
+    this.subscriptionService = getNamedModule(SubscriptionService, integrationType, false);
     this.entitlementService = getModule(JWPEntitlementService);
 
     // @TODO: Controllers shouldn't be depending on other controllers, but we've agreed to keep this as is for now
@@ -60,12 +60,12 @@ export default class AccountController {
     this.favoritesController = favoritesController;
     this.watchHistoryController = watchHistoryController;
 
-    this.features = integrationType ? this.accountService.features : DEFAULT_FEATURES;
+    this.features = integrationType && this.accountService ? this.accountService.features : DEFAULT_FEATURES;
   }
 
   loadUserData = async () => {
     try {
-      const authData = await this.accountService.getAuthData();
+      const authData = await this.getAuthData();
 
       if (authData) {
         await this.getAccount();
@@ -85,24 +85,28 @@ export default class AccountController {
     this.refreshEntitlements = refreshEntitlements;
 
     useAccountStore.setState({ loading: true });
-    const config = useConfigStore.getState().config;
 
-    await this.accountService.initialize(config, url, this.logout);
+    if (this.accountService) {
+      const config = useConfigStore.getState().config;
+      await this.accountService.initialize(config, url, this.logout);
 
-    // set the accessModel before restoring the user session
-    useConfigStore.setState({ accessModel: this.accountService.accessModel });
+      // set the accessModel before restoring the user session
+      useConfigStore.setState({ accessModel: this.accountService.accessModel });
+      await this.loadUserData();
+    }
 
-    await this.loadUserData();
     await this.getEntitledPlans();
 
     useAccountStore.setState({ loading: false });
   };
 
   getSandbox() {
-    return this.accountService.sandbox;
+    return !!this.accountService?.sandbox;
   }
 
   updateUser = async (values: FirstLastNameInput | EmailConfirmPasswordInput): Promise<ServiceResponse<Customer>> => {
+    assertModuleMethod(this.accountService?.updateCustomer, 'AccountService#updateCustomer is not available');
+
     useAccountStore.setState({ loading: true });
 
     const { user } = useAccountStore.getState();
@@ -145,7 +149,7 @@ export default class AccountController {
     const { config } = useConfigStore.getState();
 
     try {
-      const response = await this.accountService.getUser({ config });
+      const response = await this.accountService?.getUser({ config });
 
       if (response) {
         await this.afterLogin(response.user, response.customerConsents);
@@ -166,6 +170,7 @@ export default class AccountController {
   };
 
   login = async (email: string, password: string, referrer: string) => {
+    assertModuleMethod(this.accountService?.login, 'AccountService#login is not available');
     useAccountStore.setState({ loading: true });
 
     try {
@@ -198,8 +203,16 @@ export default class AccountController {
   };
 
   register = async (email: string, password: string, referrer: string, consentsValues: CustomerConsent[], captchaValue?: string) => {
+    assertModuleMethod(this.accountService?.register, 'AccountService#register is not available');
+
     try {
-      const response = await this.accountService.register({ email, password, consents: consentsValues, referrer, captchaValue });
+      const response = await this.accountService.register({
+        email,
+        password,
+        consents: consentsValues,
+        referrer,
+        captchaValue,
+      });
 
       if (response) {
         const { user, customerConsents } = response;
@@ -256,6 +269,8 @@ export default class AccountController {
   // TODO: Decide if it's worth keeping this or just leave combined with getUser
   // noinspection JSUnusedGlobalSymbols
   getCustomerConsents = async () => {
+    assertModuleMethod(this.accountService?.getCustomerConsents, 'AccountService#getCustomerConsents is not available');
+
     const { getAccountInfo } = useAccountStore.getState();
     const { customer } = getAccountInfo();
 
@@ -269,6 +284,8 @@ export default class AccountController {
   };
 
   getPublisherConsents = async () => {
+    assertModuleMethod(this.accountService?.getPublisherConsents, 'AccountService#getPublisherConsents is not available');
+
     const { config } = useConfigStore.getState();
 
     useAccountStore.setState({ publisherConsentsLoading: true });
@@ -278,6 +295,8 @@ export default class AccountController {
   };
 
   getCaptureStatus = async (): Promise<GetCaptureStatusResponse> => {
+    assertModuleMethod(this.accountService?.getCaptureStatus, 'AccountService#getCaptureStatus is not available');
+
     const { getAccountInfo } = useAccountStore.getState();
     const { customer } = getAccountInfo();
 
@@ -285,6 +304,8 @@ export default class AccountController {
   };
 
   updateCaptureAnswers = async (capture: Capture): Promise<Capture> => {
+    assertModuleMethod(this.accountService?.updateCaptureAnswers, 'AccountService#updateCaptureAnswers is not available');
+
     const { getAccountInfo } = useAccountStore.getState();
     const { customer, customerConsents } = getAccountInfo();
 
@@ -299,6 +320,8 @@ export default class AccountController {
   };
 
   resetPassword = async (email: string, resetUrl: string) => {
+    assertModuleMethod(this.accountService?.resetPassword, 'AccountService#resetPassword is not available');
+
     await this.accountService.resetPassword({
       customerEmail: email,
       resetUrl,
@@ -306,6 +329,8 @@ export default class AccountController {
   };
 
   changePasswordWithOldPassword = async (oldPassword: string, newPassword: string, newPasswordConfirmation: string) => {
+    assertModuleMethod(this.accountService?.changePasswordWithOldPassword, 'AccountService#changePasswordWithOldPassword is not available');
+
     await this.accountService.changePasswordWithOldPassword({
       oldPassword,
       newPassword,
@@ -314,6 +339,8 @@ export default class AccountController {
   };
 
   changePasswordWithToken = async (customerEmail: string, newPassword: string, resetPasswordToken: string, newPasswordConfirmation: string) => {
+    assertModuleMethod(this.accountService?.changePasswordWithResetToken, 'AccountService#changePasswordWithResetToken is not available');
+
     await this.accountService.changePasswordWithResetToken({
       customerEmail,
       newPassword,
@@ -323,14 +350,15 @@ export default class AccountController {
   };
 
   updateSubscription = async (status: 'active' | 'cancelled'): Promise<unknown> => {
+    assertModuleMethod(this.subscriptionService?.updateSubscription, 'SubscriptionService#updateSubscription is not available');
+
     const { getAccountInfo } = useAccountStore.getState();
-
     const { customerId } = getAccountInfo();
-
     const { subscription } = useAccountStore.getState();
+
     if (!subscription) throw new Error('user has no active subscription');
 
-    const response = await this.subscriptionService?.updateSubscription({
+    const response = await this.subscriptionService.updateSubscription({
       customerId,
       offerId: subscription.offerId,
       status,
@@ -359,11 +387,10 @@ export default class AccountController {
     expYear: number;
     currency: string;
   }) => {
+    assertModuleMethod(this.subscriptionService?.updateCardDetails, 'SubscriptionService#updateCardDetails is not available');
+
     const { getAccountInfo } = useAccountStore.getState();
-
     const { customerId } = getAccountInfo();
-
-    assertModuleMethod(this.subscriptionService.updateCardDetails, 'updateCardDetails is not available in subscription service');
 
     const response = await this.subscriptionService.updateCardDetails({
       cardName,
@@ -383,6 +410,8 @@ export default class AccountController {
   };
 
   checkEntitlements = async (offerId?: string): Promise<unknown> => {
+    assertModuleMethod(this.checkoutService?.getEntitlements, 'CheckoutService#getEntitlements is not available');
+
     if (!offerId) {
       return false;
     }
@@ -420,6 +449,10 @@ export default class AccountController {
       retry: 0,
     },
   ): Promise<unknown> => {
+    assertModuleMethod(this.subscriptionService?.getActiveSubscription, 'SubscriptionService#getActiveSubscription is not available');
+    assertModuleMethod(this.subscriptionService?.getAllTransactions, 'SubscriptionService#getAllTransactions is not available');
+    assertModuleMethod(this.subscriptionService?.getActivePayment, 'SubscriptionService#getActivePayment is not available');
+
     useAccountStore.setState({ loading: true });
 
     const { getAccountInfo } = useAccountStore.getState();
@@ -460,8 +493,8 @@ export default class AccountController {
     // resolve and fetch the pending offer after upgrade/downgrade
     try {
       if (activeSubscription?.pendingSwitchId) {
-        assertModuleMethod(this.checkoutService.getOffer, 'getOffer is not available in checkout service');
-        assertModuleMethod(this.checkoutService.getSubscriptionSwitch, 'getSubscriptionSwitch is not available in checkout service');
+        assertModuleMethod(this.checkoutService?.getOffer, 'getOffer is not available in checkout service');
+        assertModuleMethod(this.checkoutService?.getSubscriptionSwitch, 'getSubscriptionSwitch is not available in checkout service');
 
         const switchOffer = await this.checkoutService.getSubscriptionSwitch({ switchId: activeSubscription.pendingSwitchId });
         const offerResponse = await this.checkoutService.getOffer({ offerId: switchOffer.responseData.toOfferId });
@@ -487,16 +520,16 @@ export default class AccountController {
   exportAccountData = async () => {
     const { canExportAccountData } = this.getFeatures();
 
-    assertModuleMethod(this.accountService.exportAccountData, 'exportAccountData is not available in account service');
+    assertModuleMethod(this.accountService?.exportAccountData, 'exportAccountData is not available in account service');
     assertFeature(canExportAccountData, 'Export account');
 
-    return this.accountService?.exportAccountData(undefined);
+    return this.accountService.exportAccountData(undefined);
   };
 
   getSocialLoginUrls = (redirectUrl: string) => {
     const { hasSocialURLs } = this.getFeatures();
 
-    assertModuleMethod(this.accountService.getSocialUrls, 'getSocialUrls is not available in account service');
+    assertModuleMethod(this.accountService?.getSocialUrls, 'getSocialUrls is not available in account service');
     assertFeature(hasSocialURLs, 'Social logins');
 
     return this.accountService.getSocialUrls({ redirectUrl });
@@ -505,7 +538,7 @@ export default class AccountController {
   deleteAccountData = async (password: string) => {
     const { canDeleteAccount } = this.getFeatures();
 
-    assertModuleMethod(this.accountService.deleteAccount, 'deleteAccount is not available in account service');
+    assertModuleMethod(this.accountService?.deleteAccount, 'deleteAccount is not available in account service');
     assertFeature(canDeleteAccount, 'Delete account');
 
     try {
@@ -522,7 +555,7 @@ export default class AccountController {
   };
 
   getReceipt = async (transactionId: string) => {
-    assertModuleMethod(this.subscriptionService.fetchReceipt, 'fetchReceipt is not available in subscription service');
+    assertModuleMethod(this.subscriptionService?.fetchReceipt, 'fetchReceipt is not available in subscription service');
 
     const { responseData } = await this.subscriptionService.fetchReceipt({ transactionId });
 
@@ -530,10 +563,12 @@ export default class AccountController {
   };
 
   getAuthData = async () => {
-    return this.accountService.getAuthData();
+    return this.accountService?.getAuthData() || null;
   };
 
   subscribeToNotifications = async ({ uuid, onMessage }: SubscribeToNotificationsPayload) => {
+    assertModuleMethod(this.accountService?.subscribeToNotifications, 'AccountService#subscribeToNotifications is not available');
+
     return this.accountService.subscribeToNotifications({ uuid, onMessage });
   };
 

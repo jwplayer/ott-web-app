@@ -32,10 +32,11 @@ describe('Logger Tests', () => {
 
     beforeEach(() => {
       // Mock Sentry's getClient to return an object with captureException and captureMessage
+      // @ts-expect-error we only need certain Sentry methods
       vi.mocked(Sentry.getClient).mockReturnValue({
         captureException: mockCaptureException,
         captureMessage: mockCaptureMessage,
-      } as unknown as Sentry.NodeClient);
+      });
 
       // Ensure Sentry's captureException and captureMessage methods are also mocked
       vi.mocked(Sentry.captureException).mockImplementation(mockCaptureException);

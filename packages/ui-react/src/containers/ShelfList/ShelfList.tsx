@@ -12,6 +12,7 @@ import { parseAspectRatio, parseTilesDelta } from '@jwp/ott-common/src/utils/col
 import { testId } from '@jwp/ott-common/src/utils/common';
 import { PersonalShelf, SHELF_LAYOUT_TYPE } from '@jwp/ott-common/src/constants';
 import usePlaylists from '@jwp/ott-hooks-react/src/usePlaylists';
+import { useTranslationKey } from '@jwp/ott-hooks-react/src/useTranslationKey';
 
 import Shelf from '../../components/Shelf/Shelf';
 import InfiniteScrollLoader from '../../components/InfiniteScrollLoader/InfiniteScrollLoader';
@@ -32,10 +33,7 @@ const ShelfList = ({ rows }: Props) => {
   const { accessModel } = useConfigStore(({ accessModel }) => ({ accessModel }), shallow);
   const [rowsToLoad, setRowsToLoad] = useState(INITIAL_ROWS_TO_LOAD);
   const { t } = useTranslation('error');
-  const { i18n } = useTranslation();
-
-  // Determine currently selected language
-  const language = i18n.language;
+  const translationKey = useTranslationKey('title');
 
   const watchHistoryDictionary = useWatchHistoryStore((state) => state.getDictionaryWithSeries());
 
@@ -75,8 +73,8 @@ const ShelfList = ({ rows }: Props) => {
           const posterAspect = parseAspectRatio(playlist.cardImageAspectRatio || playlist.shelfImageAspectRatio);
           const visibleTilesDelta = parseTilesDelta(posterAspect);
 
-          const translatedKey = custom?.[`title-${language}`] || (playlist?.[`title-${language}`] as string);
-          const translatedTitle = translatedKey || title || playlist?.title;
+          const translatedValue = custom?.[translationKey] || (playlist?.[translationKey] as string);
+          const translatedTitle = translatedValue || title || playlist?.title;
 
           const isHero = custom?.layoutType === SHELF_LAYOUT_TYPE.hero && index === 0;
           const isFeatured = !isHero && (custom?.layoutType === SHELF_LAYOUT_TYPE.featured || featured);

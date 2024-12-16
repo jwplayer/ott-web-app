@@ -10,10 +10,10 @@ export type Config = {
   siteName?: string;
   description: string;
   analyticsToken?: string | null;
-  adSchedule?: string | null;
   adConfig?: string | null;
-  adDeliveryMethod?: AdDeliveryMethod;
+  adSchedule?: string | null;
   adScheduleUrls?: AdScheduleUrls;
+  adDeliveryMethod?: AdDeliveryMethod;
   integrations: {
     cleeng?: Cleeng;
     jwp?: JWP;
@@ -21,17 +21,11 @@ export type Config = {
   assets: { banner?: string | null };
   content: Content[];
   menu: Menu[];
-  styling: Styling;
-  features?: Features;
-  custom?: Record<string, unknown>;
-  contentSigningService?: ContentSigningConfig;
+  styling?: Styling | null;
+  features?: Features | null;
+  custom?: Record<string, unknown> | null;
   contentProtection?: ContentProtection;
   siteId: string;
-};
-
-export type ContentSigningConfig = {
-  host: string;
-  drmPolicyId?: string;
 };
 
 export type ContentProtection = {

@@ -103,10 +103,6 @@
 }
 
 .skipToContent {
-  @include accessibility.focus-visible() using ($value) {
-    box-shadow: $value;
-  }
-
   position: absolute;
   top: 50px;
   width: 1px;
@@ -116,6 +112,10 @@
   font-weight: bold;
   border-radius: 20px;
   clip: rect(1px, 1px, 1px, 1px);
+
+  @include accessibility.focus-visible() using ($value) {
+    box-shadow: $value;
+  }
 
   &:focus {
     z-index: 1;

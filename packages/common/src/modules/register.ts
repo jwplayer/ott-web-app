@@ -7,8 +7,8 @@ import { API_ACCESS_BRIDGE_URL, DETERMINE_INTEGRATION_TYPE, INTEGRATION_TYPE } f
 
 import ApiService from '../services/ApiService';
 import WatchHistoryService from '../services/WatchHistoryService';
-import GenericEntitlementService from '../services/GenericEntitlementService';
-import JWPEntitlementService from '../services/JWPEntitlementService';
+import GenericEntitlementService from '../services/entitlement/GenericEntitlementService';
+import JWPEntitlementService from '../services/entitlement/JWPEntitlementService';
 import FavoriteService from '../services/FavoriteService';
 import ConfigService from '../services/ConfigService';
 import SettingsService from '../services/SettingsService';
@@ -20,6 +20,7 @@ import AccessController from '../controllers/AccessController';
 import FavoritesController from '../controllers/FavoritesController';
 import AppController from '../controllers/AppController';
 import EpgController from '../controllers/EpgController';
+import EntitlementController from '../controllers/EntitlementController';
 
 // Epg services
 import EpgService from '../services/EpgService';
@@ -63,6 +64,7 @@ container.bind(AppController).toSelf();
 container.bind(WatchHistoryController).toSelf();
 container.bind(FavoritesController).toSelf();
 container.bind(EpgController).toSelf();
+container.bind(EntitlementController).toSelf();
 
 // Integration controllers
 container.bind(AccountController).toSelf();

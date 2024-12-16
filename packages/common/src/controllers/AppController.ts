@@ -43,7 +43,7 @@ export default class AppController {
 
     let config = await this.configService.loadConfig(configLocation);
 
-    config.id = configSource;
+    config.id = configSource || '';
     config.assets = config.assets || {};
 
     // make sure the banner always defaults to the JWP banner when not defined in the config

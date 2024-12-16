@@ -49,7 +49,7 @@ Scenario.skip('I can slide within the hero shelf', async ({ I }) => {
     if (isDesktop) {
       I.click({ css: `button[aria-label="${forward ? 'Next' : 'Previous'} slide"]` });
     } else {
-      forward ? await I.swipeLeft({ text: swipeText }) : await I.swipeRight({ text: swipeText });
+      await I[forward ? 'swipeLeft' : 'swipeRight']({ text: swipeText });
     }
   }
 

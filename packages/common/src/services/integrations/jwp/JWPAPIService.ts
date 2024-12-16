@@ -51,7 +51,7 @@ export default class JWPAPIService {
   };
 
   removeToken = async () => {
-    await Promise.all([this.storageService.removeItem(INPLAYER_TOKEN_KEY), this.storageService.removeItem(INPLAYER_IOT_KEY)]);
+    await Promise.all([this.storageService.removeItem(INPLAYER_TOKEN_KEY, false), this.storageService.removeItem(INPLAYER_IOT_KEY, false)]);
   };
 
   isAuthenticated = async () => {

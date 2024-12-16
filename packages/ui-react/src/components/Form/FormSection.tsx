@@ -69,7 +69,7 @@ export function FormSection<TData extends GenericFormValues>({
           if (index === arr.length - 1) {
             parent[field] = value;
           } else {
-            parent[field] = { ...parent[field] } || {};
+            parent[field] = { ...parent[field] };
           }
 
           return parent[field];
@@ -87,7 +87,7 @@ export function FormSection<TData extends GenericFormValues>({
 
   const handleSubmit = useCallback(
     async function handleSubmit(event?: React.FormEvent) {
-      event && event.preventDefault();
+      event?.preventDefault();
 
       if (onSubmit) {
         let response: { errors?: string[] };

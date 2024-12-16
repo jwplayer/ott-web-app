@@ -5,7 +5,7 @@ export default abstract class StorageService {
 
   abstract setItem(key: string, value: string, usePrefix?: boolean): Promise<void>;
 
-  abstract removeItem(key: string): Promise<void>;
+  abstract removeItem(key: string, usePrefix?: boolean): Promise<void>;
 
   abstract base64Decode(input: string): string;
 

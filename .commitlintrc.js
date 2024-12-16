@@ -5,6 +5,7 @@ module.exports = {
       2,
       'always',
       [
+        'deps',
         'project',
         'home',
         'playlist',

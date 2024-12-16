@@ -44,7 +44,7 @@ const Animation: React.FC<Props> = ({
     timeout.current = window.setTimeout(() => setStatus('opening'), delay);
     timeout2.current = window.setTimeout(() => {
       setStatus('open');
-      onOpenAnimationEnd && onOpenAnimationEnd();
+      onOpenAnimationEnd?.();
     }, duration + delay);
   });
 
@@ -53,7 +53,7 @@ const Animation: React.FC<Props> = ({
       timeout.current = window.setTimeout(() => setStatus('closing'), delay);
       timeout2.current = window.setTimeout(() => {
         setStatus('closed');
-        onCloseAnimationEnd && onCloseAnimationEnd();
+        onCloseAnimationEnd?.();
       }, duration + delay);
     }
   });

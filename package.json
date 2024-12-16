@@ -37,28 +37,31 @@
     "access-bridge": "yarn --cwd platforms/access-bridge"
   },
   "devDependencies": {
-    "@commitlint/cli": "^17.8.1",
-    "@commitlint/config-conventional": "^17.8.1",
-    "@types/node": "^18.19.37",
-    "csv-parse": "^5.5.6",
-    "eslint": "^8.57.0",
+    "@commitlint/cli": "^19.6.0",
+    "@commitlint/config-conventional": "^19.6.0",
+    "@types/node": "^22.10.1",
+    "csv-parse": "^5.6.0",
+    "eslint": "^8.57.1",
+    "eslint-config-jwp": "*",
     "husky": "^6.0.0",
     "i18next-parser-workspaces": "^0.2.0",
-    "knip": "^5.30.1",
+    "knip": "^5.39.1",
     "lint-staged": "^15.2.10",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.8.8",
     "read": "^2.1.0",
     "ts-node": "^10.9.2",
-    "typescript": "5.3.3",
-    "vitest": "^1.6.0"
-  },
-  "peerDependencies": {
-    "eslint-config-jwp": "*"
+    "typescript": "5.7.2",
+    "vitest": "^2.1.8"
   },
   "resolutions": {
+    "axios": "^0.29.0",
     "codeceptjs/**/fast-xml-parser": "^4.5.0",
+    "eslint/**/cross-spawn": "^7.0.6",
+    "lint-staged/**/cross-spawn": "^7.0.6",
+    "npm-run-all/**/cross-spawn": "^6.0.6",
     "micromatch": ">=4.0.8",
+    "vitest/**/vite": "^5.4.11",
     "ws": ">=5.2.4"
   }
 }

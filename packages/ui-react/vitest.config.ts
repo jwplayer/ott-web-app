@@ -15,4 +15,11 @@ export default defineConfig({
     __mode__: '"test"',
     __dev__: true,
   },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        api: 'modern-compiler',
+      },
+    },
+  },
 });

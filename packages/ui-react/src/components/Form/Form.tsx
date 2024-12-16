@@ -48,7 +48,7 @@ function Form<TData extends GenericFormValues>({ isLoading, initialValues, onRes
           errors: undefined,
         };
       });
-      onReset && onReset();
+      onReset?.();
     },
     [initialValues, onReset],
   );

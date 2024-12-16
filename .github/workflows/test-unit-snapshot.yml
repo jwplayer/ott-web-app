@@ -14,18 +14,10 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20.x'
+          node-version: '22.x'
       - name: yarn install and test
         run: |
           yarn
           yarn test
         env:
           CI: true
-          # Dummy environment variables for testing the access-bridge service
-          APP_SITE_ID: test1234
-          APP_API_SECRET: dummy_secret
-          APP_STRIPE_SECRET: dummy_stripe_secret
-          APP_BIND_ADDR: localhost
-          APP_BIND_PORT: 3001
-          APP_ACCESS_CONTROL_API_HOST: https://test-cdn.jwplayer.com
-          APP_SIMS_API_HOST: https://test-sims.jwplayer.com

@@ -13,8 +13,18 @@
   "favorites_warning": "Maximum amount of favorite videos exceeded. You can only add up to {{maxCount}} favorite videos. Please delete one and repeat the operation.",
   "live": "Live",
   "player_error": {
-    "geo_blocked_description": "We apologize, but this content is currently unavailable in your region.",
-    "geo_blocked_title": "Content unavailable"
+    "geo_blocked": {
+      "description": "We apologize, but this content is currently unavailable in your region.",
+      "title": "Content unavailable"
+    },
+    "unauthorized": {
+      "description": "We apologize, but you are not authorized to watch this content",
+      "title": "Content unavailable"
+    },
+    "unknown": {
+      "description": "We apologize, but something went wrong while loading the content",
+      "title": "Content unavailable"
+    }
   },
   "season": "season",
   "season_number_filter_template": "Season {{seasonNumber}}",

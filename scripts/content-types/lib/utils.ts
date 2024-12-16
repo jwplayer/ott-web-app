@@ -1,4 +1,3 @@
-// @ts-ignore
 import read from 'read';
 
 const ExitCodes = {

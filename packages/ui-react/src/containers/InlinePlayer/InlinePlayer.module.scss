@@ -66,11 +66,12 @@
 }
 
 .title {
-  @include typography.video-title-base(34px);
-  position: relative;
-  flex: 1 1 100%;
-  margin-bottom: 4px;
-  text-align: center;
+  @include typography.video-title-base(34px) {
+    position: relative;
+    flex: 1 1 100%;
+    margin-bottom: 4px;
+    text-align: center;
+  }
 
   @include responsive.mobile-only {
     font-size: 16px;

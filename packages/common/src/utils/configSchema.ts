@@ -1,87 +1,82 @@
-import { array, boolean, mixed, number, object, type SchemaOf, string, StringSchema } from 'yup';
+import { array, boolean, number, object, type ObjectSchema, string } from 'yup';
 
 import type { Cleeng, Config, Content, Features, JWP, Menu, Styling } from '../../types/config';
 
-const contentSchema: SchemaOf<Content> = object({
-  contentId: string().notRequired(),
-  title: string().notRequired(),
-  featured: boolean().notRequired(),
-  backgroundColor: string().nullable().notRequired(),
-  type: mixed().oneOf(['playlist', 'continue_watching', 'favorites', 'content_list']),
-  custom: object().notRequired(),
+const contentSchema: ObjectSchema<Content> = object({
+  contentId: string().optional(),
+  title: string().optional(),
+  featured: boolean().optional(),
+  backgroundColor: string().nullable().optional(),
+  type: string().oneOf(['playlist', 'continue_watching', 'favorites', 'content_list']).required(),
+  custom: object().optional(),
 }).defined();
 
-const menuSchema: SchemaOf<Menu> = object().shape({
+const menuSchema: ObjectSchema<Menu> = object().shape({
   label: string().defined(),
   contentId: string().defined(),
-  filterTags: string().notRequired(),
-  type: mixed().oneOf(['playlist', 'content_list', 'media']).notRequired(),
-  custom: object().notRequired(),
+  filterTags: string().optional(),
+  type: string().oneOf(['playlist', 'content_list', 'media']).optional(),
+  custom: object().optional(),
 });
 
-const featuresSchema: SchemaOf<Features> = object({
+const featuresSchema: ObjectSchema<Features> = object({
   recommendationsPlaylist: string().nullable(),
   searchPlaylist: string().nullable(),
   continueWatchingList: string().nullable(),
   favoritesList: string().nullable(),
 });
 
-const cleengSchema: SchemaOf<Cleeng> = object({
+const cleengSchema: ObjectSchema<Cleeng> = object({
   id: string().nullable(),
   monthlyOffer: string().nullable(),
   yearlyOffer: string().nullable(),
   useSandbox: boolean().default(true),
 });
 
-const jwpSchema: SchemaOf<JWP> = object({
+const jwpSchema: ObjectSchema<JWP> = object({
   clientId: string().nullable(),
   assetId: number().nullable(),
   useSandbox: boolean().default(true),
 });
 
-const stylingSchema: SchemaOf<Styling> = object({
+const stylingSchema: ObjectSchema<Styling> = object({
   backgroundColor: string().nullable(),
   highlightColor: string().nullable(),
   headerBackground: string().nullable(),
   footerText: string().nullable(),
 });
 
-export const configSchema: SchemaOf<Config> = object({
-  id: string().notRequired(),
-  siteName: string().notRequired(),
+export const configSchema: ObjectSchema<Config> = object({
+  id: string().optional(),
+  siteName: string().optional(),
   description: string().defined(),
-  analyticsToken: string().nullable(),
-  adSchedule: string().nullable(),
-  adDeliveryMethod: mixed().oneOf(['csai', 'ssai']).notRequired(),
-  adConfig: string().nullable(),
-  siteId: string().defined(),
-  assets: object({
-    banner: string().notRequired().nullable(),
-  }).notRequired(),
-  content: array().of(contentSchema),
-  menu: array().of(menuSchema),
-  styling: stylingSchema.notRequired(),
-  features: featuresSchema.notRequired(),
-  integrations: object({
-    cleeng: cleengSchema.notRequired(),
-    jwp: jwpSchema.notRequired(),
-  }).notRequired(),
+  analyticsToken: string().notRequired(),
+  adConfig: string().notRequired(),
+  adSchedule: string().notRequired(),
   adScheduleUrls: object({
     json: string().notRequired().nullable(),
     xml: string().notRequired().nullable(),
-  }).notRequired(),
-  custom: object().notRequired(),
-  contentSigningService: object().shape({
-    // see {@link https://github.com/jquense/yup/issues/1367}
-    host: string().required() as StringSchema<string>,
-    drmPolicyId: string().notRequired(),
+  }).optional(),
+  adDeliveryMethod: string().oneOf(['csai', 'ssai']).optional(),
+  siteId: string().defined(),
+  assets: object({
+    banner: string().notRequired(),
   }),
+  content: array().of(contentSchema).defined(),
+  menu: array().of(menuSchema).defined(),
+  styling: stylingSchema.notRequired(),
+  features: featuresSchema.notRequired(),
+  integrations: object({
+    cleeng: cleengSchema.optional(),
+    jwp: jwpSchema.optional(),
+  }),
+  custom: object().notRequired(),
   contentProtection: object()
     .shape({
-      accessModel: string().oneOf(['free', 'freeauth', 'authvod', 'svod']).notRequired(),
+      accessModel: string().oneOf(['free', 'freeauth', 'authvod', 'svod']).defined(),
       drm: object({
-        defaultPolicyId: string(),
-      }).notRequired(),
+        defaultPolicyId: string().defined(),
+      }).optional(),
     })
-    .notRequired(),
+    .optional(),
 }).defined();

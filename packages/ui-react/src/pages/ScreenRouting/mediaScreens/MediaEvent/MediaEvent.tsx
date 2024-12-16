@@ -55,7 +55,7 @@ const MediaEvent: ScreenComponent<PlaylistItem> = ({ data: media, isLoading }) =
 
   // Media
   const { isLoading: isTrailerLoading, data: trailerItem } = useMedia(media?.trailerId || '');
-  const { isLoading: isPlaylistLoading, data: playlist } = usePlaylist(playlistId || '');
+  const { isLoading: isPlaylistLoading, data: playlist } = usePlaylist(features?.recommendationsPlaylist || '', { related_media_id: id });
 
   // Event
   const liveEvent = useLiveEvent(media);
@@ -67,7 +67,7 @@ const MediaEvent: ScreenComponent<PlaylistItem> = ({ data: media, isLoading }) =
 
   // Handlers
   const goBack = () => media && navigate(mediaURL({ id: media.mediaid, title: media.title, playlistId, play: false }));
-  const getUrl = (item: PlaylistItem) => mediaURL({ id: item.mediaid, title: item.title, playlistId });
+  const getUrl = (item: PlaylistItem) => mediaURL({ id: item.mediaid, title: item.title, playlistId: features?.recommendationsPlaylist });
 
   const handleComplete = useCallback(() => {
     if (!id || !playlist) return;

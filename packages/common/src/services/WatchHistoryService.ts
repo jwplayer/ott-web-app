@@ -7,7 +7,7 @@ import type { Customer } from '../../types/account';
 import { getNamedModule } from '../modules/container';
 import { INTEGRATION_TYPE } from '../modules/types';
 import { MAX_WATCHLIST_ITEMS_COUNT } from '../constants';
-import { logError } from '../logger';
+import { logDebug, logError } from '../logger';
 
 import ApiService from './ApiService';
 import StorageService from './StorageService';
@@ -18,15 +18,16 @@ const schema = array(
     mediaid: string(),
     progress: number(),
   }),
-);
+).nullable();
 
 @injectable()
 export default class WatchHistoryService {
   protected PERSIST_KEY_WATCH_HISTORY = 'history';
+  protected hasErrors = false;
 
   protected readonly apiService;
   protected readonly storageService;
-  protected readonly accountService;
+  protected readonly accountService?;
 
   constructor(
     @inject(INTEGRATION_TYPE) integrationType: string,
@@ -35,12 +36,16 @@ export default class WatchHistoryService {
   ) {
     this.apiService = apiService;
     this.storageService = storageService;
-    this.accountService = getNamedModule(AccountService, integrationType);
+    this.accountService = getNamedModule(AccountService, integrationType, false);
   }
 
   // Retrieve watch history media items info using a provided watch list
   protected getWatchHistoryItems = async (continueWatchingList: string, ids: string[], language?: string): Promise<Record<string, PlaylistItem>> => {
-    const watchHistoryItems = await this.apiService.getMediaByWatchlist({ playlistId: continueWatchingList, mediaIds: ids, language });
+    const watchHistoryItems = await this.apiService.getMediaByWatchlist({
+      playlistId: continueWatchingList,
+      mediaIds: ids,
+      language,
+    });
     const watchHistoryItemsDict = Object.fromEntries((watchHistoryItems || []).map((item) => [item.mediaid, item]));
 
     return watchHistoryItemsDict;
@@ -57,7 +62,11 @@ export default class WatchHistoryService {
       .map((key) => mediaWithSeries?.[key]?.[0]?.series_id)
       .filter(Boolean) as string[];
     const uniqueSerieIds = [...new Set(seriesIds)];
-    const seriesItems = await this.apiService.getMediaByWatchlist({ playlistId: continueWatchingList, mediaIds: uniqueSerieIds, language });
+    const seriesItems = await this.apiService.getMediaByWatchlist({
+      playlistId: continueWatchingList,
+      mediaIds: uniqueSerieIds,
+      language,
+    });
     const seriesItemsDict = Object.keys(mediaWithSeries || {}).reduce((acc, key) => {
       const seriesItemId = mediaWithSeries?.[key]?.[0]?.series_id;
       if (seriesItemId) {
@@ -70,15 +79,20 @@ export default class WatchHistoryService {
   };
 
   protected validateWatchHistory(history: unknown) {
-    if (history && schema.validateSync(history)) {
-      return history as SerializedWatchHistoryItem[];
+    try {
+      if (history && schema.validateSync(history)) {
+        return history as SerializedWatchHistoryItem[];
+      }
+    } catch (error: unknown) {
+      this.hasErrors = true;
+      logError('WatchHistoryService', 'Failed to validate watch history', { error });
     }
 
     return [];
   }
 
   protected async getWatchHistoryFromAccount(user: Customer) {
-    const history = await this.accountService.getWatchHistory({ user });
+    const history = await this.accountService?.getWatchHistory({ user });
 
     return this.validateWatchHistory(history);
   }
@@ -127,6 +141,10 @@ export default class WatchHistoryService {
     }));
 
   persistWatchHistory = async (watchHistory: WatchHistoryItem[], user: Customer | null) => {
+    if (this.hasErrors) {
+      return logDebug('WatchHistoryService', 'persist prevented due to an encountered problem while validating the stored watch history');
+    }
+
     if (user) {
       await this.accountService?.updateWatchHistory({
         history: this.serializeWatchHistory(watchHistory),

@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { type AnySchema, ValidationError, type SchemaOf } from 'yup';
+import { type AnySchema, ValidationError, type ObjectSchema } from 'yup';
 import type { FormErrors, GenericFormValues, UseFormBlurHandler, UseFormChangeHandler, UseFormSubmitHandler } from '@jwp/ott-common/types/form';
 import { FormValidationError } from '@jwp/ott-common/src/errors/FormValidationError';
 import { useTranslation } from 'react-i18next';
@@ -38,7 +38,7 @@ export default function useForm<T extends GenericFormValues>({
   onSubmitError,
 }: {
   initialValues: T;
-  validationSchema?: SchemaOf<T>;
+  validationSchema?: ObjectSchema<T>;
   validateOnBlur?: boolean;
   onSubmit: UseFormOnSubmitHandler<T>;
   onSubmitSuccess?: (values: T) => void;

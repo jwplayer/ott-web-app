@@ -53,7 +53,7 @@ const Adyen: React.FC<Props> = ({ configuration, error, type }) => {
         color="primary"
         size="large"
         onClick={() => {
-          checkoutRef.current && checkoutRef.current.submit();
+          checkoutRef.current?.submit();
         }}
         fullWidth
       />

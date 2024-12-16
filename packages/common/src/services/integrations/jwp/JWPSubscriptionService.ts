@@ -50,7 +50,7 @@ export default class JWPSubscriptionService extends SubscriptionService {
   protected readonly accountService: JWPAccountService;
   protected readonly apiService: JWPAPIService;
 
-  constructor(@named('JWP') accountService: AccountService, @inject(JWPAPIService) apiService: JWPAPIService) {
+  constructor(@named('JWP') @inject(AccountService) accountService: AccountService, @inject(JWPAPIService) apiService: JWPAPIService) {
     super();
 
     this.accountService = accountService as JWPAccountService;
@@ -124,7 +124,8 @@ export default class JWPSubscriptionService extends SubscriptionService {
       case 'canceled':
         status = 'cancelled';
         break;
-      case 'incomplete_expired' || 'ended':
+      case 'incomplete_expired':
+      case 'ended':
         status = 'expired';
         break;
       default:

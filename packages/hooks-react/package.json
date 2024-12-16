@@ -9,26 +9,24 @@
     "test-watch": "TZ=UTC LC_ALL=en_US.UTF-8 vitest"
   },
   "dependencies": {
-    "date-fns": "^3.6.0",
-    "i18next": "^22.5.1",
+    "@jwp/ott-common": "*",
+    "date-fns": "^4.1.0",
+    "i18next": "^24.0.5",
     "planby": "^0.3.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-i18next": "^12.3.1",
+    "react-i18next": "^15.1.3",
     "react-query": "^3.39.3",
     "reflect-metadata": "^0.2.2",
-    "yup": "^0.32.11"
+    "yup": "^1.4.0"
   },
   "devDependencies": {
+    "@jwp/ott-testing": "*",
     "@testing-library/react": "^14.3.1",
-    "@types/jwplayer": "^8.31.1",
+    "@types/jwplayer": "^8.31.3",
+    "eslint-config-jwp": "*",
     "jsdom": "^22.1.0",
     "vi-fetch": "^0.8.0",
-    "vitest": "^1.6.0"
-  },
-  "peerDependencies": {
-    "@jwp/ott-common": "*",
-    "@jwp/ott-testing": "*",
-    "eslint-config-jwp": "*"
+    "vitest": "^2.1.8"
   }
 }

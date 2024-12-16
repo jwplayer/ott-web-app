@@ -7,6 +7,7 @@ import { unicodeToChar } from '@jwp/ott-common/src/utils/common';
 import { determinePath } from '@jwp/ott-common/src/utils/urlFormatting';
 import env from '@jwp/ott-common/src/env';
 import { useUIStore } from '@jwp/ott-common/src/stores/UIStore';
+import { useTranslationKey } from '@jwp/ott-hooks-react/src/useTranslationKey';
 
 import Header from '../../components/Header/Header';
 import Footer from '../../components/Footer/Footer';
@@ -25,10 +26,7 @@ import styles from './Layout.module.scss';
 
 const Layout = () => {
   const { t } = useTranslation('common');
-  const { i18n } = useTranslation();
-
-  // Determine currently selected language
-  const language = i18n.language;
+  const translationKey = useTranslationKey('label');
 
   const { config } = useConfigStore(
     ({ config, accessModel, supportedLanguages }) => ({
@@ -53,7 +51,7 @@ const Layout = () => {
   const navItems = [
     { label: t('home'), to: '/' },
     ...menu.map(({ label, contentId, type, custom }) => ({
-      label: custom?.[`label-${language}`] || label,
+      label: custom?.[translationKey] || label,
       to: determinePath({ type, contentId, label }),
     })),
   ];

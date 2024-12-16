@@ -1,20 +1,26 @@
 import { inject, injectable } from 'inversify';
 
-import type { GetEntitledPlans } from '../../types/checkout';
-import type { PlansResponse } from '../../types/plans';
-
-import type { SignedMediaResponse } from './integrations/jwp/types';
-import JWPAPIService from './integrations/jwp/JWPAPIService';
+import type { Config } from '../../../types/config';
+import type { GetEntitledPlans } from '../../../types/checkout';
+import type { PlansResponse } from '../../../types/plans';
+import type { SignedMediaResponse } from '../integrations/jwp/types';
+import JWPAPIService from '../integrations/jwp/JWPAPIService';
+import EntitlementService from '../EntitlementService';
 
 @injectable()
-export default class JWPEntitlementService {
+export default class JWPEntitlementService extends EntitlementService {
   protected readonly apiService;
 
   constructor(@inject(JWPAPIService) apiService: JWPAPIService) {
+    super();
     this.apiService = apiService;
   }
 
-  getJWPMediaToken = async (configId: string = '', mediaId: string) => {
+  getMediaToken = async (config: Config, mediaId: string) => {
+    if (!config.id) {
+      throw new Error('ID missing from config');
+    }
+
     try {
       const data = await this.apiService.get<SignedMediaResponse>(
         '/v2/items/jw-media/token',
@@ -22,7 +28,7 @@ export default class JWPEntitlementService {
           withAuthentication: true,
         },
         {
-          app_config_id: configId,
+          app_config_id: config.id,
           media_id: mediaId,
         },
       );

@@ -39,8 +39,8 @@
   margin: 0 4px;
 
   &:focus-within .label {
-    @include accessibility.accessibleOutlineContrast;
     transform: scale(1.03);
+    @include accessibility.accessibleOutlineContrast;
   }
 }
 
