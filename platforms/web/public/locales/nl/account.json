@@ -1,13 +1,13 @@
 {
   "cancel_subscription": {
-    "explanation": "U wordt uitgeschreven van uw huidige abonnement door op de knop hieronder te klikken.",
+    "explanation": "Door op de knop hieronder te klikken wordt uw abonnement stopgezet.",
     "no_thanks": "Nee, bedankt",
     "title": "We vinden het jammer dat u vertrekt.",
     "unknown_error_occurred": "Er is een onbekende fout opgetreden, probeer het later opnieuw.",
-    "unsubscribe": "Uitschrijven"
+    "unsubscribe": "Annuleer abonnement"
   },
   "checkout": {
-    "applicable_tax": "Toepasselijke belasting ({{taxRate}}%)",
+    "applicable_tax": "BTW ({{taxRate}}%)",
     "card_details_updated": "Uw kaartgegevens zijn bijgewerkt",
     "card_holder_name": "Naam kaarthouder",
     "close": "Sluiten",
@@ -16,7 +16,7 @@
     "coupon_discount": "Kortingsbonkorting",
     "coupon_not_valid": "Kortingscode is niet geldig",
     "coupon_not_valid_for_offer": "Kortingscode is niet geldig voor deze aanbieding",
-    "credit_card": "Kredietkaart",
+    "credit_card": "Creditcard",
     "credit_card_name": "Naam op de kaart",
     "days_trial_one": "U wordt morgen gefactureerd.",
     "days_trial_other": "U wordt gefactureerd over {{count}} dagen.",
@@ -34,7 +34,7 @@
     "payment_error": "Betaling mislukt",
     "payment_method": "Betaalmethode",
     "payment_method_fee": "Kosten betaalmethode",
-    "payment_success": "Betaling succesvol verzonden",
+    "payment_success": "Betaling succesvol",
     "paypal": "PayPal",
     "paypal_instructions": "Door op 'doorgaan' te klikken, gaat u naar de PayPal-site.",
     "periods_trial_one": "U wordt gefactureerd na één {{period}}.",
@@ -119,7 +119,7 @@
     "year_other": "jaren"
   },
   "personal_details": {
-    "address": "Adresregel 1",
+    "address": "Adres",
     "address2": "Adresregel 2",
     "birth_date": "Geboortedatum",
     "birth_date_not_valid": "Geboortedatum is geen geldige datum",
@@ -186,8 +186,8 @@
     "new_password": "Nieuw wachtwoord",
     "no": "Nee, bedankt",
     "not_sure": "Weet u zeker dat dit het juiste e-mailadres was?",
-    "old_password": "Oud wachtwoord",
-    "old_password_does_not_match": "Het oude wachtwoord komt niet overeen",
+    "old_password": "Huidig wachtwoord",
+    "old_password_does_not_match": "Het huidige wachtwoord komt niet overeen",
     "password": "Wachtwoord",
     "password_helper_text": "Gebruik minimaal 8 tekens (hoofdlettergevoelig) met ten minste één cijfer",
     "password_reset": "Wachtwoord opnieuw instellen",

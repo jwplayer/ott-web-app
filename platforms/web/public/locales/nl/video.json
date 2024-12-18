@@ -1,7 +1,7 @@
 {
   "all_seasons": "Alle seizoenen",
-  "buy": "Koop",
-  "buy_to_start_watching": "Koop om te beginnen met kijken!",
+  "buy": "Koop toegang",
+  "buy_to_start_watching": "Koop toegang om te beginnen met kijken!",
   "complete_your_subscription": "Voltooi je abonnement",
   "continue_watching": "Verder kijken",
   "copied_url": "URL gekopieerd",
@@ -10,7 +10,7 @@
   "episode": "aflevering",
   "episodes": "Afleveringen",
   "favorite": "Favoriet",
-  "favorites_warning": "Maximale aantal favoriete video's overschreden. Je kunt maximaal {{maxCount}} favoriete video's toevoegen. Verwijder er één en herhaal de bewerking.",
+  "favorites_warning": "Maximale aantal favoriete video's overschreden. Je kunt maximaal {{maxCount}} favoriete video's toevoegen.",
   "live": "Live",
   "player_error": {
     "geo_blocked_description": "Onze excuses, maar deze content is momenteel niet beschikbaar in je regio.",
