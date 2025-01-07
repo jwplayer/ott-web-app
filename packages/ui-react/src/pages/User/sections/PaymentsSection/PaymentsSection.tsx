@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { shallow } from '@jwp/ott-common/src/utils/compare';
 import { getModule } from '@jwp/ott-common/src/modules/container';
@@ -7,11 +7,13 @@ import { useConfigStore } from '@jwp/ott-common/src/stores/ConfigStore';
 import AccountController from '@jwp/ott-common/src/controllers/AccountController';
 import useOffers from '@jwp/ott-hooks-react/src/useOffers';
 import { useSubscriptionChange } from '@jwp/ott-hooks-react/src/useSubscriptionChange';
+import { ACCESS_MODEL } from '@jwp/ott-common/src/constants';
+import { RELATIVE_PATH_USER_ACCOUNT } from '@jwp/ott-common/src/paths';
 
-import styles from '../../pages/User/User.module.scss';
-import LoadingOverlay from '../../components/LoadingOverlay/LoadingOverlay';
-import Payment from '../../components/Payment/Payment';
-import { modalURLFromLocation } from '../../utils/location';
+import styles from '../../User.module.scss';
+import LoadingOverlay from '../../../../components/LoadingOverlay/LoadingOverlay';
+import Payment from '../../../../components/Payment/Payment';
+import { modalURLFromLocation } from '../../../../utils/location';
 
 /**
  * Handles billing receipts by either downloading the receipt directly if it is an instance of Blob,
@@ -51,7 +53,7 @@ const STORE_LINKS: Record<string, string> = {
   roku: 'https://support.roku.com/article/208756478',
 };
 
-const PaymentContainer = () => {
+const PaymentsSection = () => {
   const accountController = getModule(AccountController);
 
   const navigate = useNavigate();
@@ -67,6 +69,10 @@ const PaymentContainer = () => {
   const [isUpgradeOffer, setIsUpgradeOffer] = useState<boolean | undefined>(undefined);
 
   const location = useLocation();
+
+  useEffect(() => {
+    if (accessModel === ACCESS_MODEL.AVOD) navigate(RELATIVE_PATH_USER_ACCOUNT);
+  }, [accessModel, navigate]);
 
   const handleUpgradeSubscriptionClick = async () => navigate(modalURLFromLocation(location, 'upgrade-subscription'));
 
@@ -139,4 +145,4 @@ const PaymentContainer = () => {
   );
 };
 
-export default PaymentContainer;
+export default PaymentsSection;

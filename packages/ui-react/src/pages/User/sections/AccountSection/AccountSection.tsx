@@ -16,26 +16,21 @@ import Visibility from '@jwp/ott-theme/assets/icons/visibility.svg?react';
 import VisibilityOff from '@jwp/ott-theme/assets/icons/visibility_off.svg?react';
 import env from '@jwp/ott-common/src/env';
 
-import type { FormSectionContentArgs, FormSectionProps } from '../Form/FormSection';
-import Alert from '../Alert/Alert';
-import Button from '../Button/Button';
-import Form from '../Form/Form';
-import IconButton from '../IconButton/IconButton';
-import FormFeedback from '../FormFeedback/FormFeedback';
-import TextField from '../form-fields/TextField/TextField';
-import Checkbox from '../form-fields/Checkbox/Checkbox';
-import CustomRegisterField from '../CustomRegisterField/CustomRegisterField';
-import Icon from '../Icon/Icon';
-import { modalURLFromLocation } from '../../utils/location';
-import { useAriaAnnouncer } from '../../containers/AnnouncementProvider/AnnoucementProvider';
+import type { FormSectionContentArgs, FormSectionProps } from '../../../../components/Form/FormSection';
+import Alert from '../../../../components/Alert/Alert';
+import Button from '../../../../components/Button/Button';
+import Form from '../../../../components/Form/Form';
+import IconButton from '../../../../components/IconButton/IconButton';
+import FormFeedback from '../../../../components/FormFeedback/FormFeedback';
+import TextField from '../../../../components/form-fields/TextField/TextField';
+import Checkbox from '../../../../components/form-fields/Checkbox/Checkbox';
+import CustomRegisterField from '../../../../components/CustomRegisterField/CustomRegisterField';
+import Icon from '../../../../components/Icon/Icon';
+import { modalURLFromLocation } from '../../../../utils/location';
+import { useAriaAnnouncer } from '../../../../containers/AnnouncementProvider/AnnoucementProvider';
+import userStyles from '../../User.module.scss';
 
-import styles from './Account.module.scss';
-
-type Props = {
-  panelClassName?: string;
-  panelHeaderClassName?: string;
-  canUpdateEmail?: boolean;
-};
+import styles from './AccountSection.module.scss';
 
 interface FormErrors {
   email?: string;
@@ -45,7 +40,7 @@ interface FormErrors {
   form?: string;
 }
 
-const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }: Props): JSX.Element => {
+const AccountSection = (): JSX.Element => {
   const accountController = getModule(AccountController);
 
   const { t, i18n } = useTranslation('user');
@@ -57,6 +52,7 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
   const [isAlertVisible, setIsAlertVisible] = useState(false);
   const exportDataMessage = exportData.isSuccess ? t('account.export_data_success') : t('account.export_data_error');
   const htmlLang = i18n.language !== env.APP_DEFAULT_LANGUAGE ? env.APP_DEFAULT_LANGUAGE : undefined;
+  const { canUpdateEmail } = accountController.getFeatures();
 
   useEffect(() => {
     if (exportData.isSuccess || exportData.isError) {
@@ -185,8 +181,8 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
   function formSection(props: FormSectionProps<typeof initialValues, FormErrors>) {
     return {
       ...props,
-      className: panelClassName,
-      panelHeaderClassName: panelHeaderClassName,
+      className: userStyles.panel,
+      panelHeaderClassName: userStyles.panelHeader,
       saveButton: t('account.save'),
       cancelButton: t('account.cancel'),
       content: (args: FormSectionContentArgs<typeof initialValues, string[]>) => {
@@ -434,4 +430,4 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
   );
 };
 
-export default Account;
+export default AccountSection;

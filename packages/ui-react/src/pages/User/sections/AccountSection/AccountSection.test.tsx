@@ -6,13 +6,12 @@ import customer from '@jwp/ott-testing/fixtures/customer.json';
 import { mockService } from '@jwp/ott-common/test/mockService';
 import { DEFAULT_FEATURES } from '@jwp/ott-common/src/constants';
 
-import { renderWithRouter } from '../../../test/utils';
+import { renderWithRouter } from '../../../../../test/utils';
 
-import Account from './Account';
+import AccountSection from './AccountSection';
 
-describe('<Account>', () => {
+describe('<AccountSection>', () => {
   beforeEach(() => {
-    // TODO: remove AccountController from component
     mockService(AccountController, { getFeatures: () => DEFAULT_FEATURES });
   });
 
@@ -22,7 +21,7 @@ describe('<Account>', () => {
       publisherConsents: Array.of({ name: 'marketing', label: 'Receive Marketing Emails' } as CustomFormField),
     });
 
-    const { container } = renderWithRouter(<Account panelClassName={'panel-class'} panelHeaderClassName={'header-class'} canUpdateEmail={true} />);
+    const { container } = renderWithRouter(<AccountSection />);
 
     // todo
     expect(container).toMatchSnapshot();
