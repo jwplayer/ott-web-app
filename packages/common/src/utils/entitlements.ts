@@ -1,9 +1,9 @@
-import { ACCESS_MODEL } from '../constants';
+import { ACCESS_MODEL, MEDIA_CONTENT_TYPE } from '../constants';
 import type { AccessModel } from '../../types/config';
 import type { MediaOffer } from '../../types/media';
 import type { PlaylistItem } from '../../types/playlist';
 
-import { isFalsyCustomParamValue, isTruthyCustomParamValue } from './common';
+import { isFalsyCustomParamValue, isTruthyCustomParamValue, isContentType } from './common';
 
 /**
  * The appearance of the lock icon, depending on the access model
@@ -19,6 +19,7 @@ export const isLocked = (accessModel: AccessModel, isLoggedIn: boolean, hasSubsc
   const mediaOffers = playlistItem?.mediaOffers;
 
   if (isItemFree) return false;
+  if (isContentType(playlistItem, MEDIA_CONTENT_TYPE.hub)) return false;
   if (accessModel === ACCESS_MODEL.AVOD && !mediaOffers) return false;
   if (accessModel === ACCESS_MODEL.AUTHVOD && isLoggedIn && !mediaOffers) return false;
   if (accessModel === ACCESS_MODEL.SVOD && hasSubscription && !mediaOffers?.some((offer) => offer.premier)) return false;
