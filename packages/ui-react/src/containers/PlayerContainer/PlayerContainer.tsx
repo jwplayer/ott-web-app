@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import type { PlaylistItem } from '@jwp/ott-common/types/playlist';
 import { useWatchHistory } from '@jwp/ott-hooks-react/src/useWatchHistory';
 import { usePlaylistItemCallback } from '@jwp/ott-hooks-react/src/usePlaylistItemCallback';
@@ -51,22 +51,43 @@ const PlayerContainer: React.FC<Props> = ({
   // state
   const [playerInstance, setPlayerInstance] = useState<JWPlayer>();
 
-  // watch history
-  const startTime = useWatchHistory(playerInstance, item, seriesItem);
+  const watchHistory = useWatchHistory(item, seriesItem);
 
   // player events
-  const handleReady = useCallback((player?: JWPlayer) => {
+  const handleReady = (player?: JWPlayer) => {
     setPlayerInstance(player);
-  }, []);
+  };
 
-  const handleFirstFrame = useCallback(() => {
+  const handleFirstFrame = () => {
     // when playing a livestream, the first moment we can seek to the beginning of the DVR range is after the
     // firstFrame event.
     // @todo this doesn't seem to work 100% out of the times. Confirm with player team if this is the best approach.
     if (liveFromBeginning) {
       playerInstance?.seek(0);
     }
-  }, [liveFromBeginning, playerInstance]);
+  };
+
+  const handleTimeEvent = (params: { position: number; duration: number }) => {
+    watchHistory.handleTimeUpdate(params);
+  };
+
+  const handlePlay = () => {
+    watchHistory.saveWatchProgress();
+    onPlay?.();
+  };
+
+  const handlePause = () => {
+    watchHistory.saveWatchProgress();
+    onPause?.();
+  };
+
+  const handleComplete = () => {
+    onComplete?.();
+  };
+
+  const handleRemove = () => {
+    watchHistory.saveWatchProgress();
+  };
 
   const handlePlaylistItemCallback = usePlaylistItemCallback(liveStartDateTime, liveEndDateTime);
 
@@ -92,15 +113,17 @@ const PlayerContainer: React.FC<Props> = ({
       adsData={adsData}
       onReady={handleReady}
       onFirstFrame={handleFirstFrame}
-      onPlay={onPlay}
-      onPause={onPause}
-      onComplete={onComplete}
+      onPlay={handlePlay}
+      onPause={handlePause}
+      onTime={handleTimeEvent}
+      onComplete={handleComplete}
       onUserActive={onUserActive}
       onUserInActive={onUserInActive}
+      onRemove={handleRemove}
       onNext={onNext}
       onBackClick={onBackClick}
       onPlaylistItemCallback={handlePlaylistItemCallback}
-      startTime={startTime}
+      startTime={watchHistory.startTime}
       autostart={autostart}
     />
   );

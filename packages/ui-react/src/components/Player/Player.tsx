@@ -23,6 +23,9 @@ type Props = {
   onReady?: (player?: JWPlayer) => void;
   onPlay?: () => void;
   onPause?: () => void;
+  onTime?: (params: { position: number; duration: number }) => void;
+  onSeek?: (params: { offset: number; position: number; duration: number }) => void;
+  onSeeked?: () => void;
   onComplete?: () => void;
   onUserActive?: () => void;
   onUserInActive?: () => void;
@@ -33,6 +36,7 @@ type Props = {
   onBackClick?: () => void;
   onPlaylistItem?: () => void;
   onPlaylistItemCallback?: (item: PlaylistItem) => Promise<undefined | PlaylistItem>;
+  onAdImpression?: () => void;
 };
 
 const Player: React.FC<Props> = ({
@@ -41,6 +45,9 @@ const Player: React.FC<Props> = ({
   onReady,
   onPlay,
   onPause,
+  onTime,
+  onSeek,
+  onSeeked,
   onComplete,
   onUserActive,
   onUserInActive,
@@ -50,6 +57,7 @@ const Player: React.FC<Props> = ({
   onPlaylistItem,
   onPlaylistItemCallback,
   onNext,
+  onAdImpression,
   onBackClick,
   feedId,
   startTime = 0,
@@ -71,7 +79,11 @@ const Player: React.FC<Props> = ({
   const handleBeforePlay = useEventCallback(onBeforePlay);
   const handlePlay = useEventCallback(onPlay);
   const handlePause = useEventCallback(onPause);
+  const handleTime = useEventCallback(onTime);
   const handleComplete = useEventCallback(onComplete);
+  const handleSeek = useEventCallback(onSeek);
+  const handleSeeked = useEventCallback(onSeeked);
+  const handleAdImpression = useEventCallback(onAdImpression);
   const handleUserActive = useEventCallback(onUserActive);
   const handleUserInactive = useEventCallback(onUserInActive);
   const handleFirstFrame = useEventCallback(() => {
@@ -100,6 +112,10 @@ const Player: React.FC<Props> = ({
     playerRef.current?.on('complete', handleComplete);
     playerRef.current?.on('play', handlePlay);
     playerRef.current?.on('pause', handlePause);
+    playerRef.current?.on('time', handleTime);
+    playerRef.current?.on('seek', handleSeek);
+    playerRef.current?.on('seeked', handleSeeked);
+    playerRef.current?.on('adImpression', handleAdImpression);
     playerRef.current?.on('userActive', handleUserActive);
     playerRef.current?.on('userInactive', handleUserInactive);
     playerRef.current?.on('firstFrame', handleFirstFrame);
@@ -114,6 +130,10 @@ const Player: React.FC<Props> = ({
     handleComplete,
     handlePlay,
     handlePause,
+    handleTime,
+    handleSeek,
+    handleSeeked,
+    handleAdImpression,
     handleUserActive,
     handleUserInactive,
     handleFirstFrame,
@@ -243,6 +263,7 @@ const Player: React.FC<Props> = ({
           return;
         }
         playerRef.current.remove();
+        playerRef.current = undefined;
       }
     };
   }, [detachEvents, backClickRef]);
