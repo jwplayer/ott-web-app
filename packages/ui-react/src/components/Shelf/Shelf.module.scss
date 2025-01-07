@@ -32,6 +32,10 @@
   font-size: 24px;
   white-space: nowrap;
   text-overflow: ellipsis;
+
+  @include responsive.mobile-only() {
+    font-size: 20px;
+  }
 }
 
 .slider {
