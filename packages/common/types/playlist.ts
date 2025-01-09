@@ -17,6 +17,7 @@ export type DRM = {
   };
   fairplay?: {
     processSpcUrl: string;
+    certificateUrl: string;
   };
 };
 
