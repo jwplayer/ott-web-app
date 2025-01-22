@@ -13,7 +13,6 @@ import env from '../env';
 
 @injectable()
 export default class ConfigService {
-  protected CONFIG_HOST = env.APP_API_BASE_URL;
   // Explicitly set default config here as a local variable,
   // otherwise if it's a module level const, the merge below causes changes to nested properties
   protected DEFAULT_CONFIG: Config = {
