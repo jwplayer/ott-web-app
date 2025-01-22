@@ -1,20 +1,20 @@
-import { injectable } from 'inversify';
+import { inject, injectable } from 'inversify';
 import ini from 'ini';
 import { getI18n } from 'react-i18next';
 
 import { CONFIG_FILE_STORAGE_KEY, CONFIG_QUERY_KEY, OTT_GLOBAL_PLAYER_ID } from '../constants';
-import { logDev } from '../utils/common';
 import { AppError } from '../utils/error';
 import type { Settings } from '../../types/settings';
 import env from '../env';
+import { logDebug, logWarn } from '../logger';
 
 import StorageService from './StorageService';
 
 @injectable()
 export default class SettingsService {
-  private readonly storageService;
+  protected readonly storageService;
 
-  constructor(storageService: StorageService) {
+  constructor(@inject(StorageService) storageService: StorageService) {
     this.storageService = storageService;
   }
 
@@ -44,7 +44,7 @@ export default class SettingsService {
         return configKey;
       }
 
-      logDev(`Invalid app-config query param: ${configKey}`);
+      logWarn('SettingsService', `Invalid app-config query param: ${configKey}`);
     }
     // Yes this falls through from above to look up the stored value if the query string is invalid and that's OK
 
@@ -56,7 +56,7 @@ export default class SettingsService {
         return storedSource;
       }
 
-      logDev('Invalid stored config: ' + storedSource);
+      logWarn('SettingsService', 'Invalid stored config: ' + storedSource);
       await this.storageService.removeItem(CONFIG_FILE_STORAGE_KEY);
     }
 
@@ -78,8 +78,8 @@ export default class SettingsService {
     const settings = await fetch('/.webapp.ini')
       .then((result) => result.text())
       .then((iniString) => ini.parse(iniString) as Settings)
-      .catch((e) => {
-        logDev(e);
+      .catch((error) => {
+        logDebug('SettingsService', 'Failed to fetch or parse the ini settings', { error });
         // It's possible to not use the ini settings files, so an error doesn't have to be fatal
         return {} as Settings;
       });
@@ -103,10 +103,11 @@ export default class SettingsService {
     settings.defaultConfigSource ||= env.APP_DEFAULT_CONFIG_SOURCE;
     settings.playerId ||= env.APP_PLAYER_ID || OTT_GLOBAL_PLAYER_ID;
     settings.playerLicenseKey ||= env.APP_PLAYER_LICENSE_KEY;
+    settings.apiAccessBridgeUrl ||= env.APP_API_ACCESS_BRIDGE_URL;
 
     // The player key should be set if using the global ott player
     if (settings.playerId === OTT_GLOBAL_PLAYER_ID && !settings.playerLicenseKey) {
-      console.warn('Using Global OTT Player without setting player key. Some features, such as analytics, may not work correctly.');
+      logWarn('SettingsService', 'Using Global OTT Player without setting player key. Some features, such as analytics, may not work correctly.');
     }
 
     // This will result in an unusable app

@@ -15,6 +15,7 @@ import useEntitlement from '@jwp/ott-hooks-react/src/useEntitlement';
 import useBreakpoint, { Breakpoint } from '@jwp/ott-ui-react/src/hooks/useBreakpoint';
 import PlayTrailer from '@jwp/ott-theme/assets/icons/play_trailer.svg?react';
 import useQueryParam from '@jwp/ott-ui-react/src/hooks/useQueryParam';
+import env from '@jwp/ott-common/src/env';
 
 import type { ScreenComponent } from '../../../../../types/screens';
 import VideoLayout from '../../../../components/VideoLayout/VideoLayout';
@@ -59,8 +60,8 @@ const MediaMovie: ScreenComponent<PlaylistItem> = ({ data, isLoading }) => {
   const hasMediaOffers = !!mediaOffers.length;
 
   // Handlers
-  const goBack = () => data && navigate(mediaURL({ media: data, playlistId: feedId, play: false }));
-  const getUrl = (item: PlaylistItem) => mediaURL({ media: item, playlistId: features?.recommendationsPlaylist });
+  const goBack = () => data && navigate(mediaURL({ id: data.mediaid, title: data.title, playlistId: feedId, play: false }));
+  const getUrl = (item: PlaylistItem) => mediaURL({ id: item.mediaid, title: item.title, playlistId: features?.recommendationsPlaylist });
 
   const handleComplete = useCallback(() => {
     if (!id || !playlist) return;
@@ -68,7 +69,7 @@ const MediaMovie: ScreenComponent<PlaylistItem> = ({ data, isLoading }) => {
     const index = playlist.playlist.findIndex(({ mediaid }) => mediaid === id);
     const nextItem = playlist.playlist[index + 1];
 
-    return nextItem && navigate(mediaURL({ media: nextItem, playlistId: features?.recommendationsPlaylist, play: true }));
+    return nextItem && navigate(mediaURL({ id: nextItem.mediaid, title: nextItem.title, playlistId: features?.recommendationsPlaylist, play: true }));
   }, [id, playlist, navigate, features?.recommendationsPlaylist]);
 
   useEffect(() => {
@@ -78,15 +79,19 @@ const MediaMovie: ScreenComponent<PlaylistItem> = ({ data, isLoading }) => {
 
   // UI
   const pageTitle = `${data.title} - ${siteName}`;
-  const canonicalUrl = data ? `${window.location.origin}${mediaURL({ media: data })}` : window.location.href;
+  const canonicalUrl = data ? `${env.APP_PUBLIC_URL}${mediaURL({ id: data.mediaid, title: data.title })}` : window.location.href;
 
-  const primaryMetadata = <VideoMetaData attributes={createVideoMetadata(data)} />;
+  const primaryMetadata = (
+    <VideoMetaData
+      attributes={createVideoMetadata(data, { hoursAbbreviation: t('common:abbreviation.hours'), minutesAbbreviation: t('common:abbreviation.minutes') })}
+    />
+  );
   const shareButton = <ShareButton title={data.title} description={data.description} url={canonicalUrl} />;
   const startWatchingButton = (
     <StartWatchingButton
       key={id} // necessary to fix autofocus on TalkBack
       item={data}
-      playUrl={mediaURL({ media: data, playlistId: feedId, play: true })}
+      playUrl={mediaURL({ id: data.mediaid, title: data.title, playlistId: feedId, play: true })}
     />
   );
 
@@ -130,7 +135,7 @@ const MediaMovie: ScreenComponent<PlaylistItem> = ({ data, isLoading }) => {
         {data.tags?.split(',').map((tag) => (
           <meta property="og:video:tag" content={tag} key={tag} />
         ))}
-        {data ? <script type="application/ld+json">{generateMovieJSONLD(data, window.location.origin)}</script> : null}
+        {data ? <script type="application/ld+json">{generateMovieJSONLD(data, env.APP_PUBLIC_URL)}</script> : null}
       </Helmet>
       <VideoLayout
         item={data}

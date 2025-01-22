@@ -33,13 +33,7 @@ $blue-dark: #023691 !default;
 
 $body-font-size: 16px !default;
 $base-spacing: 16px !default;
-$base-spacing-mobile: 8px !default;
-$base-spacing-heading: 20px !default;
 $base-line-height: 1.5em !default;
-
-$container-width-mobile: 100% !default;
-$container-width-tablet: 685px !default;
-$container-width-desktop: 800px !default;
 
 //
 // Responsive
@@ -57,10 +51,17 @@ $desktop-large-min-width: 1200px !default;
 // Header
 // --------------------------------
 
-$header-height: 56px !default;
-$header-height-mobile: 56px !default;
+$header-height: 72px !default;
+$logo-max-width: 100% !default;
+$logo-max-height: 36px !default;
 $search-height: 36px !default;
 $search-bar-width-desktop: 200px !default;
+
+//
+// Footer
+// --------------------------------
+
+$footer-height: 70px !default;
 
 //
 // Z-index

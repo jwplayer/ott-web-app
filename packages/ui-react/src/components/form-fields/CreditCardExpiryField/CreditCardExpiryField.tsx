@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 import TextField from '../TextField/TextField';
 
@@ -10,6 +11,7 @@ type Props = {
 };
 
 const CreditCardExpiryField: React.FC<Props> = ({ value, onChange, error, ...props }: Props) => {
+  const { t } = useTranslation('account');
   const formatExpirationDate: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     let clearValue = e.target.value.replace(/\D+/g, '');
 
@@ -34,7 +36,7 @@ const CreditCardExpiryField: React.FC<Props> = ({ value, onChange, error, ...pro
   };
   return (
     <TextField
-      label={`Expiry date`}
+      label={t('payment.credit_card_expiry_date')}
       {...props}
       name="cardExpiry"
       className="directPostExpiryDate"

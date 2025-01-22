@@ -66,11 +66,12 @@
 }
 
 .title {
-  @include typography.video-title-base(34px);
-  position: relative;
-  flex: 1 1 100%;
-  margin-bottom: 4px;
-  text-align: center;
+  @include typography.video-title-base(34px) {
+    position: relative;
+    flex: 1 1 100%;
+    margin-bottom: 4px;
+    text-align: center;
+  }
 
   @include responsive.mobile-only {
     font-size: 16px;
@@ -86,7 +87,7 @@
   font-size: 16px;
   line-height: variables.$base-line-height;
   text-align: center;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.14), 0 3px 4px rgba(0, 0, 0, 0.12), 0 1px 5px rgba(0, 0, 0, 0.2);
+  text-shadow: var(--body-text-shadow);
 
   @include responsive.mobile-only {
     font-size: 14px;

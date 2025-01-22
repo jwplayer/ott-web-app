@@ -4,6 +4,7 @@ import type { Pagination } from '@jwp/ott-common/types/pagination';
 import ApiService from '@jwp/ott-common/src/services/ApiService';
 import { getModule } from '@jwp/ott-common/src/modules/container';
 import { CACHE_TIME, STALE_TIME } from '@jwp/ott-common/src/constants';
+import { useTranslation } from 'react-i18next';
 
 const getNextPageParam = (pagination: Pagination) => {
   const { page, page_limit, total } = pagination;
@@ -28,22 +29,26 @@ export const useEpisodes = (
 } => {
   const apiService = getModule(ApiService);
 
+  // Determine currently selected language
+  const { i18n } = useTranslation();
+  const language = i18n.language;
+
   const {
     data,
     fetchNextPage,
     isLoading,
     hasNextPage = false,
   } = useInfiniteQuery(
-    [seriesId, seasonNumber],
+    [seriesId, seasonNumber, language],
     async ({ pageParam = 0 }) => {
       if (Number(seasonNumber)) {
         // Get episodes from a selected season using pagination
-        const season = await apiService.getSeasonWithEpisodes({ seriesId, seasonNumber: Number(seasonNumber), pageOffset: pageParam });
+        const season = await apiService.getSeasonWithEpisodes({ seriesId, seasonNumber: Number(seasonNumber), pageOffset: pageParam, language });
 
         return { pagination: season.pagination, episodes: season.episodes };
       } else {
         // Get episodes from a selected series using pagination
-        const data = await apiService.getEpisodes({ seriesId, pageOffset: pageParam });
+        const data = await apiService.getEpisodes({ seriesId, pageOffset: pageParam, language });
         return data;
       }
     },

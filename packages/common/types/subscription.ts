@@ -1,5 +1,3 @@
-import type { ChangeSubscriptionPlanResponse, DefaultCreditCardData, SetDefaultCard } from '@inplayer-org/inplayer.js';
-
 import type { CleengRequest } from './cleeng';
 import type { EnvironmentServiceRequest, PromiseRequest } from './service';
 
@@ -39,6 +37,22 @@ export type PaymentMethodSpecificParam = {
   lastCardFourDigits?: string;
   cardExpirationDate?: string;
   socialSecurityNumber?: string;
+};
+
+type DefaultCreditCardDataParams = {
+  cardNumber: string;
+  cardName: string;
+  cvc: number;
+  expMonth: number;
+  expYear: number;
+  currency: string;
+};
+
+type SetDefaultCardResponse = {
+  number: number;
+  card_name: string;
+  exp_month: string;
+  exp_year: string;
 };
 
 export type Transaction = {
@@ -120,9 +134,9 @@ export type GetTransactionsResponse = {
   items: Transaction[];
 };
 
-export type UpdateCardDetailsPayload = DefaultCreditCardData;
+export type UpdateCardDetailsPayload = DefaultCreditCardDataParams;
 
-export type UpdateCardDetails = EnvironmentServiceRequest<DefaultCreditCardData, SetDefaultCard>;
+export type UpdateCardDetails = EnvironmentServiceRequest<DefaultCreditCardDataParams, SetDefaultCardResponse>;
 
 export type FetchReceiptPayload = {
   transactionId: string;
@@ -133,6 +147,10 @@ export type FetchReceiptResponse = Blob | string;
 type ChangeSubscriptionPayload = {
   accessFeeId: string;
   subscriptionId: string;
+};
+
+type ChangeSubscriptionPlanResponse = {
+  message: string;
 };
 
 type GetActivePaymentPayload = {

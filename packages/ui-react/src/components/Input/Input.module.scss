@@ -41,7 +41,12 @@
   }
 }
 
-.control > div {
+.control {
+  display: flex;
+  align-items: center;
+}
+
+.control > button, .control > div {
   width: 48px;
   height: 48px;
 }

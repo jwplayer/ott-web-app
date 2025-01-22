@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           token: ${{ secrets.ACTION_TOKEN }}
           ref: release
@@ -23,7 +23,7 @@ jobs:
           git config --global user.email 'ott-release-script@jwplayer.com'
           git fetch origin ${{ github.ref_name }}
           git merge origin/${{ github.ref_name }}
-          yarn && yarn i18next
+          yarn && yarn workspace @jwp/ott-web run i18next
         env:
           GITHUB_TOKEN: ${{ secrets.ACTION_TOKEN }}
 
@@ -40,7 +40,7 @@ jobs:
           input-file: 'CHANGELOG.md'
 
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v5
+        uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.ACTION_TOKEN }}
           title: Release Candidate - ${{ steps.changelog.outputs.tag }}${{ github.ref_name != 'develop' && ' (Hotfix)' || ''}}

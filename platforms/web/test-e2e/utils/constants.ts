@@ -6,6 +6,7 @@ export const normalTimeout = 10;
 export const longTimeout = 20;
 
 export enum ShelfId {
+  hero = 'hero',
   featured = 'featured',
   allFilms = 'all-films',
   allCourses = 'all-courses',
@@ -81,7 +82,7 @@ export default {
         paymentFee: formatPrice(0, 'EUR', 'NL'),
       },
       inplayer: {
-        label: `label[for="S38279"]`,
+        label: `label[for="S118699_38279"]`,
         price: formatPrice(6.99, 'EUR'),
         paymentFee: formatPrice(0, 'EUR'),
       },
@@ -93,7 +94,7 @@ export default {
         paymentFee: formatPrice(0, 'EUR', 'NL'),
       },
       inplayer: {
-        label: `label[for="S38280"]`,
+        label: `label[for="S118699_38280"]`,
         price: formatPrice(50, 'EUR'),
         paymentFee: formatPrice(0, 'EUR'),
       },
@@ -101,6 +102,6 @@ export default {
   },
   creditCard: {
     inplayer: '4111111111111111',
-    cleeng: '5555444433331111',
+    cleeng: '5555341244441115',
   },
 };

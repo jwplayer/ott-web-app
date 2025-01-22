@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { shallow } from '@jwp/ott-common/src/utils/compare';
 import { useConfigStore } from '@jwp/ott-common/src/stores/ConfigStore';
@@ -31,7 +31,7 @@ import Login from './forms/Login';
 import styles from './AccountModal.module.scss';
 
 // @todo: connect with route typings
-const PUBLIC_VIEWS = ['login', 'create-account', 'forgot-password', 'reset-password', 'send-confirmation', 'edit-password', 'simultaneous-logins'];
+const PUBLIC_VIEWS = ['login', 'create-account', 'forgot-password', 'reset-password', 'send-confirmation', 'edit-password'];
 
 export type AccountModals = {
   login: 'login';
@@ -67,7 +67,7 @@ const AccountModal = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const viewParam = useQueryParam('u');
-  const [view, setView] = useState(viewParam);
+  const viewParamRef = useRef(viewParam);
   const message = useQueryParam('message');
   const { loading, user } = useAccountStore(({ loading, user }) => ({ loading, user }), shallow);
   const config = useConfigStore((s) => s.config);
@@ -81,9 +81,10 @@ const AccountModal = () => {
     navigate(modalURLFromLocation(location, 'login'));
   });
 
-  useEffect(() => {
-    // make sure the last view is rendered even when the modal gets closed
-    if (viewParam) setView(viewParam);
+  // make sure the last view is rendered even when the modal gets closed
+  const view = useMemo(() => {
+    if (viewParam) viewParamRef.current = viewParam;
+    return viewParamRef.current;
   }, [viewParam]);
 
   useEffect(() => {
@@ -107,7 +108,7 @@ const AccountModal = () => {
 
     switch (view) {
       case 'login':
-        return <Login messageKey={message} />;
+        return <Login />;
       case 'create-account':
         return <Registration />;
       case 'personal-details':
@@ -165,8 +166,12 @@ const AccountModal = () => {
   const dialogSize = ['delete-account-confirmation'].includes(view ?? '') ? 'large' : 'small';
 
   return (
-    <Dialog size={dialogSize} open={!!viewParam} onClose={closeHandler} role="dialog">
-      {shouldShowBanner && banner && <div className={styles.banner}>{<img src={banner} alt="" />}</div>}
+    <Dialog size={dialogSize} open={!!viewParam} onClose={closeHandler}>
+      {shouldShowBanner && banner && (
+        <div className={styles.banner}>
+          <img src={banner} alt="" />
+        </div>
+      )}
       {renderForm()}
     </Dialog>
   );

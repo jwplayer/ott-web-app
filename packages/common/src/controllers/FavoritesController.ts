@@ -15,11 +15,11 @@ export default class FavoritesController {
     this.favoritesService = favoritesService;
   }
 
-  initialize = async () => {
-    await this.restoreFavorites();
+  initialize = async (language: string) => {
+    await this.restoreFavorites(language);
   };
 
-  restoreFavorites = async () => {
+  restoreFavorites = async (language?: string) => {
     const { user } = useAccountStore.getState();
     const favoritesList = useConfigStore.getState().config.features?.favoritesList;
 
@@ -27,7 +27,7 @@ export default class FavoritesController {
       return;
     }
 
-    const favorites = await this.favoritesService.getFavorites(user, favoritesList);
+    const favorites = await this.favoritesService.getFavorites(user, favoritesList, language);
 
     useFavoritesStore.setState({ favorites, favoritesPlaylistId: favoritesList });
   };

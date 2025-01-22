@@ -8,14 +8,9 @@ const config: KnipConfig = {
   workspaces: {
     '.': {
       entry: ['scripts/**/*'],
-      ignoreDependencies: [
-        // Workspace packages
-        'eslint-config-jwp',
-      ],
       ignoreBinaries: [
         // false positives from yarn scripts in github actions
         'build',
-        'global',
         'start:test',
         'codecept:*',
       ],
@@ -26,7 +21,8 @@ const config: KnipConfig = {
     'packages/ui-react': {
       entry: ['src/**/*'],
       ignoreDependencies: [
-        'sass', // Used in css
+        'sass-embedded', // Used in Vite
+        'postcss-config-jwp', // Used in postcss.config
       ],
     },
     'platforms/web': {
@@ -35,14 +31,15 @@ const config: KnipConfig = {
         '@codeceptjs/configure', // Used in e2e tests
         '@babel/plugin-proposal-decorators', // Used to build with decorators for ioc resolution
         '@babel/core', // Required peer dependency for babel plugins
+        '@jwp/ott-testing', // Used in e2e testing
         '@types/luxon', // Used in tests
         'babel-plugin-transform-typescript-metadata', // Used to build with decorators for ioc resolution
+        'core-js', // Conditionally imported at build time
         'eslint-plugin-codeceptjs', // Used by apps/web/test-e2e/.eslintrc.cjs
+        'i18next-parser',
         'luxon', // Used in tests
         'playwright', // Used in test configs
-        'sharp', // Requirement for @vite-pwa/assets-generator
         'tsconfig-paths', // Used for e2e test setup
-        'virtual:pwa-register', // Service Worker code is injected at build time,
       ],
     },
     'configs/eslint-config-jwp': {

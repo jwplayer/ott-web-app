@@ -1,9 +1,11 @@
+import * as assert from 'assert';
+
 import { DateTime } from 'luxon';
 import { testConfigs } from '@jwp/ott-testing/constants';
 
 import { ShelfId } from '#utils/constants';
 
-const programSelectedBackgroundColor = 'rgb(204, 204, 204)';
+const programSelectedBackgroundColor = 'rgb(255, 255, 255)';
 const programLiveBorder = '2px solid rgb(255, 255, 255)';
 
 const programBackgroundColor = 'rgba(255, 255, 255, 0.08)';
@@ -156,6 +158,7 @@ Scenario('I can select an upcoming program on the same channel', async ({ I }) =
 
 Scenario('I can select a previous program on the same channel and watch the video', async ({ I }) => {
   await I.openVideoCard('Channel 1');
+  waitForEpgAnimation(I);
   I.seeElement(channel1LiveProgramLocator);
   await isSelectedProgram(I, channel1LiveProgramLocator, 'channel 1', true);
 
@@ -182,6 +185,7 @@ Scenario('I can select a previous program on the same channel and watch the vide
 
 Scenario('I can select a program on another channel', async ({ I }) => {
   await I.openVideoCard('Channel 1');
+  waitForEpgAnimation(I);
   I.click(channel2Locator);
 
   waitForEpgAnimation(I);
@@ -245,24 +249,28 @@ Scenario('I can see the channel logo for Channel 2', async ({ I }) => {
 
 Scenario('I can see the background image for Channel 3', async ({ I }) => {
   await I.openVideoCard('Channel 3');
-  I.seeAttributesOnElements('header[data-testid="video-details"] img', {
-    alt: '', // Intentionally empty
-    src: 'https://cdn.jwplayer.com/v2/media/wewsVyR7/images/background.webp?poster_fallback=1&width=1280',
-  });
+  const imageSelector = 'header[data-testid="video-details"] img';
+  assert.strictEqual(
+    'https://cdn.jwplayer.com/v2/media/wewsVyR7/images/background.webp?poster_fallback=1&width=1280',
+    await I.grabAttributeFrom(imageSelector, 'src'),
+  );
+  assert.strictEqual('', await I.grabAttributeFrom(imageSelector, 'alt')); // Intentionally empty
 });
 
 Scenario('I can see the background image for Channel 4', async ({ I }) => {
   await I.openVideoCard('Channel 4');
-  I.seeAttributesOnElements('header[data-testid="video-details"] img', {
-    alt: '', // Intentionally empty
-    src: 'https://cdn.jwplayer.com/v2/media/kH7LozaK/images/background.webp?poster_fallback=1&width=1280',
-  });
+  const imageSelector = 'header[data-testid="video-details"] img';
+  assert.strictEqual(
+    'https://cdn.jwplayer.com/v2/media/kH7LozaK/images/background.webp?poster_fallback=1&width=1280',
+    await I.grabAttributeFrom(imageSelector, 'src'),
+  );
+  assert.strictEqual('', await I.grabAttributeFrom(imageSelector, 'alt')); // Intentionally empty
 });
 
 async function isSelectedProgram(I: CodeceptJS.I, locator: CodeceptJS.Locator, channel: string, isLive: boolean) {
   I.moveCursorTo('body', 0, 0); // This prevents accidentally triggering the hover state
 
-  await checkStyle(I, locator, {
+  await I.seeCssProperties(locator, {
     'background-color': programSelectedBackgroundColor,
     border: isLive ? programLiveBorder : programBorder,
   });
@@ -271,7 +279,7 @@ async function isSelectedProgram(I: CodeceptJS.I, locator: CodeceptJS.Locator, c
 }
 
 async function isLiveProgram(I: CodeceptJS.I, locator: CodeceptJS.Locator, channel: string) {
-  await checkStyle(I, locator, {
+  await I.seeCssProperties(locator, {
     'background-color': programBackgroundColor,
     border: programLiveBorder,
   });
@@ -280,16 +288,12 @@ async function isLiveProgram(I: CodeceptJS.I, locator: CodeceptJS.Locator, chann
 }
 
 async function isProgram(I: CodeceptJS.I, locator: CodeceptJS.Locator, channel: string) {
-  await checkStyle(I, locator, {
+  await I.seeCssProperties(locator, {
     'background-color': programBackgroundColor,
     border: programBorder,
   });
 
   I.say(`I see the program is not active nor selected on ${channel}`);
-}
-
-async function checkStyle(I: CodeceptJS.I, locator: CodeceptJS.LocatorOrString, styles: Record<string, string>) {
-  I.seeCssPropertiesOnElements(locator, styles);
 }
 
 function waitForEpgAnimation(I: CodeceptJS.I, sec: number = 1) {

@@ -16,6 +16,7 @@ import useBreakpoint, { Breakpoint } from '@jwp/ott-ui-react/src/hooks/useBreakp
 import useQueryParam from '@jwp/ott-ui-react/src/hooks/useQueryParam';
 import usePlaylist from '@jwp/ott-hooks-react/src/usePlaylist';
 import PlayTrailer from '@jwp/ott-theme/assets/icons/play_trailer.svg?react';
+import env from '@jwp/ott-common/src/env';
 
 import VideoLayout from '../../components/VideoLayout/VideoLayout';
 import InlinePlayer from '../../containers/InlinePlayer/InlinePlayer';
@@ -114,11 +115,17 @@ const LegacySeries = () => {
 
   const pageTitle = `${selectedItem.title} - ${siteName}`;
   const pageDescription = selectedItem?.description || '';
-  const canonicalUrl = `${window.location.origin}${legacySeriesURL({ episodeId: episode?.mediaid, seriesId })}`;
+  const canonicalUrl = `${env.APP_PUBLIC_URL}${legacySeriesURL({ episodeId: episode?.mediaid, seriesId })}`;
   const backgroundImage = (selectedItem.backgroundImage as string) || undefined;
 
   const primaryMetadata = episode ? (
-    <VideoMetaData attributes={createVideoMetadata(episode, t('video:total_episodes', { count: seriesPlaylist?.playlist?.length }))} />
+    <VideoMetaData
+      attributes={createVideoMetadata(episode, {
+        episodesLabel: t('video:total_episodes', { count: seriesPlaylist?.playlist?.length }),
+        hoursAbbreviation: t('common:abbreviation.hours'),
+        minutesAbbreviation: t('common:abbreviation.minutes'),
+      })}
+    />
   ) : (
     <VideoMetaData attributes={createPlaylistMetadata(seriesPlaylist, t('video:total_episodes', { count: seriesPlaylist?.playlist?.length }))} />
   );

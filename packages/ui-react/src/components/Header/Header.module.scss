@@ -10,8 +10,8 @@
 
 .header {
   height: variables.$header-height;
-  padding: 10px calc(#{variables.$base-spacing} * 2);
-  color: var(--header-contrast-color, variables.$white);
+  padding: 0 calc(variables.$base-spacing * 3);
+  color: var(--header-contrast-color, --body-color, variables.$white);
   background: var(--header-background, transparent);
 
   //
@@ -27,7 +27,8 @@
   // Make header static
   //
   &.static {
-    position: static;
+    position: relative;
+    z-index: 1;
     width: 100%;
   }
 }
@@ -39,6 +40,8 @@
   position: relative;
   display: flex;
   flex-direction: row;
+  align-items: center;
+  gap: variables.$base-spacing;
   height: 100%;
 }
 
@@ -66,20 +69,22 @@
 //
 .brand {
   align-self: center;
-  margin-right: variables.$base-spacing;
 }
 
 //
 // Header navigation
 //
 .nav {
-  display: inline-block;
+  display: flex;
   flex: 1;
   align-items: center;
+  padding: calc(variables.$base-spacing / 2) 0;
+  overflow: hidden;
 
   > ul {
     margin: 0;
     padding: 0;
+    white-space: nowrap;
     list-style-type: none;
 
     li {
@@ -98,10 +103,6 @@
 }
 
 .skipToContent {
-  @include accessibility.focus-visible() using ($value) {
-    box-shadow: $value;
-  }
-
   position: absolute;
   top: 50px;
   width: 1px;
@@ -111,6 +112,10 @@
   font-weight: bold;
   border-radius: 20px;
   clip: rect(1px, 1px, 1px, 1px);
+
+  @include accessibility.focus-visible() using ($value) {
+    box-shadow: $value;
+  }
 
   &:focus {
     z-index: 1;
@@ -157,11 +162,11 @@
 
   &::after {
     position: absolute;
-    bottom: calc(((variables.$header-height - 36px) / 2) * -1);
-    left: 0;
-    width: 100%;
+    right: calc(variables.$base-spacing / 2);
+    bottom: 0;
+    left: calc(variables.$base-spacing / 2);
     height: 2px;
-    background-color: variables.$white;
+    background-color: var(--highlight-color);
     content: '';
   }
 
@@ -175,18 +180,12 @@
 // --------------------------------
 
 @include responsive.mobile-and-tablet() {
-  .header {
-    height: variables.$header-height-mobile;
-    padding: 10px calc(#{variables.$base-spacing} * 2);
-  }
-
   .menu {
     display: block;
   }
 
   .brand {
     flex: 1;
-    margin-left: variables.$base-spacing;
   }
 
   .nav {
@@ -202,14 +201,18 @@
   }
 }
 
+@include responsive.tablet-only() {
+  .header {
+    padding: 10px calc(variables.$base-spacing * 2);
+  }
+}
+
 @include responsive.mobile-only() {
   .header {
     padding: 10px variables.$base-spacing;
   }
 
   .brand {
-    margin-right: 0;
-    margin-left: 0;
     text-align: center;
   }
 

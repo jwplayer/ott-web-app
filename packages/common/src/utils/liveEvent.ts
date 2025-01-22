@@ -1,4 +1,7 @@
 import type { PlaylistItem } from '../../types/playlist';
+import { MEDIA_CONTENT_TYPE } from '../constants';
+
+import { isContentType } from './common';
 
 export enum EventState {
   PRE_LIVE = 'PRE_LIVE',
@@ -15,7 +18,7 @@ export const enum MediaStatus {
 }
 
 export const isLiveEvent = (playlistItem?: PlaylistItem) => {
-  return !!playlistItem && !!playlistItem['VCH.EventState'] && !!playlistItem['VCH.ScheduledStart'];
+  return !!playlistItem && isContentType(playlistItem, MEDIA_CONTENT_TYPE.liveEvent);
 };
 
 export const isScheduledOrLiveMedia = (playlistItem: PlaylistItem) => {

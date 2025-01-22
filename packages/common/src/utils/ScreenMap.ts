@@ -1,5 +1,7 @@
 import type { Playlist, PlaylistItem } from '../../types/playlist';
 
+import { isContentType } from './common';
+
 type ScreenPredicate<T> = (data?: T) => boolean;
 
 type ScreenDefinition<T, C> = {
@@ -16,7 +18,7 @@ export class ScreenMap<T extends Playlist | PlaylistItem, C> {
   }
 
   registerByContentType(component: C, contentType: string) {
-    this.register(component, (data) => data?.contentType?.toLowerCase() === contentType);
+    this.register(component, (data) => !!data && isContentType(data, contentType));
   }
 
   registerDefault(component: C) {

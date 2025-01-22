@@ -9,31 +9,27 @@
     "test-watch": "TZ=UTC LC_ALL=en_US.UTF-8 vitest"
   },
   "dependencies": {
-    "@inplayer-org/inplayer.js": "^3.13.24",
-    "broadcast-channel": "^7.0.0",
-    "date-fns": "^2.28.0",
-    "fast-xml-parser": "^4.3.2",
-    "i18next": "^22.4.15",
+    "@inplayer-org/inplayer.js": "^3.13.28",
+    "date-fns": "^4.1.0",
+    "fast-xml-parser": "^4.5.0",
+    "i18next": "^24.0.5",
     "ini": "^3.0.1",
-    "inversify": "^6.0.1",
-    "jwt-decode": "^3.1.2",
+    "inversify": "^6.1.5",
+    "jwt-decode": "^4.0.0",
     "lodash.merge": "^4.6.2",
-    "react-i18next": "^12.3.1",
-    "reflect-metadata": "^0.1.13",
-    "yup": "^0.32.9",
-    "zustand": "^3.6.9"
+    "react-i18next": "^15.1.3",
+    "reflect-metadata": "^0.2.2",
+    "yup": "^1.4.0",
+    "zustand": "^4.5.5"
   },
   "devDependencies": {
-    "@types/ini": "^1.3.31",
-    "@types/lodash.merge": "^4.6.6",
-    "jsdom": "^22.1.0",
-    "timezone-mock": "^1.3.4",
-    "vi-fetch": "^0.8.0",
-    "vitest": "^1.3.1"
-  },
-  "peerDependencies": {
     "@jwp/ott-testing": "*",
-    "@jwp/ott-theme": "*",
-    "eslint-config-jwp": "*"
+    "@types/ini": "^1.3.34",
+    "@types/lodash.merge": "^4.6.9",
+    "eslint-config-jwp": "*",
+    "jsdom": "^22.1.0",
+    "timezone-mock": "^1.3.6",
+    "vi-fetch": "^0.8.0",
+    "vitest": "^2.1.8"
   }
 }

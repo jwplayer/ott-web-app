@@ -3,12 +3,101 @@
 exports[`<Button> > renders and matches snapshot 1`] = `
 <div>
   <button
+    class="_button_f8f296 _default_f8f296 _outlined_f8f296"
+    type="button"
+  >
+    <span>
+      Default button
+    </span>
+  </button>
+  <button
     class="_button_f8f296 _default_f8f296 _outlined_f8f296 _active_f8f296"
     type="button"
   >
     <span>
-      aa
+      Active button
     </span>
   </button>
+  <button
+    aria-disabled="true"
+    class="_button_f8f296 _default_f8f296 _outlined_f8f296 _disabled_f8f296"
+    type="button"
+  >
+    <span>
+      Disabled button
+    </span>
+  </button>
+  <button
+    class="_button_f8f296 _default_f8f296 _outlined_f8f296"
+    type="button"
+  >
+    <span
+      class="_hidden_f8f296"
+    >
+      Busy button
+    </span>
+    <div
+      class="_buffer_d122df _centerAbsolute_f8f296 _small_d122df"
+    >
+      <div />
+      <div />
+      <div />
+      <div />
+    </div>
+  </button>
+  <button
+    class="_button_f8f296 _default_f8f296 _outlined_f8f296 _small_f8f296"
+    type="button"
+  >
+    <span>
+      Small button
+    </span>
+  </button>
+  <button
+    class="_button_f8f296 _default_f8f296 _outlined_f8f296 _large_f8f296"
+    type="button"
+  >
+    <span>
+      Large button
+    </span>
+  </button>
+  <button
+    class="_button_f8f296 _default_f8f296 _outlined_f8f296 _fullWidth_f8f296"
+    type="button"
+  >
+    <span>
+      Full width button
+    </span>
+  </button>
+  <button
+    class="_button_f8f296 _default_f8f296 _outlined_f8f296"
+    type="button"
+  >
+    <div
+      class="_startIcon_f8f296"
+    >
+      <svg
+        aria-hidden="true"
+        class="_icon_585b29"
+        viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M12,19.2C9.5,19.2 7.29,17.92 6,16C6.03,14 10,12.9 12,12.9C14,12.9 17.97,14 18,16C16.71,17.92 14.5,19.2 12,19.2M12,5A3,3 0 0,1 15,8A3,3 0 0,1 12,11A3,3 0 0,1 9,8A3,3 0 0,1 12,5M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12C22,6.47 17.5,2 12,2Z"
+        />
+      </svg>
+    </div>
+    <span>
+      With start icon
+    </span>
+  </button>
+  <a
+    class="_button_f8f296 _default_f8f296 _outlined_f8f296"
+    href="https://jwplayer.com"
+  >
+    <span>
+      Button link
+    </span>
+  </a>
 </div>
 `;

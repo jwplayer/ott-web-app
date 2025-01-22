@@ -10,5 +10,6 @@ export default defineConfig({
   define: {
     __mode__: '"test"',
     __dev__: true,
+    __debug__: process.env.APP_TEST_DEBUG === '1',
   },
 });

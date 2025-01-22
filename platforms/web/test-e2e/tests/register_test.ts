@@ -27,6 +27,9 @@ function runTestSuite(config: typeof testConfigs.svod, providerName: string) {
     I.see('Password');
     I.see('Use a minimum of 8 characters (case sensitive) with at least one number');
 
+    // No validation error messages in the account.registration.* namespace before form submission
+    I.dontSee('registration.', constants.customRegFields.topContainerSelector);
+
     if (await I.hasTermsAndConditionField()) {
       I.see('I accept the');
       I.see('Terms and Conditions');

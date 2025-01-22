@@ -1,6 +1,5 @@
 import React, { type ChangeEventHandler, type MouseEventHandler, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { type NavigateFunction, useNavigate } from 'react-router';
 import { Helmet } from 'react-helmet';
 import { createURL } from '@jwp/ott-common/src/utils/urlFormatting';
 import { CONFIG_QUERY_KEY } from '@jwp/ott-common/src/constants';
@@ -12,6 +11,7 @@ import LoadingOverlay from '@jwp/ott-ui-react/src/components/LoadingOverlay/Load
 import DevStackTrace from '@jwp/ott-ui-react/src/components/DevStackTrace/DevStackTrace';
 import type { BootstrapData } from '@jwp/ott-hooks-react/src/useBootstrapApp';
 import { AppError } from '@jwp/ott-common/src/utils/error';
+import { PATH_HOME } from '@jwp/ott-common/src/paths';
 
 import styles from './DemoConfigDialog.module.scss';
 
@@ -32,26 +32,11 @@ const initialState: State = {
   loaded: false,
 };
 
-export function getConfigNavigateCallback(navigate: NavigateFunction) {
-  return (configSource: string) => {
-    navigate(
-      {
-        pathname: '/',
-        search: new URLSearchParams([[CONFIG_QUERY_KEY, configSource]]).toString(),
-      },
-      { replace: true },
-    );
-  };
-}
-
 const DemoConfigDialog = ({ query }: { query: BootstrapData }) => {
   const { data, isLoading, error, refetch, isSuccess } = query;
   const { configSource: selectedConfigSource } = data || {};
 
   const { t } = useTranslation('demo');
-  const navigate = useNavigate();
-  const navigateCallback = getConfigNavigateCallback(navigate);
-
   const [state, setState] = useState<State>(initialState);
 
   const errorTitle = error && error instanceof AppError ? error.payload.title : '';
@@ -91,7 +76,7 @@ const DemoConfigDialog = ({ query }: { query: BootstrapData }) => {
 
   const clearConfig = () => {
     setState(initialState);
-    navigateCallback('');
+    window.location.href = createURL(PATH_HOME, { [CONFIG_QUERY_KEY]: '' });
   };
 
   const isValidSource = (configSource: string) => configSource.match(regex)?.some((m) => m === configSource);
@@ -170,7 +155,7 @@ const DemoConfigDialog = ({ query }: { query: BootstrapData }) => {
             helpLink={'https://docs.jwplayer.com/platform/docs/ott-create-an-app-config'}
             error={typeof state.error === 'string' ? undefined : state.error}
           >
-            <form method={'GET'} target={'/'}>
+            <form method={'GET'}>
               <TextField
                 required
                 disabled={isLoading}

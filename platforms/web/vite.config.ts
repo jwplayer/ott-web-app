@@ -10,14 +10,16 @@ import { createHtmlPlugin } from 'vite-plugin-html';
 import svgr from 'vite-plugin-svgr';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
 
-import { basePath, favIconSizes, appleIconSizes } from './pwa-assets.config';
+import { appleIconSizes, basePath, favIconSizes } from './pwa-assets.config';
+import { legacyBrowserPlugin } from './scripts/build-tools/plugins';
 import {
   extractExternalFonts,
+  generateIconTags,
   getFileCopyTargets,
   getGoogleFontTags,
-  getGoogleVerificationTag,
   getGtmTags,
-  generateIconTags,
+  getMetaTags,
+  getRelatedApplications,
 } from './scripts/build-tools/buildTools';
 
 export default ({ mode, command }: ConfigEnv): UserConfigExport => {
@@ -41,22 +43,36 @@ export default ({ mode, command }: ConfigEnv): UserConfigExport => {
     description: process.env.APP_DESCRIPTION || 'JW OTT Webapp is an open-source, dynamically generated video website.',
   };
 
+  // Fonts
   const bodyFonts = extractExternalFonts(env.APP_BODY_FONT_FAMILY);
   const bodyAltFonts = extractExternalFonts(env.APP_BODY_ALT_FONT_FAMILY);
-
-  const fontTags = getGoogleFontTags([bodyFonts, bodyAltFonts].flat());
   const bodyFontsString = bodyFonts.map((font) => font.fontFamily).join(', ');
   const bodyAltFontsString = bodyAltFonts.map((font) => font.fontFamily).join(', ');
+
+  // Head tags
+  const fontTags = getGoogleFontTags([bodyFonts, bodyAltFonts].flat());
+  const metaTags = getMetaTags({
+    'apple-itunes-app': env.APP_APPLE_ITUNES_APP ? `app-id=${env.APP_APPLE_ITUNES_APP}` : undefined,
+    'google-site-verification': env.APP_GOOGLE_SITE_VERIFICATION_ID,
+  });
+  const tags = [fontTags, metaTags, getGtmTags(env)].flat();
+
+  const related_applications = getRelatedApplications({
+    appleAppId: env.APP_APPLE_ITUNES_APP,
+    googleAppId: env.APP_GOOGLE_RELATED_APPLICATION_ID,
+  });
+
   const favicons = generateIconTags(basePath, favIconSizes, appleIconSizes);
 
   return defineConfig({
     plugins: [
+      legacyBrowserPlugin(!!process.env.APP_LEGACY_BUILD),
       react({
         // This is needed to do decorator transforms for ioc resolution to work for classes
         babel: { plugins: ['babel-plugin-transform-typescript-metadata', ['@babel/plugin-proposal-decorators', { legacy: true }]] },
       }),
-      eslintPlugin({ emitError: mode === 'production' || mode === 'demo' || mode === 'preview' }), // Move linting to pre-build to match dashboard
-      StylelintPlugin(),
+      mode !== 'test' && eslintPlugin({ emitError: mode === 'production' || mode === 'demo' || mode === 'preview' }), // Move linting to pre-build to match dashboard
+      mode !== 'test' && StylelintPlugin(),
       svgr(),
       VitePWA({
         registerType: 'autoUpdate',
@@ -70,8 +86,8 @@ export default ({ mode, command }: ConfigEnv): UserConfigExport => {
           theme_color: '#DD0000',
           orientation: 'any',
           background_color: '#000',
-          related_applications: [],
-          prefer_related_applications: false,
+          related_applications,
+          prefer_related_applications: !!env.APP_GOOGLE_RELATED_APPLICATION_ID,
           icons: [
             {
               src: 'images/icons/pwa-192x192.png',
@@ -89,7 +105,7 @@ export default ({ mode, command }: ConfigEnv): UserConfigExport => {
       createHtmlPlugin({
         minify: true,
         inject: {
-          tags: [getGoogleVerificationTag(env), fontTags, getGtmTags(env)].flat(),
+          tags,
           data: { ...app, favicons },
         },
       }),
@@ -99,6 +115,7 @@ export default ({ mode, command }: ConfigEnv): UserConfigExport => {
       'import.meta.env.APP_VERSION': JSON.stringify(process.env.npm_package_version),
       __mode__: JSON.stringify(mode),
       __dev__: process.env.NODE_ENV !== 'production',
+      __debug__: process.env.APP_TEST_DEBUG === '1',
       'import.meta.env.APP_BODY_FONT': JSON.stringify(bodyFontsString),
       'import.meta.env.APP_BODY_ALT_FONT': JSON.stringify(bodyAltFontsString),
     },
@@ -130,6 +147,9 @@ export default ({ mode, command }: ConfigEnv): UserConfigExport => {
             if (id.includes('/node_modules/@inplayer')) {
               return 'inplayer';
             }
+            if (id.includes('/node_modules/core-js')) {
+              return 'polyfills';
+            }
             if (id.includes('/node_modules/')) {
               return 'vendor';
             }
@@ -140,6 +160,11 @@ export default ({ mode, command }: ConfigEnv): UserConfigExport => {
     },
     css: {
       devSourcemap: true,
+      preprocessorOptions: {
+        scss: {
+          api: 'modern-compiler',
+        },
+      },
     },
     resolve: {
       alias: {

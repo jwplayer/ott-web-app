@@ -8,9 +8,13 @@ exports[`<CollapsibleText> > renders and matches snapshot 1`] = `
     <p
       class="_textContainer_561522"
       id="collapsible-content"
-      style="max-height: none;"
+      style="max-height: 60px;"
     >
-      Test...
+      <span
+        class="_markdown_e219e2 _inline_e219e2"
+      >
+        Test...
+      </span>
     </p>
   </div>
 </div>

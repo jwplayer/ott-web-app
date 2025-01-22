@@ -1,6 +1,5 @@
 @use '@jwp/ott-ui-react/src/styles/variables';
 @use '@jwp/ott-ui-react/src/styles/theme';
-@use '@jwp/ott-ui-react/src/styles/accessibility';
 @use '@jwp/ott-ui-react/src/styles/mixins/responsive';
 
 $small-button-height: 28px;
@@ -25,14 +24,17 @@ $large-button-height: 40px;
   border-radius: 4px;
   outline: none;
   cursor: pointer;
-  transition: background-color 0.1s ease, transform 0.1s ease;
+  transition: background-color 0.1s ease, transform 0.1s ease, opacity 0.1s ease;
 
   @media (hover: hover) and (pointer: fine) {
     &:not(.disabled) {
-      &:hover,
-      &:focus {
+      &:hover {
         z-index: 1;
         transform: scale(1.05);
+      }
+
+      &:active {
+        opacity: 0.8
       }
     }
   }
@@ -53,6 +55,10 @@ $large-button-height: 40px;
   &.default {
     color: currentColor;
     background-color: theme.$btn-default-bg;
+
+    &:focus {
+      outline-offset: 2px;
+    }
   }
 
   &.primary {
@@ -60,21 +66,18 @@ $large-button-height: 40px;
     background-color: var(--highlight-color, theme.$btn-primary-bg);
 
     &:focus {
-      @include accessibility.accessibleOutlineContrast;
+      outline-offset: 2px;
     }
   }
 
   &.outlined {
     border: 1px solid rgba(255, 255, 255, 0.3);
 
-    &:not(.disabled) {
-      &.active,
-      &:focus {
-        color: var(--highlight-contrast-color, theme.$btn-primary-color);
-        background-color: var(--highlight-color, theme.$btn-primary-bg);
-        border-color: var(--highlight-color, theme.$btn-primary-bg);
-        outline: none;
-      }
+    &.active {
+      color: var(--highlight-contrast-color, theme.$btn-primary-color);
+      background-color: var(--highlight-color, theme.$btn-primary-bg);
+      border-color: var(--highlight-color, theme.$btn-primary-bg);
+      outline: none;
     }
   }
 
@@ -83,7 +86,6 @@ $large-button-height: 40px;
     opacity: 0.9;
 
     &:not(.disabled) {
-      &.active,
       &:focus {
         opacity: 1;
       }
@@ -92,6 +94,10 @@ $large-button-height: 40px;
         z-index: 1;
         background: theme.$btn-default-bg;
         opacity: 1;
+      }
+
+      &:active {
+        opacity: 0.8;
       }
     }
   }
@@ -144,7 +150,7 @@ $large-button-height: 40px;
 }
 
 .hidden {
-  visibility: hidden;
+  opacity: 0.001; // ensure the label is still accessible for screen readers
 }
 
 .centerAbsolute {

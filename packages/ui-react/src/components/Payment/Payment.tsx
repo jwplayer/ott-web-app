@@ -20,6 +20,7 @@ import LoadingOverlay from '../LoadingOverlay/LoadingOverlay';
 import OfferSwitch from '../OfferSwitch/OfferSwitch';
 import TextField from '../form-fields/TextField/TextField';
 import Icon from '../Icon/Icon';
+import Link from '../Link/Link';
 import { modalURLFromLocation } from '../../utils/location';
 
 import styles from './Payment.module.scss';
@@ -57,6 +58,9 @@ type Props = {
   setSelectedOfferId: (offerId: string | null) => void;
   isUpgradeOffer: boolean | undefined;
   setIsUpgradeOffer: (isUpgradeOffer: boolean | undefined) => void;
+  isExternalPaymentProvider: boolean;
+  paymentProvider?: string;
+  paymentProviderLink?: string;
 };
 
 const Payment = ({
@@ -85,6 +89,9 @@ const Payment = ({
   setSelectedOfferId,
   isUpgradeOffer,
   setIsUpgradeOffer,
+  isExternalPaymentProvider,
+  paymentProvider,
+  paymentProviderLink,
 }: Props): JSX.Element => {
   const subscriptionDetailsId = useOpaqueId('subscription-details');
   const paymentMethodId = useOpaqueId('payment-method');
@@ -122,6 +129,7 @@ const Payment = ({
   function onCompleteSubscriptionClick() {
     navigate(modalURLFromLocation(location, 'choose-offer'));
   }
+
   function onEditCardDetailsClick() {
     navigate(modalURLFromLocation(location, 'edit-card'));
   }
@@ -151,7 +159,7 @@ const Payment = ({
     }
   }
 
-  const showChangeSubscriptionButton = offerSwitchesAvailable || (!isChangingOffer && !canRenewSubscription);
+  const showChangeSubscriptionButton = (!isExternalPaymentProvider && offerSwitchesAvailable) || (!isChangingOffer && !canRenewSubscription);
 
   return (
     <>
@@ -203,22 +211,31 @@ const Payment = ({
                   )}
                 </div>
               )}
-              {showChangeSubscriptionButton && (
-                <Button
-                  className={styles.upgradeSubscription}
-                  label={t('user:payment.change_subscription')}
-                  disabled={!canRenewSubscription && activeSubscription.status === 'cancelled'}
-                  onClick={() => {
-                    if (offers.length > 1 && !canRenewSubscription) {
-                      setIsChangingOffer(true);
-                    } else {
-                      onUpgradeSubscriptionClick?.();
-                    }
-                  }}
-                  fullWidth={isMobile}
-                  color="primary"
-                  data-testid="change-subscription-button"
-                />
+              {isExternalPaymentProvider ? (
+                <p className={styles.explanation}>
+                  {t('account:external_payment.explanation', { paymentProvider })}{' '}
+                  <Link href={paymentProviderLink} target="_blank">
+                    {t('account:external_payment.manage_subscription')}
+                  </Link>
+                </p>
+              ) : (
+                showChangeSubscriptionButton && (
+                  <Button
+                    className={styles.upgradeSubscription}
+                    label={t('user:payment.change_subscription')}
+                    disabled={!canRenewSubscription && activeSubscription.status === 'cancelled'}
+                    onClick={() => {
+                      if (offers.length > 1 && !canRenewSubscription) {
+                        setIsChangingOffer(true);
+                      } else {
+                        onUpgradeSubscriptionClick?.();
+                      }
+                    }}
+                    fullWidth={isMobile}
+                    color="primary"
+                    data-testid="change-subscription-button"
+                  />
+                )
               )}
               {(activeSubscription.status === 'active' || activeSubscription.status === 'active_trial') &&
               !isGrantedSubscription &&

@@ -3,6 +3,7 @@
 
 .searchBar {
   position: relative;
+  color: variables.$black;
 }
 
 .searchForm {
@@ -11,7 +12,9 @@
 
 .icon {
   position: absolute;
-  margin: 6px 8px;
+  width: 20px;
+  height: 20px;
+  margin: 8px 10px;
   pointer-events: none;
 }
 
@@ -22,19 +25,18 @@
   padding: 0 36px 0 36px;
 
   color: currentColor;
-  font-weight: var(--body-font-weight-bold);
   font-size: 16px;
 
-  background: variables.$black;
+  background: variables.$white;
 
-  border: 1px solid rgba(variables.$white, 0.32);
-  border-radius: 4px;
+  border: 1px solid rgba(variables.$gray, 0.32);
+  border-radius: 16px;
 
   transition: border 0.1s ease, background 0.1s ease;
 
   &::-webkit-input-placeholder {
     color: currentColor;
-    opacity: 0.5;
+    opacity: 0.8;
   }
 
   &::-webkit-search-cancel-button{
@@ -43,7 +45,7 @@
 
   &:focus,
   &:active {
-    border-color: variables.$white;
+    border-color: variables.$gray;
     outline: none;
   }
 }

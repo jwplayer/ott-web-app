@@ -58,6 +58,7 @@ function VideoList({
           hasMore={hasMore ?? false}
           className={styles.list}
           loader={<InfiniteScrollLoader key="loader" />}
+          useWindow={false}
         >
           {playlist?.playlist?.map((playlistItem: PlaylistItem) => (
             <li key={playlistItem.mediaid}>

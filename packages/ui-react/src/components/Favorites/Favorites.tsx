@@ -28,7 +28,7 @@ const cols: Breakpoints = {
 
 const Favorites = ({ playlist, accessModel, hasSubscription, onCardHover, onClearFavoritesClick }: Props): JSX.Element => {
   const { t } = useTranslation('user');
-  const getURL = (playlistItem: PlaylistItem) => mediaURL({ media: playlistItem, playlistId: playlistItem.feedid });
+  const getURL = (playlistItem: PlaylistItem) => mediaURL({ id: playlistItem.mediaid, title: playlistItem.title, playlistId: playlistItem.feedid });
 
   return (
     <div>

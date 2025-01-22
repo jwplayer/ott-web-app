@@ -26,4 +26,5 @@ export type ProviderProps = {
   locale?: string | undefined;
   fieldWrapper?: string;
   hasInlineOfferSwitch: boolean;
+  cardInfo?: string[][];
 };

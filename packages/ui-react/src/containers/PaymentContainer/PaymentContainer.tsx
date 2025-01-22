@@ -44,6 +44,13 @@ const processBillingReceipt = (receipt: Blob | string, transactionId: string) =>
   }
 };
 
+const EXTERNAL_PAYMENT_METHODS = ['Apple In-App', 'Google In-App', 'Roku In-App'];
+const STORE_LINKS: Record<string, string> = {
+  apple: 'https://support.apple.com/118428',
+  google: 'https://support.google.com/googleplay/answer/7018481',
+  roku: 'https://support.roku.com/article/208756478',
+};
+
 const PaymentContainer = () => {
   const accountController = getModule(AccountController);
 
@@ -94,6 +101,9 @@ const PaymentContainer = () => {
   }
 
   const pendingDowngradeOfferId = (customer.metadata?.[`${activeSubscription?.subscriptionId}_pending_downgrade`] as string) || '';
+  const isExternalPaymentProvider = !!activeSubscription && EXTERNAL_PAYMENT_METHODS.includes(activeSubscription.paymentMethod);
+  const paymentProvider = activeSubscription?.paymentMethod.split(' ')[0] || 'unknown';
+  const paymentProviderLink = STORE_LINKS[paymentProvider.toLowerCase()];
 
   return (
     <Payment
@@ -122,6 +132,9 @@ const PaymentContainer = () => {
       setSelectedOfferId={(offerId: string | null) => setSelectedOfferId(offerId)}
       isUpgradeOffer={isUpgradeOffer}
       setIsUpgradeOffer={(isUpgradeOffer: boolean | undefined) => setIsUpgradeOffer(isUpgradeOffer)}
+      isExternalPaymentProvider={isExternalPaymentProvider}
+      paymentProvider={paymentProvider}
+      paymentProviderLink={paymentProviderLink}
     />
   );
 };

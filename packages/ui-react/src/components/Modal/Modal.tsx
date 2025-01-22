@@ -1,95 +1,131 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { type HTMLAttributes, type KeyboardEventHandler, type ReactEventHandler, useEffect, useRef } from 'react';
 import ReactDOM from 'react-dom';
-import { testId } from '@jwp/ott-common/src/utils/common';
+import useEventCallback from '@jwp/ott-hooks-react/src/useEventCallback';
+import classNames from 'classnames';
 
-import Fade from '../Animation/Fade/Fade';
 import Grow from '../Animation/Grow/Grow';
-import scrollbarSize from '../../utils/dom';
+import { useModal } from '../../hooks/useModal';
 
 import styles from './Modal.module.scss';
 
+export type AnimationProps = {
+  open?: boolean;
+  duration?: number;
+  delay?: number;
+  children: React.ReactNode;
+  className?: string;
+  onCloseAnimationEnd?: () => void;
+};
+
 type Props = {
   children?: React.ReactNode;
-  AnimationComponent?: React.JSXElementConstructor<{ open?: boolean; duration?: number; delay?: number; children: React.ReactNode; className?: string }>;
+  className?: string;
+  centered?: boolean;
+  AnimationComponent?: React.ElementType<AnimationProps>;
   open: boolean;
   onClose?: () => void;
   animationContainerClassName?: string;
+  role?: HTMLAttributes<HTMLElement>['role'];
 } & React.AriaAttributes;
 
-const Modal: React.FC<Props> = ({ open, onClose, children, AnimationComponent = Grow, animationContainerClassName, ...ariaAtributes }: Props) => {
-  const [visible, setVisible] = useState(open);
-  const lastFocus = useRef<HTMLElement>() as React.MutableRefObject<HTMLElement>;
-  const modalRef = useRef<HTMLDivElement>() as React.MutableRefObject<HTMLDivElement>;
+const Modal: React.FC<Props> = ({
+  open,
+  onClose,
+  children,
+  className,
+  centered,
+  role,
+  AnimationComponent = Grow,
+  animationContainerClassName,
+  ...ariaAttributes
+}: Props) => {
+  const modalRef = useRef<HTMLDialogElement>() as React.MutableRefObject<HTMLDialogElement>;
+  const mouseEventTargetsPairRef = useRef<Record<'downTarget' | 'upTarget', HTMLElement | null>>({ downTarget: null, upTarget: null });
 
-  const keyDownEventHandler = (event: React.KeyboardEvent) => {
-    if (event.key === 'Escape' && onClose) {
-      onClose();
+  const { handleOpen, handleClose } = useModal();
+
+  const closeModalEvent = useEventCallback(() => {
+    const onAnimationEndHandler = () => {
+      // modalRef.current?.close();
+      modalRef.current?.classList.remove(styles.close);
+      modalRef.current?.removeEventListener('animationend', onAnimationEndHandler);
+    };
+
+    if (modalRef.current?.open) {
+      modalRef.current.addEventListener('animationend', onAnimationEndHandler);
+      modalRef.current.classList.add(styles.close);
+    }
+  });
+
+  const openModalEvent = useEventCallback(() => {
+    handleOpen();
+    modalRef.current?.showModal();
+    modalRef.current?.classList.remove(styles.close);
+  });
+
+  const keyDownHandler: KeyboardEventHandler<HTMLDialogElement> = (event) => {
+    if (event.key === 'Escape' && modalRef.current.contains(event.target as HTMLElement)) {
+      event.preventDefault();
+      onClose?.();
     }
   };
 
-  // delay the transition state so the CSS transition kicks in after toggling the `open` prop
-  useEffect(() => {
-    const activeElement = document.activeElement as HTMLElement;
-    const appView = document.querySelector('#root') as HTMLDivElement;
+  const closeHandler: ReactEventHandler<HTMLDialogElement> = (event) => {
+    if (modalRef.current.contains(event.target as HTMLElement)) {
+      onClose?.();
+      handleClose();
+    }
+  };
 
+  const closeAnimationEndHandler = () => {
+    modalRef.current?.close();
+  };
+
+  useEffect(() => {
     if (open) {
-      // store last focussed element
-      if (activeElement) {
-        lastFocus.current = activeElement;
-      }
-
-      // reset the visible state
-      setVisible(true);
-
-      // make sure main content is hidden for screen readers and inert
-      if (appView) {
-        appView.inert = true;
-      }
-
-      // prevent scrolling under the modal
-      document.body.style.marginRight = `${scrollbarSize()}px`;
-      document.body.style.overflowY = 'hidden';
+      openModalEvent();
     } else {
-      if (appView) {
-        appView.inert = false;
-      }
-
-      document.body.style.removeProperty('margin-right');
-      document.body.style.removeProperty('overflow-y');
+      closeModalEvent();
     }
-  }, [open]);
+  }, [openModalEvent, closeModalEvent, open]);
 
-  useEffect(() => {
-    if (visible) {
-      // focus the first element in the modal
-      if (modalRef.current) {
-        const interactiveElement = modalRef.current.querySelectorAll(
-          'div[role="dialog"] input, div[role="dialog"] a, div[role="dialog"] button, div[role="dialog"] [tabindex]',
-        )[0] as HTMLElement | null;
+  const clickHandler: ReactEventHandler<HTMLDialogElement> = (event) => {
+    const {
+      current: { downTarget, upTarget },
+    } = mouseEventTargetsPairRef;
 
-        if (interactiveElement) interactiveElement.focus();
-      }
-    } else {
-      // restore last focussed element
-      if (lastFocus.current) {
-        lastFocus.current.focus();
-      }
+    // modal should only close if both mousedown and mouseup are done on the overlay
+    if (downTarget !== upTarget) {
+      return;
     }
-  }, [visible]);
 
-  if (!open && !visible) return null;
+    // Backdrop click (the dialog itself) will close the modal
+    if (event.target === modalRef.current) {
+      onClose?.();
+      handleClose();
+    }
+  };
 
   return ReactDOM.createPortal(
-    <Fade open={open} duration={300} onCloseAnimationEnd={() => setVisible(false)}>
-      <div className={styles.modal} onKeyDown={keyDownEventHandler} ref={modalRef}>
-        <div className={styles.backdrop} onClick={onClose} data-testid={testId('backdrop')} />
-        <div className={styles.container} {...ariaAtributes}>
-          <AnimationComponent open={open} duration={200} className={animationContainerClassName}>
-            {children}
-          </AnimationComponent>
-        </div>
-      </div>
-    </Fade>,
+    <dialog
+      className={classNames(className, { [styles.centered]: centered })}
+      onKeyDown={keyDownHandler}
+      onClose={closeHandler}
+      onClick={clickHandler}
+      onMouseDown={(e) => {
+        mouseEventTargetsPairRef.current.downTarget = e.target as HTMLElement;
+      }}
+      onMouseUp={(e) => {
+        mouseEventTargetsPairRef.current.upTarget = e.target as HTMLElement;
+      }}
+      ref={modalRef}
+      role={role}
+      {...ariaAttributes}
+    >
+      <AnimationComponent open={open} duration={300} className={animationContainerClassName} onCloseAnimationEnd={closeAnimationEndHandler}>
+        {children}
+      </AnimationComponent>
+    </dialog>,
     document.querySelector('body') as HTMLElement,
   );
 };

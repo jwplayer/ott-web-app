@@ -18,7 +18,7 @@ const useAppContentSearch = ({ siteId, enabled, query }: { query: string; siteId
   const appContentSearchQuery: UseQueryResult<Playlist | undefined, ApiError> = useQuery(
     ['app-search', query],
     async () => {
-      const searchResult = await apiService.getAppContentSearch(siteId, query);
+      const searchResult = await apiService.getContentSearch({ siteId, params: { searchTerm: query } });
 
       return searchResult;
     },

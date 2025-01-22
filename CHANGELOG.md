@@ -1,3 +1,163 @@
+## [6.9.0](https://github.com/jwplayer/ott-web-app/compare/v6.8.0...v6.9.0) (2024-12-17)
+
+
+### Features
+
+* **home:** add hero shelf swipe for all breakpoints ([3a3b814](https://github.com/jwplayer/ott-web-app/commit/3a3b814305097b8066f2ae6f5ce473e33d1cb388))
+* **i18n:** missing translations ([9d4b6a3](https://github.com/jwplayer/ott-web-app/commit/9d4b6a381b94b45babe64b31d027033626dfaa98))
+* **project:** add user_id support for DRM, Live and SSAI ([#653](https://github.com/jwplayer/ott-web-app/issues/653)) ([4df3aeb](https://github.com/jwplayer/ott-web-app/commit/4df3aebe8befa41611b9017dad793b67d8375864))
+* **project:** deterministic public url ([99d4658](https://github.com/jwplayer/ott-web-app/commit/99d46585866fc85d2d35379d09dd8a10758dcc10))
+* **project:** fade out hero’s based on scroll position ([932a362](https://github.com/jwplayer/ott-web-app/commit/932a3620aa3e9b3d54d17afc9a63f11fc4017b01))
+* **project:** remove card box-shadow ([a33d762](https://github.com/jwplayer/ott-web-app/commit/a33d76229d9ef151a24f4283346301d405175aea))
+* update custom entitlement configuration and apis ([#657](https://github.com/jwplayer/ott-web-app/issues/657)) ([7ee979e](https://github.com/jwplayer/ott-web-app/commit/7ee979ec5f0234346f87af390405df9fdb095bd3))
+
+
+### Bug Fixes
+
+* accessibility improvements for Hero shelf pagination and LayoutGrid ([9ad371d](https://github.com/jwplayer/ott-web-app/commit/9ad371da6f394e1cd5d8624a735fd24bc567d34d))
+* add array at polyfill ([6e554fb](https://github.com/jwplayer/ott-web-app/commit/6e554fb5cdad4b137c12e967122b6e312d2efc29))
+* crash when personal shelf data is not valid ([00e4725](https://github.com/jwplayer/ott-web-app/commit/00e47258de68a37e1de977adad4e4add74099384))
+* do not perform logout if password reset with token ([#648](https://github.com/jwplayer/ott-web-app/issues/648)) ([c3fbdc9](https://github.com/jwplayer/ott-web-app/commit/c3fbdc9dd219ec4f26484672193db4cb6efff76c))
+* dropdown box arrow spacing ([b4eafc6](https://github.com/jwplayer/ott-web-app/commit/b4eafc6de4a591cda6ef5a268c122a6f01b7c8e3))
+* fix modal closing behavior ([#649](https://github.com/jwplayer/ott-web-app/issues/649)) ([b65f0c5](https://github.com/jwplayer/ott-web-app/commit/b65f0c542c56a9cacd610015f75c51ff90664adb))
+* **home:** heroshelf description clamping not working ios ([16c3a02](https://github.com/jwplayer/ott-web-app/commit/16c3a02b8e1ded9562ad5fb7d05d9c6538e03201))
+* **i18n:** correct sidebar translation key ([8610c87](https://github.com/jwplayer/ott-web-app/commit/8610c8770cecdc85e78114d07e91cc721d2442f8))
+* **i18n:** translatable shelf titles for hub pages ([a17b9b6](https://github.com/jwplayer/ott-web-app/commit/a17b9b6bd9b7e19dd0ce8206c15eac1f1df412e6))
+* missing translation in playlist grid title ([4ae0b7e](https://github.com/jwplayer/ott-web-app/commit/4ae0b7e26bf061e4beb7744d690ce2f118fb7dc4))
+* use recommendations feed on live event screen ([#617](https://github.com/jwplayer/ott-web-app/issues/617)) ([294a7f3](https://github.com/jwplayer/ott-web-app/commit/294a7f34568a83c6d08a423e59b2b328a1dc7b3c))
+
+## [6.8.0](https://github.com/jwplayer/ott-web-app/compare/v6.7.0...v6.8.0) (2024-11-08)
+
+
+### Features
+
+* add support for featured custom param ([#632](https://github.com/jwplayer/ott-web-app/issues/632)) ([9ea7884](https://github.com/jwplayer/ott-web-app/commit/9ea78849d24a84652c34bcd7a62c5576ed068b99))
+* **auth:** add optional captcha validation to registration ([#630](https://github.com/jwplayer/ott-web-app/issues/630)) ([fac471c](https://github.com/jwplayer/ott-web-app/commit/fac471cde71239f98db60141542ec6f764d7650a))
+* **home:** add hero shelf type and deprecate content.featured ([#638](https://github.com/jwplayer/ott-web-app/issues/638)) ([8388404](https://github.com/jwplayer/ott-web-app/commit/8388404a25192d1562654bfe0af198307cb22c61))
+* **home:** add jumbotron featured shelf ([#628](https://github.com/jwplayer/ott-web-app/issues/628)) ([08bf7c0](https://github.com/jwplayer/ott-web-app/commit/08bf7c001b5f3d10e0e885b27f2cec4188ccaca5))
+* **i18n:** support translations for shelves titles and menu labels ([#612](https://github.com/jwplayer/ott-web-app/issues/612)) ([8d13515](https://github.com/jwplayer/ott-web-app/commit/8d13515c10dc91d477f4bcece239dc61474fec4b))
+* **payment:** add optional captcha validation to payments ([#631](https://github.com/jwplayer/ott-web-app/issues/631)) ([afa7d6a](https://github.com/jwplayer/ott-web-app/commit/afa7d6a17428ca6f801c3ff99e7f322d257d8a8f))
+* **project:** add custom menu label to sidebar ([#637](https://github.com/jwplayer/ott-web-app/issues/637)) ([b73ae54](https://github.com/jwplayer/ott-web-app/commit/b73ae542db10129ad1278410aabc754b820a93e4))
+* **project:** remove ott analytics ([beae9bd](https://github.com/jwplayer/ott-web-app/commit/beae9bd4278f8e4a1e2f0f64e7456a14300e9c3d))
+* **project:** ui improvements and support light background ([620007b](https://github.com/jwplayer/ott-web-app/commit/620007b69f888d415c35162b4396adfccbba8b26))
+
+
+### Bug Fixes
+
+* access bridge flaky tests ([#627](https://github.com/jwplayer/ott-web-app/issues/627)) ([1ae469b](https://github.com/jwplayer/ott-web-app/commit/1ae469b4c7b1f6922f6504b42d3445f7b9310cd8))
+* **project:** improve featured shelf and general ui ([#634](https://github.com/jwplayer/ott-web-app/issues/634)) ([085e245](https://github.com/jwplayer/ott-web-app/commit/085e2452290f11e8884294be0454bab9ea6f0895))
+* remove blue link color in hero description ([adf388c](https://github.com/jwplayer/ott-web-app/commit/adf388c968e11ba15c72d3ddc6679f940fb64076))
+
+## [6.7.0](https://github.com/jwplayer/ott-web-app/compare/v6.6.0...v6.7.0) (2024-09-27)
+
+
+### Features
+
+* access bridge service ([#616](https://github.com/jwplayer/ott-web-app/issues/616)) ([aae2551](https://github.com/jwplayer/ott-web-app/commit/aae25515bcff0e4ad8428d8b8389220eb9126d5f)), closes [#594](https://github.com/jwplayer/ott-web-app/issues/594) [#598](https://github.com/jwplayer/ott-web-app/issues/598) [#590](https://github.com/jwplayer/ott-web-app/issues/590) [#605](https://github.com/jwplayer/ott-web-app/issues/605) [#606](https://github.com/jwplayer/ott-web-app/issues/606)
+* **i18n:** fix lint error ([c27a1e6](https://github.com/jwplayer/ott-web-app/commit/c27a1e69c360d9ebe9abcc9cf2e8bb3a088516aa))
+* **menu:** fix support for media menu item ([#621](https://github.com/jwplayer/ott-web-app/issues/621)) ([4ffb849](https://github.com/jwplayer/ott-web-app/commit/4ffb84923424de05f1f62455c7822354c0842173))
+* **menu:** support media type for menu ([#610](https://github.com/jwplayer/ott-web-app/issues/610)) ([80acd7f](https://github.com/jwplayer/ott-web-app/commit/80acd7f6c6672baf6e4a01dbecdf8540be68dbd7))
+* **project:** screen animations ([#614](https://github.com/jwplayer/ott-web-app/issues/614)) ([edbb246](https://github.com/jwplayer/ott-web-app/commit/edbb246c9edf926b872f5fdeb01d8cc0379f86ae))
+
+
+### Bug Fixes
+
+* card grid rendering previous items ([#613](https://github.com/jwplayer/ott-web-app/issues/613)) ([dce9f70](https://github.com/jwplayer/ott-web-app/commit/dce9f70875444ad965bb69d87a3f9445883ab9b1))
+* **e2e:** fix cleeng tests ([#624](https://github.com/jwplayer/ott-web-app/issues/624)) ([5231d86](https://github.com/jwplayer/ott-web-app/commit/5231d86b1aa05f6424fd8335f805fb42794d2698))
+* **project:** demo config reset doesnt work ([#609](https://github.com/jwplayer/ott-web-app/issues/609)) ([003e3e5](https://github.com/jwplayer/ott-web-app/commit/003e3e505929d62f3547c45def885a1b32b32e82))
+* **series:** first episode switching per season ([ddedb6b](https://github.com/jwplayer/ott-web-app/commit/ddedb6b6f636c720f0ba016b2fa07b41e964fe8e))
+* update plan types and access bridge port for the unit test workflow ([#619](https://github.com/jwplayer/ott-web-app/issues/619)) ([0e51bc4](https://github.com/jwplayer/ott-web-app/commit/0e51bc44288fb1ab2cd55dc8bdeaec8233819043))
+
+## [6.6.0](https://github.com/jwplayer/ott-web-app/compare/v6.5.0...v6.6.0) (2024-09-06)
+
+
+### Features
+
+* **project:** add injectable wrapper to common components ([#598](https://github.com/jwplayer/ott-web-app/issues/598)) ([a6ad0d8](https://github.com/jwplayer/ott-web-app/commit/a6ad0d88b0e7cdc36548867870c8eb3c014f1ad2))
+* **project:** app metadata insertion ([3753a9c](https://github.com/jwplayer/ott-web-app/commit/3753a9c352289620af6ec597fb5f474d7b8ac6d4))
+* **project:** remove free and productIds from content-types.json ([#605](https://github.com/jwplayer/ott-web-app/issues/605)) ([2268447](https://github.com/jwplayer/ott-web-app/commit/226844726061184252af24fabc8340e8539230b6))
+
+
+### Bug Fixes
+
+* **e2e:** fix tests after cleeng api update ([#606](https://github.com/jwplayer/ott-web-app/issues/606)) ([9062dba](https://github.com/jwplayer/ott-web-app/commit/9062dba9184561b5af399e25632f4fe132960223))
+* **search:** override search query cache ([#594](https://github.com/jwplayer/ott-web-app/issues/594)) ([1c25ad2](https://github.com/jwplayer/ott-web-app/commit/1c25ad2cd2ecfc1d388e5f8094006f7d961c93a0))
+* wrong protocol and url path ([#588](https://github.com/jwplayer/ott-web-app/issues/588)) ([de75eb7](https://github.com/jwplayer/ott-web-app/commit/de75eb7eaca51d4fef9be4a40f13d043437bf3f0))
+
+## [6.5.0](https://github.com/jwplayer/ott-web-app/compare/v6.4.0...v6.5.0) (2024-07-25)
+
+
+### Features
+
+* add backClick event support for player ([f29f6dc](https://github.com/jwplayer/ott-web-app/commit/f29f6dcd244f95568b5b2ba1437bc7e39dd0febc))
+* add ellipsis to card title ([ab6b2a8](https://github.com/jwplayer/ott-web-app/commit/ab6b2a83d947b163c5a10d8a1701823ee2fcd266))
+* implement tile-slider dependency ([d58f1cb](https://github.com/jwplayer/ott-web-app/commit/d58f1cb73696c8f2f64b4bb8d9fcdeec8ffc34b8))
+* **integrations:** replace InPlayer SDK with direct API calls to JwPlayer SIMS domain ([#578](https://github.com/jwplayer/ott-web-app/issues/578)) ([0a87a46](https://github.com/jwplayer/ott-web-app/commit/0a87a46af6f0ec4a0e77006ef1fba7b98bcc5cbd))
+* **menu:** support more items in header navigation ([15bbce0](https://github.com/jwplayer/ott-web-app/commit/15bbce0fcc1ffdaf8adb8539150701a43f3cb1d9))
+* **profiles:** remove all remaining dead code assotiated with profiles ([892f41b](https://github.com/jwplayer/ott-web-app/commit/892f41b5d73f7aaccd2ded141407f35209ed7926))
+* **project:** add cancel functions for debounce and throttle utils ([3fd9add](https://github.com/jwplayer/ott-web-app/commit/3fd9add7ec93563fc4ac778090c326263dfde244))
+* **project:** add ssai ads for vod ([#583](https://github.com/jwplayer/ott-web-app/issues/583)) ([d3a4750](https://github.com/jwplayer/ott-web-app/commit/d3a4750af29c2cc460e390120ca457620d43bfdb))
+
+
+### Bug Fixes
+
+* **videodetail:** buttons wrapping ([4b6f524](https://github.com/jwplayer/ott-web-app/commit/4b6f52412c9fff5aa9a1ac997f62b97b95ecf7bc))
+* wait for geo status and cache it's value ([6e4d263](https://github.com/jwplayer/ott-web-app/commit/6e4d2634d8a78e731ea39a9689720db8e8be38ef))
+
+## [6.4.0](https://github.com/jwplayer/ott-web-app/compare/v6.3.0...v6.4.0) (2024-07-04)
+
+
+### Features
+
+* add log service ([7717a2a](https://github.com/jwplayer/ott-web-app/commit/7717a2a1afed6e379c0fcabb52c1c826f6b47ba1))
+
+## [6.3.0](https://github.com/jwplayer/ott-web-app/compare/v6.2.0...v6.3.0) (2024-06-24)
+
+
+### Features
+
+* **project:** add content lists (recommendations) ([#556](https://github.com/jwplayer/ott-web-app/issues/556)) ([790932b](https://github.com/jwplayer/ott-web-app/commit/790932b62471135d8e037d8e027717377016c131))
+
+## [6.2.0](https://github.com/jwplayer/ott-web-app/compare/v6.1.2...v6.2.0) (2024-06-13)
+
+
+### Features
+
+* **auth:** disable social login features ([f504e8f](https://github.com/jwplayer/ott-web-app/commit/f504e8f481730ce21e48abf0c31a5e54a31cba1c))
+* extend minimum browser support using APP_LEGACY_BUILD env-var ([1794113](https://github.com/jwplayer/ott-web-app/commit/1794113cce60dbb02ff5ab999b132b354d14a661))
+* **payment:** show external payment explanation ([7efffc7](https://github.com/jwplayer/ott-web-app/commit/7efffc797e37d244ca2c3f2a81d88187bbe6dfe6))
+* **profiles:** remove profiles from the web app ([e507314](https://github.com/jwplayer/ott-web-app/commit/e50731405626bdbe0f29fde61402bac34d669af8))
+* **project:** implement i18next-parser-workspaces cli ([2fa5bfd](https://github.com/jwplayer/ott-web-app/commit/2fa5bfd34ffad9561cb598a9cbd7ea57043de807))
+* **project:** make button states consistent ([#546](https://github.com/jwplayer/ott-web-app/issues/546)) ([07c8c55](https://github.com/jwplayer/ott-web-app/commit/07c8c55b35e848a1a3c771556fce12f26e84b0e6))
+* **project:** support live channel without tv guide ([92564d4](https://github.com/jwplayer/ott-web-app/commit/92564d42b7a43661d4a94b7ca7029ea91b3b1104))
+* **project:** use content type for live events ([6e6b2d6](https://github.com/jwplayer/ott-web-app/commit/6e6b2d64de729fe3f59f991039ffd8a3c56ef827))
+
+
+### Bug Fixes
+
+* **a11y:** ensure label is present for buttons in busy state ([a388e48](https://github.com/jwplayer/ott-web-app/commit/a388e488c8e10fab8cb13cf26687d2c643e6555e))
+* **a11y:** hide focus outline when not tabbing ([3d1cbf1](https://github.com/jwplayer/ott-web-app/commit/3d1cbf16e010c595c1af72eaa35af50fee8045ac))
+* **a11y:** make related videos section semantically correct ([57e2641](https://github.com/jwplayer/ott-web-app/commit/57e2641f92cf5db8a5ccd7d9d0cce34123c5d675))
+* **epg:** live tag overlap issues ([448c196](https://github.com/jwplayer/ott-web-app/commit/448c19660e83b665c8fb45cd4b7e34021219ed22))
+* generic consent_required validation message ([7146972](https://github.com/jwplayer/ott-web-app/commit/71469721cacb6224e080910e5491da7935f5eea9))
+* generic required validation message & show after submission ([70c34c5](https://github.com/jwplayer/ott-web-app/commit/70c34c54cb6d5770cd670034fceaf26f9b91e5e6))
+* **payment:** waiting for payment not working for jwp ppv ([8d92adc](https://github.com/jwplayer/ott-web-app/commit/8d92adc3f666a2cfe512401fc405e8cfcb4af6cd))
+* **project:** hide live event date for live channels ([6009ef5](https://github.com/jwplayer/ott-web-app/commit/6009ef55c9966cecd37a5986bb2e50912e3db65c))
+* **project:** remove focus outline around app ([a706d0e](https://github.com/jwplayer/ott-web-app/commit/a706d0e2f99fa35f4033c9b7b7b7d6e85c546a83))
+* **project:** restrict text length to avoid scrolling issue ([#538](https://github.com/jwplayer/ott-web-app/issues/538)) ([18a1990](https://github.com/jwplayer/ott-web-app/commit/18a19903cddaa3d88eb2047fe01b530ac6a1efb1))
+
+## [6.1.2](https://github.com/jwplayer/ott-web-app/compare/v6.1.1...v6.1.2) (2024-05-21)
+
+
+### Bug Fixes
+
+* **a11y:** improve accessibility of offers modal ([af654ec](https://github.com/jwplayer/ott-web-app/commit/af654ecc9b481353522b8e08a2d8078a7b91aa2a))
+* **home:** broken home skeleton ([#523](https://github.com/jwplayer/ott-web-app/issues/523)) ([35cd2db](https://github.com/jwplayer/ott-web-app/commit/35cd2db26ed3ffee65a6e2edf38447bce7957c7f))
+* **menu:** reintroduce profile menu styling ([39fd840](https://github.com/jwplayer/ott-web-app/commit/39fd840019405797069e84f7dbfd9d10a746b534))
+* **project:** alignment of password toggle button ([642068d](https://github.com/jwplayer/ott-web-app/commit/642068dc4babba8e9660e9bfee6acf16931aa8aa))
+* **project:** favicon paths ([7acf234](https://github.com/jwplayer/ott-web-app/commit/7acf234446d8dc62e3f43b13f49c3b2ad3c72a8a))
+* remove simultaneous logins ([9aa4a71](https://github.com/jwplayer/ott-web-app/commit/9aa4a71d8c12865bdf13fadf3d93b420343bd672))
+
 ## [6.1.1](https://github.com/jwplayer/ott-web-app/compare/v6.1.0...v6.1.1) (2024-04-23)
 
 

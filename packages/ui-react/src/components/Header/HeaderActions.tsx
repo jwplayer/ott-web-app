@@ -1,9 +1,10 @@
 import React, { type PropsWithChildren } from 'react';
+import classNames from 'classnames';
 
 import styles from './Header.module.scss';
 
-const HeaderActions = ({ children }: PropsWithChildren) => {
-  return <div className={styles.actions}>{children}</div>;
+const HeaderActions = ({ children, className }: PropsWithChildren<{ className?: string }>) => {
+  return <div className={classNames(styles.actions, className)}>{children}</div>;
 };
 
 export default HeaderActions;

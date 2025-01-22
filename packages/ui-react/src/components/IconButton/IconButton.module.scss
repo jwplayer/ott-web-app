@@ -12,11 +12,18 @@
 
   cursor: pointer;
   opacity: 0.9;
-  transition: transform 0.1s ease;
+  transition: transform 0.1s ease, opacity 0.1s ease;
 
-  &:hover,
-  &:focus {
+  &:hover {
     transform: scale(1.1);
     opacity: 1;
+  }
+
+  &:focus {
+    opacity: 1;
+  }
+
+  &:active {
+    opacity: 0.8;
   }
 }

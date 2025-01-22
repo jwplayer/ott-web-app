@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import classNames from 'classnames';
 import InfiniteScroll from 'react-infinite-scroller';
 import type { Playlist, PlaylistItem } from '@jwp/ott-common/types/playlist';
@@ -10,6 +10,7 @@ import useBreakpoint, { Breakpoint, type Breakpoints } from '@jwp/ott-ui-react/s
 import Card from '../Card/Card';
 import InfiniteScrollLoader from '../InfiniteScrollLoader/InfiniteScrollLoader';
 import LayoutGrid from '../LayoutGrid/LayoutGrid';
+import createInjectableComponent from '../../modules/createInjectableComponent';
 
 import styles from './CardGrid.module.scss';
 
@@ -26,7 +27,9 @@ const defaultCols: Breakpoints = {
   [Breakpoint.xl]: 5,
 };
 
-type CardGridProps = {
+export const CardGridIdentifier = Symbol(`CARD_GRID`);
+
+export type CardGridProps = {
   playlist: Playlist;
   watchHistory?: { [key: string]: number };
   isLoading: boolean;
@@ -42,6 +45,8 @@ type CardGridProps = {
   onCardHover?: (item: PlaylistItem) => void;
   getUrl: (item: PlaylistItem) => string;
 };
+
+const getCellKey = (item: PlaylistItem) => item.mediaid;
 
 function CardGrid({
   playlist,
@@ -72,30 +77,42 @@ function CardGrid({
     setRowCount(INITIAL_ROW_COUNT);
   }, [playlist.feedid]);
 
+  const renderCell = useCallback(
+    (playlistItem: PlaylistItem, tabIndex: number) => (
+      <Card
+        tabIndex={tabIndex}
+        progress={watchHistory ? watchHistory[playlistItem.mediaid] : undefined}
+        url={getUrl(playlistItem)}
+        onHover={typeof onCardHover === 'function' ? () => onCardHover(playlistItem) : undefined}
+        loading={isLoading}
+        isCurrent={currentCardItem && currentCardItem.mediaid === playlistItem.mediaid}
+        currentLabel={currentCardLabel}
+        isLocked={isLocked(accessModel, isLoggedIn, hasSubscription, playlistItem)}
+        posterAspect={posterAspect}
+        item={playlistItem}
+        headingLevel={headingLevel}
+      />
+    ),
+    [accessModel, currentCardItem, currentCardLabel, getUrl, hasSubscription, headingLevel, isLoading, isLoggedIn, onCardHover, posterAspect, watchHistory],
+  );
+
   return (
-    <InfiniteScroll pageStart={0} loadMore={loadMore ?? defaultLoadMore} hasMore={hasMore ?? defaultHasMore} loader={<InfiniteScrollLoader key="loader" />}>
+    <InfiniteScroll
+      pageStart={0}
+      loadMore={loadMore ?? defaultLoadMore}
+      hasMore={hasMore ?? defaultHasMore}
+      loader={<InfiniteScrollLoader key="loader" />}
+      useWindow={false}
+    >
       <LayoutGrid
         className={classNames(styles.container, styles[`cols-${visibleTiles}`])}
         data={loadMore ? playlist.playlist : playlist.playlist.slice(0, rowCount * visibleTiles)}
         columnCount={visibleTiles}
-        renderCell={(playlistItem: PlaylistItem, tabIndex: number) => (
-          <Card
-            tabIndex={tabIndex}
-            progress={watchHistory ? watchHistory[playlistItem.mediaid] : undefined}
-            url={getUrl(playlistItem)}
-            onHover={typeof onCardHover === 'function' ? () => onCardHover(playlistItem) : undefined}
-            loading={isLoading}
-            isCurrent={currentCardItem && currentCardItem.mediaid === playlistItem.mediaid}
-            currentLabel={currentCardLabel}
-            isLocked={isLocked(accessModel, isLoggedIn, hasSubscription, playlistItem)}
-            posterAspect={posterAspect}
-            item={playlistItem}
-            headingLevel={headingLevel}
-          />
-        )}
+        renderCell={renderCell}
+        getCellKey={getCellKey}
       />
     </InfiniteScroll>
   );
 }
 
-export default CardGrid;
+export default createInjectableComponent(CardGridIdentifier, CardGrid);

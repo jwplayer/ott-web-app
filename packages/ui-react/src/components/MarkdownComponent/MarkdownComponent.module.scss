@@ -64,9 +64,20 @@
     text-decoration: underline;
   }
 
+  a:hover {
+    opacity: 0.8;
+  }
+
   ul,
   ol,
   p {
     margin: 1.2em 0;
+  }
+}
+
+.inline {
+  a,
+  a:visited {
+    color: currentColor;
   }
 }

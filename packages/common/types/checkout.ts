@@ -1,6 +1,7 @@
 import type { PayloadWithIPOverride } from './account';
 import type { PaymentDetail } from './subscription';
 import type { EmptyEnvironmentServiceRequest, EnvironmentServiceRequest, PromiseRequest } from './service';
+import type { PlansResponse } from './plans';
 
 export type Offer = {
   id: number | null;
@@ -251,6 +252,7 @@ export type GetOrderResponse = {
 
 export type PaymentWithoutDetailsPayload = {
   orderId: number;
+  captchaValue?: string;
 };
 
 export type PaymentWithAdyenPayload = PayloadWithIPOverride & {
@@ -265,6 +267,7 @@ export type PaymentWithPayPalPayload = {
   errorUrl: string;
   waitingUrl: string;
   couponCode?: string;
+  captchaValue?: string;
 };
 
 export type PaymentWithPayPalResponse = {
@@ -303,6 +306,7 @@ export type InitialAdyenPaymentPayload = {
   customerIP?: string;
   browserInfo?: unknown;
   enable3DSRedirectFlow?: boolean;
+  captchaValue?: string;
 };
 
 export type AdyenAction = {
@@ -384,3 +388,4 @@ export type DeletePaymentMethod = EnvironmentServiceRequest<DeletePaymentMethodP
 export type AddAdyenPaymentDetails = EnvironmentServiceRequest<AddAdyenPaymentDetailsPayload, AddAdyenPaymentDetailsResponse>;
 export type FinalizeAdyenPaymentDetails = EnvironmentServiceRequest<FinalizeAdyenPaymentDetailsPayload, FinalizeAdyenPaymentDetailsResponse>;
 export type GetDirectPostCardPayment = (cardPaymentPayload: CardPaymentData, order: Order, referrer: string, returnUrl: string) => Promise<boolean>;
+export type GetEntitledPlans = PromiseRequest<{ siteId: string }, PlansResponse>;

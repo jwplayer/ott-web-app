@@ -51,8 +51,8 @@ exports[`<OffersForm> > renders and matches snapshot 1`] = `
       class="_offers_f7961f"
     >
       <div
+        aria-labelledby="title-S916977979_NL"
         class="_offer_f7961f"
-        role="option"
       >
         <input
           checked=""
@@ -63,82 +63,104 @@ exports[`<OffersForm> > renders and matches snapshot 1`] = `
           type="radio"
           value="S916977979_NL"
         />
-        <label
+        <div
           class="_label_f7961f"
-          for="S916977979_NL"
         >
-          <h2
-            class="_offerTitle_f7961f"
+          <label
+            for="S916977979_NL"
           >
-            choose_offer.monthly
-          </h2>
-          <hr
-            class="_offerDivider_f7961f"
-          />
-          <ul
-            class="_offerBenefits_f7961f"
-          >
-            <li>
-              <svg
-                aria-hidden="true"
-                class="_icon_585b29"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M12 2C6.5 2 2 6.5 2 12S6.5 22 12 22 22 17.5 22 12 17.5 2 12 2M10 17L5 12L6.41 10.59L10 14.17L17.59 6.58L19 8L10 17Z"
-                />
-              </svg>
+            <h2
+              class="_offerTitle_f7961f"
+              id="title-S916977979_NL"
+            >
+              choose_offer.monthly
+            </h2>
+            <span
+              class="hidden"
+            >
+              .
+            </span>
+            <hr
+              aria-hidden="true"
+              class="_offerDivider_f7961f"
+            />
+            <ul
+              class="_offerBenefits_f7961f"
+            >
+              <li>
+                <svg
+                  aria-hidden="true"
+                  class="_icon_585b29"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M12 2C6.5 2 2 6.5 2 12S6.5 22 12 22 22 17.5 22 12 17.5 2 12 2M10 17L5 12L6.41 10.59L10 14.17L17.59 6.58L19 8L10 17Z"
+                  />
+                </svg>
+                choose_offer.benefits.first_periods_free
+                <span
+                  class="hidden"
+                >
+                  .
+                </span>
+              </li>
+              <li>
+                <svg
+                  aria-hidden="true"
+                  class="_icon_585b29"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M12 2C6.5 2 2 6.5 2 12S6.5 22 12 22 22 17.5 22 12 17.5 2 12 2M10 17L5 12L6.41 10.59L10 14.17L17.59 6.58L19 8L10 17Z"
+                  />
+                </svg>
+                choose_offer.benefits.cancel_anytime
+                <span
+                  class="hidden"
+                >
+                  .
+                </span>
+              </li>
+              <li>
+                <svg
+                  aria-hidden="true"
+                  class="_icon_585b29"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M12 2C6.5 2 2 6.5 2 12S6.5 22 12 22 22 17.5 22 12 17.5 2 12 2M10 17L5 12L6.41 10.59L10 14.17L17.59 6.58L19 8L10 17Z"
+                  />
+                </svg>
+                choose_offer.benefits.watch_on_all_devices
+                <span
+                  class="hidden"
+                >
+                  .
+                </span>
+              </li>
+            </ul>
+            <div
+              class="_fill_f7961f"
+            />
+            <div
+              class="_offerPrice_f7961f"
+            >
+              € 6,99
                
-              choose_offer.benefits.first_periods_free
-            </li>
-            <li>
-              <svg
-                aria-hidden="true"
-                class="_icon_585b29"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M12 2C6.5 2 2 6.5 2 12S6.5 22 12 22 22 17.5 22 12 17.5 2 12 2M10 17L5 12L6.41 10.59L10 14.17L17.59 6.58L19 8L10 17Z"
-                />
-              </svg>
-               
-              choose_offer.benefits.cancel_anytime
-            </li>
-            <li>
-              <svg
-                aria-hidden="true"
-                class="_icon_585b29"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M12 2C6.5 2 2 6.5 2 12S6.5 22 12 22 22 17.5 22 12 17.5 2 12 2M10 17L5 12L6.41 10.59L10 14.17L17.59 6.58L19 8L10 17Z"
-                />
-              </svg>
-               
-              choose_offer.benefits.watch_on_all_devices
-            </li>
-          </ul>
-          <div
-            class="_fill_f7961f"
-          />
-          <div
-            class="_offerPrice_f7961f"
-          >
-            € 6,99
-             
-            <small>
-              /
-              periods.month
-            </small>
-          </div>
-        </label>
+              <small>
+                /
+                periods.month
+              </small>
+            </div>
+          </label>
+        </div>
       </div>
       <div
+        aria-labelledby="title-S345569153_NL"
         class="_offer_f7961f"
-        role="option"
       >
         <input
           class="_radio_f7961f"
@@ -148,78 +170,100 @@ exports[`<OffersForm> > renders and matches snapshot 1`] = `
           type="radio"
           value="S345569153_NL"
         />
-        <label
+        <div
           class="_label_f7961f"
-          for="S345569153_NL"
         >
-          <h2
-            class="_offerTitle_f7961f"
+          <label
+            for="S345569153_NL"
           >
-            choose_offer.yearly
-          </h2>
-          <hr
-            class="_offerDivider_f7961f"
-          />
-          <ul
-            class="_offerBenefits_f7961f"
-          >
-            <li>
-              <svg
-                aria-hidden="true"
-                class="_icon_585b29"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M12 2C6.5 2 2 6.5 2 12S6.5 22 12 22 22 17.5 22 12 17.5 2 12 2M10 17L5 12L6.41 10.59L10 14.17L17.59 6.58L19 8L10 17Z"
-                />
-              </svg>
+            <h2
+              class="_offerTitle_f7961f"
+              id="title-S345569153_NL"
+            >
+              choose_offer.yearly
+            </h2>
+            <span
+              class="hidden"
+            >
+              .
+            </span>
+            <hr
+              aria-hidden="true"
+              class="_offerDivider_f7961f"
+            />
+            <ul
+              class="_offerBenefits_f7961f"
+            >
+              <li>
+                <svg
+                  aria-hidden="true"
+                  class="_icon_585b29"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M12 2C6.5 2 2 6.5 2 12S6.5 22 12 22 22 17.5 22 12 17.5 2 12 2M10 17L5 12L6.41 10.59L10 14.17L17.59 6.58L19 8L10 17Z"
+                  />
+                </svg>
+                choose_offer.benefits.first_days_free
+                <span
+                  class="hidden"
+                >
+                  .
+                </span>
+              </li>
+              <li>
+                <svg
+                  aria-hidden="true"
+                  class="_icon_585b29"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M12 2C6.5 2 2 6.5 2 12S6.5 22 12 22 22 17.5 22 12 17.5 2 12 2M10 17L5 12L6.41 10.59L10 14.17L17.59 6.58L19 8L10 17Z"
+                  />
+                </svg>
+                choose_offer.benefits.cancel_anytime
+                <span
+                  class="hidden"
+                >
+                  .
+                </span>
+              </li>
+              <li>
+                <svg
+                  aria-hidden="true"
+                  class="_icon_585b29"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M12 2C6.5 2 2 6.5 2 12S6.5 22 12 22 22 17.5 22 12 17.5 2 12 2M10 17L5 12L6.41 10.59L10 14.17L17.59 6.58L19 8L10 17Z"
+                  />
+                </svg>
+                choose_offer.benefits.watch_on_all_devices
+                <span
+                  class="hidden"
+                >
+                  .
+                </span>
+              </li>
+            </ul>
+            <div
+              class="_fill_f7961f"
+            />
+            <div
+              class="_offerPrice_f7961f"
+            >
+              € 50,00
                
-              choose_offer.benefits.first_days_free
-            </li>
-            <li>
-              <svg
-                aria-hidden="true"
-                class="_icon_585b29"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M12 2C6.5 2 2 6.5 2 12S6.5 22 12 22 22 17.5 22 12 17.5 2 12 2M10 17L5 12L6.41 10.59L10 14.17L17.59 6.58L19 8L10 17Z"
-                />
-              </svg>
-               
-              choose_offer.benefits.cancel_anytime
-            </li>
-            <li>
-              <svg
-                aria-hidden="true"
-                class="_icon_585b29"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M12 2C6.5 2 2 6.5 2 12S6.5 22 12 22 22 17.5 22 12 17.5 2 12 2M10 17L5 12L6.41 10.59L10 14.17L17.59 6.58L19 8L10 17Z"
-                />
-              </svg>
-               
-              choose_offer.benefits.watch_on_all_devices
-            </li>
-          </ul>
-          <div
-            class="_fill_f7961f"
-          />
-          <div
-            class="_offerPrice_f7961f"
-          >
-            € 50,00
-             
-            <small>
-              /
-              periods.year
-            </small>
-          </div>
-        </label>
+              <small>
+                /
+                periods.year
+              </small>
+            </div>
+          </label>
+        </div>
       </div>
     </div>
     <button
@@ -286,8 +330,8 @@ exports[`<OffersForm> > renders and matches snapshot 2`] = `
       class="_offers_f7961f"
     >
       <div
+        aria-labelledby="title-R892134629_NL"
         class="_offer_f7961f"
-        role="option"
       >
         <input
           checked=""
@@ -298,46 +342,60 @@ exports[`<OffersForm> > renders and matches snapshot 2`] = `
           type="radio"
           value="R892134629_NL"
         />
-        <label
+        <div
           class="_label_f7961f"
-          for="R892134629_NL"
         >
-          <h2
-            class="_offerTitle_f7961f"
+          <label
+            for="R892134629_NL"
           >
-            One Time - TVOD offer
-          </h2>
-          <hr
-            class="_offerDivider_f7961f"
-          />
-          <ul
-            class="_offerBenefits_f7961f"
-          >
-            <li>
-              <svg
-                aria-hidden="true"
-                class="_icon_585b29"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M12 2C6.5 2 2 6.5 2 12S6.5 22 12 22 22 17.5 22 12 17.5 2 12 2M10 17L5 12L6.41 10.59L10 14.17L17.59 6.58L19 8L10 17Z"
-                />
-              </svg>
+            <h2
+              class="_offerTitle_f7961f"
+              id="title-R892134629_NL"
+            >
+              One Time - TVOD offer
+            </h2>
+            <span
+              class="hidden"
+            >
+              .
+            </span>
+            <hr
+              aria-hidden="true"
+              class="_offerDivider_f7961f"
+            />
+            <ul
+              class="_offerBenefits_f7961f"
+            >
+              <li>
+                <svg
+                  aria-hidden="true"
+                  class="_icon_585b29"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M12 2C6.5 2 2 6.5 2 12S6.5 22 12 22 22 17.5 22 12 17.5 2 12 2M10 17L5 12L6.41 10.59L10 14.17L17.59 6.58L19 8L10 17Z"
+                  />
+                </svg>
+                choose_offer.benefits.watch_on_all_devices
+                <span
+                  class="hidden"
+                >
+                  .
+                </span>
+              </li>
+            </ul>
+            <div
+              class="_fill_f7961f"
+            />
+            <div
+              class="_offerPrice_f7961f"
+            >
+              € 2,90
                
-              choose_offer.benefits.watch_on_all_devices
-            </li>
-          </ul>
-          <div
-            class="_fill_f7961f"
-          />
-          <div
-            class="_offerPrice_f7961f"
-          >
-            € 2,90
-             
-          </div>
-        </label>
+            </div>
+          </label>
+        </div>
       </div>
     </div>
     <button

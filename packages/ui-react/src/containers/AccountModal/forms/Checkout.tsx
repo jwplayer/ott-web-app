@@ -6,6 +6,7 @@ import useForm from '@jwp/ott-hooks-react/src/useForm';
 import { FormValidationError } from '@jwp/ott-common/src/errors/FormValidationError';
 import { useTranslation } from 'react-i18next';
 import { createURL } from '@jwp/ott-common/src/utils/urlFormatting';
+import { findDefaultCardMethodId } from '@jwp/ott-common/src/utils/payments';
 
 import CheckoutForm from '../../../components/CheckoutForm/CheckoutForm';
 import LoadingOverlay from '../../../components/LoadingOverlay/LoadingOverlay';
@@ -14,6 +15,7 @@ import NoPaymentRequired from '../../../components/NoPaymentRequired/NoPaymentRe
 import PaymentForm, { type PaymentFormData } from '../../../components/PaymentForm/PaymentForm';
 import AdyenInitialPayment from '../../AdyenInitialPayment/AdyenInitialPayment';
 import { useAriaAnnouncer } from '../../AnnouncementProvider/AnnoucementProvider';
+import useRecaptcha from '../../../hooks/useRecaptcha';
 
 const Checkout = () => {
   const location = useLocation();
@@ -28,6 +30,8 @@ const Checkout = () => {
   const chooseOfferUrl = modalURLFromLocation(location, 'choose-offer');
   const welcomeUrl = modalURLFromLocation(location, 'welcome');
   const closeModalUrl = modalURLFromLocation(location, null);
+
+  const { recaptchaRef, captchaSiteKey, getCaptchaValue } = useRecaptcha();
 
   const backButtonClickHandler = () => navigate(chooseOfferUrl);
 
@@ -53,7 +57,7 @@ const Checkout = () => {
     handleChange,
     handleSubmit,
   } = useForm({
-    initialValues: { couponCode: '', paymentMethodId: paymentMethods?.[0]?.id?.toString() || '' },
+    initialValues: { couponCode: '', paymentMethodId: findDefaultCardMethodId(paymentMethods) },
     onSubmit: ({ couponCode, paymentMethodId }) => {
       setShowCouponCodeSuccess(false);
 
@@ -84,7 +88,7 @@ const Checkout = () => {
   useEffect(() => {
     if (!paymentMethods?.length) return;
 
-    setValue('paymentMethodId', paymentMethods[0].id.toString());
+    setValue('paymentMethodId', findDefaultCardMethodId(paymentMethods));
   }, [paymentMethods, setValue]);
 
   // clear after closing the checkout modal
@@ -109,9 +113,9 @@ const Checkout = () => {
 
   const paymentMethod = paymentMethods?.find((method) => method.id === parseInt(paymentMethodId));
   const noPaymentRequired = !order?.requiredPaymentDetails;
-  const isStripePayment = paymentMethod?.methodName === 'card' && paymentMethod?.provider === 'stripe';
-  const isAdyenPayment = paymentMethod?.methodName === 'card' && paymentMethod?.paymentGateway === 'adyen';
-  const isPayPalPayment = paymentMethod?.methodName === 'paypal';
+  const isStripePayment = !noPaymentRequired && paymentMethod?.methodName === 'card' && paymentMethod?.provider === 'stripe';
+  const isAdyenPayment = !noPaymentRequired && paymentMethod?.methodName === 'card' && paymentMethod?.paymentGateway === 'adyen';
+  const isPayPalPayment = !noPaymentRequired && paymentMethod?.methodName === 'paypal';
 
   return (
     <CheckoutForm
@@ -133,8 +137,19 @@ const Checkout = () => {
       couponFormSubmitting={couponFormSubmitting}
       couponFormError={errors.couponCode}
       submitting={isSubmitting || adyenUpdating}
+      captchaSiteKey={captchaSiteKey}
+      recaptchaRef={recaptchaRef}
     >
-      {noPaymentRequired && <NoPaymentRequired onSubmit={submitPaymentWithoutDetails.mutateAsync} error={submitPaymentWithoutDetails.error?.message || null} />}
+      {noPaymentRequired && (
+        <NoPaymentRequired
+          onSubmit={async () => {
+            const captchaValue = await getCaptchaValue();
+
+            return submitPaymentWithoutDetails.mutateAsync({ captchaValue });
+          }}
+          error={submitPaymentWithoutDetails.error?.message || null}
+        />
+      )}
       {isStripePayment && (
         <PaymentForm
           onPaymentFormSubmit={async (cardPaymentPayload: PaymentFormData) =>
@@ -149,12 +164,17 @@ const Checkout = () => {
             setUpdatingOrder={setAdyenUpdating}
             orderId={order.id}
             type="card"
+            getCaptchaValue={getCaptchaValue}
           />
         </>
       )}
       {isPayPalPayment && (
         <PayPal
-          onSubmit={() => submitPaymentPaypal.mutate({ successUrl: successUrlPaypal, waitingUrl, cancelUrl, errorUrl, couponCode })}
+          onSubmit={async () => {
+            const captchaValue = await getCaptchaValue();
+
+            submitPaymentPaypal.mutate({ successUrl: successUrlPaypal, waitingUrl, cancelUrl, errorUrl, couponCode, captchaValue });
+          }}
           error={submitPaymentPaypal.error?.message || null}
         />
       )}

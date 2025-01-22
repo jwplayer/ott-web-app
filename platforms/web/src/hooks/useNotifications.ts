@@ -3,7 +3,6 @@ import { useLocation, useNavigate } from 'react-router';
 import { getModule } from '@jwp/ott-common/src/modules/container';
 import AccountController from '@jwp/ott-common/src/controllers/AccountController';
 import { queryClient } from '@jwp/ott-ui-react/src/containers/QueryProvider/QueryProvider';
-import { simultaneousLoginWarningKey } from '@jwp/ott-common/src/constants';
 import { modalURLFromLocation } from '@jwp/ott-ui-react/src/utils/location';
 import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
 import useEventCallback from '@jwp/ott-hooks-react/src/useEventCallback';
@@ -62,15 +61,6 @@ export default function useNotifications() {
             case NotificationsTypes.CARD_REQUIRES_ACTION:
             case NotificationsTypes.SUBSCRIBE_REQUIRES_ACTION:
               window.location.href = notification.resource?.redirect_to_url;
-              break;
-            case NotificationsTypes.ACCOUNT_LOGOUT:
-              try {
-                await accountController?.logout();
-              } finally {
-                if (notification.resource?.reason === 'sessions_limit') {
-                  navigateToModal('login', { message: simultaneousLoginWarningKey });
-                }
-              }
               break;
             default:
               break;

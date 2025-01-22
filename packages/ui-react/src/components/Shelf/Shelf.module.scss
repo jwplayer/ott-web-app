@@ -1,31 +1,61 @@
+@use '@jwp/ott-ui-react/src/styles/mixins/responsive';
+@use '@jwp/ott-ui-react/src/styles/variables';
+@use '@jwp/ott-ui-react/src/styles/theme';
+
 .shelf {
   margin: 0 0;
-  color: var(--primary-color);
   font-family: var(--body-alt-font-family);
 
   &:hover,
-  &:focus-within
-  {
-    .chevron {
+  &:focus-within {
+    .chevron:not(:disabled) {
       opacity: 1;
-      &.disabled {
-        opacity: 0.3;
-      }
     }
   }
+}
+
+.loadingTitle {
+  width: 35%;
+  min-height: 28px;
+  margin-bottom: 12px;
+  background-color: theme.$card-loading-bg-color;
+  border-radius: 5px;
 }
 
 .title {
   width: 100%;
   min-height: 28px;
-  margin-bottom: 12px;
+  margin-bottom: variables.$base-spacing;
   overflow: hidden;
-  color: var(--card-color);
   font-family: var(--body-alt-font-family);
   font-weight: var(--body-font-weight-bold);
   font-size: 24px;
   white-space: nowrap;
   text-overflow: ellipsis;
+
+  @include responsive.mobile-only() {
+    font-size: 20px;
+  }
+}
+
+.slider {
+  position: static;
+  overflow: visible;
+
+  li > a {
+    white-space: initial;
+  }
+
+  @include responsive.tablet-and-larger() {
+    li {
+      opacity: 1;
+      transition: opacity 0.2s ease;
+
+      &:global(.TileSlider--hidden) {
+        opacity: 0.5;
+      }
+    }
+  }
 }
 
 .chevron {
@@ -37,21 +67,31 @@
   height: 44px;
   outline-color: var(--highlight-color, white);
   cursor: pointer;
+  filter: drop-shadow(1px 1px 2px variables.$black);
   transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+  appearance: none;
 
   > svg {
-    width: 30px;
-    height: 30px;
+    width: 40px;
+    height: 40px;
   }
-  &.disabled {
-    cursor: default;
-    &:hover {
-      transform: none;
-    }
+
+  &:disabled {
+    opacity: 0.3;
+    pointer-events: none;
   }
+
   &:hover {
     transform: scale(1.2);
   }
+}
+
+.dots {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 12px;
 }
 
 .dot {
@@ -59,17 +99,18 @@
   width: 10px;
   height: 10px;
   margin: 0 5px;
-  background-color: rgba(254, 254, 254, 0.2);
+  background-color: var(--body-color);
   border-radius: 50%;
+  opacity: 0.5;
   transition: all 200ms ease;
+  will-change: transform;
 
   &.active {
-    background-color: var(--primary-color);
     transform: scale(1.1);
+    opacity: 1;
   }
 }
 
 .error {
-  color: var(--card-color);
   font-family: var(--body-alt-font-family);
 }

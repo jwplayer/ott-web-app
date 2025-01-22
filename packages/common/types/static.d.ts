@@ -16,3 +16,4 @@ declare module '*.xml?raw' {
 
 declare const __mode__: string;
 declare const __dev__: boolean;
+declare const __debug__: boolean | undefined;

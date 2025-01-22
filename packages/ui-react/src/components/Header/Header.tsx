@@ -1,17 +1,22 @@
-import React, { type PropsWithChildren } from 'react';
+import { type PropsWithChildren } from 'react';
 import classNames from 'classnames';
+
+import createInjectableComponent from '../../modules/createInjectableComponent';
 
 import styles from './Header.module.scss';
 
+export const HeaderIdentifier = Symbol(`HEADER`);
+
 type TypeHeader = 'static' | 'fixed';
 
-type Props = {
+export type HeaderProps = {
   headerType?: TypeHeader;
+  className?: string;
   searchActive: boolean;
 };
 
-const Header = ({ children, headerType = 'static', searchActive }: PropsWithChildren<Props>) => {
-  const headerClassName = classNames(styles.header, styles[headerType], {
+const Header = ({ children, className, headerType = 'static', searchActive }: PropsWithChildren<HeaderProps>) => {
+  const headerClassName = classNames(styles.header, styles[headerType], className, {
     [styles.searchActive]: searchActive,
   });
 
@@ -21,4 +26,5 @@ const Header = ({ children, headerType = 'static', searchActive }: PropsWithChil
     </header>
   );
 };
-export default Header;
+
+export default createInjectableComponent(HeaderIdentifier, Header);

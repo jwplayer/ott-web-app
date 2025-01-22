@@ -83,21 +83,20 @@
     "yearly": "Anual",
     "yearly_subscription": "Suscripción anual"
   },
+  "external_payment": {
+    "explanation": "Esta suscripción se gestiona a través de {{paymentProvider}}.",
+    "manage_subscription": "Haga clic aquí para más información."
+  },
   "login": {
     "email": "Correo electrónico",
-    "facebook": "Inicia sesión con Facebook",
     "field_is_not_valid_email": "Por favor, vuelve a ingresar tus datos de correo electrónico y prueba nuevamente.",
     "field_required": "Este campo es obligatorio, por favor ingresa un {{field}} válido.",
     "forgot_password": "¿Olvidaste tu contraseña?",
-    "google": "Inicia sesión con Google",
     "not_registered": "¿Nuevo/a en {{siteName}}?",
     "password": "Contraseña",
     "sign_in": "Iniciar sesión",
     "sign_in_success": "Has iniciado sesión correctamente.",
     "sign_up": "Registrarse",
-    "simultaneous_logins": "Se ha alcanzado el número máximo de sesiones activas para esta cuenta. Iniciar sesión aquí lo cerrará en otra sesión o dispositivo.",
-    "twitter": "Inicia sesión con Twitter",
-    "unexpected_error": "Ocurrió un error inesperado.",
     "view_password": "Ver contraseña",
     "wrong_combination": "Combinación de correo electrónico/contraseña incorrecta",
     "wrong_email": "Por favor, verifica tu correo electrónico e intenta nuevamente."
@@ -105,6 +104,8 @@
   "payment": {
     "back_to_profile": "Volver al perfil",
     "credit_card": "Tarjeta de crédito",
+    "credit_card_expiry_date": "Fecha de caducidad",
+    "credit_card_number": "Número de tarjeta",
     "edit_card": "Editar tarjeta",
     "longer_than_usual": "El pago está tardando más de lo habitual. Por favor, inténtelo de nuevo más tarde.",
     "paypal": "PayPal",
@@ -146,7 +147,6 @@
   },
   "registration": {
     "already_account": "¿Ya tienes una cuenta?",
-    "consent_required": "Este campo es obligatorio, por favor completa {{field}} para continuar.",
     "consents_error": "Acepte todos los consentimientos necesarios para continuar.",
     "continue": "Continuar",
     "email": "Correo electrónico",
@@ -156,7 +156,6 @@
     "field_required": "Este campo es obligatorio",
     "invalid_password": "Utiliza un mínimo de 8 caracteres (distingue entre mayúsculas y minúsculas) con al menos un número",
     "password": "Contraseña",
-    "password_helper_text": "Utiliza un mínimo de 8 caracteres (distingue entre mayúsculas y minúsculas) con al menos un número",
     "password_strength": {
       "fair": "Regular",
       "invalid": "",
@@ -170,8 +169,7 @@
     "terms_and_conditions": "Términos y condiciones",
     "terms_consent": "Acepto los {{termsLink}}.",
     "terms_consent_jwplayer": "Acepto los {{termsLink}} de JW Player.",
-    "user_exists": "Ya existe un usuario con esta dirección de correo electrónico",
-    "view_password": "Ver contraseña"
+    "user_exists": "Ya existe un usuario con esta dirección de correo electrónico"
   },
   "renew_subscription": {
     "explanation": "Al hacer clic en el botón de abajo, puedes renovar tu plan.",

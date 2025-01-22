@@ -3,14 +3,9 @@
 @use '@jwp/ott-ui-react/src/styles/mixins/responsive';
 
 .playlist {
-  margin: 0 calc(#{variables.$base-spacing} * 4);
-  color: var(--primary-color);
+  margin: 0 calc(#{variables.$base-spacing} * 3);
   font-family: var(--body-alt-font-family);
   text-align: center;
-
-  > main {
-    margin-top: 6px;
-  }
 
   @include responsive.mobile-only() {
     margin: 0 variables.$base-spacing;
@@ -19,21 +14,13 @@
   @include responsive.tablet-only() {
     margin: 0 calc(#{variables.$base-spacing} * 2);
   }
-
-  @include responsive.desktop-small-only() {
-    margin: 0 calc(#{variables.$base-spacing} * 3);
-  }
-}
-
-.main {
-  margin: -8px;
 }
 
 .header {
   display: flex;
   align-items: center;
   height: 36px;
-  margin: 24px 0;
+  margin: calc(variables.$base-spacing * 3) 0;
 
   > h1 {
     font-family: var(--body-alt-font-family);
@@ -44,13 +31,4 @@
   @include responsive.mobile-and-tablet {
     justify-content: space-between;
   }
-}
-
-.cell {
-  padding: 8px;
-}
-
-.error {
-  margin: 20px;
-  color: var(--primary-color);
 }

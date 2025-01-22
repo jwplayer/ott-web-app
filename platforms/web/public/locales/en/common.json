@@ -1,4 +1,8 @@
 {
+  "abbreviation": {
+    "hours": "hrs",
+    "minutes": "min"
+  },
   "alert": {
     "close": "Close",
     "success": "Success",
@@ -17,8 +21,8 @@
   "filter_videos_by_genre": "Filter videos by genre",
   "home": "Home",
   "live": "LIVE",
+  "more_info": "More info",
   "now": "Now",
-  "optional": "(Optional)",
   "play_item": "Play {{title}}",
   "scheduled": "Scheduled",
   "sign_in": "Sign in",
@@ -28,5 +32,6 @@
   "slide_next": "Next slide",
   "slide_previous": "Previous slide",
   "slide_right": "Slide right",
+  "slide_to": "Slide to item {{item}} of {{items}}",
   "videoplayer": "Video player"
 }

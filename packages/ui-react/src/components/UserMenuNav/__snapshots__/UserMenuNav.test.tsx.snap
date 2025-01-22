@@ -3,12 +3,12 @@
 exports[`<UserMenu> > renders and matches snapshot 1`] = `
 <div>
   <h2
-    class="_sectionHeader_e947a3"
+    class="_sectionHeader_457528"
   >
     nav.settings
   </h2>
   <ul
-    class="_menuItems_e947a3"
+    class="_menuItems_457528"
   >
     <li>
       <a
@@ -61,7 +61,7 @@ exports[`<UserMenu> > renders and matches snapshot 1`] = `
       </a>
     </li>
     <li
-      class="_divider_e947a3"
+      class="_divider_457528"
     >
       <div
         class="_menuButton_91706b"

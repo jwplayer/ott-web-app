@@ -9,7 +9,7 @@ exports[`<CreditCardNumberField> > renders and matches snapshot 1`] = `
       class="_label_86f2f5"
       for="text-field_1235_cardnumber"
     >
-      Card number
+      payment.credit_card_number
       <span
         aria-hidden="true"
       >

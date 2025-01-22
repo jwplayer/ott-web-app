@@ -26,8 +26,8 @@
   margin: 6px 4px;
 
   &:focus-within .paymentMethodLabel {
-    @include accessibility.accessibleOutline;
     transform: scale(1.05);
+    @include accessibility.accessibleOutline;
   }
 }
 

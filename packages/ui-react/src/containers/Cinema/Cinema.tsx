@@ -55,20 +55,20 @@ const Cinema: React.FC<Props> = ({
 
   const handlePlay = useCallback(() => {
     setIsPlaying(true);
-    onPlay && onPlay();
+    onPlay?.();
   }, [onPlay]);
 
   const handlePause = useCallback(() => {
     setIsPlaying(false);
-    onPause && onPause();
+    onPause?.();
   }, [onPause]);
 
   const handleComplete = useCallback(() => {
-    onComplete && onComplete();
+    onComplete?.();
   }, [onComplete]);
 
   const handleNext = useCallback(() => {
-    onNext && onNext();
+    onNext?.();
   }, [onNext]);
 
   const handleUserActive = useCallback(() => setUserActive(true), []);
@@ -80,8 +80,8 @@ const Cinema: React.FC<Props> = ({
   }, [open]);
 
   return (
-    <Modal open={open} animationContainerClassName={styles.cinemaContainer} onClose={onClose}>
-      <div className={styles.cinema} aria-modal="true" role="dialog" aria-label={t('videoplayer')}>
+    <Modal open={open} animationContainerClassName={styles.cinemaContainer} onClose={onClose} aria-label={t('videoplayer')}>
+      <div className={styles.cinema}>
         <Fade className={styles.overlayFade} open={!isPlaying || userActive || overlayHasFocus} keepMounted>
           <div className={styles.playerOverlay} onFocus={() => setOverlayHasFocus(true)} onBlur={() => setOverlayHasFocus(false)}>
             <div className={styles.playerContent}>
@@ -109,6 +109,7 @@ const Cinema: React.FC<Props> = ({
           onUserActive={handleUserActive}
           onUserInActive={handleUserInactive}
           onNext={handleNext}
+          onBackClick={onClose}
           liveEndDateTime={liveEndDateTime}
           liveFromBeginning={liveFromBeginning}
           liveStartDateTime={liveStartDateTime}

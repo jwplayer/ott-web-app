@@ -17,6 +17,7 @@ import useEntitlement from '@jwp/ott-hooks-react/src/useEntitlement';
 import useBreakpoint, { Breakpoint } from '@jwp/ott-ui-react/src/hooks/useBreakpoint';
 import PlayTrailer from '@jwp/ott-theme/assets/icons/play_trailer.svg?react';
 import useQueryParam from '@jwp/ott-ui-react/src/hooks/useQueryParam';
+import env from '@jwp/ott-common/src/env';
 
 import type { ScreenComponent } from '../../../../../types/screens';
 import VideoLayout from '../../../../components/VideoLayout/VideoLayout';
@@ -32,7 +33,7 @@ import VideoMetaData from '../../../../components/VideoMetaData/VideoMetaData';
 import Icon from '../../../../components/Icon/Icon';
 
 const MediaEvent: ScreenComponent<PlaylistItem> = ({ data: media, isLoading }) => {
-  const { t, i18n } = useTranslation('video');
+  const { t, i18n } = useTranslation(['video', 'common']);
 
   const [playTrailer, setPlayTrailer] = useState<boolean>(false);
   const breakpoint = useBreakpoint();
@@ -54,7 +55,7 @@ const MediaEvent: ScreenComponent<PlaylistItem> = ({ data: media, isLoading }) =
 
   // Media
   const { isLoading: isTrailerLoading, data: trailerItem } = useMedia(media?.trailerId || '');
-  const { isLoading: isPlaylistLoading, data: playlist } = usePlaylist(playlistId || '');
+  const { isLoading: isPlaylistLoading, data: playlist } = usePlaylist(features?.recommendationsPlaylist || '', { related_media_id: id });
 
   // Event
   const liveEvent = useLiveEvent(media);
@@ -65,8 +66,8 @@ const MediaEvent: ScreenComponent<PlaylistItem> = ({ data: media, isLoading }) =
   const hasMediaOffers = !!mediaOffers.length;
 
   // Handlers
-  const goBack = () => media && navigate(mediaURL({ media, playlistId, play: false }));
-  const getUrl = (item: PlaylistItem) => mediaURL({ media: item, playlistId });
+  const goBack = () => media && navigate(mediaURL({ id: media.mediaid, title: media.title, playlistId, play: false }));
+  const getUrl = (item: PlaylistItem) => mediaURL({ id: item.mediaid, title: item.title, playlistId: features?.recommendationsPlaylist });
 
   const handleComplete = useCallback(() => {
     if (!id || !playlist) return;
@@ -78,7 +79,7 @@ const MediaEvent: ScreenComponent<PlaylistItem> = ({ data: media, isLoading }) =
       return;
     }
 
-    return nextItem && navigate(mediaURL({ media: nextItem, playlistId, play: true }));
+    return nextItem && navigate(mediaURL({ id: nextItem.mediaid, title: nextItem.title, playlistId, play: true }));
   }, [id, playlist, navigate, playlistId]);
 
   // Effects
@@ -88,13 +89,19 @@ const MediaEvent: ScreenComponent<PlaylistItem> = ({ data: media, isLoading }) =
   }, [id]);
 
   // UI
-  const pageTitle = `${media.title} - ${siteName}`;
-  const canonicalUrl = media ? `${window.location.origin}${mediaURL({ media: media })}` : window.location.href;
+  const { title, mediaid } = media;
+  const pageTitle = `${title} - ${siteName}`;
+  const canonicalUrl = media ? `${env.APP_PUBLIC_URL}${mediaURL({ id: mediaid, title })}` : window.location.href;
 
   const primaryMetadata = (
     <>
       <StatusIcon mediaStatus={media.mediaStatus} />
-      <VideoMetaData attributes={createLiveEventMetadata(media, i18n.language)} />
+      <VideoMetaData
+        attributes={createLiveEventMetadata(media, i18n.language, {
+          minutesAbbreviation: t('common:abbreviation.minutes'),
+          hoursAbbreviation: t('common:abbreviation.hours'),
+        })}
+      />
     </>
   );
 
@@ -103,7 +110,7 @@ const MediaEvent: ScreenComponent<PlaylistItem> = ({ data: media, isLoading }) =
     <StartWatchingButton
       key={id} // necessary to fix autofocus on TalkBack
       item={media}
-      playUrl={mediaURL({ media, playlistId, play: true })}
+      playUrl={mediaURL({ id: mediaid, title, playlistId, play: true })}
       disabled={!liveEvent.isPlayable}
     />
   );
@@ -148,7 +155,7 @@ const MediaEvent: ScreenComponent<PlaylistItem> = ({ data: media, isLoading }) =
         {media.tags?.split(',').map((tag) => (
           <meta property="og:video:tag" content={tag} key={tag} />
         ))}
-        {media ? <script type="application/ld+json">{generateMovieJSONLD(media, window.location.origin)}</script> : null}
+        {media ? <script type="application/ld+json">{generateMovieJSONLD(media, env.APP_PUBLIC_URL)}</script> : null}
       </Helmet>
       <VideoLayout
         item={media}

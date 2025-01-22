@@ -1,4 +1,4 @@
-import { injectable } from 'inversify';
+import { inject, injectable } from 'inversify';
 
 import { createURL } from '../../../utils/urlFormatting';
 import type {
@@ -17,9 +17,9 @@ import CleengService from './CleengService';
 
 @injectable()
 export default class CleengSubscriptionService extends SubscriptionService {
-  private readonly cleengService: CleengService;
+  protected readonly cleengService: CleengService;
 
-  constructor(cleengService: CleengService) {
+  constructor(@inject(CleengService) cleengService: CleengService) {
     super();
     this.cleengService = cleengService;
   }

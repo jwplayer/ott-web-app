@@ -6,25 +6,6 @@ exports[`<LoginForm> > renders and matches snapshot 1`] = `
     data-testid="login-form"
     novalidate=""
   >
-    <div
-      class="_socialButtonsListContainer_313d0d"
-    >
-      <a
-        href="https://staging-v2.inplayer.com/"
-      >
-        Social Button
-      </a>
-      <a
-        href="https://www.facebook.com/"
-      >
-        Social Button
-      </a>
-      <a
-        href="https://accounts.google.com/"
-      >
-        Social Button
-      </a>
-    </div>
     <h2
       class="_title_7bd5f4"
     >

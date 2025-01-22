@@ -23,11 +23,18 @@ const WaitingForPayment = () => {
       interval: 3000,
       iterations: 5,
       offerId,
-      callback: (hasAccess) => {
+      callback: ({ hasAccess, offerId }) => {
         if (!hasAccess) return;
 
         announce(t('checkout.payment_success'), 'success');
-        navigate(modalURLFromLocation(location, 'welcome'));
+
+        // close the modal for PPV/TVOD offers
+        if (offerId.startsWith('C') || offerId.startsWith('P')) {
+          // @TODO should we show a dedicated modal for TVOD access?
+          navigate(modalURLFromLocation(location, null));
+        } else {
+          navigate(modalURLFromLocation(location, 'welcome'));
+        }
       },
     });
     //eslint-disable-next-line

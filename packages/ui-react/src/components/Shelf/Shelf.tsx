@@ -1,8 +1,9 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
+import { CYCLE_MODE_RESTART, type RenderControl, type RenderPagination, TileSlider } from '@videodock/tile-slider';
 import type { Playlist, PlaylistItem } from '@jwp/ott-common/types/playlist';
-import type { AccessModel, ContentType } from '@jwp/ott-common/types/config';
+import type { AccessModel, AppContentType } from '@jwp/ott-common/types/config';
 import { isLocked } from '@jwp/ott-common/src/utils/entitlements';
 import { mediaURL } from '@jwp/ott-common/src/utils/urlFormatting';
 import { PersonalShelf } from '@jwp/ott-common/src/constants';
@@ -10,10 +11,11 @@ import ChevronLeft from '@jwp/ott-theme/assets/icons/chevron_left.svg?react';
 import ChevronRight from '@jwp/ott-theme/assets/icons/chevron_right.svg?react';
 import useBreakpoint, { Breakpoint, type Breakpoints } from '@jwp/ott-ui-react/src/hooks/useBreakpoint';
 import type { PosterAspectRatio } from '@jwp/ott-common/src/utils/collection';
+import '@videodock/tile-slider/lib/style.css';
 
-import TileDock from '../TileDock/TileDock';
 import Card from '../Card/Card';
 import Icon from '../Icon/Icon';
+import createInjectableComponent from '../../modules/createInjectableComponent';
 
 import styles from './Shelf.module.scss';
 
@@ -33,9 +35,11 @@ export const featuredTileBreakpoints: Breakpoints = {
   [Breakpoint.xl]: 1,
 };
 
+export const ShelfIdentifier = Symbol(`SHELF`);
+
 export type ShelfProps = {
   playlist: Playlist;
-  type: ContentType;
+  type: AppContentType;
   onCardHover?: (playlistItem: PlaylistItem) => void;
   watchHistory?: { [key: string]: number };
   enableTitle?: boolean;
@@ -68,12 +72,12 @@ const Shelf = ({
 }: ShelfProps) => {
   const breakpoint: Breakpoint = useBreakpoint();
   const { t } = useTranslation('common');
-  const [didSlideBefore, setDidSlideBefore] = useState(false);
   const tilesToShow: number = (featured ? featuredTileBreakpoints[breakpoint] : tileBreakpoints[breakpoint]) + visibleTilesDelta;
 
   const renderTile = useCallback(
-    (item: PlaylistItem, isInView: boolean) => {
-      const url = mediaURL({ media: item, playlistId: playlist.feedid, play: type === PersonalShelf.ContinueWatching });
+    ({ item, isVisible }: { item: PlaylistItem; isVisible: boolean }) => {
+      const { mediaid: id, title } = item;
+      const url = mediaURL({ id, title, playlistId: playlist.feedid, play: type === PersonalShelf.ContinueWatching });
 
       return (
         <Card
@@ -81,7 +85,7 @@ const Shelf = ({
           progress={watchHistory ? watchHistory[item.mediaid] : undefined}
           onHover={typeof onCardHover === 'function' ? () => onCardHover(item) : undefined}
           featured={featured}
-          disabled={!isInView}
+          disabled={!isVisible}
           loading={loading}
           isLocked={isLocked(accessModel, isLoggedIn, hasSubscription, item)}
           posterAspect={posterAspect}
@@ -93,77 +97,62 @@ const Shelf = ({
     [watchHistory, onCardHover, featured, loading, accessModel, isLoggedIn, hasSubscription, posterAspect, playlist.feedid, type],
   );
 
-  const renderRightControl = useCallback(
-    (doSlide: () => void) => (
-      <div
-        className={styles.chevron}
-        role="button"
-        tabIndex={0}
-        aria-label={t('slide_next')}
-        onKeyDown={(event: React.KeyboardEvent) => (event.key === 'Enter' || event.key === ' ') && handleSlide(doSlide)}
-        onClick={() => handleSlide(doSlide)}
-      >
+  const renderRightControl: RenderControl = useCallback(
+    ({ onClick }) => (
+      <button className={styles.chevron} aria-label={t('slide_next')} onClick={onClick}>
         <Icon icon={ChevronRight} />
-      </div>
+      </button>
     ),
     [t],
   );
 
-  const renderLeftControl = useCallback(
-    (doSlide: () => void) => (
-      <div
-        className={classNames(styles.chevron, {
-          [styles.disabled]: !didSlideBefore,
-        })}
-        role="button"
-        tabIndex={didSlideBefore ? 0 : -1}
-        aria-label={t('slide_previous')}
-        onKeyDown={(event: React.KeyboardEvent) => (event.key === 'Enter' || event.key === ' ') && handleSlide(doSlide)}
-        onClick={() => handleSlide(doSlide)}
-      >
+  const renderLeftControl: RenderControl = useCallback(
+    ({ onClick }) => (
+      <button className={styles.chevron} aria-label={t('slide_previous')} onClick={onClick}>
         <Icon icon={ChevronLeft} />
-      </div>
+      </button>
     ),
-    [didSlideBefore, t],
+    [t],
   );
 
-  const renderPaginationDots = (index: number, pageIndex: number) => (
-    <span key={pageIndex} className={classNames(styles.dot, { [styles.active]: index === pageIndex })} />
-  );
+  const renderPagination: RenderPagination = ({ page, pages }) => {
+    const items = Array.from({ length: pages }, (_, pageIndex) => pageIndex);
 
-  const renderPageIndicator = (pageIndex: number, pages: number) => (
-    <div aria-live="polite" className="hidden">
-      {t('slide_indicator', { page: pageIndex + 1, pages })}
-    </div>
-  );
-
-  const handleSlide = (doSlide: () => void): void => {
-    setDidSlideBefore(true);
-    doSlide();
+    return (
+      <>
+        <div aria-live="polite" className="hidden">
+          {t('slide_indicator', { page: page + 1, pages })}
+        </div>
+        {featured && (
+          <div aria-hidden="true" className={styles.dots}>
+            {items.map((current) => (
+              <span key={current} className={classNames(styles.dot, { [styles.active]: page === current })} />
+            ))}
+          </div>
+        )}
+      </>
+    );
   };
 
   if (error || !playlist?.playlist) return <h2 className={styles.error}>Could not load items</h2>;
 
   return (
     <div className={classNames(styles.shelf)}>
-      {!featured ? <h2 className={classNames(styles.title)}>{title || playlist.title}</h2> : null}
-      <TileDock<PlaylistItem>
+      {featured ? null : loading ? <div className={styles.loadingTitle} /> : <h2 className={classNames(styles.title)}>{title || playlist.title}</h2>}
+      <TileSlider<PlaylistItem>
+        className={styles.slider}
         items={playlist.playlist}
         tilesToShow={tilesToShow}
-        wrapWithEmptyTiles={featured && playlist.playlist.length === 1}
-        cycleMode={'restart'}
+        cycleMode={CYCLE_MODE_RESTART}
         showControls={!loading}
-        showDots={featured}
-        transitionTime={'0.3s'}
-        spacing={8}
+        spacing={16}
         renderLeftControl={renderLeftControl}
         renderRightControl={renderRightControl}
-        renderPaginationDots={renderPaginationDots}
-        renderPageIndicator={renderPageIndicator}
+        renderPagination={renderPagination}
         renderTile={renderTile}
       />
     </div>
   );
 };
 
-export default Shelf;
+export default createInjectableComponent(ShelfIdentifier, Shelf);

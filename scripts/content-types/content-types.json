@@ -87,15 +87,6 @@
         "field_type": "media_select"
       }
     },
-    "productIds": {
-      "param": "productIds",
-      "label": "Product IDs",
-      "description": "Enter a CSV list of subscription assets that allow access to this content",
-      "details": {
-        "field_type": "input",
-        "placeholder": "CSV subscription IDs"
-      }
-    },
     "liveStatus": {
       "param": "VCH.EventState",
       "label": "Status",
@@ -120,20 +111,6 @@
     "general": {
       "title": "General",
       "fields": ["genre", "rating", "trailerId"]
-    },
-    "access": {
-      "title": "Access",
-      "fields": [
-        {
-          "param": "free",
-          "label": "Free",
-          "description": "If this item can be watched for free and doesn't require a login or subscription, you can set this value to true. Otherwise, if you leave this setting false, the application level subscription and authentication level rules will apply.",
-          "details": {
-            "field_type": "toggle"
-          }
-        },
-        "productIds"
-      ]
     }
   },
   "schemas": [
@@ -144,7 +121,7 @@
       "hosting_type": "hosted",
       "is_active": true,
       "is_series": false,
-      "sections": ["general", "access"]
+      "sections": ["general"]
     },
     {
       "name": "series",
@@ -162,7 +139,7 @@
       "hosting_type": "hosted",
       "is_active": true,
       "is_series": false,
-      "sections": ["access"]
+      "sections": []
     },
     {
       "name": "liveChannel",
@@ -190,7 +167,6 @@
             }
           ]
         },
-        "access",
         {
           "title": "Schedule (EPG)",
           "fields": [
@@ -251,8 +227,7 @@
               }
             }
           ]
-        },
-        "access"
+        }
       ]
     },
     {
@@ -262,22 +237,7 @@
       "hosting_type": "hosted",
       "is_active": true,
       "is_series": false,
-      "sections": [
-        {
-          "title": "Access",
-          "fields": [
-            {
-              "param": "free",
-              "label": "Free",
-              "description": "If this item can be watched for free and doesn't require a login or subscription, you can set this value to true. Otherwise, if you leave this setting false, the application level subscription and authentication level rules will apply.",
-              "details": {
-                "field_type": "toggle",
-                "default": true
-              }
-            }
-          ]
-        }
-      ]
+      "sections":[]
     },
     {
       "name": "hub",

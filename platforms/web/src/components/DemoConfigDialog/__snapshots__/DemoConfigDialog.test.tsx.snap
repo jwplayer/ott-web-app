@@ -52,7 +52,6 @@ exports[`<DemoConfigDialog> > renders and matches snapshot error dialog 1`] = `
           </p>
           <form
             method="GET"
-            target="/"
           >
             <div
               class="_formField_a245e1 _textField_0fa545 _maxWidth_561a54"

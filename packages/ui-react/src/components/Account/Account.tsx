@@ -8,7 +8,8 @@ import type { CustomFormField } from '@jwp/ott-common/types/account';
 import { getModule } from '@jwp/ott-common/src/modules/container';
 import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
 import AccountController from '@jwp/ott-common/src/controllers/AccountController';
-import { isTruthy, isTruthyCustomParamValue, logDev, testId } from '@jwp/ott-common/src/utils/common';
+import { isTruthy, isTruthyCustomParamValue, testId } from '@jwp/ott-common/src/utils/common';
+import { logError } from '@jwp/ott-common/src/logger';
 import { formatConsents, formatConsentsFromValues, formatConsentsToRegisterFields, formatConsentValues } from '@jwp/ott-common/src/utils/collection';
 import useToggle from '@jwp/ott-hooks-react/src/useToggle';
 import Visibility from '@jwp/ott-theme/assets/icons/visibility.svg?react';
@@ -172,7 +173,7 @@ const Account = ({ panelClassName, panelHeaderClassName, canUpdateEmail = true }
           }
           default: {
             formErrors.form = t('account.errors.unknown_error');
-            logDev('Unknown error', error);
+            logError('Account', 'Unknown error', { error });
             break;
           }
         }

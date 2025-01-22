@@ -5,6 +5,8 @@ import type { PlaylistItem } from '@jwp/ott-common/types/playlist';
 import type { ScreenComponent } from '../../../../../types/screens';
 import ShelfList from '../../../../containers/ShelfList/ShelfList';
 import Hero from '../../../../components/Hero/Hero';
+import HeroTitle from '../../../../components/Hero/HeroTitle';
+import HeroDescription from '../../../../components/Hero/HeroDescription';
 
 const parsePlaylistIds = (input: unknown): Content[] => {
   const playlistIds = typeof input === 'string' ? input.replace(/\s+/g, '').split(',') : [];
@@ -24,7 +26,10 @@ const MediaHub: ScreenComponent<PlaylistItem> = ({ data }) => {
 
   return (
     <header>
-      <Hero image={data.backgroundImage} title={data.title} description={data.description} />
+      <Hero image={data.backgroundImage}>
+        <HeroTitle title={data.title} />
+        <HeroDescription description={data.description} />
+      </Hero>
       <ShelfList rows={rows}></ShelfList>
     </header>
   );

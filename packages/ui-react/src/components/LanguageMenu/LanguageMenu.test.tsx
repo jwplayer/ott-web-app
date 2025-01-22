@@ -1,3 +1,4 @@
+import { axe } from 'vitest-axe';
 import { cleanup, fireEvent, render } from '@testing-library/react';
 import type { LanguageDefinition } from '@jwp/ott-common/types/i18n';
 
@@ -49,5 +50,11 @@ describe('<LanguageMenu>', () => {
     const { getByText } = renderLanguageMenu(languages[0], true);
     fireEvent.click(getByText(languages[0].displayName));
     expect(onClickCb).toHaveBeenCalledWith(languages[0].code);
+  });
+
+  test('WCAG 2.2 (AA) compliant', async () => {
+    const { container } = renderLanguageMenu(languages[0], false);
+
+    expect(await axe(container, { runOnly: ['wcag21a', 'wcag21aa', 'wcag22aa'] })).toHaveNoViolations();
   });
 });

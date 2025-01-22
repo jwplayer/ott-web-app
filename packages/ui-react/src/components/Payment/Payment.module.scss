@@ -11,7 +11,7 @@
 
   font-size: 14px;
   line-height: variables.$base-line-height;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.14), 0 3px 4px rgba(0, 0, 0, 0.12), 0 1px 5px rgba(0, 0, 0, 0.2);
+  text-shadow: var(--body-text-shadow);
   background: theme.$panel-bg;
   border-radius: 4px;
 
@@ -71,6 +71,10 @@
     font-weight: var(--body-font-weight-bold);
     font-size: 24px;
   }
+}
+
+.explanation {
+  font-size: 14px;
 }
 
 .cardDetails {

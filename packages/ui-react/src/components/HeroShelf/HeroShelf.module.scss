@@ -1,0 +1,381 @@
+@use '@jwp/ott-ui-react/src/styles/mixins/responsive';
+@use '@jwp/ott-ui-react/src/styles/variables';
+@use '@jwp/ott-ui-react/src/styles/theme';
+@use '@jwp/ott-ui-react/src/styles/mixins/typography';
+
+$desktop-height: 56.25vw;
+$desktop-max-height: 700px;
+$desktop-min-height: 275px;
+
+$tablet-height: 70vw;
+$tablet-min-height: 550px;
+
+$mobile-height: 70vh;
+$mobile-min-height: 450px;
+$mobile-landscape-height: 100vh;
+
+.shelf {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+  width: 100%;
+  height: calc($desktop-height - variables.$header-height);
+  min-height: calc($desktop-min-height - variables.$header-height);
+  max-height: calc($desktop-max-height - variables.$header-height);
+  margin-bottom: calc(variables.$base-spacing * 2);
+  padding-bottom: 100px;
+
+  color: var(--primary-color);
+  font-family: var(--body-alt-font-family);
+  font-size: 18px;
+  line-height: 1.5em;
+  letter-spacing: 0.5px;
+  background-color: var(--hero-shelf-background-color);
+
+  &:hover .chevron:not(:disabled) {
+    opacity: 0.8;
+  }
+
+  @include responsive.mobile-and-small-tablet() {
+    padding: 0;
+  }
+
+  @include responsive.tablet-only() {
+    height: calc($tablet-height - variables.$header-height);
+    min-height: calc($tablet-min-height - variables.$header-height);
+  }
+
+  @include responsive.mobile-only() {
+    height: calc($mobile-height - variables.$header-height - var(--safe-area-top, 0px));
+    min-height: calc($mobile-min-height - variables.$header-height);
+  }
+
+  @include responsive.mobile-only-landscape() {
+    height: calc($mobile-landscape-height - variables.$header-height);
+    min-height: initial;
+    padding: 0;
+  }
+}
+
+.loadingTitle {
+  width: 35%;
+  min-height: 28px;
+  margin-bottom: 12px;
+  background-color: theme.$card-loading-bg-color;
+  border-radius: 5px;
+}
+
+.title {
+  display: -webkit-box;
+  width: 100%;
+  min-height: 28px;
+  margin-bottom: 12px;
+  overflow: hidden;
+  color: var(--card-color);
+  font-family: var(--body-alt-font-family);
+  font-weight: var(--body-font-weight-bold);
+  font-size: 34px;
+  line-height: 1.3em;
+  letter-spacing: 0.25px;
+  white-space: normal;
+  text-overflow: ellipsis;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+
+.poster {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 0;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  width: 100%;
+  height: 56.25vw;
+  max-height: 700px;
+  background-color: var(--hero-shelf-background-color);
+
+  @include responsive.tablet-only() {
+    height: $tablet-height;
+    min-height: $tablet-min-height;
+  }
+
+  @include responsive.mobile-only() {
+    height: $mobile-height;
+    min-height: $mobile-min-height;
+    margin-top: var(--safe-area-top, 0);
+  }
+
+  @include responsive.mobile-only-landscape() {
+    height: $mobile-landscape-height;
+    min-height: initial;
+  }
+}
+
+.background {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  justify-self: flex-end;
+
+  -webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 0.05) 0, rgba(0, 0, 0, 0.35) 50%, rgba(0, 0, 0, 0.8) 80%);
+  mask-image: linear-gradient(to right, rgba(0, 0, 0, 0.05) 0, rgba(0, 0, 0, 0.35) 50%, rgba(0, 0, 0, 0.8) 80%);
+
+  > div {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    overflow: hidden;
+  }
+
+  @include responsive.tablet-small-only() {
+    -webkit-mask-image: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0, 0, 0, 1) 30%, transparent 90%);
+    mask-image: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0, 0, 0, 1) 30%, transparent 90%);
+  }
+
+  @include responsive.mobile-only() {
+    -webkit-mask-image: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0, 0, 0, 1) 30%, transparent 75%);
+    mask-image: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0, 0, 0, 1) 30%, transparent 75%);
+  }
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 20%;
+}
+
+.fade {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: linear-gradient(rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 75%, rgba(0, 0, 0, 0.8) 95%, rgba(0, 0, 0, 1) 100%);
+}
+
+.fade2 {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: linear-gradient(rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0) 20%, rgba(0, 0, 0, 0) 80%, rgba(0, 0, 0, 0.15) 100%);
+
+  @include responsive.mobile-and-small-tablet() {
+    background: linear-gradient(rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.15) 20%, rgba(0, 0, 0, 0.3) 95%, rgba(0, 0, 0, 0.3) 100%);
+  }
+}
+
+.swipeSlider {
+  display: flex;
+  align-items: flex-end;
+  width: 100%;
+  height: 100%;
+}
+
+.swipeSliderMobile {
+  width: 100%;
+  height: 100%;
+}
+
+.metadata {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  min-width: 50%;
+  max-width: 50%;
+  padding-left: calc(variables.$base-spacing * 4);
+
+  > h2 {
+    margin: 0;
+  }
+
+  > div {
+    display: flex;
+    font-size: 18px;
+    line-height: 1.5em;
+    letter-spacing: 0.15px;
+    gap: 12px;
+  }
+
+  @include responsive.tablet-only() {
+    max-width: 60%;
+  }
+
+  @include responsive.mobile-and-small-tablet() {
+    bottom: 0;
+    align-items: center;
+    width: 100%;
+    max-width: 100%;
+    padding: calc(variables.$base-spacing * 3) calc(variables.$base-spacing * 2);
+    gap: 20px;
+
+    > h2 {
+      font-size: 24px;
+    }
+    > div {
+      font-size: 14px;
+    }
+  }
+
+  @include responsive.mobile-only-landscape() {
+    min-height: initial;
+    padding: 0 calc(variables.$base-spacing * 3) calc(variables.$base-spacing * 3) calc(variables.$base-spacing * 3);
+
+    > h2 {
+      font-size: 24px;
+    }
+    > div {
+      font-size: 14px;
+    }
+  }
+
+  @include responsive.tablet-small-only() {
+    padding: 0 calc(variables.$base-spacing * 3) calc(variables.$base-spacing * 3) calc(variables.$base-spacing * 3);
+
+    > div > button {
+      width: auto !important; // Override StartWatchingButton fullWidth prop
+    }
+  }
+
+  @include responsive.mobile-only() {
+    padding: calc(variables.$base-spacing * 3) variables.$base-spacing;
+    text-align: center;
+  }
+}
+
+.error {
+  color: var(--card-color);
+  font-family: var(--body-alt-font-family);
+}
+
+.chevron {
+  position: absolute;
+  top: 50%;
+  width: 44px;
+  height: 44px;
+  outline-color: var(--highlight-color, white);
+  transform: translateY(-50%);
+  cursor: pointer;
+  opacity: 0;
+  filter: drop-shadow(1px 1px 2px variables.$black);
+  transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+  appearance: none;
+
+  > svg {
+    width: 40px;
+    height: 40px;
+  }
+
+  &:focus-visible {
+    opacity: 0.8;
+  }
+
+  &:hover {
+    transform: scale(1.2) translateY(-50%);
+  }
+
+  &:disabled {
+    cursor: default;
+    opacity: 0;
+    transition: none;
+  }
+
+  @include responsive.mobile-and-small-tablet() {
+    top: 35%;
+    &:hover {
+      transform: translateY(-50%); // No scale on mobile
+    }
+
+    &:not(.dimmed):not(:disabled) {
+      opacity: 1;
+    }
+  }
+}
+
+.chevronLeft {
+  left: 8px;
+  z-index: 1;
+}
+
+.chevronRight {
+  right: 8px;
+}
+
+.dots {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  display: flex;
+  gap: 12px;
+  transform: translateX(-50%);
+
+  @include responsive.mobile-and-small-tablet() {
+    bottom: 20px;
+  }
+}
+
+.dotsList {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  gap: 12px;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+
+  > div {
+    width: 100%;
+    height: 100%;
+    background-color: var(--card-color);
+    border-radius: 10px;
+    opacity: 0.6;
+  }
+
+  &:focus {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 4px;
+
+    @media (hover: hover) and (pointer: fine) {
+      outline: none;
+    }
+  }
+
+  &[disabled] {
+    cursor: default;
+  }
+}
+
+.dotActive {
+  width: 20px;
+}
+
+.dotActive > div {
+  background-color: var(--primary-color);
+  opacity: 1;
+}
+
+.dotPlaceholder {
+  width: 10px;
+  height: 10px;
+}

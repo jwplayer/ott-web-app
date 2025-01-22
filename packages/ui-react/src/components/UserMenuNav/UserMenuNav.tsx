@@ -8,15 +8,11 @@ import AccountCircle from '@jwp/ott-theme/assets/icons/account_circle.svg?react'
 import Favorite from '@jwp/ott-theme/assets/icons/favorite.svg?react';
 import BalanceWallet from '@jwp/ott-theme/assets/icons/balance_wallet.svg?react';
 import Exit from '@jwp/ott-theme/assets/icons/exit.svg?react';
-import { userProfileURL } from '@jwp/ott-common/src/utils/urlFormatting';
 import { PATH_USER_ACCOUNT, PATH_USER_FAVORITES, PATH_USER_PAYMENTS } from '@jwp/ott-common/src/paths';
-import type { Profile } from '@jwp/ott-common/types/profiles';
 
+import styles from '../UserMenu/UserMenu.module.scss'; // TODO inherit styling
 import MenuButton from '../MenuButton/MenuButton';
 import Icon from '../Icon/Icon';
-import ProfileCircle from '../ProfileCircle/ProfileCircle';
-
-import styles from './UserMenuNav.module.scss';
 
 type Props = {
   small?: boolean;
@@ -24,11 +20,10 @@ type Props = {
   showPaymentItems: boolean;
   onButtonClick?: () => void;
   titleId?: string;
-  currentProfile?: Profile | null;
   favoritesEnabled?: boolean;
 };
 
-const UserMenuNav = ({ showPaymentItems, small = false, onButtonClick, currentProfile, favoritesEnabled, focusable, titleId }: Props) => {
+const UserMenuNav = ({ showPaymentItems, small = false, onButtonClick, favoritesEnabled, focusable, titleId }: Props) => {
   const { t } = useTranslation('user');
   const navigate = useNavigate();
   const accountController = getModule(AccountController);
@@ -49,17 +44,6 @@ const UserMenuNav = ({ showPaymentItems, small = false, onButtonClick, currentPr
         {t('nav.settings')}
       </h2>
       <ul className={styles.menuItems}>
-        {currentProfile && (
-          <li>
-            <MenuButton
-              small={small}
-              onClick={onButtonClick}
-              to={userProfileURL(currentProfile.id ?? '')}
-              label={t('nav.profile')}
-              startIcon={<ProfileCircle src={currentProfile?.avatar_url} alt={currentProfile?.name ?? ''} />}
-            />
-          </li>
-        )}
         <li>
           <MenuButton
             small={small}

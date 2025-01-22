@@ -4,14 +4,14 @@ import { TestConfig } from '@jwp/ott-testing/constants';
 
 import { randomDate } from './randomizers';
 
-import constants, { makeShelfXpath, normalTimeout, ShelfId } from '#utils/constants';
+import constants, { longTimeout, makeShelfXpath, normalTimeout, ShelfId } from '#utils/constants';
 import passwordUtils, { LoginContext } from '#utils/password_utils';
 
 const configFileQueryKey = 'app-config';
 const loaderElement = '[class*=_loadingOverlay]';
 
 type SwipeTarget = { text: string } | { xpath: string };
-type SwipeDirection = { direction: 'left' | 'right' } | { points: { x1: number; y1: number; x2: number; y2: number } };
+type SwipeDirection = { direction: 'left' | 'right'; delta?: number } | { points: { x1: number; y1: number; x2: number; y2: number } };
 
 const stepsObj = {
   useConfig: function (this: CodeceptJS.I, config: TestConfig) {
@@ -29,7 +29,8 @@ const stepsObj = {
     this.fillField('email', email);
     this.waitForElement('input[name=password]', normalTimeout);
     this.fillField('password', password);
-    this.submitForm(15);
+    this.click('button[type="submit"]');
+    this.waitForInvisible(loaderElement, 20);
 
     this.dontSee('Incorrect email/password combination');
     this.dontSee(constants.loginFormSelector);
@@ -200,10 +201,6 @@ const stepsObj = {
       });
     });
   },
-  submitForm: function (this: CodeceptJS.I, loaderTimeout: number | false = normalTimeout) {
-    this.click('button[type="submit"]');
-    this.waitForLoaderDone(loaderTimeout);
-  },
   payWithCreditCard: async function (
     this: CodeceptJS.I,
     creditCardFieldName: string,
@@ -237,13 +234,8 @@ const stepsObj = {
       await locator.getByLabel(label).fill(value);
     });
   },
-  waitForLoaderDone: function (this: CodeceptJS.I, timeout: number | false = normalTimeout) {
-    // Specify false when the loader is NOT expected to be shown at all
-    if (timeout === false) {
-      this.dontSeeElement(loaderElement);
-    } else {
-      this.waitForInvisible(loaderElement, timeout);
-    }
+  waitForLoaderDone: function (this: CodeceptJS.I) {
+    this.limitTime(longTimeout).dontSeeElement(loaderElement);
   },
   openSignUpModal: async function (this: CodeceptJS.I) {
     const { isMobile } = await this.openSignInMenu();
@@ -304,15 +296,16 @@ const stepsObj = {
   swipe: async function (this: CodeceptJS.I, args: SwipeTarget & SwipeDirection) {
     await this.executeScript((args) => {
       const xpath = args.xpath || `//*[text() = "${args.text}"]`;
+      const delta = args.delta || 25;
 
       const points =
         args.direction === 'left'
-          ? { x1: 100, y1: 1, x2: 50, y2: 1 }
+          ? { x1: delta, y1: 1, x2: 0, y2: 1 }
           : args.direction === 'right'
           ? {
-              x1: 50,
+              x1: 0,
               y1: 1,
-              x2: 100,
+              x2: delta,
               y2: 1,
             }
           : args.points;
@@ -337,19 +330,38 @@ const stepsObj = {
         }),
       );
 
-      element.dispatchEvent(
-        new TouchEvent('touchend', {
-          bubbles: true,
-          changedTouches: [
-            new Touch({
-              identifier: Date.now() + 1,
-              target: element,
-              clientX: points.x2,
-              clientY: points.y2,
+      return new Promise<void>((resolve) => {
+        setTimeout(() => {
+          element.dispatchEvent(
+            new TouchEvent('touchmove', {
+              bubbles: true,
+              changedTouches: [
+                new Touch({
+                  identifier: Date.now() + 1,
+                  target: element,
+                  clientX: points.x2,
+                  clientY: points.y2,
+                }),
+              ],
             }),
-          ],
-        }),
-      );
+          );
+
+          element.dispatchEvent(
+            new TouchEvent('touchend', {
+              bubbles: true,
+              changedTouches: [
+                new Touch({
+                  identifier: Date.now() + 2,
+                  target: element,
+                  clientX: points.x2,
+                  clientY: points.y2,
+                }),
+              ],
+            }),
+          );
+          resolve();
+        }, 16);
+      });
     }, args);
   },
   waitForPlayerPlaying: async function (title: string, tries = 10) {
@@ -510,9 +522,10 @@ const stepsObj = {
         await this.swipe({
           xpath: shelfLocator ? `${shelfLocator}//*[@tabindex=0]` : `${cardLocator}/ancestor::ul/li/a[@tabindex=0]`,
           direction: scrollToTheRight ? 'left' : 'right',
+          delta: 15, // slow swipe to prevent sliding over
         });
       } else {
-        this.click({ css: `div[aria-label="${scrollToTheRight ? 'Next slide' : 'Previous slide'}"]` }, shelfLocator);
+        this.click({ css: `button[aria-label="${scrollToTheRight ? 'Next slide' : 'Previous slide'}"]` }, shelfLocator);
       }
 
       this.wait(1);
@@ -540,6 +553,15 @@ const stepsObj = {
   },
   clickHome: function (this: CodeceptJS.I) {
     this.click('a[href="/"]');
+  },
+  seeCssProperties: async function (this: CodeceptJS.I, locatorOrString: CodeceptJS.LocatorOrString, cssProperties: Record<string, string>) {
+    for (const property in cssProperties) {
+      const locator = locate(locatorOrString);
+      const actual = await this.grabCssPropertyFrom(locator, property);
+      const expected = cssProperties[property];
+
+      assert.equal(actual, expected, `CSS property '${property}' for ${locator.toString()} doesn't match the expected value.`);
+    }
   },
 };
 declare global {

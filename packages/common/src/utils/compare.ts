@@ -1,3 +1,3 @@
-import shallow from 'zustand/shallow';
+import { shallow } from 'zustand/shallow';
 
 export { shallow };

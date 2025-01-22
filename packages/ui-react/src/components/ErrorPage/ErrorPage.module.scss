@@ -26,7 +26,7 @@
 
 .title {
   margin-bottom: 24px;
-  color: variables.$white;
+  font-family: var(--body-alt-font-family);
   font-weight: var(--body-font-weight-bold);
   font-size: 34px;
 }
@@ -36,10 +36,9 @@
 }
 
 .main {
-  color: variables.$white;
-
   > h6 {
-    margin-bottom: 16px;
+    margin-bottom: variables.$base-spacing;
+    font-family: var(--body-alt-font-family);
     font-weight: var(--body-font-weight-bold);
     font-size: 20px;
   }

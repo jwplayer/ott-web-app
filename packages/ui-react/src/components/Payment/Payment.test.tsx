@@ -38,6 +38,7 @@ describe('<Payment>', () => {
         setSelectedOfferId={vi.fn()}
         isUpgradeOffer={undefined}
         setIsUpgradeOffer={vi.fn()}
+        isExternalPaymentProvider={false}
       />,
     );
 

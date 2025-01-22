@@ -3,6 +3,7 @@ import { testId } from '@jwp/ott-common/src/utils/common';
 import useBreakpoint, { Breakpoint } from '@jwp/ott-ui-react/src/hooks/useBreakpoint';
 
 import CollapsibleText from '../CollapsibleText/CollapsibleText';
+import MarkdownComponent from '../MarkdownComponent/MarkdownComponent';
 
 import styles from './VideoDetailsInline.module.scss';
 
@@ -27,11 +28,17 @@ const VideoDetailsInline: React.FC<Props> = ({ title, description, primaryMetada
       <TitleComponent className={styles.title}>{title}</TitleComponent>
       <div className={styles.inlinePlayerMetadata}>
         <div className={styles.primaryMetadata}>{primaryMetadata}</div>
-        {trailerButton}
-        {favoriteButton}
-        {shareButton}
+        <div className={styles.buttonBar}>
+          {trailerButton}
+          {favoriteButton}
+          {shareButton}
+        </div>
       </div>
-      <CollapsibleText text={description} className={styles.description} maxHeight={isMobile ? 60 : 'none'} />
+      {isMobile ? (
+        <CollapsibleText text={description} className={styles.description} />
+      ) : (
+        <MarkdownComponent markdownString={description} className={styles.description} />
+      )}
     </div>
   );
 };

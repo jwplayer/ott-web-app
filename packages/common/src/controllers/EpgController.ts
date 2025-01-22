@@ -4,16 +4,16 @@ import { injectable } from 'inversify';
 import EpgService from '../services/EpgService';
 import { EPG_TYPE } from '../constants';
 import { getNamedModule } from '../modules/container';
-import { logDev } from '../utils/common';
 import type { PlaylistItem } from '../../types/playlist';
 import type { EpgChannel, EpgProgram } from '../../types/epg';
+import { logDebug, logError, logWarn } from '../logger';
 
 export const isFulfilled = <T>(input: PromiseSettledResult<T>): input is PromiseFulfilledResult<T> => {
   if (input.status === 'fulfilled') {
     return true;
   }
 
-  logDev(`An error occurred resolving a promise: `, input.reason);
+  logError('EpgController', `An error occurred resolving a promise: `, { error: input.reason });
   return false;
 };
 
@@ -58,7 +58,7 @@ export default class EpgController {
           ?.transformProgram(program)
           // This quiets promise resolution errors in the console
           .catch((error) => {
-            logDev(error);
+            logDebug('EpgController', 'Failed to transform a program', { error, program });
             return undefined;
           }),
       ),
@@ -100,7 +100,7 @@ export default class EpgController {
     const service = getNamedModule(EpgService, scheduleType, false);
 
     if (!service) {
-      console.error(`No epg service was added for the ${scheduleType} schedule type`);
+      logWarn('EpgController', `No epg service was added for the ${scheduleType} schedule type`);
     }
 
     return service;

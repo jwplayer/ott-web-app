@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { type FC, type SVGProps } from 'react';
 import { useTranslation } from 'react-i18next';
 import classNames from 'classnames';
 import type { FormErrors } from '@jwp/ott-common/types/form';
@@ -40,8 +40,16 @@ const OfferBox: React.FC<OfferBoxProps> = ({ offer, selected, onChange }: OfferB
     return null;
   };
 
+  const renderListItem = (text: string, icon: FC<SVGProps<SVGSVGElement>>) => (
+    <li>
+      <Icon icon={icon} />
+      {text}
+      <span className="hidden">.</span>
+    </li>
+  );
+
   const renderOption = ({ title, periodString, secondBenefit }: { title: string; periodString?: string; secondBenefit?: string }) => (
-    <div className={styles.offer} role="option">
+    <div className={styles.offer} aria-labelledby={`title-${offer.offerId}`}>
       <input
         className={styles.radio}
         onChange={onChange}
@@ -52,30 +60,24 @@ const OfferBox: React.FC<OfferBoxProps> = ({ offer, selected, onChange }: OfferB
         checked={selected}
         data-testid={testId(offer.offerId)}
       />
-      <label className={styles.label} htmlFor={offer.offerId}>
-        <h2 className={styles.offerTitle}>{title}</h2>
-        <hr className={styles.offerDivider} />
-        <ul className={styles.offerBenefits}>
-          {offer.freeDays || offer.freePeriods ? (
-            <li>
-              <Icon icon={CheckCircle} /> {getFreeTrialText(offer)}
-            </li>
-          ) : null}
-
-          {!!secondBenefit && (
-            <li>
-              <Icon icon={CheckCircle} /> {secondBenefit}
-            </li>
-          )}
-          <li>
-            <Icon icon={CheckCircle} /> {t('choose_offer.benefits.watch_on_all_devices')}
-          </li>
-        </ul>
-        <div className={styles.fill} />
-        <div className={styles.offerPrice}>
-          {getOfferPrice(offer)} {!!periodString && <small>/{periodString}</small>}
-        </div>
-      </label>
+      <div className={styles.label}>
+        <label htmlFor={offer.offerId}>
+          <h2 className={styles.offerTitle} id={`title-${offer.offerId}`}>
+            {title}
+          </h2>
+          <span className="hidden">.</span>
+          <hr className={styles.offerDivider} aria-hidden={true} />
+          <ul className={styles.offerBenefits}>
+            {offer.freeDays || offer.freePeriods ? renderListItem(getFreeTrialText(offer) || '', CheckCircle) : null}
+            {!!secondBenefit && renderListItem(secondBenefit, CheckCircle)}
+            {renderListItem(t('choose_offer.benefits.watch_on_all_devices'), CheckCircle)}
+          </ul>
+          <div className={styles.fill} />
+          <div className={styles.offerPrice}>
+            {getOfferPrice(offer)} {!!periodString && <small>/{periodString}</small>}
+          </div>
+        </label>
+      </div>
     </div>
   );
 

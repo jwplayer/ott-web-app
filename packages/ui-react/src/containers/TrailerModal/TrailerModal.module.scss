@@ -7,6 +7,7 @@
   position: relative;
   width: 80vw;
   height: calc(80vw / 16 * 9);
+  color: variables.$white;
 
   @include responsive.mobile-only() {
     width: 100vw;

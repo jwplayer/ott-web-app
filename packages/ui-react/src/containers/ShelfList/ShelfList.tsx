@@ -10,12 +10,15 @@ import { useWatchHistoryStore } from '@jwp/ott-common/src/stores/WatchHistorySto
 import { slugify } from '@jwp/ott-common/src/utils/urlFormatting';
 import { parseAspectRatio, parseTilesDelta } from '@jwp/ott-common/src/utils/collection';
 import { testId } from '@jwp/ott-common/src/utils/common';
-import { PersonalShelf } from '@jwp/ott-common/src/constants';
+import { PersonalShelf, SHELF_LAYOUT_TYPE } from '@jwp/ott-common/src/constants';
 import usePlaylists from '@jwp/ott-hooks-react/src/usePlaylists';
+import { useTranslationKey } from '@jwp/ott-hooks-react/src/useTranslationKey';
 
 import Shelf from '../../components/Shelf/Shelf';
 import InfiniteScrollLoader from '../../components/InfiniteScrollLoader/InfiniteScrollLoader';
 import ErrorPage from '../../components/ErrorPage/ErrorPage';
+import Fade from '../../components/Animation/Fade/Fade';
+import HeroShelf from '../../components/HeroShelf/HeroShelf';
 
 import styles from './ShelfList.module.scss';
 
@@ -30,6 +33,7 @@ const ShelfList = ({ rows }: Props) => {
   const { accessModel } = useConfigStore(({ accessModel }) => ({ accessModel }), shallow);
   const [rowsToLoad, setRowsToLoad] = useState(INITIAL_ROWS_TO_LOAD);
   const { t } = useTranslation('error');
+  const translationKey = useTranslationKey('title');
 
   const watchHistoryDictionary = useWatchHistoryStore((state) => state.getDictionaryWithSeries());
 
@@ -59,36 +63,49 @@ const ShelfList = ({ rows }: Props) => {
         loadMore={() => setRowsToLoad((current) => current + ROWS_TO_LOAD_STEP)}
         hasMore={rowsToLoad < rows.length}
         loader={<InfiniteScrollLoader key="loader" />}
+        useWindow={false}
       >
-        {rows.slice(0, rowsToLoad).map(({ type, featured, title }, index) => {
-          const { data: playlist, isLoading, error } = playlists[index];
+        {rows.slice(0, rowsToLoad).map(({ type, featured, title, custom }, index) => {
+          const { data: playlist, isPlaceholderData, error } = playlists[index];
 
           if (!playlist?.playlist?.length) return null;
 
           const posterAspect = parseAspectRatio(playlist.cardImageAspectRatio || playlist.shelfImageAspectRatio);
           const visibleTilesDelta = parseTilesDelta(posterAspect);
 
+          const translatedValue = custom?.[translationKey] || (playlist?.[translationKey] as string);
+          const translatedTitle = translatedValue || title || playlist?.title;
+
+          const isHero = custom?.layoutType === SHELF_LAYOUT_TYPE.hero && index === 0;
+          const isFeatured = !isHero && (custom?.layoutType === SHELF_LAYOUT_TYPE.featured || featured);
+
           return (
             <section
               key={`${index}_${playlist.id}`}
-              className={classNames(styles.shelfContainer, { [styles.featured]: featured })}
-              data-testid={testId(`shelf-${featured ? 'featured' : type === 'playlist' ? slugify(title || playlist?.title) : type}`)}
-              aria-label={title || playlist?.title}
+              className={classNames(styles.shelfContainer, { [styles.hero]: isHero, [styles.featured]: isFeatured })}
+              data-testid={testId(`shelf-${isHero ? 'hero' : isFeatured ? 'featured' : type === 'playlist' ? slugify(translatedTitle) : type}`)}
+              aria-label={translatedTitle}
             >
-              <Shelf
-                loading={isLoading}
-                error={error}
-                type={type}
-                playlist={playlist}
-                watchHistory={type === PersonalShelf.ContinueWatching ? watchHistoryDictionary : undefined}
-                title={title || playlist?.title}
-                featured={featured}
-                accessModel={accessModel}
-                isLoggedIn={!!user}
-                hasSubscription={!!subscription}
-                posterAspect={posterAspect}
-                visibleTilesDelta={visibleTilesDelta}
-              />
+              <Fade duration={250} delay={index * 33} open>
+                {isHero ? (
+                  <HeroShelf loading={isPlaceholderData} error={error} playlist={playlist} />
+                ) : (
+                  <Shelf
+                    loading={isPlaceholderData}
+                    error={error}
+                    type={type}
+                    playlist={playlist}
+                    watchHistory={type === PersonalShelf.ContinueWatching ? watchHistoryDictionary : undefined}
+                    title={translatedTitle}
+                    featured={isFeatured}
+                    accessModel={accessModel}
+                    isLoggedIn={!!user}
+                    hasSubscription={!!subscription}
+                    posterAspect={posterAspect}
+                    visibleTilesDelta={visibleTilesDelta}
+                  />
+                )}
+              </Fade>
             </section>
           );
         })}

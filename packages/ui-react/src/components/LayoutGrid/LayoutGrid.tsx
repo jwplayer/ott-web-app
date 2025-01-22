@@ -1,6 +1,6 @@
 import { throttle } from '@jwp/ott-common/src/utils/common';
 import useEventCallback from '@jwp/ott-hooks-react/src/useEventCallback';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 import styles from './LayoutGrid.module.scss';
 
@@ -9,6 +9,7 @@ type Props<Item> = {
   columnCount: number;
   data: Item[];
   renderCell: (item: Item, tabIndex: number) => JSX.Element;
+  getCellKey: (item: Item) => string;
 };
 
 const scrollIntoViewThrottled = throttle(function (focusedElement: HTMLElement) {
@@ -16,7 +17,7 @@ const scrollIntoViewThrottled = throttle(function (focusedElement: HTMLElement) 
 }, 300);
 
 // Keyboard-accessible grid layout, with focus management
-const LayoutGrid = <Item extends object>({ className, columnCount, data, renderCell }: Props<Item>) => {
+const LayoutGrid = <Item extends object>({ className, columnCount, data, renderCell, getCellKey }: Props<Item>) => {
   const [currentRowIndex, setCurrentRowIndex] = useState(0);
   const [currentColumnIndex, setCurrentColumnIndex] = useState(0);
   const gridRef = useRef<HTMLDivElement>(null);
@@ -110,18 +111,20 @@ const LayoutGrid = <Item extends object>({ className, columnCount, data, renderC
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [columnCount]);
 
+  const gridCellStyle = useMemo(() => ({ width: `${Math.floor((100 / columnCount) * 100) / 100}%` }), [columnCount]);
+
   return (
     <div role="grid" ref={gridRef} aria-rowcount={rowCount} className={className} onKeyDown={handleKeyDown}>
       {Array.from({ length: rowCount }).map((_, rowIndex) => (
-        <div role="row" key={rowIndex} aria-rowindex={rowIndex} className={styles.row}>
+        <div role="row" key={rowIndex} aria-rowindex={rowIndex + 1} className={styles.row}>
           {data.slice(rowIndex * columnCount, rowIndex * columnCount + columnCount).map((item, columnIndex) => (
             <div
               role="gridcell"
               id={`layout_grid_${rowIndex}-${columnIndex}`}
-              key={columnIndex}
-              aria-colindex={columnIndex}
+              key={getCellKey(item)}
+              aria-colindex={columnIndex + 1}
               className={styles.cell}
-              style={{ width: `${Math.round(100 / columnCount)}%` }}
+              style={gridCellStyle}
             >
               {renderCell(item, currentRowIndex === rowIndex && currentColumnIndex === columnIndex ? 0 : -1)}
             </div>

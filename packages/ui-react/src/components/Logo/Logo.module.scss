@@ -8,19 +8,9 @@
 
 .logo {
   width: auto;
-  max-width: 100%;
+  max-width: variables.$logo-max-width;
   height: auto;
-  max-height: variables.$header-height - 20px;
+  max-height: variables.$logo-max-height;
   vertical-align: middle;
   cursor: pointer;
-}
-
-//
-// mediaQueries
-// --------------------------------
-
-@include responsive.mobile-and-tablet() {
-  .logo {
-    max-height: variables.$header-height-mobile - 20px;
-  }
 }

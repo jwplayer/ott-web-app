@@ -8,8 +8,9 @@ import { getModule } from '@jwp/ott-common/src/modules/container';
 import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
 import AccountController from '@jwp/ott-common/src/controllers/AccountController';
 import { modalURLFromLocation } from '@jwp/ott-ui-react/src/utils/location';
-import { logDev } from '@jwp/ott-common/src/utils/common';
 import useForm, { type UseFormOnSubmitHandler } from '@jwp/ott-hooks-react/src/useForm';
+import { logDebug, logError } from '@jwp/ott-common/src/logger';
+import env from '@jwp/ott-common/src/env';
 
 import ResetPasswordForm from '../../../components/ResetPasswordForm/ResetPasswordForm';
 import ForgotPasswordForm from '../../../components/ForgotPasswordForm/ForgotPasswordForm';
@@ -54,10 +55,10 @@ const ResetPassword: React.FC<Prop> = ({ type }: Prop) => {
   };
 
   const resetPasswordClickHandler = async () => {
-    const resetUrl = `${window.location.origin}/?u=edit-password`;
+    const resetUrl = `${env.APP_PUBLIC_URL}/?u=edit-password`;
     try {
       if (!user?.email) {
-        logDev('invalid param email');
+        logDebug('ResetPassword', 'invalid param email');
         return;
       }
 
@@ -68,12 +69,12 @@ const ResetPassword: React.FC<Prop> = ({ type }: Prop) => {
       setResetPasswordSubmitting(false);
       navigate(modalURLFromLocation(location, 'send-confirmation'));
     } catch (error: unknown) {
-      logDev(error instanceof Error ? error.message : error);
+      logError('ResetPassword', 'Failed to reset password', { error });
     }
   };
 
   const emailSubmitHandler: UseFormOnSubmitHandler<ForgotPasswordFormData> = async (formData, { setErrors, setSubmitting }) => {
-    const resetUrl = `${window.location.origin}/?u=edit-password`;
+    const resetUrl = `${env.APP_PUBLIC_URL}/?u=edit-password`;
 
     try {
       await accountController.resetPassword(formData.email, resetUrl);

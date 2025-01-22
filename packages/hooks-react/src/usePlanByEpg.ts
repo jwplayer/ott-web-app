@@ -33,8 +33,6 @@ const usePlanByEpg = ({
   channels,
   sidebarWidth,
   itemHeight,
-  highlightColor,
-  backgroundColor,
 }: {
   channels: EpgChannel[];
   sidebarWidth: number;
@@ -46,7 +44,7 @@ const usePlanByEpg = ({
     return [channels.map(formatChannel), channels.flatMap((channel) => channel.programs.map((program) => formatProgram(channel.id, program)))];
   }, [channels]);
 
-  const theme = useMemo(() => makeTheme(highlightColor, backgroundColor), [highlightColor, backgroundColor]);
+  const theme = useMemo(() => makeTheme(), []);
 
   // this mechanism updates the EPG component range when leaving the page open for a longer period
   // the useEpg hook doesn't accept a formatted date and re-renders when not memoize the start and end dates
@@ -72,19 +70,17 @@ const usePlanByEpg = ({
   });
 };
 
-// Theme configuration for the Planby EPG with only the colors set that are used
-// Fixed values are used because the default highlightColor and backgroundColor are only available in SCSS
-export const makeTheme = (primaryColor?: string | null, backgroundColor?: string | null) => ({
+export const makeTheme = () => ({
   primary: {
-    600: backgroundColor || '#141523',
-    900: backgroundColor || '#141523',
+    600: 'var(--epg-background-color, var(--body-background-color))',
+    900: 'var(--epg-background-color, var(--body-background-color))',
   },
   grey: {
-    300: primaryColor || '#fff',
+    300: '#fff',
   },
-  white: primaryColor || '#fff',
+  white: '#fff',
   green: {
-    300: primaryColor || '#fff',
+    300: '#fff',
   },
   loader: {
     teal: '',

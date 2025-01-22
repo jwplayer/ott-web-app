@@ -1,14 +1,15 @@
-import jwtDecode from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 import { object, string } from 'yup';
-import { inject, injectable } from 'inversify';
-import { BroadcastChannel } from 'broadcast-channel';
+import { inject, injectable, optional } from 'inversify';
 
-import { IS_DEVELOPMENT_BUILD, logDev } from '../../../utils/common';
+import { IS_DEVELOPMENT_BUILD } from '../../../utils/common';
 import { PromiseQueue } from '../../../utils/promiseQueue';
 import type { AuthData } from '../../../../types/account';
 import StorageService from '../../StorageService';
-import { GET_CUSTOMER_IP } from '../../../modules/types';
+import { BROADCAST_CHANNEL, GET_CUSTOMER_IP } from '../../../modules/types';
 import type { GetCustomerIP } from '../../../../types/get-customer-ip';
+import { logDebug, logError } from '../../../logger';
+import type { BroadcastChannel } from '../../../../types/broadcast-channel';
 
 import type { GetLocalesResponse } from './types/account';
 import type { Response } from './types/api';
@@ -79,22 +80,26 @@ const getTokenExpiration = (token: string) => {
 
 @injectable()
 export default class CleengService {
-  private readonly storageService;
-  private readonly getCustomerIP;
-  private readonly channel: BroadcastChannel<MessageData>;
-  private readonly queue = new PromiseQueue();
-  private isRefreshing = false;
-  private expiration = -1;
+  protected readonly storageService;
+  protected readonly getCustomerIP;
+  protected readonly channel: BroadcastChannel<MessageData> | undefined;
+  protected readonly queue = new PromiseQueue();
+  protected isRefreshing = false;
+  protected expiration = -1;
 
   sandbox = false;
   tokens: Tokens | null = null;
 
-  constructor(storageService: StorageService, @inject(GET_CUSTOMER_IP) getCustomerIP: GetCustomerIP) {
+  constructor(
+    @inject(StorageService) storageService: StorageService,
+    @inject(GET_CUSTOMER_IP) getCustomerIP: GetCustomerIP,
+    @inject(BROADCAST_CHANNEL) @optional() channel?: BroadcastChannel<MessageData>,
+  ) {
     this.storageService = storageService;
     this.getCustomerIP = getCustomerIP;
 
-    this.channel = new BroadcastChannel<MessageData>('jwp-refresh-token-channel');
-    this.channel.addEventListener('message', this.handleBroadcastMessage);
+    this.channel = channel;
+    this.channel?.addEventListener('message', this.handleBroadcastMessage);
   }
 
   /**
@@ -130,12 +135,14 @@ export default class CleengService {
       };
     } catch (error: unknown) {
       if (error instanceof Error) {
-        logDev('Failed to refresh accessToken', error);
+        logDebug('CleengService', 'Failed to refresh accessToken', { error });
 
         // only logout when the token is expired or invalid, this prevents logging out users when the request failed due to a
         // network error or for aborted requests
         if (error.message.includes('Refresh token is expired or does not exist') || error.message.includes('Missing or invalid parameter')) {
-          if (!this.logoutCallback) logDev('logoutCallback is not set');
+          if (!this.logoutCallback) {
+            logDebug('CleengService', 'logoutCallback is not set');
+          }
           await this.logoutCallback?.();
         }
       }
@@ -165,6 +172,8 @@ export default class CleengService {
    * Notify other browser tabs about a change in the auth state
    */
   private sendBroadcastMessage = (state: MessageAction, tokens?: Tokens) => {
+    if (!this.channel) return;
+
     const message: MessageData = {
       action: state,
       tokens,
@@ -300,7 +309,7 @@ export default class CleengService {
         return;
       }
     } catch (error: unknown) {
-      logDev('Failed to refresh tokens', error);
+      logDebug('CleengService', 'Failed to refresh tokens', { error });
     }
 
     // if we are here, we didn't receive new tokens
@@ -319,7 +328,7 @@ export default class CleengService {
     try {
       // token is already refreshing, let's wait for it
       if (this.isRefreshing) {
-        logDev('Token is already refreshing, waiting in queue...');
+        logDebug('CleengService', 'Token is already refreshing, waiting in queue...');
         return await this.queue.enqueue();
       }
 
@@ -330,7 +339,7 @@ export default class CleengService {
 
       await this.refreshTokens(this.tokens);
     } catch (error: unknown) {
-      logDev('Error caught while refreshing the access token', error);
+      logError('CleengService', 'Error caught while refreshing the access token', { error });
     }
   };
 

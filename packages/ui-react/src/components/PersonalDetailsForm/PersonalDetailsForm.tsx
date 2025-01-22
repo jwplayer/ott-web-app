@@ -51,7 +51,6 @@ const PersonalDetailsForm: React.FC<Props> = ({ initialValues, onSubmit, fields,
       error: !!questionErrors[key],
       helperText: questionErrors[key],
       required,
-      key,
     };
 
     // The rendered field is determined by the given available options for each question:
@@ -61,13 +60,13 @@ const PersonalDetailsForm: React.FC<Props> = ({ initialValues, onSubmit, fields,
     // Dropdown  <- when there are more than 2 options
 
     if (values.length === 1 && values[0].value === '') {
-      return <TextField value={questionValues[key]} label={question} {...props} />;
+      return <TextField value={questionValues[key]} label={question} key={key} {...props} />;
     } else if (values.length === 1) {
-      return <Checkbox checked={!!questionValues[key]} value={values[0].value} label={question} checkboxLabel={values[0].label} {...props} />;
+      return <Checkbox checked={!!questionValues[key]} value={values[0].value} label={question} checkboxLabel={values[0].label} key={key} {...props} />;
     } else if (values.length === 2) {
-      return <Radio values={values} value={questionValues[key]} label={question} {...props} />;
+      return <Radio values={values} value={questionValues[key]} label={question} key={key} {...props} />;
     } else if (values.length > 2) {
-      return <Dropdown options={values} value={questionValues[key]} label={question} defaultLabel={t('personal_details.select_answer')} {...props} />;
+      return <Dropdown options={values} value={questionValues[key]} label={question} defaultLabel={t('personal_details.select_answer')} key={key} {...props} />;
     }
 
     return null;

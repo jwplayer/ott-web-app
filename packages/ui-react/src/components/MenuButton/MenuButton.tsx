@@ -2,9 +2,13 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import classNames from 'classnames';
 
+import createInjectableComponent from '../../modules/createInjectableComponent';
+
 import styles from './MenuButton.module.scss';
 
-type Props = {
+export const MenuButtonIdentifier = Symbol(`MENU_BUTTON`);
+
+export type MenuButtonProps = {
   label?: string;
   to?: string;
   onClick?: () => void;
@@ -16,7 +20,18 @@ type Props = {
   small?: boolean;
 } & React.AriaAttributes;
 
-const MenuButton: React.FC<Props> = ({ label, to, onClick, onBlur, onFocus, tabIndex = 0, active = false, startIcon, small = false, ...rest }: Props) => {
+const MenuButton: React.FC<MenuButtonProps> = ({
+  label,
+  to,
+  onClick,
+  onBlur,
+  onFocus,
+  tabIndex = 0,
+  active = false,
+  startIcon,
+  small = false,
+  ...rest
+}: MenuButtonProps) => {
   const icon = startIcon ? <div className={styles.startIcon}>{startIcon}</div> : null;
   const getClassName = (isActive: boolean) => classNames(styles.menuButton, { [styles.small]: small }, { [styles.active]: isActive });
 
@@ -45,4 +60,4 @@ const MenuButton: React.FC<Props> = ({ label, to, onClick, onBlur, onFocus, tabI
   );
 };
 
-export default MenuButton;
+export default createInjectableComponent(MenuButtonIdentifier, MenuButton);

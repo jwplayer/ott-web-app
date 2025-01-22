@@ -1,5 +1,9 @@
+import type { AppMenuType } from '@jwp/ott-common/types/config';
+
 import type { PlaylistItem } from '../../types/playlist';
-import { RELATIVE_PATH_USER_MY_PROFILE, PATH_MEDIA, PATH_PLAYLIST, PATH_USER_MY_PROFILE } from '../paths';
+import { PATH_MEDIA, PATH_PLAYLIST, PATH_CONTENT_LIST } from '../paths';
+import { logWarn } from '../logger';
+import { APP_CONFIG_ITEM_TYPE } from '../constants';
 
 import { getLegacySeriesPlaylistIdFromEpisodeTags, getSeriesPlaylistIdFromCustomParams } from './media';
 
@@ -65,7 +69,12 @@ export const createPath = <Path extends string>(originalPath: Path, pathParams?:
       const paramValue = pathParams[paramName as keyof typeof pathParams];
 
       if (!paramValue) {
-        if (!isOptional) console.warn('Missing param in path creation.', { path: originalPath, paramName });
+        if (!isOptional) {
+          logWarn('urlFormatting', `Missing param in path creation`, {
+            path: originalPath,
+            paramName,
+          });
+        }
 
         return '';
       }
@@ -90,21 +99,48 @@ export const slugify = (text: string, whitespaceChar: string = '-') =>
     .replace(/-/g, whitespaceChar);
 
 export const mediaURL = ({
-  media,
+  id,
+  title,
   playlistId,
   play = false,
   episodeId,
 }: {
-  media: PlaylistItem;
+  id: string;
+  title?: string;
   playlistId?: string | null;
   play?: boolean;
   episodeId?: string;
 }) => {
-  return createPath(PATH_MEDIA, { id: media.mediaid, title: slugify(media.title) }, { r: playlistId, play: play ? '1' : null, e: episodeId });
+  return createPath(
+    PATH_MEDIA,
+    { id, title: title ? slugify(title) : undefined },
+    {
+      r: playlistId,
+      play: play ? '1' : null,
+      e: episodeId,
+    },
+  );
 };
 
 export const playlistURL = (id: string, title?: string) => {
   return createPath(PATH_PLAYLIST, { id, title: title ? slugify(title) : undefined });
+};
+
+export const contentListURL = (id: string, title?: string) => {
+  return createPath(PATH_CONTENT_LIST, { id, title: title ? slugify(title) : undefined });
+};
+
+export const determinePath = ({ type, contentId, label }: { type: AppMenuType | undefined; contentId: string; label?: string }) => {
+  switch (type) {
+    case APP_CONFIG_ITEM_TYPE.content_list:
+      return contentListURL(contentId, label);
+    case APP_CONFIG_ITEM_TYPE.media:
+      return mediaURL({ id: contentId, title: label });
+    case APP_CONFIG_ITEM_TYPE.playlist:
+      return playlistURL(contentId, label);
+    default:
+      return '';
+  }
 };
 
 export const liveChannelsURL = (playlistId: string, channelId?: string, play = false) => {
@@ -116,12 +152,6 @@ export const liveChannelsURL = (playlistId: string, channelId?: string, play = f
       play: play ? '1' : null,
     },
   );
-};
-
-export const userProfileURL = (profileId: string, nested = false) => {
-  const path = nested ? RELATIVE_PATH_USER_MY_PROFILE : PATH_USER_MY_PROFILE;
-
-  return createPath(path, { id: profileId });
 };
 
 // Legacy URLs

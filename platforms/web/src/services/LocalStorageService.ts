@@ -1,5 +1,6 @@
 import { injectable } from '@jwp/ott-common/src/modules/container';
 import StorageService from '@jwp/ott-common/src/services/StorageService';
+import { logError } from '@jwp/ott-common/src/logger';
 
 @injectable()
 export class LocalStorageService extends StorageService {
@@ -9,17 +10,17 @@ export class LocalStorageService extends StorageService {
     this.prefix = prefix;
   }
 
-  getStorageKey(key: string) {
-    return `${this.prefix}.${key}`;
+  getStorageKey(key: string, usePrefix = true) {
+    return usePrefix ? `${this.prefix}.${key}` : key;
   }
 
-  async getItem(key: string, parse: boolean) {
+  async getItem(key: string, parse: boolean, usePrefix = true) {
     try {
-      const value = window.localStorage.getItem(this.getStorageKey(key));
+      const value = window.localStorage.getItem(usePrefix ? this.getStorageKey(key) : key);
 
       return value && parse ? JSON.parse(value) : value;
     } catch (error: unknown) {
-      console.error(error);
+      logError('LocalStorageService', 'Failed to parse localStorage entry', { error });
     }
   }
 
@@ -27,15 +28,15 @@ export class LocalStorageService extends StorageService {
     try {
       window.localStorage.setItem(usePrefix ? this.getStorageKey(key) : key, value);
     } catch (error: unknown) {
-      console.error(error);
+      logError('LocalStorageService', 'Failed to store localStorage entry', { error });
     }
   }
 
-  async removeItem(key: string) {
+  async removeItem(key: string, usePrefix = true) {
     try {
-      window.localStorage.removeItem(this.getStorageKey(key));
+      window.localStorage.removeItem(this.getStorageKey(key, usePrefix));
     } catch (error: unknown) {
-      console.error(error);
+      logError('LocalStorageService', 'Failed to remove localStorage entry', { error });
     }
   }
 

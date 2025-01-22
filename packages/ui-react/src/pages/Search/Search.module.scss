@@ -3,32 +3,23 @@
 @use '@jwp/ott-ui-react/src/styles/mixins/responsive';
 
 .search {
-  margin: 0 calc(#{variables.$base-spacing} * 4);
-  color: var(--primary-color);
+  margin: 0 calc(variables.$base-spacing * 3);
   font-family: var(--body-alt-font-family);
   text-align: center;
-
-  > div {
-    margin-top: 6px;
-  }
 
   @include responsive.mobile-only() {
     margin: 0 variables.$base-spacing;
   }
 
   @include responsive.tablet-only() {
-    margin: 0 calc(#{variables.$base-spacing} * 2);
-  }
-
-  @include responsive.desktop-small-only() {
-    margin: 0 calc(#{variables.$base-spacing} * 3);
+    margin: 0 calc(variables.$base-spacing * 2);
   }
 }
 
 .header {
   display: flex;
   align-items: center;
-  margin: 24px 0;
+  margin: calc(variables.$base-spacing * 3) 0;
 
   > h2 {
     font-family: var(--body-alt-font-family);
@@ -46,6 +37,7 @@
 }
 
 .subHeading {
+  font-family: var(--body-alt-font-family);
   font-weight: var(--body-font-weight-bold);
   font-size: 20px;
 }

@@ -7,6 +7,7 @@ interface EventParams extends jwplayer.EventParams {
   nextClick: () => void;
   pipEnter: () => void;
   pipLeave: () => void;
+  backClick: () => void;
 }
 
 type ConfigOptions = {

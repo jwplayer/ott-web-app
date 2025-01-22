@@ -242,14 +242,14 @@ module.exports = (function () {
         'custom-properties',
         'dollar-variables',
 
-        // Any mixins
+        // Style declarations
+        'declarations',
+
+        // Includes
         {
           type: 'at-rule',
           name: 'include',
         },
-
-        // Style declarations
-        'declarations',
 
         // Pseudo elements
         {

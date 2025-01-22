@@ -1,19 +1,12 @@
 @use '@jwp/ott-ui-react/src/styles/variables';
 
 .footer {
-  padding: 20px 40px;
+  height: variables.$footer-height;
+  padding: variables.$base-spacing calc(variables.$base-spacing * 3);
   line-height: variables.$base-line-height;
   letter-spacing: 0.15px;
   text-align: center;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.14), 0 3px 4px rgba(0, 0, 0, 0.12), 0 1px 5px rgba(0, 0, 0, 0.2);
-
-  a,
-  a:visited,
-  a:active,
-  a:hover {
-    color: variables.$white;
-    text-decoration: underline;
-  }
+  text-shadow: var(--body-text-shadow);
 }
 
 .list {

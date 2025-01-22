@@ -1,4 +1,5 @@
 import React from 'react';
+import { axe } from 'vitest-axe';
 
 import { renderWithRouter } from '../../../test/utils';
 
@@ -92,5 +93,37 @@ describe('Shelf Component tests', () => {
     );
 
     expect(container).toMatchSnapshot();
+  });
+
+  test('WCAG 2.2 (AA) compliant', async () => {
+    const { container } = renderWithRouter(
+      <>
+        <h2>Regular shelf</h2>
+        <Shelf
+          title="Test Shelf"
+          type={'playlist'}
+          accessModel={'AVOD'}
+          hasSubscription={true}
+          isLoggedIn={true}
+          playlist={playlist}
+          enableCardTitles
+          enableTitle
+        />
+        <h2>Featured shelf</h2>
+        <Shelf
+          title="Featured Shelf"
+          type={'playlist'}
+          accessModel={'AUTHVOD'}
+          hasSubscription={true}
+          isLoggedIn={true}
+          playlist={playlist}
+          featured
+          enableCardTitles
+          enableTitle
+        />
+      </>,
+    );
+
+    expect(await axe(container, { runOnly: ['wcag21a', 'wcag21aa', 'wcag22aa'] })).toHaveNoViolations();
   });
 });

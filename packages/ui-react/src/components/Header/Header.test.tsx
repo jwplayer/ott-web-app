@@ -1,4 +1,5 @@
 import React from 'react';
+import { axe } from 'vitest-axe';
 import { render } from '@testing-library/react';
 import Language from '@jwp/ott-theme/assets/icons/language.svg?react';
 
@@ -56,5 +57,27 @@ describe('<Header />', () => {
     );
 
     expect(container).toMatchSnapshot();
+  });
+
+  test('WCAG 2.2 (AA) compliant', async () => {
+    const navItems = [
+      { label: 'Home', to: '/' },
+      { label: 'Button test', to: '/test' },
+    ];
+    const { container } = render(
+      <Header searchActive={false}>
+        <HeaderSkipLink />
+        <HeaderMenu onClick={vi.fn()} sideBarOpen={false} />
+        <HeaderBrand logoSrc="/logo.png" setLogoLoaded={vi.fn()} siteName="OTT Web App" />
+        <HeaderNavigation navItems={navItems} />
+        <HeaderActions>
+          <HeaderActionButton>
+            <Icon icon={Language} />
+          </HeaderActionButton>
+        </HeaderActions>
+      </Header>,
+    );
+
+    expect(await axe(container, { runOnly: ['wcag21a', 'wcag21aa', 'wcag22aa'] })).toHaveNoViolations();
   });
 });

@@ -6,26 +6,26 @@ exports[`<VideoDetails> > renders and matches snapshot 1`] = `
     data-testid="cinema-layout"
   >
     <header
-      class="_video_d0c133"
+      class="_videoDetails_d0c133"
       data-testid="video-details"
       id="video-details"
     >
       <div
-        class="_main_d0c133 _mainPadding_d0c133"
+        class="_hero_77f2c2"
       >
         <img
           alt=""
-          class="_poster_d0c133 _image_4c41c3"
+          class="_poster_77f2c2 _image_4c41c3"
           src="http://image.jpg?width=1280"
         />
         <div
-          class="_posterFade_d0c133"
+          class="_posterFade_77f2c2"
         />
         <div
-          class="_info_d0c133"
+          class="_info_77f2c2"
         >
           <h1
-            class="_title_d0c133"
+            class="_title_77f2c2"
           >
             Test video
           </h1>
@@ -46,15 +46,14 @@ exports[`<VideoDetails> > renders and matches snapshot 1`] = `
             </div>
           </div>
           <div
-            class="_collapsibleText_561522"
+            class="_truncatedText_b1c064 _description_77f2c2 _description_d0c133"
+            style="max-height: calc(1.5em * 8); -webkit-line-clamp: 8; line-clamp: 8; display: -webkit-box;"
           >
-            <p
-              class="_textContainer_561522 _description_d0c133"
-              id="collapsible-content"
-              style="max-height: none;"
+            <div
+              class="_markdown_e219e2 _inline_e219e2"
             >
               Video description
-            </p>
+            </div>
           </div>
           <div
             class="_buttonBar_d0c133"

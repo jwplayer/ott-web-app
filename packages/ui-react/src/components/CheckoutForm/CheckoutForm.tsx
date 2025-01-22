@@ -6,6 +6,7 @@ import { formatPrice } from '@jwp/ott-common/src/utils/formatting';
 import Close from '@jwp/ott-theme/assets/icons/close.svg?react';
 import PayPal from '@jwp/ott-theme/assets/icons/paypal.svg?react';
 import CreditCard from '@jwp/ott-theme/assets/icons/creditcard.svg?react';
+import type { ReCAPTCHA } from 'react-google-recaptcha';
 
 import Button from '../Button/Button';
 import IconButton from '../IconButton/IconButton';
@@ -13,6 +14,7 @@ import FormFeedback from '../FormFeedback/FormFeedback';
 import DialogBackButton from '../DialogBackButton/DialogBackButton';
 import LoadingOverlay from '../LoadingOverlay/LoadingOverlay';
 import Icon from '../Icon/Icon';
+import RecaptchaField from '../RecaptchaField/RecaptchaField';
 
 import styles from './CheckoutForm.module.scss';
 
@@ -36,6 +38,8 @@ type Props = {
   offerType: OfferType;
   children: ReactNode;
   submitting: boolean;
+  captchaSiteKey?: string;
+  recaptchaRef?: React.RefObject<ReCAPTCHA>;
 };
 
 const CheckoutForm: React.FC<Props> = ({
@@ -58,6 +62,8 @@ const CheckoutForm: React.FC<Props> = ({
   onRedeemCouponButtonClick,
   children,
   submitting,
+  captchaSiteKey,
+  recaptchaRef,
 }) => {
   const { t } = useTranslation('account');
 
@@ -127,6 +133,7 @@ const CheckoutForm: React.FC<Props> = ({
           <Button variant="outlined" label={t('checkout.redeem_coupon')} onClick={onRedeemCouponButtonClick} />
         )}
       </div>
+
       <div>
         <table className={styles.orderTotals}>
           <tbody>
@@ -174,6 +181,7 @@ const CheckoutForm: React.FC<Props> = ({
           </tfoot>
         </table>
       </div>
+      {!!captchaSiteKey && <RecaptchaField siteKey={captchaSiteKey} ref={recaptchaRef} />}
       <hr className={styles.divider} />
       {order.requiredPaymentDetails ? (
         <div className={styles.paymentMethods}>

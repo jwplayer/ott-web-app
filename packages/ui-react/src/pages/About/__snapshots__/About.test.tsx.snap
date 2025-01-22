@@ -5,9 +5,7 @@ exports[`<About> > renders and matches snapshot 1`] = `
   <div
     class="_markdown_e219e2 _about_0b8fd5"
   >
-    <h1
-      id="about-jw-ott-webapp"
-    >
+    <h1>
       About JW OTT Webapp
     </h1>
     
@@ -30,9 +28,7 @@ exports[`<About> > renders and matches snapshot 1`] = `
     </p>
     
 
-    <h2
-      id="supported-features"
-    >
+    <h2>
       Supported Features
     </h2>
     
@@ -136,9 +132,7 @@ exports[`<About> > renders and matches snapshot 1`] = `
     </ul>
     
 
-    <h2
-      id="unsupported-features"
-    >
+    <h2>
       Unsupported Features
     </h2>
     

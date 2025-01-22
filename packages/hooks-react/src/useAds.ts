@@ -3,11 +3,12 @@ import { useConfigStore } from '@jwp/ott-common/src/stores/ConfigStore';
 import ApiService from '@jwp/ott-common/src/services/ApiService';
 import { getModule } from '@jwp/ott-common/src/modules/container';
 import { createURL } from '@jwp/ott-common/src/utils/urlFormatting';
+import type { AdConfig } from '@jwp/ott-common/types/ad-schedule';
 
 const CACHE_TIME = 60 * 1000 * 20;
 
 /**
- * @deprecated Use adScheduleUrls.xml form the config instead.
+ * @deprecated Use ad-config instead.
  */
 const useLegacyStandaloneAds = ({ adScheduleId, enabled }: { adScheduleId: string | null | undefined; enabled: boolean }) => {
   const apiService = getModule(ApiService);
@@ -25,21 +26,24 @@ const useLegacyStandaloneAds = ({ adScheduleId, enabled }: { adScheduleId: strin
 };
 
 export const useAds = ({ mediaId }: { mediaId: string }) => {
-  const { adSchedule: adScheduleId, adScheduleUrls } = useConfigStore((s) => s.config);
+  const { adSchedule: adScheduleId, adConfig: adConfigId, adScheduleUrls, adDeliveryMethod } = useConfigStore((s) => s.config);
 
-  // adScheduleUrls.xml prop exists when ad-config is attached to the App Config
-  const useAppBasedFlow = !!adScheduleUrls?.xml;
+  // We use client side ads only when delivery method is not pointing at server ads
+  // adConfig and adScheduled can't be enabled at the same time
+  const useAdConfigFlow = !!adConfigId && adDeliveryMethod !== 'ssai';
 
-  const { data: adSchedule, isLoading: isAdScheduleLoading } = useLegacyStandaloneAds({ adScheduleId, enabled: !useAppBasedFlow });
-  const adConfig = {
-    client: 'vast',
-    schedule: createURL(adScheduleUrls?.xml || '', {
-      media_id: mediaId,
-    }),
-  };
+  const { data: adSchedule, isLoading: isAdScheduleLoading } = useLegacyStandaloneAds({ adScheduleId, enabled: !!adScheduleId });
+  const adConfig = useAdConfigFlow
+    ? ({
+        client: 'vast',
+        schedule: createURL(adScheduleUrls?.xml || '', {
+          media_id: mediaId,
+        }),
+      } as AdConfig)
+    : undefined;
 
   return {
-    isLoading: useAppBasedFlow ? false : isAdScheduleLoading,
-    data: useAppBasedFlow ? adConfig : adSchedule,
+    isLoading: useAdConfigFlow ? false : isAdScheduleLoading,
+    data: useAdConfigFlow ? adConfig : adSchedule,
   };
 };

@@ -1,4 +1,6 @@
-import type { AdScheduleUrls } from './ad-schedule';
+import type { APP_CONFIG_ITEM_TYPE } from '../src/constants';
+
+import type { AdScheduleUrls, AdDeliveryMethod } from './ad-schedule';
 
 /**
  * Set config setup changes in both config.services.ts and config.d.ts
@@ -8,8 +10,10 @@ export type Config = {
   siteName?: string;
   description: string;
   analyticsToken?: string | null;
+  adConfig?: string | null;
   adSchedule?: string | null;
   adScheduleUrls?: AdScheduleUrls;
+  adDeliveryMethod?: AdDeliveryMethod;
   integrations: {
     cleeng?: Cleeng;
     jwp?: JWP;
@@ -17,17 +21,11 @@ export type Config = {
   assets: { banner?: string | null };
   content: Content[];
   menu: Menu[];
-  styling: Styling;
-  features?: Features;
-  custom?: Record<string, unknown>;
-  contentSigningService?: ContentSigningConfig;
+  styling?: Styling | null;
+  features?: Features | null;
+  custom?: Record<string, unknown> | null;
   contentProtection?: ContentProtection;
   siteId: string;
-};
-
-export type ContentSigningConfig = {
-  host: string;
-  drmPolicyId?: string;
 };
 
 export type ContentProtection = {
@@ -39,21 +37,28 @@ export type Drm = {
   defaultPolicyId: string;
 };
 
-export type ContentType = 'playlist' | 'continue_watching' | 'favorites';
+export type AppContentType = keyof typeof APP_CONFIG_ITEM_TYPE;
+export type AppMenuType = Extract<AppContentType, 'playlist' | 'content_list' | 'media'>;
+export type AppShelfType = Extract<AppContentType, 'playlist' | 'content_list' | 'continue_watching' | 'favorites'>;
 
 export type Content = {
   contentId?: string;
   title?: string;
-  type: ContentType;
+  type: AppShelfType;
+  /**
+   * @deprecated Use the custom shelf property `layoutType = 'hero' | 'featured' | undefined` instead
+   */
   featured?: boolean;
   backgroundColor?: string | null;
+  custom?: Record<string, string>;
 };
 
 export type Menu = {
   label: string;
   contentId: string;
-  type?: Extract<ContentType, 'playlist'>;
+  type?: AppMenuType;
   filterTags?: string;
+  custom?: Record<string, string>;
 };
 
 export type Styling = {
@@ -72,11 +77,13 @@ export type Cleeng = {
   yearlyOffer?: string | null;
   useSandbox?: boolean;
 };
+
 export type JWP = {
   clientId?: string | null;
   assetId?: number | null;
   useSandbox?: boolean;
 };
+
 export type Features = {
   recommendationsPlaylist?: string | null;
   searchPlaylist?: string | null;

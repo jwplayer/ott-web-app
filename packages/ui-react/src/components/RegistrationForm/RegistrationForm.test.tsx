@@ -1,4 +1,5 @@
 import React from 'react';
+import { axe } from 'vitest-axe';
 
 import { renderWithRouter, waitForWithFakeTimers } from '../../../test/utils';
 
@@ -40,5 +41,44 @@ describe('<RegistrationForm>', () => {
     await waitForWithFakeTimers();
 
     expect(container).toMatchSnapshot();
+  });
+
+  test('WCAG 2.2 (AA) compliant', async () => {
+    const { container } = renderWithRouter(
+      <>
+        <h2>Initial state</h2>
+        <RegistrationForm
+          publisherConsents={null}
+          onSubmit={vi.fn()}
+          onChange={vi.fn()}
+          onBlur={vi.fn()}
+          values={{ email: '', password: '' }}
+          errors={{}}
+          submitting={false}
+          consentErrors={[]}
+          consentValues={{}}
+          loading={false}
+          onConsentChange={vi.fn()}
+          socialLoginURLs={socialLoginURLs}
+        />
+        <h2>Error state</h2>
+        <RegistrationForm
+          publisherConsents={null}
+          onSubmit={vi.fn()}
+          onChange={vi.fn()}
+          onBlur={vi.fn()}
+          values={{ email: '', password: '' }}
+          errors={{ form: 'Generic error message', email: 'Email error message', password: 'Password error message' }}
+          submitting={false}
+          consentErrors={[]}
+          consentValues={{}}
+          loading={false}
+          onConsentChange={vi.fn()}
+          socialLoginURLs={socialLoginURLs}
+        />
+      </>,
+    );
+
+    expect(await axe(container, { runOnly: ['wcag21a', 'wcag21aa', 'wcag22aa'] })).toHaveNoViolations();
   });
 });

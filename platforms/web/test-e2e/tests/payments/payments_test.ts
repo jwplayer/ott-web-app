@@ -15,6 +15,7 @@ const jwProps: ProviderProps = {
   canRenewSubscription: false,
   fieldWrapper: '',
   hasInlineOfferSwitch: true,
+  cardInfo: Array.of(['Card number', '•••• •••• •••• 1111'], ['Expiry date', '03/2030'], ['Security code', '******']),
 };
 
 const cleengProps: ProviderProps = {
@@ -27,6 +28,7 @@ const cleengProps: ProviderProps = {
   canRenewSubscription: true,
   fieldWrapper: 'iframe',
   hasInlineOfferSwitch: false,
+  cardInfo: Array.of(['Card number', '•••• •••• •••• 1115'], ['Expiry date', '03/2030'], ['Security code', '******']),
 };
 
 runTestSuite(jwProps, 'JW Player');
@@ -36,8 +38,6 @@ function runTestSuite(props: ProviderProps, providerName: string) {
   let paidLoginContext: LoginContext;
 
   const today = new Date();
-
-  const cardInfo = Array.of(['Card number', '•••• •••• •••• 1111'], ['Expiry date', '03/2030'], ['Security code', '******']);
 
   Feature(`payments - ${providerName}`).retry(Number(process.env.TEST_RETRY_COUNT) || 0);
 
@@ -84,7 +84,7 @@ function runTestSuite(props: ProviderProps, providerName: string) {
 
     await checkSubscription(I, addYear(today), today, props.yearlyOffer.price, props.hasInlineOfferSwitch);
 
-    cardInfo.forEach(([label, value]) => I.seeInField(label, value));
+    props.cardInfo?.forEach(([label, value]) => I.seeInField(label, value));
   });
 
   Scenario(`I can cancel my subscription - ${providerName}`, async ({ I }) => {
@@ -93,7 +93,7 @@ function runTestSuite(props: ProviderProps, providerName: string) {
     await cancelPlan(I, addYear(today), props.canRenewSubscription, providerName);
 
     // Still see payment info
-    cardInfo.forEach(([label, value]) => I.seeInField(label, value));
+    props.cardInfo?.forEach(([label, value]) => I.seeInField(label, value));
   });
 
   Scenario(`I can renew my subscription - ${providerName}`, async ({ I }) => {

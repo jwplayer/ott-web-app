@@ -1,12 +1,12 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import type { AdSchedule } from '@jwp/ott-common/types/ad-schedule';
+import type { AdConfig, AdSchedule } from '@jwp/ott-common/types/ad-schedule';
 import type { PlaylistItem } from '@jwp/ott-common/types/playlist';
 import { useConfigStore } from '@jwp/ott-common/src/stores/ConfigStore';
 import { deepCopy } from '@jwp/ott-common/src/utils/collection';
-import { logDev, testId } from '@jwp/ott-common/src/utils/common';
+import { testId } from '@jwp/ott-common/src/utils/common';
+import { logInfo } from '@jwp/ott-common/src/logger';
 import useEventCallback from '@jwp/ott-hooks-react/src/useEventCallback';
-import useOttAnalytics from '@jwp/ott-hooks-react/src/useOttAnalytics';
-import { attachAnalyticsParams } from '@jwp/ott-common/src/utils/analytics';
+import { useMediaSources } from '@jwp/ott-hooks-react/src/useMediaSources';
 import env from '@jwp/ott-common/src/env';
 
 import type { JWPlayer } from '../../../types/jwplayer';
@@ -19,10 +19,13 @@ type Props = {
   item: PlaylistItem;
   startTime?: number;
   autostart?: boolean;
-  adsData?: AdSchedule;
+  adsData?: AdConfig | AdSchedule;
   onReady?: (player?: JWPlayer) => void;
   onPlay?: () => void;
   onPause?: () => void;
+  onTime?: (params: { position: number; duration: number }) => void;
+  onSeek?: (params: { offset: number; position: number; duration: number }) => void;
+  onSeeked?: () => void;
   onComplete?: () => void;
   onUserActive?: () => void;
   onUserInActive?: () => void;
@@ -30,8 +33,10 @@ type Props = {
   onFirstFrame?: () => void;
   onRemove?: () => void;
   onNext?: () => void;
+  onBackClick?: () => void;
   onPlaylistItem?: () => void;
   onPlaylistItemCallback?: (item: PlaylistItem) => Promise<undefined | PlaylistItem>;
+  onAdImpression?: () => void;
 };
 
 const Player: React.FC<Props> = ({
@@ -40,6 +45,9 @@ const Player: React.FC<Props> = ({
   onReady,
   onPlay,
   onPause,
+  onTime,
+  onSeek,
+  onSeeked,
   onComplete,
   onUserActive,
   onUserInActive,
@@ -49,6 +57,8 @@ const Player: React.FC<Props> = ({
   onPlaylistItem,
   onPlaylistItemCallback,
   onNext,
+  onAdImpression,
+  onBackClick,
   feedId,
   startTime = 0,
   autostart,
@@ -56,10 +66,10 @@ const Player: React.FC<Props> = ({
   const playerElementRef = useRef<HTMLDivElement>(null);
   const playerRef = useRef<JWPlayer>();
   const loadingRef = useRef(false);
+  const backClickRef = useRef(false);
   const [libLoaded, setLibLoaded] = useState(!!window.jwplayer);
   const startTimeRef = useRef(startTime);
-
-  const setPlayer = useOttAnalytics(item, feedId);
+  const sources = useMediaSources({ item, baseUrl: env.APP_API_BASE_URL });
 
   const { settings } = useConfigStore((s) => s);
 
@@ -69,7 +79,11 @@ const Player: React.FC<Props> = ({
   const handleBeforePlay = useEventCallback(onBeforePlay);
   const handlePlay = useEventCallback(onPlay);
   const handlePause = useEventCallback(onPause);
+  const handleTime = useEventCallback(onTime);
   const handleComplete = useEventCallback(onComplete);
+  const handleSeek = useEventCallback(onSeek);
+  const handleSeeked = useEventCallback(onSeeked);
+  const handleAdImpression = useEventCallback(onAdImpression);
   const handleUserActive = useEventCallback(onUserActive);
   const handleUserInactive = useEventCallback(onUserInActive);
   const handleFirstFrame = useEventCallback(() => {
@@ -86,6 +100,10 @@ const Player: React.FC<Props> = ({
   const handlePlaylistItem = useEventCallback(onPlaylistItem);
   const handlePlaylistItemCallback = useEventCallback(onPlaylistItemCallback);
   const handleNextClick = useEventCallback(onNext);
+  const handleBackClick = useEventCallback(() => {
+    backClickRef.current = true;
+    onBackClick?.();
+  });
   const handleReady = useEventCallback(() => onReady && onReady(playerRef.current));
 
   const attachEvents = useCallback(() => {
@@ -94,12 +112,17 @@ const Player: React.FC<Props> = ({
     playerRef.current?.on('complete', handleComplete);
     playerRef.current?.on('play', handlePlay);
     playerRef.current?.on('pause', handlePause);
+    playerRef.current?.on('time', handleTime);
+    playerRef.current?.on('seek', handleSeek);
+    playerRef.current?.on('seeked', handleSeeked);
+    playerRef.current?.on('adImpression', handleAdImpression);
     playerRef.current?.on('userActive', handleUserActive);
     playerRef.current?.on('userInactive', handleUserInactive);
     playerRef.current?.on('firstFrame', handleFirstFrame);
     playerRef.current?.on('remove', handleRemove);
     playerRef.current?.on('playlistItem', handlePlaylistItem);
     playerRef.current?.on('nextClick', handleNextClick);
+    playerRef.current?.on('backClick', handleBackClick);
     playerRef.current?.setPlaylistItemCallback(handlePlaylistItemCallback);
   }, [
     handleReady,
@@ -107,6 +130,10 @@ const Player: React.FC<Props> = ({
     handleComplete,
     handlePlay,
     handlePause,
+    handleTime,
+    handleSeek,
+    handleSeeked,
+    handleAdImpression,
     handleUserActive,
     handleUserInactive,
     handleFirstFrame,
@@ -114,6 +141,7 @@ const Player: React.FC<Props> = ({
     handlePlaylistItem,
     handleNextClick,
     handlePlaylistItemCallback,
+    handleBackClick,
   ]);
 
   const detachEvents = useCallback(() => {
@@ -155,7 +183,7 @@ const Player: React.FC<Props> = ({
 
       // We already loaded this item
       if (currentItem && currentItem.mediaid === item.mediaid) {
-        logDev('Calling loadPlaylist with the same item, check the dependencies');
+        logInfo('Player', 'Calling loadPlaylist with the same item, check the dependencies');
         return;
       }
 
@@ -172,10 +200,6 @@ const Player: React.FC<Props> = ({
       if (!window.jwplayer || !playerElementRef.current) return;
 
       playerRef.current = window.jwplayer(playerElementRef.current) as JWPlayer;
-
-      // Inject user_id and profile_id into the CDN analytics
-      // @todo this currently depends on stores
-      attachAnalyticsParams(item);
 
       // Player options are untyped
       const playerOptions: { [key: string]: unknown } = {
@@ -199,7 +223,7 @@ const Player: React.FC<Props> = ({
         mute: false,
         playbackRateControls: true,
         pipIcon: 'disabled',
-        playlist: [deepCopy({ ...item, starttime: startTimeRef.current, feedid: feedId })],
+        playlist: [deepCopy({ ...item, starttime: startTimeRef.current, feedid: feedId, sources })],
         repeat: false,
         cast: {},
         stretching: 'uniform',
@@ -215,10 +239,8 @@ const Player: React.FC<Props> = ({
       if (playerLicenseKey) {
         playerOptions.key = playerLicenseKey;
       }
-
       playerRef.current.setup(playerOptions);
 
-      setPlayer(playerRef.current);
       attachEvents();
     };
 
@@ -229,17 +251,22 @@ const Player: React.FC<Props> = ({
     if (libLoaded) {
       initializePlayer();
     }
-  }, [libLoaded, item, detachEvents, attachEvents, playerId, setPlayer, autostart, adsData, playerLicenseKey, feedId]);
+  }, [libLoaded, item, detachEvents, attachEvents, playerId, autostart, adsData, playerLicenseKey, sources, feedId]);
 
   useEffect(() => {
     return () => {
       if (playerRef.current) {
         // Detaching events before component unmount
         detachEvents();
+        if (backClickRef.current) {
+          backClickRef.current = false;
+          return;
+        }
         playerRef.current.remove();
+        playerRef.current = undefined;
       }
     };
-  }, [detachEvents]);
+  }, [detachEvents, backClickRef]);
 
   return (
     <div className={styles.container} data-testid={testId('player-container')}>

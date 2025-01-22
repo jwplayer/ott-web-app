@@ -1,5 +1,7 @@
-import type { Playlist, PlaylistItem } from '../../types/playlist';
-import { CONTENT_TYPE } from '../constants';
+import type { PlaylistItem } from '../../types/playlist';
+import { MEDIA_CONTENT_TYPE } from '../constants';
+
+import { isContentType } from './common';
 
 type RequiredProperties<T, P extends keyof T> = T & Required<Pick<T, P>>;
 
@@ -7,9 +9,6 @@ type DeprecatedPlaylistItem = {
   seriesPlayListId?: string;
   seriesPlaylistId?: string;
 };
-
-export const isPlaylist = (item: unknown): item is Playlist => !!item && typeof item === 'object' && 'feedid' in item;
-export const isPlaylistItem = (item: unknown): item is PlaylistItem => !!item && typeof item === 'object' && 'mediaid' in item;
 
 // For the deprecated series flow we store seriesId in custom params
 export const getSeriesPlaylistIdFromCustomParams = (item: (PlaylistItem & DeprecatedPlaylistItem) | undefined) =>
@@ -22,12 +21,12 @@ export const isLegacySeriesFlow = (item: PlaylistItem) => {
 
 // For the new series flow we use contentType custom param to define media item to be series
 // In this case media item and series item have the same id
-export const isSeriesContentType = (item: PlaylistItem) => item.contentType?.toLowerCase() === CONTENT_TYPE.series;
+export const isSeriesContentType = (item: PlaylistItem) => isContentType(item, MEDIA_CONTENT_TYPE.series);
 
 export const isSeries = (item: PlaylistItem) => isLegacySeriesFlow(item) || isSeriesContentType(item);
 
 export const isEpisode = (item: PlaylistItem) => {
-  return typeof item?.episodeNumber !== 'undefined' || item?.contentType?.toLowerCase() === CONTENT_TYPE.episode;
+  return typeof item?.episodeNumber !== 'undefined' || isContentType(item, MEDIA_CONTENT_TYPE.episode);
 };
 
 export const getLegacySeriesPlaylistIdFromEpisodeTags = (item: PlaylistItem | undefined) => {
@@ -47,5 +46,5 @@ export const getLegacySeriesPlaylistIdFromEpisodeTags = (item: PlaylistItem | un
   return;
 };
 
-export const isLiveChannel = (item: PlaylistItem): item is RequiredProperties<PlaylistItem, 'contentType' | 'liveChannelsId'> =>
-  item.contentType?.toLowerCase() === CONTENT_TYPE.liveChannel && !!item.liveChannelsId;
+export const isLiveChannel = (item: PlaylistItem): item is RequiredProperties<PlaylistItem, 'contentType'> =>
+  isContentType(item, MEDIA_CONTENT_TYPE.liveChannel);

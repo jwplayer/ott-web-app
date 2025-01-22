@@ -1,9 +1,6 @@
 import i18next from 'i18next';
-import InPlayer from '@inplayer-org/inplayer.js';
-import type { Card, GetItemAccessV1, PaymentHistory, SubscriptionDetails as InplayerSubscription } from '@inplayer-org/inplayer.js';
-import { injectable, named } from 'inversify';
+import { inject, injectable, named } from 'inversify';
 
-import { isCommonError } from '../../../utils/api';
 import type {
   ChangeSubscription,
   GetActivePayment,
@@ -18,9 +15,22 @@ import type {
 import SubscriptionService from '../SubscriptionService';
 import AccountService from '../AccountService';
 
+import type {
+  GetItemAccessResponse,
+  GetSubscriptionsResponse,
+  GetPaymentHistoryResponse,
+  GetDefaultCardResponse,
+  CancelSubscriptionResponse,
+  ChangeSubscriptionPlanResponse,
+  SetDefaultCardResponse,
+  Card,
+  PaymentHistory,
+  JWPSubscription,
+} from './types';
 import type JWPAccountService from './JWPAccountService';
+import JWPAPIService from './JWPAPIService';
 
-interface SubscriptionDetails extends InplayerSubscription {
+interface SubscriptionDetails extends JWPSubscription {
   item_id?: number;
   item_title?: string;
   subscription_id?: string;
@@ -37,12 +47,14 @@ interface SubscriptionDetails extends InplayerSubscription {
 
 @injectable()
 export default class JWPSubscriptionService extends SubscriptionService {
-  private readonly accountService: JWPAccountService;
+  protected readonly accountService: JWPAccountService;
+  protected readonly apiService: JWPAPIService;
 
-  constructor(@named('JWP') accountService: AccountService) {
+  constructor(@named('JWP') @inject(AccountService) accountService: AccountService, @inject(JWPAPIService) apiService: JWPAPIService) {
     super();
 
     this.accountService = accountService as JWPAccountService;
+    this.apiService = apiService;
   }
 
   private formatCardDetails = (
@@ -112,7 +124,8 @@ export default class JWPSubscriptionService extends SubscriptionService {
       case 'canceled':
         status = 'cancelled';
         break;
-      case 'incomplete_expired' || 'ended':
+      case 'incomplete_expired':
+      case 'ended':
         status = 'expired';
         break;
       default:
@@ -138,7 +151,7 @@ export default class JWPSubscriptionService extends SubscriptionService {
     } as Subscription;
   };
 
-  private formatGrantedSubscription = (subscription: GetItemAccessV1) => {
+  private formatGrantedSubscription = (subscription: GetItemAccessResponse) => {
     return {
       subscriptionId: '',
       offerId: subscription.item.id.toString(),
@@ -163,21 +176,34 @@ export default class JWPSubscriptionService extends SubscriptionService {
     if (assetId === null) throw new Error("Couldn't fetch active subscription, there is no assetId configured");
 
     try {
-      const hasAccess = await InPlayer.Asset.checkAccessForAsset(assetId);
+      const hasAccess = await this.apiService.get<GetItemAccessResponse>(`/items/${assetId}/access`, {
+        withAuthentication: true,
+      });
 
       if (hasAccess) {
-        const { data } = await InPlayer.Subscription.getSubscriptions();
+        const data = await this.apiService.get<GetSubscriptionsResponse>(
+          '/subscriptions',
+          {
+            withAuthentication: true,
+            contentType: 'json',
+          },
+          {
+            limit: 15,
+            page: 0,
+          },
+        );
+
         const activeSubscription = data.collection.find((subscription: SubscriptionDetails) => subscription.item_id === assetId);
 
         if (activeSubscription) {
-          return this.formatActiveSubscription(activeSubscription, hasAccess?.data?.expires_at);
+          return this.formatActiveSubscription(activeSubscription, hasAccess?.expires_at);
         }
 
-        return this.formatGrantedSubscription(hasAccess.data);
+        return this.formatGrantedSubscription(hasAccess);
       }
       return null;
     } catch (error: unknown) {
-      if (isCommonError(error) && error.response.data.code === 402) {
+      if (JWPAPIService.isCommonError(error) && error.response.data.code === 402) {
         return null;
       }
       throw new Error('Unable to fetch customer subscriptions.');
@@ -186,7 +212,10 @@ export default class JWPSubscriptionService extends SubscriptionService {
 
   getAllTransactions: GetAllTransactions = async () => {
     try {
-      const { data } = await InPlayer.Payment.getPaymentHistory();
+      const data = await this.apiService.get<GetPaymentHistoryResponse>('/v2/accounting/payment-history', {
+        withAuthentication: true,
+        contentType: 'json',
+      });
 
       return data?.collection?.map((transaction) => this.formatTransaction(transaction));
     } catch {
@@ -196,7 +225,11 @@ export default class JWPSubscriptionService extends SubscriptionService {
 
   getActivePayment: GetActivePayment = async () => {
     try {
-      const { data } = await InPlayer.Payment.getDefaultCreditCard();
+      const data = await this.apiService.get<GetDefaultCardResponse>('/v2/payments/cards/default', {
+        withAuthentication: true,
+        contentType: 'json',
+      });
+
       const cards: PaymentDetail[] = [];
       for (const currency in data?.cards) {
         cards.push(
@@ -224,7 +257,7 @@ export default class JWPSubscriptionService extends SubscriptionService {
       throw new Error('Missing unsubscribe url');
     }
     try {
-      await InPlayer.Subscription.cancelSubscription(unsubscribeUrl);
+      await this.apiService.get<CancelSubscriptionResponse>(unsubscribeUrl, { withAuthentication: true, contentType: 'json' });
       return {
         errors: [],
         responseData: { offerId: offerId, status: 'cancelled', expiresAt: 0 },
@@ -236,13 +269,19 @@ export default class JWPSubscriptionService extends SubscriptionService {
 
   changeSubscription: ChangeSubscription = async ({ accessFeeId, subscriptionId }) => {
     try {
-      const response = await InPlayer.Subscription.changeSubscriptionPlan({
-        access_fee_id: parseInt(accessFeeId),
-        inplayer_token: subscriptionId,
-      });
+      const data = await this.apiService.post<ChangeSubscriptionPlanResponse>(
+        '/v2/subscriptions/stripe:switch',
+        {
+          inplayer_token: subscriptionId,
+          access_fee_id: accessFeeId,
+        },
+        {
+          withAuthentication: true,
+        },
+      );
       return {
         errors: [],
-        responseData: { message: response.data.message },
+        responseData: { message: data.message },
       };
     } catch {
       throw new Error('Failed to change subscription');
@@ -251,18 +290,20 @@ export default class JWPSubscriptionService extends SubscriptionService {
 
   updateCardDetails: UpdateCardDetails = async ({ cardName, cardNumber, cvc, expMonth, expYear, currency }) => {
     try {
-      const response = await InPlayer.Payment.setDefaultCreditCard({
-        cardName,
-        cardNumber,
-        cvc,
-        expMonth,
-        expYear,
-        currency,
-      });
-      return {
-        errors: [],
-        responseData: response.data,
-      };
+      const responseData = await this.apiService.put<SetDefaultCardResponse>(
+        '/v2/payments/cards/default',
+        {
+          number: cardNumber,
+          card_name: cardName,
+          cvv: cvc,
+          exp_month: expMonth,
+          exp_year: expYear,
+          currency_iso: currency,
+        },
+        { withAuthentication: true },
+      );
+
+      return { errors: [], responseData };
     } catch {
       throw new Error('Failed to update card details');
     }
@@ -270,11 +311,13 @@ export default class JWPSubscriptionService extends SubscriptionService {
 
   fetchReceipt = async ({ transactionId }: { transactionId: string }) => {
     try {
-      const { data } = await InPlayer.Payment.getBillingReceipt({ trxToken: transactionId });
-      return {
-        errors: [],
-        responseData: data,
-      };
+      const responseData = await this.apiService.get<Blob>(`/v2/accounting/transactions/${transactionId}/receipt`, {
+        withAuthentication: true,
+        contentType: 'json',
+        responseType: 'blob',
+      });
+
+      return { errors: [], responseData };
     } catch {
       throw new Error('Failed to get billing receipt');
     }

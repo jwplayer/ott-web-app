@@ -91,13 +91,14 @@ async function checkSelectedFilterButton(I: CodeceptJS.I, expectedButton) {
   } else {
     I.seeAll(allFilters);
     I.see(expectedButton, 'div[class*=filterRow] button[class*=active]');
+    I.wait(0.1); // animation
 
     // Check that the 'All' button is visually active
-    I.seeCssPropertiesOnElements({ xpath: `//button[contains(., "${expectedButton}")]` }, { color: 'rgb(0, 0, 0)', 'background-color': 'rgb(204, 204, 204)' });
+    await I.seeCssProperties({ xpath: `//button[contains(., "${expectedButton}")]` }, { color: 'rgb(0, 0, 0)', 'background-color': 'rgb(204, 204, 204)' });
     // Check that the other filter buttons are not visually active
-    I.seeCssPropertiesOnElements(
+    await I.seeCssProperties(
       { xpath: `//div[contains(@class, "filterRow")]/button[not(contains(., "${expectedButton}"))]` },
-      { color: 'rgb(255, 255, 255)', 'background-color': 'rgba(0, 0, 0, 0.6)' },
+      { color: 'rgb(255, 255, 255)', 'background-color': 'rgba(0, 0, 0, 0.3)' },
     );
   }
 }

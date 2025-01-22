@@ -194,7 +194,7 @@ const VideoLayout: React.FC<Props> = ({
       primaryMetadata={primaryMetadata}
       secondaryMetadata={secondaryMetadata}
     >
-      {playlist && <div className={styles.relatedVideos}>{renderRelatedVideos(true)}</div>}
+      {playlist && <section className={styles.relatedVideos}>{renderRelatedVideos(true)}</section>}
       {children}
       {player}
     </VideoDetails>

@@ -4,7 +4,7 @@ import env from '@jwp/ott-common/src/env';
 
 export const setThemingVariables = (config: Config) => {
   const root = document.querySelector(':root') as HTMLElement;
-  const { backgroundColor, highlightColor, headerBackground } = config.styling || {};
+  const { highlightColor, backgroundColor, headerBackground } = config.styling || {};
   const bodyFont = env.APP_BODY_FONT;
   const bodyAltFont = env.APP_BODY_ALT_FONT;
 
@@ -19,12 +19,24 @@ export const setThemingVariables = (config: Config) => {
   }
 
   if (backgroundColor) {
+    const bodyColor = calculateContrastColor(backgroundColor);
     root.style.setProperty('--body-background-color', backgroundColor);
-    root.style.setProperty('--background-contrast-color', calculateContrastColor(backgroundColor));
+    root.style.setProperty('--body-color', bodyColor);
+
+    if (bodyColor === '#000000') {
+      // disable text shadows when using a light background
+      root.style.setProperty('--body-text-shadow', 'none');
+      // hero shelf should always be dark, so on a light background we fall back to gray
+      root.style.setProperty('--hero-shelf-background-color', '#1f1f1f');
+      // currently, the EPG only supports a dark background
+      root.style.setProperty('--epg-background-color', '#262626');
+    }
   }
+
   if (bodyFont) {
     root.style.setProperty('--body-font-family', bodyFont);
   }
+
   if (bodyAltFont) {
     root.style.setProperty('--body-alt-font-family', bodyAltFont);
   }

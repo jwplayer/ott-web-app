@@ -27,22 +27,25 @@ import { useCheckoutStore } from '../stores/CheckoutStore';
 import { useAccountStore } from '../stores/AccountStore';
 import { FormValidationError } from '../errors/FormValidationError';
 import { determineSwitchDirection } from '../utils/subscription';
+import { findDefaultCardMethodId } from '../utils/payments';
 
 @injectable()
 export default class CheckoutController {
-  private readonly accountService: AccountService;
-  private readonly checkoutService: CheckoutService;
-  private readonly subscriptionService: SubscriptionService;
+  private readonly accountService?: AccountService;
+  private readonly checkoutService?: CheckoutService;
+  private readonly subscriptionService?: SubscriptionService;
   private readonly getCustomerIP: GetCustomerIP;
 
   constructor(@inject(INTEGRATION_TYPE) integrationType: IntegrationType, @inject(GET_CUSTOMER_IP) getCustomerIP: GetCustomerIP) {
     this.getCustomerIP = getCustomerIP;
-    this.accountService = getNamedModule(AccountService, integrationType);
-    this.checkoutService = getNamedModule(CheckoutService, integrationType);
-    this.subscriptionService = getNamedModule(SubscriptionService, integrationType);
+    this.accountService = getNamedModule(AccountService, integrationType, false);
+    this.checkoutService = getNamedModule(CheckoutService, integrationType, false);
+    this.subscriptionService = getNamedModule(SubscriptionService, integrationType, false);
   }
 
   initialiseOffers = async () => {
+    assertModuleMethod(this.accountService?.svodOfferIds, 'AccountService#svodOfferIds not defined');
+
     const requestedMediaOffers = useCheckoutStore.getState().requestedMediaOffers;
     const mediaOffers = requestedMediaOffers ? await this.getOffers({ offerIds: requestedMediaOffers.map(({ offerId }) => offerId) }) : [];
     useCheckoutStore.setState({ mediaOffers });
@@ -59,18 +62,20 @@ export default class CheckoutController {
     }
   };
 
-  getSubscriptionOfferIds = () => this.accountService.svodOfferIds;
+  getSubscriptionOfferIds = () => this.accountService?.svodOfferIds || [];
 
   chooseOffer = async (selectedOffer: Offer) => {
     useCheckoutStore.setState({ selectedOffer });
   };
 
   initialiseOrder = async (offer: Offer): Promise<void> => {
+    assertModuleMethod(this.checkoutService?.createOrder, 'CheckoutService#createOrder not defined');
+
     const { getAccountInfo } = useAccountStore.getState();
     const { customer } = getAccountInfo();
 
     const paymentMethods = await this.getPaymentMethods();
-    const paymentMethodId = paymentMethods[0]?.id;
+    const paymentMethodId = parseInt(findDefaultCardMethodId(paymentMethods));
 
     const createOrderArgs: CreateOrderArgs = {
       offer,
@@ -91,6 +96,8 @@ export default class CheckoutController {
   };
 
   updateOrder = async (order: Order, paymentMethodId?: number, couponCode?: string | null): Promise<void> => {
+    assertModuleMethod(this.checkoutService?.updateOrder, 'CheckoutService#updateOrder is not available');
+
     try {
       const response = await this.checkoutService.updateOrder({ order, paymentMethodId, couponCode });
 
@@ -113,6 +120,8 @@ export default class CheckoutController {
   };
 
   getPaymentMethods = async (): Promise<PaymentMethod[]> => {
+    assertModuleMethod(this.checkoutService?.getPaymentMethods, 'CheckoutService#getPaymentMethods is not available');
+
     const { paymentMethods } = useCheckoutStore.getState();
 
     if (paymentMethods) return paymentMethods; // already fetched payment methods
@@ -127,12 +136,14 @@ export default class CheckoutController {
   };
 
   //
-  paymentWithoutDetails = async (): Promise<Payment> => {
+  paymentWithoutDetails = async ({ captchaValue }: { captchaValue?: string } = {}): Promise<Payment> => {
+    assertModuleMethod(this.checkoutService?.paymentWithoutDetails, 'CheckoutService#paymentWithoutDetails is not available');
+
     const { order } = useCheckoutStore.getState();
 
     if (!order) throw new Error('No order created');
 
-    const response = await this.checkoutService.paymentWithoutDetails({ orderId: order.id });
+    const response = await this.checkoutService.paymentWithoutDetails({ orderId: order.id, captchaValue });
 
     if (response.errors.length > 0) throw new Error(response.errors[0]);
     if (response.responseData.rejectedReason) throw new Error(response.responseData.rejectedReason);
@@ -141,6 +152,8 @@ export default class CheckoutController {
   };
 
   directPostCardPayment = async ({ cardPaymentPayload, referrer, returnUrl }: { cardPaymentPayload: CardPaymentData; referrer: string; returnUrl: string }) => {
+    assertModuleMethod(this.checkoutService?.directPostCardPayment, 'CheckoutService#directPostCardPayment is not available');
+
     const { order } = useCheckoutStore.getState();
 
     if (!order) throw new Error('No order created');
@@ -154,7 +167,7 @@ export default class CheckoutController {
 
     if (isInitialPayment && !orderId) throw new Error('There is no order to pay for');
 
-    assertModuleMethod(this.checkoutService.createAdyenPaymentSession, 'createAdyenPaymentSession is not available in checkout service');
+    assertModuleMethod(this.checkoutService?.createAdyenPaymentSession, 'createAdyenPaymentSession is not available in checkout service');
 
     const response = await this.checkoutService.createAdyenPaymentSession({
       orderId: orderId,
@@ -168,18 +181,19 @@ export default class CheckoutController {
     return response.responseData;
   };
 
-  initialAdyenPayment = async (paymentMethod: AdyenPaymentMethod, returnUrl: string): Promise<InitialAdyenPayment> => {
+  initialAdyenPayment = async (paymentMethod: AdyenPaymentMethod, returnUrl: string, captchaValue?: string): Promise<InitialAdyenPayment> => {
     const { order } = useCheckoutStore.getState();
 
     if (!order) throw new Error('No order created');
 
-    assertModuleMethod(this.checkoutService.initialAdyenPayment, 'initialAdyenPayment is not available in checkout service');
+    assertModuleMethod(this.checkoutService?.initialAdyenPayment, 'initialAdyenPayment is not available in checkout service');
 
     const response = await this.checkoutService.initialAdyenPayment({
       orderId: order.id,
       returnUrl: returnUrl,
       paymentMethod,
       customerIP: await this.getCustomerIP(),
+      captchaValue,
     });
 
     if (response.errors.length > 0) throw new Error(response.errors[0]);
@@ -190,7 +204,7 @@ export default class CheckoutController {
   finalizeAdyenPayment = async (details: unknown, orderId?: number, paymentData?: string): Promise<FinalizeAdyenPayment> => {
     if (!orderId) throw new Error('No order created');
 
-    assertModuleMethod(this.checkoutService.finalizeAdyenPayment, 'finalizeAdyenPayment is not available in checkout service');
+    assertModuleMethod(this.checkoutService?.finalizeAdyenPayment, 'finalizeAdyenPayment is not available in checkout service');
 
     const response = await this.checkoutService.finalizeAdyenPayment({
       orderId,
@@ -211,16 +225,20 @@ export default class CheckoutController {
     cancelUrl,
     errorUrl,
     couponCode = '',
+    captchaValue,
   }: {
     successUrl: string;
     waitingUrl: string;
     cancelUrl: string;
     errorUrl: string;
     couponCode: string;
+    captchaValue?: string;
   }): Promise<{ redirectUrl: string }> => {
     const { order } = useCheckoutStore.getState();
 
     if (!order) throw new Error('No order created');
+
+    assertModuleMethod(this.checkoutService?.paymentWithPayPal, 'CheckoutService#paymentWithPayPal is not available');
 
     const response = await this.checkoutService.paymentWithPayPal({
       order: order,
@@ -229,6 +247,7 @@ export default class CheckoutController {
       cancelUrl,
       errorUrl,
       couponCode,
+      captchaValue,
     });
 
     if (response.errors.length > 0) throw new Error(response.errors[0]);
@@ -242,13 +261,11 @@ export default class CheckoutController {
     const { getAccountInfo } = useAccountStore.getState();
 
     const { customerId } = getAccountInfo();
-
-    assertModuleMethod(this.checkoutService.getSubscriptionSwitches, 'getSubscriptionSwitches is not available in checkout service');
-    assertModuleMethod(this.checkoutService.getOffer, 'getOffer is not available in checkout service');
-
     const { subscription } = useAccountStore.getState();
 
-    if (!subscription) return null;
+    if (!subscription || !this.checkoutService?.getSubscriptionSwitches) return null;
+
+    assertModuleMethod(this.checkoutService.getOffer, 'getOffer is not available in checkout service');
 
     const response = await this.checkoutService.getSubscriptionSwitches({
       customerId: customerId,
@@ -268,7 +285,7 @@ export default class CheckoutController {
 
     if (!selectedOffer || !subscription) throw new Error('No offer selected');
 
-    assertModuleMethod(this.checkoutService.switchSubscription, 'switchSubscription is not available in checkout service');
+    assertModuleMethod(this.checkoutService?.switchSubscription, 'switchSubscription is not available in checkout service');
 
     const switchDirection: 'upgrade' | 'downgrade' = determineSwitchDirection(subscription);
 
@@ -283,7 +300,7 @@ export default class CheckoutController {
   };
 
   changeSubscription = async ({ accessFeeId, subscriptionId }: { accessFeeId: string; subscriptionId: string }) => {
-    assertModuleMethod(this.subscriptionService.changeSubscription, 'changeSubscription is not available in subscription service');
+    assertModuleMethod(this.subscriptionService?.changeSubscription, 'changeSubscription is not available in subscription service');
 
     const { responseData } = await this.subscriptionService.changeSubscription({
       accessFeeId,
@@ -301,8 +318,8 @@ export default class CheckoutController {
     paymentMethodId: number,
     currentPaymentId?: number,
   ) => {
-    assertModuleMethod(this.checkoutService.updatePaymentMethodWithPayPal, 'updatePaymentMethodWithPayPal is not available in checkout service');
-    assertModuleMethod(this.checkoutService.deletePaymentMethod, 'deletePaymentMethod is not available in checkout service');
+    assertModuleMethod(this.checkoutService?.updatePaymentMethodWithPayPal, 'updatePaymentMethodWithPayPal is not available in checkout service');
+    assertModuleMethod(this.checkoutService?.deletePaymentMethod, 'deletePaymentMethod is not available in checkout service');
 
     const response = await this.checkoutService.updatePaymentMethodWithPayPal({
       paymentMethodId,
@@ -322,7 +339,7 @@ export default class CheckoutController {
   };
 
   addAdyenPaymentDetails = async (paymentMethod: AdyenPaymentMethod, paymentMethodId: number, returnUrl: string): Promise<AddAdyenPaymentDetailsResponse> => {
-    assertModuleMethod(this.checkoutService.addAdyenPaymentDetails, 'addAdyenPaymentDetails is not available in checkout service');
+    assertModuleMethod(this.checkoutService?.addAdyenPaymentDetails, 'addAdyenPaymentDetails is not available in checkout service');
 
     const response = await this.checkoutService.addAdyenPaymentDetails({
       paymentMethodId,
@@ -337,7 +354,7 @@ export default class CheckoutController {
   };
 
   finalizeAdyenPaymentDetails = async (details: unknown, paymentMethodId: number, paymentData?: string): Promise<FinalizeAdyenPaymentDetailsResponse> => {
-    assertModuleMethod(this.checkoutService.finalizeAdyenPaymentDetails, 'finalizeAdyenPaymentDetails is not available in checkout service');
+    assertModuleMethod(this.checkoutService?.finalizeAdyenPaymentDetails, 'finalizeAdyenPaymentDetails is not available in checkout service');
 
     const response = await this.checkoutService.finalizeAdyenPaymentDetails({
       paymentMethodId,
@@ -351,10 +368,14 @@ export default class CheckoutController {
   };
 
   getOffers: GetOffers = (payload) => {
+    assertModuleMethod(this.checkoutService?.getOffers, 'CheckoutService#getOffers is not available');
+
     return this.checkoutService.getOffers(payload);
   };
 
   getEntitlements: GetEntitlements = (payload) => {
+    assertModuleMethod(this.checkoutService?.getEntitlements, 'CheckoutService#getEntitlements is not available');
+
     return this.checkoutService.getEntitlements(payload);
   };
 }

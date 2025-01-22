@@ -7,17 +7,16 @@ import { AppError } from '../utils/error';
 import type { Config } from '../../types/config';
 import env from '../env';
 
-import ApiService from './ApiService';
-
 /**
  * Set config setup changes in both config.service.ts and config.d.ts
  * */
 
 @injectable()
 export default class ConfigService {
+  protected CONFIG_HOST = env.APP_API_BASE_URL;
   // Explicitly set default config here as a local variable,
   // otherwise if it's a module level const, the merge below causes changes to nested properties
-  private DEFAULT_CONFIG: Config = {
+  protected DEFAULT_CONFIG: Config = {
     id: '',
     siteName: '',
     description: '',
@@ -34,13 +33,7 @@ export default class ConfigService {
     features: {},
   };
 
-  private readonly apiService: ApiService;
-
-  constructor(apiService: ApiService) {
-    this.apiService = apiService;
-  }
-
-  private enrichConfig = (config: Config): Config => {
+  protected enrichConfig = (config: Config): Config => {
     const { content, siteName } = config;
     const updatedContent = content.map((content) => Object.assign({ featured: false }, content));
 
@@ -66,10 +59,6 @@ export default class ConfigService {
     }
 
     return source;
-  };
-
-  loadAdSchedule = async (adScheduleId: string | undefined | null) => {
-    return this.apiService.getAdSchedule(adScheduleId);
   };
 
   loadConfig = async (configLocation: string | undefined) => {

@@ -43,7 +43,7 @@ export default function AdyenPaymentDetails({ setProcessing, type, setPaymentErr
       setProcessing(true);
 
       await checkoutController.finalizeAdyenPaymentDetails({ redirectResult: decodeURI(redirectResult) }, paymentMethodId);
-      await accountController.reloadSubscriptions({ delay: 2000 });
+      await accountController.reloadSubscriptions({ retry: 10 });
 
       setProcessing(false);
 
@@ -102,7 +102,7 @@ export default function AdyenPaymentDetails({ setProcessing, type, setPaymentErr
           handleAction(result.action);
         }
 
-        await accountController.reloadSubscriptions({ delay: 2000 });
+        await accountController.reloadSubscriptions({ retry: 5 });
 
         navigate(paymentSuccessUrl, { replace: true });
       } catch (error: unknown) {

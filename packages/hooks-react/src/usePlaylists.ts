@@ -1,69 +1,64 @@
 import { PersonalShelf, PersonalShelves, PLAYLIST_LIMIT } from '@jwp/ott-common/src/constants';
-import ApiService from '@jwp/ott-common/src/services/ApiService';
-import { getModule } from '@jwp/ott-common/src/modules/container';
 import { useFavoritesStore } from '@jwp/ott-common/src/stores/FavoritesStore';
 import { useWatchHistoryStore } from '@jwp/ott-common/src/stores/WatchHistoryStore';
-import { generatePlaylistPlaceholder } from '@jwp/ott-common/src/utils/collection';
-import { isTruthyCustomParamValue } from '@jwp/ott-common/src/utils/common';
-import { isScheduledOrLiveMedia } from '@jwp/ott-common/src/utils/liveEvent';
-import type { Content } from '@jwp/ott-common/types/config';
+import { useConfigStore } from '@jwp/ott-common/src/stores/ConfigStore';
+import type { Content, AppContentType, AppMenuType } from '@jwp/ott-common/types/config';
 import type { Playlist } from '@jwp/ott-common/types/playlist';
 import { useQueries, useQueryClient } from 'react-query';
+import { useTranslation } from 'react-i18next';
 
-const placeholderData = generatePlaylistPlaceholder(30);
+import { getPlaylistQueryOptions } from './usePlaylist';
 
 type UsePlaylistResult = {
   data: Playlist | undefined;
-  isLoading: boolean;
   isSuccess?: boolean;
   error?: unknown;
+  isPlaceholderData?: boolean;
 }[];
+
+const isPlaylistType = (type: AppContentType): type is AppMenuType => !PersonalShelves.some((pType) => pType === type);
 
 const usePlaylists = (content: Content[], rowsToLoad: number | undefined = undefined) => {
   const page_limit = PLAYLIST_LIMIT.toString();
   const queryClient = useQueryClient();
-  const apiService = getModule(ApiService);
 
+  const siteId = useConfigStore((state) => state.config.siteId);
   const favorites = useFavoritesStore((state) => state.getPlaylist());
   const watchHistory = useWatchHistoryStore((state) => state.getPlaylist());
 
+  // Determine currently selected language
+  const { i18n } = useTranslation();
+
   const playlistQueries = useQueries(
-    content.map(({ contentId, type }, index) => ({
-      enabled: !!contentId && (!rowsToLoad || rowsToLoad > index) && !PersonalShelves.some((pType) => pType === type),
-      queryKey: ['playlist', contentId],
-      queryFn: async () => {
-        const playlist = await apiService.getPlaylistById(contentId, { page_limit });
-
-        // This pre-caches all playlist items and makes navigating a lot faster.
-        playlist?.playlist?.forEach((playlistItem) => {
-          queryClient.setQueryData(['media', playlistItem.mediaid], playlistItem);
+    content.map(({ contentId, type }, index) => {
+      if (isPlaylistType(type)) {
+        return getPlaylistQueryOptions({
+          enabled: !rowsToLoad || rowsToLoad > index,
+          type,
+          siteId,
+          contentId,
+          queryClient,
+          usePlaceholderData: true,
+          params: { page_limit },
+          language: i18n.language,
         });
+      }
 
-        return playlist;
-      },
-      placeholderData: !!contentId && placeholderData,
-      refetchInterval: (data: Playlist | undefined) => {
-        if (!data) return false;
-
-        const autoRefetch = isTruthyCustomParamValue(data.refetch) || data.playlist.some(isScheduledOrLiveMedia);
-
-        return autoRefetch ? 1000 * 30 : false;
-      },
-      retry: false,
-    })),
+      return { enabled: false };
+    }),
   );
 
   const result: UsePlaylistResult = content.map(({ type }, index) => {
     if (type === PersonalShelf.Favorites) return { data: favorites, isLoading: false, isSuccess: true };
     if (type === PersonalShelf.ContinueWatching) return { data: watchHistory, isLoading: false, isSuccess: true };
 
-    const { data, isLoading, isSuccess, error } = playlistQueries[index];
+    const { data, isSuccess, error, isPlaceholderData } = playlistQueries[index];
 
     return {
       data,
-      isLoading,
       isSuccess,
       error,
+      isPlaceholderData,
     };
   });
 

@@ -13,13 +13,13 @@ type Props = {
   onClose: () => void;
   size?: 'small' | 'large';
   children: React.ReactNode;
-  role: React.AriaRole;
+  role?: React.AriaRole;
 } & React.AriaAttributes;
 
-const Dialog: React.FC<Props> = ({ open, onClose, children, size = 'small', role = 'dialog', ...ariaAttributes }: Props) => {
+const Dialog: React.FC<Props> = ({ open, onClose, children, size = 'small', role, ...ariaAttributes }: Props) => {
   return (
-    <Modal open={open} onClose={onClose} AnimationComponent={Slide}>
-      <div className={classNames(styles.dialog, styles[size])} aria-modal="true" role={role} data-testid={testId('dialog')} {...ariaAttributes}>
+    <Modal open={open} onClose={onClose} AnimationComponent={Slide} role={role} centered>
+      <div className={classNames(styles.dialog, styles[size])} data-testid={testId('dialog')} {...ariaAttributes}>
         {children}
         <ModalCloseButton onClick={onClose} />
       </div>

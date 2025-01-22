@@ -36,7 +36,8 @@ const Search = () => {
 
   const getURL = (playlistItem: PlaylistItem) =>
     mediaURL({
-      media: playlistItem,
+      id: playlistItem.mediaid,
+      title: playlistItem.title,
       playlistId: features?.searchPlaylist,
     });
 

@@ -7,7 +7,7 @@
 }
 
 @mixin mobile-only-landscape {
-  @media screen and (max-width: variables.$mobile-max-width) and (orientation: landscape) {
+  @media screen and (max-width: variables.$tablet-max-width) and (max-height: 520px) and (orientation: landscape) {
     @content;
   }
 }

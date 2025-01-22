@@ -2,9 +2,11 @@
 @use '@jwp/ott-ui-react/src/styles/theme';
 
 .banner {
+  height: 80px;
   text-align: center;
 
   > img {
     max-width: 50%;
+    max-height: 100%;
   }
 }

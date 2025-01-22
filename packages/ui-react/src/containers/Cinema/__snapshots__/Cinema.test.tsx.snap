@@ -5,90 +5,77 @@ exports[`<Cinema> > renders and matches snapshot 1`] = `
   style="margin-right: 0px; overflow-y: hidden;"
 >
   <div />
-  <div
-    style="transition: opacity 0.3s ease-in-out; opacity: 0; will-change: opacity;"
+  <dialog
+    aria-label="videoplayer"
+    class=""
+    open=""
   >
     <div
-      class="_modal_6c6c55"
+      class="_cinemaContainer_555f3c"
+      style="transition: transform 0.3s ease-out; transform: scale(1);"
     >
       <div
-        class="_backdrop_6c6c55"
-        data-testid="backdrop"
-      />
-      <div
-        class="_container_6c6c55"
+        class="_cinema_555f3c"
       >
         <div
-          class="_cinemaContainer_555f3c"
-          style="transition: transform 0.2s ease-out; transform: scale(0.7);"
+          class="_overlayFade_555f3c"
+          style="transition: opacity 0.25s ease-in-out; opacity: 1; will-change: opacity;"
         >
           <div
-            aria-label="videoplayer"
-            aria-modal="true"
-            class="_cinema_555f3c"
-            role="dialog"
+            class="_playerOverlay_555f3c"
           >
             <div
-              class="_overlayFade_555f3c"
-              style="transition: opacity 0.25s ease-in-out; opacity: 0; will-change: opacity;"
+              class="_playerContent_555f3c"
             >
-              <div
-                class="_playerOverlay_555f3c"
+              <button
+                aria-label="common:back"
+                class="_iconButton_0fef65 _backButton_555f3c"
+                type="button"
               >
-                <div
-                  class="_playerContent_555f3c"
+                <svg
+                  aria-hidden="true"
+                  class="_icon_585b29"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
                 >
-                  <button
-                    aria-label="common:back"
-                    class="_iconButton_0fef65 _backButton_555f3c"
-                    type="button"
+                  <path
+                    d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z"
+                  />
+                </svg>
+              </button>
+              <div>
+                <h1
+                  class="_title_555f3c"
+                >
+                  Test item title
+                </h1>
+                <div
+                  class="_metaContainer_555f3c"
+                >
+                  <div
+                    class="_primaryMetadata_555f3c"
                   >
-                    <svg
-                      aria-hidden="true"
-                      class="_icon_585b29"
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z"
-                      />
-                    </svg>
-                  </button>
-                  <div>
-                    <h1
-                      class="_title_555f3c"
-                    >
-                      Test item title
-                    </h1>
-                    <div
-                      class="_metaContainer_555f3c"
-                    >
-                      <div
-                        class="_primaryMetadata_555f3c"
-                      >
-                        Primary metadata
-                      </div>
-                    </div>
+                    Primary metadata
                   </div>
                 </div>
               </div>
             </div>
-            <div
-              class="_loadingOverlay_eb61cb _inline_eb61cb"
-            >
-              <div
-                class="_buffer_d122df"
-              >
-                <div />
-                <div />
-                <div />
-                <div />
-              </div>
-            </div>
+          </div>
+        </div>
+        <div
+          class="_loadingOverlay_eb61cb _inline_eb61cb"
+        >
+          <div
+            class="_buffer_d122df"
+          >
+            <div />
+            <div />
+            <div />
+            <div />
           </div>
         </div>
       </div>
     </div>
-  </div>
+  </dialog>
 </body>
 `;

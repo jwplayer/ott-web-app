@@ -1,6 +1,5 @@
 import { type ChangeEventHandler, type FC, type ReactNode, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import type { RegisterFieldOptions } from '@inplayer-org/inplayer.js';
 import type { CustomRegisterFieldVariant } from '@jwp/ott-common/types/account';
 import { isTruthyCustomParamValue, testId } from '@jwp/ott-common/src/utils/common';
 
@@ -22,7 +21,7 @@ export type CustomRegisterFieldCommonProps = {
   helperText: string;
   disabled: boolean;
   required: boolean;
-  options: RegisterFieldOptions;
+  options: Record<string, string>;
   editing: boolean;
   lang: string;
 }>;

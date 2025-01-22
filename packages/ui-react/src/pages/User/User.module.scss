@@ -5,16 +5,15 @@
 .user {
   display: flex;
   justify-content: center;
-  margin: calc(#{variables.$base-spacing} * 3.5) calc(#{variables.$base-spacing} * 4);
-  color: var(--primary-color);
+  margin: calc(variables.$base-spacing * 3);
   font-family: var(--body-alt-font-family);
 
-  @include responsive.mobile-only() {
-    margin: 0 variables.$base-spacing;
+  @include responsive.tablet-only() {
+    margin: calc(variables.$base-spacing * 2);
   }
 
-  @include responsive.tablet-only() {
-    margin: 0 calc(#{variables.$base-spacing} * 1.5);
+  @include responsive.mobile-only() {
+    margin: variables.$base-spacing;
   }
 }
 
@@ -59,12 +58,13 @@
 .panel {
   margin-bottom: calc(#{variables.$base-spacing} * 1.5);
   padding: variables.$base-spacing;
+  color: theme.$modal-color;
   font-weight: normal;
   font-size: 16px;
   font-style: normal;
   line-height: 18px;
   letter-spacing: 0.15px;
-  background: theme.$panel-bg;
+  background: theme.$modal-bg;
   box-shadow: theme.$panel-box-shadow;
 
   > ul {
@@ -84,7 +84,7 @@
     font-weight: var(--body-font-weight-bold);
     font-size: 24px;
     line-height: 26px;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.14), 0 3px 4px rgba(0, 0, 0, 0.12), 0 1px 5px rgba(0, 0, 0, 0.2);
+    text-shadow: var(--body-text-shadow)
   }
 }
 
@@ -96,8 +96,3 @@
   }
 }
 
-.profileIcon {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-}

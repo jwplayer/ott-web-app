@@ -6,20 +6,20 @@ import { VideoProgressMinMax } from '@jwp/ott-common/src/constants';
 
 import { useWatchHistoryListener } from './useWatchHistoryListener';
 
-export const useWatchHistory = (player: jwplayer.JWPlayer | undefined, item: PlaylistItem, seriesItem?: PlaylistItem) => {
+export const useWatchHistory = (item: PlaylistItem, seriesItem?: PlaylistItem) => {
   // config
   const { features } = useConfigStore((s) => s.config);
   const continueWatchingList = features?.continueWatchingList;
   const watchHistoryEnabled = !!continueWatchingList;
 
   // watch history listener
-  useWatchHistoryListener(player, item, seriesItem);
+  const { saveWatchProgress, handleTimeUpdate } = useWatchHistoryListener(item, seriesItem);
 
   // watch History
   const watchHistoryItem = useWatchHistoryStore((state) => (!!item && watchHistoryEnabled ? state.getItem(item) : undefined));
 
   // calculate the `startTime` of the current item based on the watch progress
-  return useMemo(() => {
+  const startTime = useMemo(() => {
     const videoProgress = watchHistoryItem?.progress;
 
     if (videoProgress && videoProgress > VideoProgressMinMax.Min && videoProgress < VideoProgressMinMax.Max) {
@@ -29,4 +29,6 @@ export const useWatchHistory = (player: jwplayer.JWPlayer | undefined, item: Pla
     // start at the beginning of the video (only for VOD content)
     return 0;
   }, [item.duration, watchHistoryItem?.progress]);
+
+  return { startTime, saveWatchProgress, handleTimeUpdate, watchHistoryEnabled };
 };

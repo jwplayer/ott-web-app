@@ -5,6 +5,7 @@ module.exports = {
       2,
       'always',
       [
+        'deps',
         'project',
         'home',
         'playlist',
@@ -31,6 +32,7 @@ module.exports = {
         'tests',
         'i18n',
         'a11y',
+        'integrations',
       ],
     ],
   },

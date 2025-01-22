@@ -1,6 +1,4 @@
-import { isLiveEvent } from '@jwp/ott-common/src/utils/liveEvent';
-import { CONTENT_TYPE } from '@jwp/ott-common/src/constants';
-import MediaEvent from '@jwp/ott-ui-react/src/pages/ScreenRouting/mediaScreens/MediaEvent/MediaEvent';
+import { MEDIA_CONTENT_TYPE } from '@jwp/ott-common/src/constants';
 import { mediaScreenMap } from '@jwp/ott-ui-react/src/pages/ScreenRouting/MediaScreenRouter';
 import MediaHub from '@jwp/ott-ui-react/src/pages/ScreenRouting/mediaScreens/MediaHub/MediaHub';
 
@@ -42,8 +40,5 @@ import MediaHub from '@jwp/ott-ui-react/src/pages/ScreenRouting/mediaScreens/Med
 
 export default function registerCustomScreens() {
   // Hub is an example screen for the media router
-  mediaScreenMap.registerByContentType(MediaHub, CONTENT_TYPE.hub);
-
-  // todo: remove the isLiveEvent function when the media item's contain the correct contentType(without the VCH prefix)
-  mediaScreenMap.register(MediaEvent, isLiveEvent);
+  mediaScreenMap.registerByContentType(MediaHub, MEDIA_CONTENT_TYPE.hub);
 }

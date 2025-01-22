@@ -1,14 +1,13 @@
-import React from 'react';
-import classNames from 'classnames';
+import React, { type PropsWithChildren } from 'react';
 import { testId } from '@jwp/ott-common/src/utils/common';
-import useBreakpoint, { Breakpoint } from '@jwp/ott-ui-react/src/hooks/useBreakpoint';
 
-import CollapsibleText from '../CollapsibleText/CollapsibleText';
-import Image from '../Image/Image';
+import Hero from '../Hero/Hero';
+import HeroTitle from '../Hero/HeroTitle';
+import HeroDescription from '../Hero/HeroDescription';
 
 import styles from './VideoDetails.module.scss';
 
-type Props = {
+type Props = PropsWithChildren<{
   title: string;
   description: string;
   primaryMetadata: React.ReactNode;
@@ -18,10 +17,9 @@ type Props = {
   shareButton: React.ReactNode;
   favoriteButton?: React.ReactNode;
   trailerButton?: React.ReactNode;
-  children: React.ReactNode;
-};
+}>;
 
-const VideoDetails: React.VFC<Props> = ({
+const VideoDetails = ({
   title,
   description,
   primaryMetadata,
@@ -32,33 +30,24 @@ const VideoDetails: React.VFC<Props> = ({
   favoriteButton,
   trailerButton,
   children,
-}) => {
-  const breakpoint: Breakpoint = useBreakpoint();
-  const isMobile = breakpoint === Breakpoint.xs;
-  const alt = ''; // intentionally empty for a11y, because adjacent text alternative
-
+}: Props) => {
   return (
     <div data-testid={testId('cinema-layout')}>
-      <header className={styles.video} data-testid={testId('video-details')} id="video-details">
-        <div className={classNames(styles.main, styles.mainPadding)}>
-          <Image className={styles.poster} image={image} alt={alt} width={1280} />
-          <div className={styles.posterFade} />
-          <div className={styles.info}>
-            <h1 className={styles.title}>{title}</h1>
-            <div className={styles.metaContainer}>
-              <div className={styles.primaryMetadata}>{primaryMetadata}</div>
-              {secondaryMetadata && <div className={styles.secondaryMetadata}>{secondaryMetadata}</div>}
-            </div>
-            <CollapsibleText text={description} className={styles.description} maxHeight={isMobile ? 60 : 'none'} />
-
-            <div className={styles.buttonBar}>
-              {startWatchingButton}
-              {trailerButton}
-              {favoriteButton}
-              {shareButton}
-            </div>
+      <header className={styles.videoDetails} data-testid={testId('video-details')} id="video-details">
+        <Hero image={image}>
+          <HeroTitle title={title} />
+          <div className={styles.metaContainer}>
+            <div className={styles.primaryMetadata}>{primaryMetadata}</div>
+            {secondaryMetadata && <div className={styles.secondaryMetadata}>{secondaryMetadata}</div>}
           </div>
-        </div>
+          <HeroDescription className={styles.description} description={description} />
+          <div className={styles.buttonBar}>
+            {startWatchingButton}
+            {trailerButton}
+            {favoriteButton}
+            {shareButton}
+          </div>
+        </Hero>
       </header>
       {children}
     </div>

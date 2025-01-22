@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import type { PlaylistItem } from '@jwp/ott-common/types/playlist';
 import { useWatchHistory } from '@jwp/ott-hooks-react/src/useWatchHistory';
 import { usePlaylistItemCallback } from '@jwp/ott-hooks-react/src/usePlaylistItemCallback';
@@ -20,6 +20,7 @@ type Props = {
   onUserActive?: () => void;
   onUserInActive?: () => void;
   onNext?: () => void;
+  onBackClick?: () => void;
   feedId?: string;
   liveStartDateTime?: string | null;
   liveEndDateTime?: string | null;
@@ -37,6 +38,7 @@ const PlayerContainer: React.FC<Props> = ({
   onUserActive,
   onUserInActive,
   onNext,
+  onBackClick,
   liveEndDateTime,
   liveFromBeginning,
   liveStartDateTime,
@@ -44,35 +46,64 @@ const PlayerContainer: React.FC<Props> = ({
 }: Props) => {
   // data
   const { data: adsData, isLoading: isAdsLoading } = useAds({ mediaId: item?.mediaid });
-  const { data: playableItem, isLoading, isGeoBlocked } = useProtectedMedia(item);
+  const { data: playableItem, isLoading, error } = useProtectedMedia(item);
+
   // state
   const [playerInstance, setPlayerInstance] = useState<JWPlayer>();
 
-  // watch history
-  const startTime = useWatchHistory(playerInstance, item, seriesItem);
+  const watchHistory = useWatchHistory(item, seriesItem);
 
   // player events
-  const handleReady = useCallback((player?: JWPlayer) => {
+  const handleReady = (player?: JWPlayer) => {
     setPlayerInstance(player);
-  }, []);
+  };
 
-  const handleFirstFrame = useCallback(() => {
+  const handleFirstFrame = () => {
     // when playing a livestream, the first moment we can seek to the beginning of the DVR range is after the
     // firstFrame event.
     // @todo this doesn't seem to work 100% out of the times. Confirm with player team if this is the best approach.
     if (liveFromBeginning) {
       playerInstance?.seek(0);
     }
-  }, [liveFromBeginning, playerInstance]);
+  };
+
+  const handleTimeEvent = (params: { position: number; duration: number }) => {
+    watchHistory.handleTimeUpdate(params);
+  };
+
+  const handlePlay = () => {
+    watchHistory.saveWatchProgress();
+    onPlay?.();
+  };
+
+  const handlePause = () => {
+    watchHistory.saveWatchProgress();
+    onPause?.();
+  };
+
+  const handleComplete = () => {
+    onComplete?.();
+  };
+
+  const handleRemove = () => {
+    watchHistory.saveWatchProgress();
+  };
 
   const handlePlaylistItemCallback = usePlaylistItemCallback(liveStartDateTime, liveEndDateTime);
 
-  if (!playableItem || isLoading || isAdsLoading) {
+  if (isLoading || isAdsLoading) {
     return <LoadingOverlay inline />;
   }
 
-  if (isGeoBlocked) {
-    return <PlayerError error={PlayerErrorState.GEO_BLOCKED} />;
+  if (!playableItem || error instanceof Error) {
+    let playerError = PlayerErrorState.UNKNOWN;
+
+    if (error instanceof Error) {
+      if (error.message.toLowerCase() === 'access blocked') playerError = PlayerErrorState.GEO_BLOCKED;
+      if (error.message.toLowerCase() === 'unauthorized') playerError = PlayerErrorState.UNAUTHORIZED;
+    }
+
+    return <PlayerError error={playerError} />;
   }
 
   return (
@@ -82,14 +113,17 @@ const PlayerContainer: React.FC<Props> = ({
       adsData={adsData}
       onReady={handleReady}
       onFirstFrame={handleFirstFrame}
-      onPlay={onPlay}
-      onPause={onPause}
-      onComplete={onComplete}
+      onPlay={handlePlay}
+      onPause={handlePause}
+      onTime={handleTimeEvent}
+      onComplete={handleComplete}
       onUserActive={onUserActive}
       onUserInActive={onUserInActive}
+      onRemove={handleRemove}
       onNext={onNext}
+      onBackClick={onBackClick}
       onPlaylistItemCallback={handlePlaylistItemCallback}
-      startTime={startTime}
+      startTime={watchHistory.startTime}
       autostart={autostart}
     />
   );

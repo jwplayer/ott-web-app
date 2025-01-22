@@ -6,7 +6,6 @@ import type { LoginFormData } from '@jwp/ott-common/types/account';
 import { testId } from '@jwp/ott-common/src/utils/common';
 import useToggle from '@jwp/ott-hooks-react/src/useToggle';
 import type { SocialLoginURLs } from '@jwp/ott-hooks-react/src/useSocialLoginUrls';
-import { simultaneousLoginWarningKey } from '@jwp/ott-common/src/constants';
 import Visibility from '@jwp/ott-theme/assets/icons/visibility.svg?react';
 import VisibilityOff from '@jwp/ott-theme/assets/icons/visibility_off.svg?react';
 
@@ -16,7 +15,6 @@ import Link from '../Link/Link';
 import IconButton from '../IconButton/IconButton';
 import FormFeedback from '../FormFeedback/FormFeedback';
 import LoadingOverlay from '../LoadingOverlay/LoadingOverlay';
-import SocialButtonsList from '../SocialButtonsList/SocialButtonsList';
 import Icon from '../Icon/Icon';
 import { modalURLFromLocation } from '../../utils/location';
 
@@ -32,36 +30,20 @@ type Props = {
   submitting: boolean;
   socialLoginURLs: SocialLoginURLs | null;
   siteName?: string;
-  messageKey: string | null;
 };
 
-const LoginForm: React.FC<Props> = ({ onSubmit, onChange, socialLoginURLs, values, errors, validationError, submitting, siteName, messageKey }: Props) => {
+const LoginForm: React.FC<Props> = ({ onSubmit, onChange, values, errors, validationError, submitting, siteName }: Props) => {
   const [viewPassword, toggleViewPassword] = useToggle();
   const { t } = useTranslation('account');
   const location = useLocation();
 
-  const getTranslatedErrorMessage = (messageId: string | null) => {
-    switch (messageId) {
-      case simultaneousLoginWarningKey:
-        return t('login.simultaneous_logins');
-    }
-    return t('login.unexpected_error');
-  };
-
   return (
     <form onSubmit={onSubmit} data-testid={testId('login-form')} noValidate>
-      {messageKey && (
-        <div className={styles.top}>
-          <FormFeedback variant="warning">{getTranslatedErrorMessage(messageKey)}</FormFeedback>
-        </div>
-      )}
       {errors.form ? (
         <FormFeedback variant="error" visible={!validationError}>
           {errors.form}
         </FormFeedback>
       ) : null}
-
-      <SocialButtonsList socialLoginURLs={socialLoginURLs} />
       <h2 className={styles.title}>{t('login.sign_in')}</h2>
       <TextField
         value={values.email}

@@ -10,6 +10,7 @@ defaults:
 jobs:
   build_and_preview:
     name: Build and preview
+    if: '! github.event.pull_request.head.repo.fork '
     runs-on: ubuntu-latest
     outputs:
       output1: ${{ steps.firebase_hosting_preview.outputs.details_url }}
@@ -29,6 +30,7 @@ jobs:
 
   lhci:
     name: Lighthouse
+    if: '! github.event.pull_request.head.repo.fork '
     runs-on: ubuntu-latest
     needs: build_and_preview
     steps:

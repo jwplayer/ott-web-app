@@ -8,7 +8,7 @@ type IntervalCheckAccessPayload = {
   interval?: number;
   iterations?: number;
   offerId?: string;
-  callback?: (hasAccess: boolean) => void;
+  callback?: ({ hasAccess, offerId }: { hasAccess: boolean; offerId: string }) => void;
 };
 
 const useCheckAccess = () => {
@@ -22,21 +22,25 @@ const useCheckAccess = () => {
   const offers = checkoutController.getSubscriptionOfferIds();
 
   const intervalCheckAccess = useCallback(
-    ({ interval = 3000, iterations = 5, offerId, callback }: IntervalCheckAccessPayload) => {
-      if (!offerId && offers?.[0]) {
-        offerId = offers[0];
+    ({ interval = 3000, iterations = 5, offerId = offers?.[0], callback }: IntervalCheckAccessPayload) => {
+      if (!offerId) {
+        callback?.({ hasAccess: false, offerId: '' });
+        return;
       }
 
       intervalRef.current = window.setInterval(async () => {
         const hasAccess = await accountController.checkEntitlements(offerId);
 
         if (hasAccess) {
-          await accountController.reloadSubscriptions({ delay: 2000 }); // Delay needed for backend processing (Cleeng API returns empty subscription, even after accessGranted from entitlements call
-          callback?.(true);
+          window.clearInterval(intervalRef.current);
+          // No duplicate retry mechanism. This can also be a TVOD offer which isn't validated using the
+          // reloadSubscriptions method.
+          await accountController.reloadSubscriptions();
+          callback?.({ hasAccess: true, offerId: offerId || '' });
         } else if (--iterations === 0) {
           window.clearInterval(intervalRef.current);
           setErrorMessage(t('payment.longer_than_usual'));
-          callback?.(false);
+          callback?.({ hasAccess: false, offerId: offerId || '' });
         }
       }, interval);
     },

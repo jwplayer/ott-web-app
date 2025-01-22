@@ -7,6 +7,7 @@ import type { CustomFormField, RegistrationFormData } from '@jwp/ott-common/type
 import { testId } from '@jwp/ott-common/src/utils/common';
 import type { SocialLoginURLs } from '@jwp/ott-hooks-react/src/useSocialLoginUrls';
 import env from '@jwp/ott-common/src/env';
+import type { ReCAPTCHA } from 'react-google-recaptcha';
 
 import TextField from '../form-fields/TextField/TextField';
 import Button from '../Button/Button';
@@ -15,8 +16,8 @@ import FormFeedback from '../FormFeedback/FormFeedback';
 import LoadingOverlay from '../LoadingOverlay/LoadingOverlay';
 import Link from '../Link/Link';
 import { modalURLFromLocation } from '../../utils/location';
-import SocialButtonsList from '../SocialButtonsList/SocialButtonsList';
 import PasswordField from '../form-fields/PasswordField/PasswordField';
+import RecaptchaField from '../RecaptchaField/RecaptchaField';
 
 import styles from './RegistrationForm.module.scss';
 
@@ -34,6 +35,8 @@ type Props = {
   validationError?: boolean;
   publisherConsents: CustomFormField[] | null;
   socialLoginURLs: SocialLoginURLs | null;
+  captchaSiteKey?: string;
+  recaptchaRef?: React.RefObject<ReCAPTCHA>;
 };
 
 const RegistrationForm: React.FC<Props> = ({
@@ -49,7 +52,8 @@ const RegistrationForm: React.FC<Props> = ({
   consentValues,
   onConsentChange,
   consentErrors,
-  socialLoginURLs,
+  captchaSiteKey,
+  recaptchaRef,
 }: Props) => {
   const { t, i18n } = useTranslation('account');
   const location = useLocation();
@@ -84,7 +88,6 @@ const RegistrationForm: React.FC<Props> = ({
           </FormFeedback>
         ) : null}
       </div>
-      <SocialButtonsList socialLoginURLs={socialLoginURLs} />
       <h2 className={styles.title}>{t('registration.sign_up')}</h2>
       <TextField
         value={values.email}
@@ -126,7 +129,7 @@ const RegistrationForm: React.FC<Props> = ({
                 value={consentValues[consent.name] || ''}
                 required={consent.required}
                 error={!!consentError}
-                helperText={consentErrors?.includes(consent.name) ? t('registration.consent_required', { field: consent.name }) : undefined}
+                helperText={consentError ? t('registration.field_required') : undefined}
                 onChange={onConsentChange}
                 lang={htmlLang}
               />
@@ -134,6 +137,7 @@ const RegistrationForm: React.FC<Props> = ({
           })}
         </div>
       )}
+      {!!captchaSiteKey && <RecaptchaField siteKey={captchaSiteKey} ref={recaptchaRef} />}
       <Button
         className={styles.continue}
         type="submit"

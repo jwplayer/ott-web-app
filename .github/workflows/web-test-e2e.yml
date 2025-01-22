@@ -3,7 +3,7 @@ name: Web - Test - End to End
 on:
   pull_request:
   push:
-    branches: [ 'develop', 'release' ]
+    branches: ['develop', 'release']
   schedule:
     - cron: '30 3 * * 1-5'
   workflow_dispatch:
@@ -19,15 +19,14 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: [18.x]
         config: [desktop, mobile]
 
     steps:
-      - uses: actions/checkout@v3
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: '22.x'
       - name: Install dependencies
         run: |
           yarn
@@ -41,7 +40,7 @@ jobs:
           WORKER_COUNT: 2
       - name: Uploading artifact
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: allure-report-${{ matrix.config }}
           path: ./platforms/web/test-e2e/output/${{ matrix.config }}

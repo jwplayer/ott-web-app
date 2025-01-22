@@ -5,7 +5,7 @@
 .epgChannelBox {
   position: absolute;
   padding: 8px 0;
-  background-color: var(--body-background-color);
+  background-color: var(--epg-background-color, var(--body-background-color));
 }
 
 .epgChannel {

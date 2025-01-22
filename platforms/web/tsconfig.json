@@ -10,7 +10,7 @@
     "types": [
       "vi-fetch/matchers",
       "vitest/globals",
-      "@testing-library/jest-dom",
+      "vitest-axe/extend-expect",
       "@types/jwplayer",
       "vite-plugin-pwa/client",
       "reflect-metadata"

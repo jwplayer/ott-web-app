@@ -6,16 +6,14 @@ exports[`Shelf Component tests > Featured shelf 1`] = `
     class="_shelf_81910b"
   >
     <div
-      class="_tileDock_22abb0"
+      class="TileSlider _slider_81910b"
     >
       <div
-        class="_leftControl_22abb0"
+        class="TileSlider-leftControl"
       >
-        <div
+        <button
           aria-label="slide_previous"
-          class="_chevron_81910b _disabled_81910b"
-          role="button"
-          tabindex="-1"
+          class="_chevron_81910b"
         >
           <svg
             aria-hidden="true"
@@ -27,156 +25,132 @@ exports[`Shelf Component tests > Featured shelf 1`] = `
               d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"
             />
           </svg>
-        </div>
+        </button>
       </div>
-      <ul
-        style="transform: translate3d(-200%, 0, 0); margin-left: -4px; margin-right: -4px;"
+      <div
+        class="TileSlider-gestures"
+        style="margin-left: -8px; margin-right: -8px;"
       >
-        <li
-          aria-hidden="true"
-          class="_notInView_22abb0"
-          style="width: 100%; padding-left: 4px; padding-right: 4px; box-sizing: border-box; transition: opacity .2s ease-in 0s;"
+        <ul
+          class="TileSlider-list"
+          style="left: calc(-100%); transform: translateX(0%);"
         >
-          <a
-            class="_card_d75732 _featured_d75732 _disabled_d75732"
-            data-testid="Third movie"
-            href="/m/12332123/third-movie"
-            role="button"
-            tabindex="-1"
+          <li
+            aria-hidden="true"
+            class="TileSlider--hidden"
+            style="width: 100%; padding-left: 8px; padding-right: 8px;"
           >
-            <div
-              class="_poster_d75732 _aspect169_d75732"
+            <a
+              class="_card_d75732 _featured_d75732 _disabled_d75732"
+              data-testid="Last playlist item"
+              href="/m/ddeeddee/last-playlist-item"
+              role="button"
+              tabindex="-1"
             >
               <div
-                class="_meta_d75732"
+                class="_poster_d75732 _aspect169_d75732"
               >
                 <div
-                  class="_tags_d75732"
-                />
-              </div>
-            </div>
-          </a>
-        </li>
-        <li
-          aria-hidden="true"
-          class="_notInView_22abb0"
-          style="width: 100%; padding-left: 4px; padding-right: 4px; box-sizing: border-box; transition: opacity .2s ease-in 0s;"
-        >
-          <a
-            class="_card_d75732 _featured_d75732 _disabled_d75732"
-            data-testid="Last playlist item"
-            href="/m/ddeeddee/last-playlist-item"
-            role="button"
-            tabindex="-1"
-          >
-            <div
-              class="_poster_d75732 _aspect169_d75732"
-            >
-              <div
-                class="_meta_d75732"
-              >
-                <div
-                  class="_tags_d75732"
-                />
-              </div>
-            </div>
-          </a>
-        </li>
-        <li
-          aria-hidden="false"
-          class=""
-          style="width: 100%; padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
-        >
-          <a
-            class="_card_d75732 _featured_d75732"
-            data-testid="Movie 1"
-            href="/m/1234abcd/movie-1"
-            role="button"
-            tabindex="0"
-          >
-            <div
-              class="_poster_d75732 _aspect169_d75732"
-            >
-              <div
-                class="_meta_d75732"
-              >
-                <h3
-                  class="_title_d75732"
+                  class="_meta_d75732"
                 >
-                  Movie 1
-                </h3>
-                <div
-                  class="_tags_d75732"
-                >
-                  <div
-                    class="_tag_d75732"
+                  <h3
+                    class="_title_d75732"
                   >
-                    1 min
+                    Last playlist item
+                  </h3>
+                  <div
+                    class="_tags_d75732"
+                  >
+                    <div
+                      class="_tag_d75732"
+                    >
+                      21 common:abbreviation.minutes
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </a>
-        </li>
-        <li
-          aria-hidden="true"
-          class="_notInView_22abb0"
-          style="width: 100%; padding-left: 4px; padding-right: 4px; box-sizing: border-box; transition: opacity .2s ease-in 0s;"
-        >
-          <a
-            class="_card_d75732 _featured_d75732 _disabled_d75732"
-            data-testid="Movie 2"
-            href="/m/aaaaaaaa/movie-2"
-            role="button"
-            tabindex="-1"
+            </a>
+          </li>
+          <li
+            aria-hidden="false"
+            class="TileSlider--visible"
+            style="width: 100%; padding-left: 8px; padding-right: 8px;"
           >
-            <div
-              class="_poster_d75732 _aspect169_d75732"
+            <a
+              class="_card_d75732 _featured_d75732"
+              data-testid="Movie 1"
+              href="/m/1234abcd/movie-1"
+              role="button"
+              tabindex="0"
             >
               <div
-                class="_meta_d75732"
+                class="_poster_d75732 _aspect169_d75732"
               >
                 <div
-                  class="_tags_d75732"
-                />
+                  class="_meta_d75732"
+                >
+                  <h3
+                    class="_title_d75732"
+                  >
+                    Movie 1
+                  </h3>
+                  <div
+                    class="_tags_d75732"
+                  >
+                    <div
+                      class="_tag_d75732"
+                    >
+                      1 common:abbreviation.minutes
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
-          </a>
-        </li>
-        <li
-          aria-hidden="true"
-          class="_notInView_22abb0"
-          style="width: 100%; padding-left: 4px; padding-right: 4px; box-sizing: border-box; transition: opacity .2s ease-in 0s;"
-        >
-          <a
-            class="_card_d75732 _featured_d75732 _disabled_d75732"
-            data-testid="Third movie"
-            href="/m/12332123/third-movie"
-            role="button"
-            tabindex="-1"
+            </a>
+          </li>
+          <li
+            aria-hidden="true"
+            class="TileSlider--hidden"
+            style="width: 100%; padding-left: 8px; padding-right: 8px;"
           >
-            <div
-              class="_poster_d75732 _aspect169_d75732"
+            <a
+              class="_card_d75732 _featured_d75732 _disabled_d75732"
+              data-testid="Movie 2"
+              href="/m/aaaaaaaa/movie-2"
+              role="button"
+              tabindex="-1"
             >
               <div
-                class="_meta_d75732"
+                class="_poster_d75732 _aspect169_d75732"
               >
                 <div
-                  class="_tags_d75732"
-                />
+                  class="_meta_d75732"
+                >
+                  <h3
+                    class="_title_d75732"
+                  >
+                    Movie 2
+                  </h3>
+                  <div
+                    class="_tags_d75732"
+                  >
+                    <div
+                      class="_tag_d75732"
+                    >
+                      1 common:abbreviation.minutes
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
-          </a>
-        </li>
-      </ul>
+            </a>
+          </li>
+        </ul>
+      </div>
       <div
-        class="_rightControl_22abb0"
+        class="TileSlider-rightControl"
       >
-        <div
+        <button
           aria-label="slide_next"
           class="_chevron_81910b"
-          role="button"
-          tabindex="0"
         >
           <svg
             aria-hidden="true"
@@ -188,31 +162,31 @@ exports[`Shelf Component tests > Featured shelf 1`] = `
               d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"
             />
           </svg>
-        </div>
+        </button>
       </div>
-    </div>
-    <div
-      aria-hidden="true"
-      class="_dots_22abb0"
-    >
-      <span
-        class="_dot_81910b _active_81910b"
-      />
-      <span
-        class="_dot_81910b"
-      />
-      <span
-        class="_dot_81910b"
-      />
-      <span
-        class="_dot_81910b"
-      />
-    </div>
-    <div
-      aria-live="polite"
-      class="hidden"
-    >
-      slide_indicator
+      <div
+        aria-live="polite"
+        class="hidden"
+      >
+        slide_indicator
+      </div>
+      <div
+        aria-hidden="true"
+        class="_dots_81910b"
+      >
+        <span
+          class="_dot_81910b _active_81910b"
+        />
+        <span
+          class="_dot_81910b"
+        />
+        <span
+          class="_dot_81910b"
+        />
+        <span
+          class="_dot_81910b"
+        />
+      </div>
     </div>
   </div>
 </div>
@@ -229,172 +203,184 @@ exports[`Shelf Component tests > Regular shelf 1`] = `
       Test Shelf
     </h2>
     <div
-      class="_tileDock_22abb0"
+      class="TileSlider _slider_81910b"
     >
-      <ul
-        style="transform: translate3d(0%, 0, 0); margin-left: -4px; margin-right: -4px;"
+      <div
+        class="TileSlider-gestures"
+        style="margin-left: -8px; margin-right: -8px;"
       >
-        <li
-          aria-hidden="false"
-          class=""
-          style="width: 20%; padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
+        <ul
+          class="TileSlider-list"
+          style="left: calc(0%); transform: translateX(0%);"
         >
-          <a
-            class="_card_d75732"
-            data-testid="Movie 1"
-            href="/m/1234abcd/movie-1"
-            role="button"
-            tabindex="0"
+          <li
+            aria-hidden="false"
+            class="TileSlider--visible"
+            style="width: 20%; padding-left: 8px; padding-right: 8px;"
           >
-            <div
-              class="_titleContainer_d75732"
-            >
-              <h3
-                class="_title_d75732"
-              >
-                Movie 1
-              </h3>
-            </div>
-            <div
-              class="_poster_d75732 _aspect169_d75732"
+            <a
+              class="_card_d75732"
+              data-testid="Movie 1"
+              href="/m/1234abcd/movie-1"
+              role="button"
+              tabindex="0"
             >
               <div
-                class="_meta_d75732"
+                class="_titleContainer_d75732"
+              >
+                <h3
+                  class="_title_d75732"
+                >
+                  Movie 1
+                </h3>
+              </div>
+              <div
+                class="_poster_d75732 _aspect169_d75732"
               >
                 <div
-                  class="_tags_d75732"
+                  class="_meta_d75732"
                 >
                   <div
-                    class="_tag_d75732"
+                    class="_tags_d75732"
                   >
-                    1 min
+                    <div
+                      class="_tag_d75732"
+                    >
+                      1 common:abbreviation.minutes
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </a>
-        </li>
-        <li
-          aria-hidden="false"
-          class=""
-          style="width: 20%; padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
-        >
-          <a
-            class="_card_d75732"
-            data-testid="Movie 2"
-            href="/m/aaaaaaaa/movie-2"
-            role="button"
-            tabindex="0"
+            </a>
+          </li>
+          <li
+            aria-hidden="false"
+            class="TileSlider--visible"
+            style="width: 20%; padding-left: 8px; padding-right: 8px;"
           >
-            <div
-              class="_titleContainer_d75732"
-            >
-              <h3
-                class="_title_d75732"
-              >
-                Movie 2
-              </h3>
-            </div>
-            <div
-              class="_poster_d75732 _aspect169_d75732"
+            <a
+              class="_card_d75732"
+              data-testid="Movie 2"
+              href="/m/aaaaaaaa/movie-2"
+              role="button"
+              tabindex="0"
             >
               <div
-                class="_meta_d75732"
+                class="_titleContainer_d75732"
+              >
+                <h3
+                  class="_title_d75732"
+                >
+                  Movie 2
+                </h3>
+              </div>
+              <div
+                class="_poster_d75732 _aspect169_d75732"
               >
                 <div
-                  class="_tags_d75732"
+                  class="_meta_d75732"
                 >
                   <div
-                    class="_tag_d75732"
+                    class="_tags_d75732"
                   >
-                    1 min
+                    <div
+                      class="_tag_d75732"
+                    >
+                      1 common:abbreviation.minutes
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </a>
-        </li>
-        <li
-          aria-hidden="false"
-          class=""
-          style="width: 20%; padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
-        >
-          <a
-            class="_card_d75732"
-            data-testid="Third movie"
-            href="/m/12332123/third-movie"
-            role="button"
-            tabindex="0"
+            </a>
+          </li>
+          <li
+            aria-hidden="false"
+            class="TileSlider--visible"
+            style="width: 20%; padding-left: 8px; padding-right: 8px;"
           >
-            <div
-              class="_titleContainer_d75732"
-            >
-              <h3
-                class="_title_d75732"
-              >
-                Third movie
-              </h3>
-            </div>
-            <div
-              class="_poster_d75732 _aspect169_d75732"
+            <a
+              class="_card_d75732"
+              data-testid="Third movie"
+              href="/m/12332123/third-movie"
+              role="button"
+              tabindex="0"
             >
               <div
-                class="_meta_d75732"
+                class="_titleContainer_d75732"
+              >
+                <h3
+                  class="_title_d75732"
+                >
+                  Third movie
+                </h3>
+              </div>
+              <div
+                class="_poster_d75732 _aspect169_d75732"
               >
                 <div
-                  class="_tags_d75732"
+                  class="_meta_d75732"
                 >
                   <div
-                    class="_tag_d75732"
+                    class="_tags_d75732"
                   >
-                    1 min
+                    <div
+                      class="_tag_d75732"
+                    >
+                      1 common:abbreviation.minutes
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </a>
-        </li>
-        <li
-          aria-hidden="false"
-          class=""
-          style="width: 20%; padding-left: 4px; padding-right: 4px; box-sizing: border-box;"
-        >
-          <a
-            class="_card_d75732"
-            data-testid="Last playlist item"
-            href="/m/ddeeddee/last-playlist-item"
-            role="button"
-            tabindex="0"
+            </a>
+          </li>
+          <li
+            aria-hidden="false"
+            class="TileSlider--visible"
+            style="width: 20%; padding-left: 8px; padding-right: 8px;"
           >
-            <div
-              class="_titleContainer_d75732"
-            >
-              <h3
-                class="_title_d75732"
-              >
-                Last playlist item
-              </h3>
-            </div>
-            <div
-              class="_poster_d75732 _aspect169_d75732"
+            <a
+              class="_card_d75732"
+              data-testid="Last playlist item"
+              href="/m/ddeeddee/last-playlist-item"
+              role="button"
+              tabindex="0"
             >
               <div
-                class="_meta_d75732"
+                class="_titleContainer_d75732"
+              >
+                <h3
+                  class="_title_d75732"
+                >
+                  Last playlist item
+                </h3>
+              </div>
+              <div
+                class="_poster_d75732 _aspect169_d75732"
               >
                 <div
-                  class="_tags_d75732"
+                  class="_meta_d75732"
                 >
                   <div
-                    class="_tag_d75732"
+                    class="_tags_d75732"
                   >
-                    21 min
+                    <div
+                      class="_tag_d75732"
+                    >
+                      21 common:abbreviation.minutes
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </a>
-        </li>
-      </ul>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div
+        aria-live="polite"
+        class="hidden"
+      >
+        slide_indicator
+      </div>
     </div>
   </div>
 </div>

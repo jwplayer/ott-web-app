@@ -15,11 +15,11 @@ export default class WatchHistoryController {
     this.watchHistoryService = watchHistoryService;
   }
 
-  initialize = async () => {
-    await this.restoreWatchHistory();
+  initialize = async (language: string) => {
+    await this.restoreWatchHistory(language);
   };
 
-  restoreWatchHistory = async () => {
+  restoreWatchHistory = async (language?: string) => {
     const { user } = useAccountStore.getState();
     const continueWatchingList = useConfigStore.getState().config.features?.continueWatchingList;
 
@@ -27,7 +27,7 @@ export default class WatchHistoryController {
       return;
     }
 
-    const watchHistory = await this.watchHistoryService.getWatchHistory(user, continueWatchingList);
+    const watchHistory = await this.watchHistoryService.getWatchHistory(user, continueWatchingList, language);
 
     useWatchHistoryStore.setState({
       watchHistory: watchHistory.filter((item): item is WatchHistoryItem => !!item?.mediaid),

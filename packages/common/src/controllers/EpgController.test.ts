@@ -5,6 +5,7 @@ import livePlaylistFixture from '@jwp/ott-testing/fixtures/livePlaylist.json';
 
 import EpgService from '../services/EpgService';
 import type { Playlist } from '../../types/playlist';
+import { mockService } from '../../test/mockService';
 
 import EpgController from './EpgController';
 
@@ -12,15 +13,6 @@ const livePlaylist = livePlaylistFixture as Playlist;
 
 const transformProgram = vi.fn();
 const fetchSchedule = vi.fn();
-
-vi.mock('@jwp/ott-common/src/modules/container', () => ({
-  getNamedModule: (type: typeof EpgService) => {
-    switch (type) {
-      case EpgService:
-        return { transformProgram, fetchSchedule };
-    }
-  },
-}));
 
 const epgController = new EpgController();
 
@@ -46,13 +38,13 @@ const mockProgram2 = {
 
 describe('epgService', () => {
   beforeEach(() => {
+    mockService(EpgService, { transformProgram, fetchSchedule });
     vi.useFakeTimers();
   });
 
   afterEach(() => {
     // must be called before `vi.useRealTimers()`
     unregister();
-    vi.restoreAllMocks();
     vi.useRealTimers();
   });
 

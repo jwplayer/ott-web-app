@@ -9,7 +9,11 @@
 
 .shelfContainer {
   position: relative;
-  padding: 12px 56px;
+  padding: calc(variables.$base-spacing * 2) calc(variables.$base-spacing * 3);
+
+  &.hero {
+    padding: 0;
+  }
 
   &.featured {
     padding: 12px 20%;

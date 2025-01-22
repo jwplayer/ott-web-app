@@ -4,11 +4,9 @@
     "add_password": "Add password",
     "add_password_error": "Failed to proceed to the Add Password screen. Please try again.",
     "add_password_modal_text": "We sent instructions to {{email}} on how to add a password. If you don’t receive the email within a few minutes, check your spam folder or",
-    "add_profile": "Add profile",
     "cancel": "Cancel",
     "confirm_password": "Confirm password",
     "continue": "Continue",
-    "delete": "Delete",
     "delete_account": {
       "body": "Permanently delete your account and all of your content.",
       "error": "An error occurred while deleting your account. Please try again.",
@@ -51,7 +49,6 @@
     "export_data_title": "Export account data",
     "firstname": "First name",
     "lastname": "Last name",
-    "manage_profiles": "Manage profiles",
     "other_registration_details": "Other registration details",
     "password": "Password",
     "proceed_to_adding_a_password": "Proceed to adding a password",
@@ -62,8 +59,7 @@
     "terms_and_tracking": "Legal & Marketing",
     "update_consents": "Update consents",
     "update_success": "Your {{section}} has been successfully updated.",
-    "view_password": "View password",
-    "who_is_watching": "Who’s watching?"
+    "view_password": "View password"
   },
   "favorites": {
     "clear": "Clear favorites",
@@ -77,13 +73,10 @@
   },
   "nav": {
     "account": "Account",
-    "add_profile": "Add new profile",
     "favorites": "Favorites",
     "logout": "Log out",
     "payments": "Payments",
-    "profile": "Profile",
-    "settings": "Settings",
-    "switch_profiles": "Switch profiles"
+    "settings": "Settings"
   },
   "payment": {
     "access_granted": "access granted",
@@ -128,36 +121,5 @@
     "update_payment_details": "Update payment details",
     "upgrade_plan_success": "You've successfully changed the subscription plan. You can enjoy your additional benefits immediately.",
     "weekly_subscription": "Weekly subscription"
-  },
-  "profile": {
-    "adult": "Adult",
-    "avatar": "Avatar",
-    "back_to_profiles": "Back to profiles",
-    "content_rating": "Content rating",
-    "create_message": "Create your profile",
-    "created_message": "You successfully created your profile. Now go and watch some awesome content and assemble your own personal collection of favorites.",
-    "created_title": "You’ve created your profile",
-    "delete": "Delete profile",
-    "delete_confirmation": "Are you sure you want to delete your profile? You will lose all you watch history and settings connected to this profile.",
-    "delete_description": "Permanently delete your profile along with all of your watch history and favorites.",
-    "delete_main": "The main profile cannot be deleted because it’s linked to your account's watch history and favorites.",
-    "description": "Profiles allow you to watch content and assemble your own personal collection of favorites.",
-    "done": "Done",
-    "edit": "Edit profile",
-    "form_error": "Something went wrong. Please try again later.",
-    "info": "Profile info",
-    "kids": "Kids",
-    "name": "User name",
-    "no_one_watching": "There’s no one watching.",
-    "validation": {
-      "name": {
-        "already_exists": "This profile name is already taken. Please choose another one.",
-        "invalid_characters": "Your profile name can only contain letters",
-        "required": "Please enter a name for your profile.",
-        "too_long": "Please limit your profile name to {{charactersCount}} characters or fewer.",
-        "too_short": "Please enter at least {{charactersCount}} characters."
-      }
-    },
-    "watch_now": "Watch now"
   }
 }

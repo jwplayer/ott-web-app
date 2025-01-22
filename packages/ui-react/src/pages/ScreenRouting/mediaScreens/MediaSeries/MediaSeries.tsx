@@ -22,6 +22,8 @@ import { useSeriesLookup } from '@jwp/ott-hooks-react/src/series/useSeriesLookup
 import { useNextEpisode } from '@jwp/ott-hooks-react/src/series/useNextEpisode';
 import PlayTrailer from '@jwp/ott-theme/assets/icons/play_trailer.svg?react';
 import useBreakpoint, { Breakpoint } from '@jwp/ott-ui-react/src/hooks/useBreakpoint';
+import { useFirstEpisode } from '@jwp/ott-hooks-react/src/series/useFirstEpisode';
+import env from '@jwp/ott-common/src/env';
 
 import type { ScreenComponent } from '../../../../../types/screens';
 import ErrorPage from '../../../../components/ErrorPage/ErrorPage';
@@ -54,7 +56,8 @@ const MediaSeries: ScreenComponent<PlaylistItem> = ({ data: seriesMedia }) => {
   const { isLoading: isSeriesDataLoading, data: series, error: seriesError } = useSeries(seriesId);
   const { isLoading: isEpisodeLoading, data: episode } = useMedia(episodeId || '');
   const { isLoading: isTrailerLoading, data: trailerItem } = useMedia(episode?.trailerId || '');
-  const { data: episodeInSeries, isLoading: isSeriesDictionaryLoading } = useSeriesLookup(episode?.mediaid);
+  const { isLoading: isSeriesDictionaryLoading, data: episodeInSeries } = useSeriesLookup(episodeId || undefined);
+  const { isLoading: isFirstEpisodeLoading, data: firstEpisode } = useFirstEpisode({ series });
 
   // Whether we show series or episode information
   const selectedItem = (episode || seriesMedia) as PlaylistItem;
@@ -76,7 +79,6 @@ const MediaSeries: ScreenComponent<PlaylistItem> = ({ data: seriesMedia }) => {
     hasNextPage: hasNextEpisodesPage,
   } = useEpisodes(seriesId, seasonFilter, { enabled: seasonFilter !== undefined && !!series });
 
-  const firstEpisode = useMemo(() => episodes?.[0]?.episodes?.[0], [episodes]);
   const episodeMetadata = useMemo(
     () =>
       episodeInSeries && {
@@ -162,21 +164,23 @@ const MediaSeries: ScreenComponent<PlaylistItem> = ({ data: seriesMedia }) => {
     }
   }, [episodeMetadata, seasonFilter, isSeriesDataLoading, isEpisodeLoading, isSeriesDictionaryLoading, filters, episodeId]);
 
-  const startWatchingButton = useMemo(
-    () => (
-      <StartWatchingButton
-        key={episodeId} // necessary to fix autofocus on TalkBack
-        item={episode || firstEpisode}
-        onClick={() => {
-          setSearchParams({ ...searchParams, e: (episode || firstEpisode).mediaid, r: feedId || '', play: '1' }, { replace: true });
-        }}
-      />
-    ),
-    [episodeId, episode, firstEpisode, setSearchParams, searchParams, feedId],
-  );
-
   // UI
-  const isLoading = isSeriesDataLoading || isSeriesDictionaryLoading || isEpisodeLoading;
+  const playEpisode = episode || firstEpisode;
+  const isLoading = isSeriesDataLoading || isSeriesDictionaryLoading || isEpisodeLoading || isFirstEpisodeLoading;
+
+  const startWatchingButton = useMemo(
+    () =>
+      playEpisode && (
+        <StartWatchingButton
+          key={episodeId} // necessary to fix autofocus on TalkBack
+          item={playEpisode}
+          onClick={() => {
+            setSearchParams({ ...searchParams, e: playEpisode.mediaid, r: feedId || '', play: '1' }, { replace: true });
+          }}
+        />
+      ),
+    [episodeId, playEpisode, setSearchParams, searchParams, feedId],
+  );
 
   if (isLoading) return <Loading />;
 
@@ -187,12 +191,20 @@ const MediaSeries: ScreenComponent<PlaylistItem> = ({ data: seriesMedia }) => {
     return <Navigate to={url} replace />;
   }
 
-  if (!seriesMedia || !series) return <ErrorPage title={t('series_error')} />;
+  if (!seriesMedia || !series || !playEpisode) return <ErrorPage title={t('series_error')} />;
 
   const pageTitle = `${selectedItem.title} - ${siteName}`;
-  const canonicalUrl = `${window.location.origin}${mediaURL({ media: seriesMedia, episodeId: episode?.mediaid })}`;
+  const canonicalUrl = `${env.APP_PUBLIC_URL}${mediaURL({ id: seriesMedia.mediaid, title: seriesMedia.title, episodeId: episode?.mediaid })}`;
 
-  const primaryMetadata = <VideoMetaData attributes={createVideoMetadata(selectedItem, t('video:total_episodes', { count: series.episode_count }))} />;
+  const primaryMetadata = (
+    <VideoMetaData
+      attributes={createVideoMetadata(selectedItem, {
+        episodesLabel: t('video:total_episodes', { count: series.episode_count }),
+        hoursAbbreviation: t('common:abbreviation.hours'),
+        minutesAbbreviation: t('common:abbreviation.minutes'),
+      })}
+    />
+  );
   const secondaryMetadata = episodeMetadata && episode && (
     <>
       <strong>{formatSeriesMetaString(episodeMetadata.seasonNumber, episodeMetadata.episodeNumber)}</strong> - {episode.title}
@@ -242,7 +254,7 @@ const MediaSeries: ScreenComponent<PlaylistItem> = ({ data: seriesMedia }) => {
           <meta property="og:video:tag" content={tag} key={tag} />
         ))}
         {selectedItem ? (
-          <script type="application/ld+json">{generateEpisodeJSONLD(series, seriesMedia, window.location.origin, episode, episodeMetadata)}</script>
+          <script type="application/ld+json">{generateEpisodeJSONLD(series, seriesMedia, env.APP_PUBLIC_URL, episode, episodeMetadata)}</script>
         ) : null}
       </Helmet>
       <VideoLayout
@@ -274,10 +286,10 @@ const MediaSeries: ScreenComponent<PlaylistItem> = ({ data: seriesMedia }) => {
         hasMore={hasNextEpisodesPage}
         loadMore={fetchNextEpisodes}
         player={
-          inlineLayout && (episode || firstEpisode) ? (
+          inlineLayout ? (
             <InlinePlayer
               isLoggedIn={isLoggedIn}
-              item={episode || firstEpisode}
+              item={playEpisode}
               seriesItem={seriesMedia}
               onComplete={handleComplete}
               feedId={feedId ?? undefined}
@@ -291,7 +303,7 @@ const MediaSeries: ScreenComponent<PlaylistItem> = ({ data: seriesMedia }) => {
             <Cinema
               open={play && isEntitled}
               onClose={goBack}
-              item={episode || firstEpisode}
+              item={playEpisode}
               seriesItem={seriesMedia}
               title={seriesMedia.title}
               primaryMetadata={primaryMetadata}

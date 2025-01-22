@@ -5,18 +5,20 @@
 @use '@jwp/ott-ui-react/src/styles/mixins/utils';
 
 .searchContainer {
-  position: absolute;
-  left: -#{variables.$search-bar-width-desktop};
   display: flex;
   width: variables.$search-bar-width-desktop;
 
   > div:first-child {
     flex: 1;
+    margin-right: calc(variables.$base-spacing / 2);
   }
 
   @include responsive.mobile-and-tablet() {
+    position: absolute;
+    top: 50%;
     right: 0;
     left: 0;
     width: auto;
+    transform: translateY(-50%);
   }
 }

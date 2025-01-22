@@ -38,29 +38,29 @@ function runTestSuite(config: typeof testConfigs.svod, providerName: string) {
   Scenario(`I can expand the description (@mobile-only) - ${providerName}`, async ({ I }) => {
     await I.openVideoCard('Agent 327');
 
-    function checkHeight(height) {
+    async function checkHeight(height) {
       // Putting a wait here because the expand / collapse takes a non-zero amount of time
       // and sometimes codecept goes too fast and catches it before it's done animating
       I.wait(1);
 
-      I.seeCssPropertiesOnElements(`text="${constants.agent327Description}"`, { 'max-height': height });
+      await I.seeCssProperties(`#collapsible-content`, { 'max-height': height });
     }
 
     I.seeElement('button[aria-label="Expand"]');
     I.dontSeeElement('button[aria-label="Collapse"]');
-    checkHeight('60px');
+    await checkHeight('60px');
 
     I.click('button[aria-label="Expand"]');
 
     I.seeElement('button[aria-label="Collapse"]');
     I.dontSeeElement('button[aria-label="Expand"]');
-    checkHeight('216px');
+    await checkHeight('216px');
 
     I.click('button[aria-label="Collapse"]');
 
     I.seeElement('button[aria-label="Expand"]');
     I.dontSeeElement('button[aria-label="Collapse"]');
-    checkHeight('60px');
+    await checkHeight('60px');
   });
 
   Scenario(`I can watch a video - ${providerName}`, async ({ I }) => await playBigBuckBunny(I));

@@ -26,6 +26,7 @@ export type LoginArgs = {
 
 export type RegistrationArgs = LoginArgs & {
   consents: CustomerConsent[];
+  captchaValue?: string;
 };
 
 export type AuthResponse = {
@@ -49,6 +50,7 @@ export type LoginFormData = {
 export type RegistrationFormData = {
   email: string;
   password: string;
+  captchaValue?: string | null;
 };
 
 export type ForgotPasswordFormData = {
@@ -88,6 +90,7 @@ export type RegisterPayload = PayloadWithIPOverride & {
   lastName?: string;
   externalId?: string;
   externalData?: string;
+  captchaValue?: string;
 };
 
 export type CleengCaptureField = {

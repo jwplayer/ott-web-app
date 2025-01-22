@@ -6,7 +6,7 @@ import EpgService from '../EpgService';
 import type { PlaylistItem } from '../../../types/playlist';
 import type { EpgProgram } from '../../../types/epg';
 import { getDataOrThrow } from '../../utils/api';
-import { logDev } from '../../utils/common';
+import { logError, logWarn } from '../../logger';
 
 const AUTHENTICATION_HEADER = 'API-KEY';
 
@@ -46,7 +46,7 @@ export default class JWEpgService extends EpgService {
 
   fetchSchedule = async (item: PlaylistItem) => {
     if (!item.scheduleUrl) {
-      logDev('Tried requesting a schedule for an item with missing `scheduleUrl`', item);
+      logWarn('JWEpgService', 'Tried requesting a schedule for an item with missing `scheduleUrl`', { item });
       return undefined;
     }
 
@@ -66,7 +66,7 @@ export default class JWEpgService extends EpgService {
       return await getDataOrThrow(response);
     } catch (error: unknown) {
       if (error instanceof Error) {
-        logDev(`Fetch failed for EPG schedule: '${item.scheduleUrl}'`, error);
+        logError('JWEpgService', `Fetch failed for EPG schedule: '${item.scheduleUrl}'`, { error });
       }
     }
   };

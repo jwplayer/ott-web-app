@@ -1,4 +1,4 @@
-import { act } from '@testing-library/react';
+import React, { act } from 'react';
 import type { Playlist, PlaylistItem } from '@jwp/ott-common/types/playlist';
 import type { Config } from '@jwp/ott-common/types/config';
 import type { PaymentDetail, Subscription, Transaction } from '@jwp/ott-common/types/subscription';
@@ -10,10 +10,8 @@ import { mockService } from '@jwp/ott-common/test/mockService';
 import ApiService from '@jwp/ott-common/src/services/ApiService';
 import FavoritesController from '@jwp/ott-common/src/controllers/FavoritesController';
 import CheckoutController from '@jwp/ott-common/src/controllers/CheckoutController';
-import ProfileController from '@jwp/ott-common/src/controllers/ProfileController';
 import { ACCESS_MODEL, DEFAULT_FEATURES } from '@jwp/ott-common/src/constants';
 import { Route, Routes } from 'react-router-dom';
-import React from 'react';
 
 import { mockWindowLocation, renderWithRouter } from '../../../test/utils';
 
@@ -87,8 +85,11 @@ describe('User Component tests', () => {
       })),
     });
     mockService(FavoritesController, { clear: vi.fn() });
-    mockService(CheckoutController, { getSubscriptionSwitches: vi.fn(), getSubscriptionOfferIds: vi.fn().mockReturnValue([]) });
-    mockService(ProfileController, { listProfiles: vi.fn(), isEnabled: vi.fn().mockReturnValue(false) });
+    mockService(CheckoutController, {
+      initialiseOffers: vi.fn().mockResolvedValue([]),
+      getSubscriptionSwitches: vi.fn(),
+      getSubscriptionOfferIds: vi.fn().mockReturnValue([]),
+    });
 
     useConfigStore.setState({
       accessModel: ACCESS_MODEL.SVOD,
@@ -109,15 +110,17 @@ describe('User Component tests', () => {
     expect(container).toMatchSnapshot();
   });
 
-  test('Payments Page', () => {
+  test('Payments Page', async () => {
     act(() => {
       useAccountStore.setState(data);
       mockWindowLocation('u/payments');
     });
-    const { container } = renderWithRouter(
-      <Routes>
-        <Route path="/u/*" element={<User />} />
-      </Routes>,
+    const { container } = await act(() =>
+      renderWithRouter(
+        <Routes>
+          <Route path="/u/*" element={<User />} />
+        </Routes>,
+      ),
     );
 
     expect(container).toMatchSnapshot();

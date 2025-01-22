@@ -6,6 +6,7 @@ import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
 import { useConfigStore } from '@jwp/ott-common/src/stores/ConfigStore';
 import { filterPlaylist, getFiltersFromConfig } from '@jwp/ott-common/src/utils/collection';
 import { mediaURL } from '@jwp/ott-common/src/utils/urlFormatting';
+import { useTranslationKey } from '@jwp/ott-hooks-react/src/useTranslationKey';
 
 import type { ScreenComponent } from '../../../../../types/screens';
 import CardGrid from '../../../../components/CardGrid/CardGrid';
@@ -14,6 +15,7 @@ import Filter from '../../../../components/Filter/Filter';
 import styles from './PlaylistGrid.module.scss';
 
 const PlaylistGrid: ScreenComponent<Playlist> = ({ data, isLoading }) => {
+  const translationKey = useTranslationKey('title');
   const { config, accessModel } = useConfigStore(({ config, accessModel }) => ({ config, accessModel }), shallow);
 
   const [filter, setFilter] = useState<string>('');
@@ -30,9 +32,15 @@ const PlaylistGrid: ScreenComponent<Playlist> = ({ data, isLoading }) => {
     setFilter('');
   }, [data.feedid]);
 
-  const pageTitle = `${data.title} - ${config.siteName}`;
+  const title = (data?.[translationKey] as string) || data.title;
+  const pageTitle = `${title} - ${config.siteName}`;
 
-  const getUrl = (playlistItem: PlaylistItem) => mediaURL({ media: playlistItem, playlistId: playlistItem.feedid });
+  const getUrl = (playlistItem: PlaylistItem) =>
+    mediaURL({
+      id: playlistItem.mediaid,
+      title: playlistItem.title,
+      playlistId: playlistItem.feedid,
+    });
 
   return (
     <div className={styles.playlist}>
@@ -41,21 +49,19 @@ const PlaylistGrid: ScreenComponent<Playlist> = ({ data, isLoading }) => {
         <meta property="og:title" content={pageTitle} />
         <meta name="twitter:title" content={pageTitle} />
       </Helmet>
-      <div className={styles.main}>
-        <header className={styles.header}>
-          <h1>{data.title}</h1>
-          {shouldShowFilter && <Filter name="genre" value={filter} defaultLabel="All" options={categories} setValue={setFilter} />}
-        </header>
-        <CardGrid
-          getUrl={getUrl}
-          playlist={filteredPlaylist}
-          accessModel={accessModel}
-          isLoggedIn={!!user}
-          hasSubscription={!!subscription}
-          isLoading={isLoading}
-          headingLevel={2}
-        />
-      </div>
+      <header className={styles.header}>
+        <h1>{title}</h1>
+        {shouldShowFilter && <Filter name="genre" value={filter} defaultLabel="All" options={categories} setValue={setFilter} />}
+      </header>
+      <CardGrid
+        getUrl={getUrl}
+        playlist={filteredPlaylist}
+        accessModel={accessModel}
+        isLoggedIn={!!user}
+        hasSubscription={!!subscription}
+        isLoading={isLoading}
+        headingLevel={2}
+      />
     </div>
   );
 };

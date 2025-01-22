@@ -1,5 +1,20 @@
 import 'vi-fetch/setup';
 import 'reflect-metadata';
+import { mockService } from './test/mockService';
+import LogTransporter from './src/services/logging/LogTransporter';
+import ConsoleTransporter from './src/services/logging/ConsoleTransporter';
+import { LogLevel } from './src/services/logging/LogLevel';
+
+beforeEach(() => {
+  mockService(
+    LogTransporter,
+    __debug__
+      ? new ConsoleTransporter(LogLevel.DEBUG)
+      : {
+          log() {},
+        },
+  );
+});
 
 // a really simple BroadcastChannel stub. Normally, a Broadcast channel would not call event listeners on the same
 // instance. But for testing purposes, that really doesn't matter...

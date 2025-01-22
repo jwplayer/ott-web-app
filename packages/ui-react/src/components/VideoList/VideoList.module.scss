@@ -10,7 +10,7 @@
 .content {
   @include responsive.desktop-only() {
     height: 100%;
-    padding: 16px 24px;
+    padding: variables.$base-spacing calc(variables.$base-spacing * 2);
     overflow-y: auto;
   }
 }

@@ -12,7 +12,7 @@
     "types": [
       "vi-fetch/matchers",
       "vitest/globals",
-      "@testing-library/jest-dom"
+      "vitest-axe/extend-expect"
     ],
     "plugins": [
       {

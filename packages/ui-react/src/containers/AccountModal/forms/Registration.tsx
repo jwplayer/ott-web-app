@@ -13,6 +13,7 @@ import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
 
 import RegistrationForm from '../../../components/RegistrationForm/RegistrationForm';
 import { useAriaAnnouncer } from '../../AnnouncementProvider/AnnoucementProvider';
+import useRecaptcha from '../../../hooks/useRecaptcha';
 
 const Registration = () => {
   const accountController = getModule(AccountController);
@@ -29,6 +30,8 @@ const Registration = () => {
     publisherConsentsLoading,
     loading,
   }));
+
+  const { recaptchaRef, captchaSiteKey, getCaptchaValue } = useRecaptcha();
 
   const handleChangeConsent: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> = ({ currentTarget }) => {
     if (!currentTarget) return;
@@ -66,6 +69,7 @@ const Registration = () => {
       password: string()
         .matches(/^(?=.*[a-z])(?=.*[0-9]).{8,}$/, t('registration.invalid_password', { field: t('registration.password') }))
         .required(t('registration.field_required', { field: t('registration.password') })),
+      captchaValue: string().notRequired(),
     }),
     validateOnBlur: true,
     onSubmit: async ({ email, password }) => {
@@ -76,7 +80,9 @@ const Registration = () => {
         throw new Error(t('registration.consents_error'));
       }
 
-      await accountController.register(email, password, window.location.href, formatConsentsFromValues(publisherConsents, consentValues));
+      const captchaValue = await getCaptchaValue();
+
+      await accountController.register(email, password, window.location.href, formatConsentsFromValues(publisherConsents, consentValues), captchaValue);
     },
     onSubmitSuccess: () => {
       announce(t('registration.success'), 'success');
@@ -99,6 +105,8 @@ const Registration = () => {
       publisherConsents={publisherConsents}
       loading={loading || publisherConsentsLoading}
       socialLoginURLs={socialLoginURLs}
+      captchaSiteKey={captchaSiteKey}
+      recaptchaRef={recaptchaRef}
     />
   );
 };

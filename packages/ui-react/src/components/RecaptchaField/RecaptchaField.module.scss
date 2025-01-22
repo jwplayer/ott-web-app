@@ -1,0 +1,8 @@
+@use '@jwp/ott-ui-react/src/styles/theme';
+
+.captcha {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  margin-bottom: 8px;
+}

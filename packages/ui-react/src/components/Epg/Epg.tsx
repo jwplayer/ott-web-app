@@ -1,13 +1,14 @@
-import { Epg as EpgContainer, Layout } from 'planby';
 import React, { useMemo } from 'react';
+import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
+import { Epg as EpgContainer, Layout } from 'planby';
 import { isBefore, subHours } from 'date-fns';
 import type { EpgChannel, EpgProgram } from '@jwp/ott-common/types/epg';
-import type { Config } from '@jwp/ott-common/types/config';
 import usePlanByEpg from '@jwp/ott-hooks-react/src/usePlanByEpg';
 import ChevronRight from '@jwp/ott-theme/assets/icons/chevron_right.svg?react';
 import ChevronLeft from '@jwp/ott-theme/assets/icons/chevron_left.svg?react';
 import useBreakpoint, { Breakpoint } from '@jwp/ott-ui-react/src/hooks/useBreakpoint';
+import useFirstRender from '@jwp/ott-hooks-react/src/useFirstRender';
 
 import IconButton from '../IconButton/IconButton';
 import Button from '../Button/Button';
@@ -25,10 +26,10 @@ type Props = {
   onProgramClick: (programId: string, channelId: string) => void;
   selectedChannel: EpgChannel | undefined;
   program: EpgProgram | undefined;
-  config: Config;
 };
 
-export default function Epg({ channels, selectedChannel, onChannelClick, onProgramClick, program, config }: Props) {
+export default function Epg({ channels, selectedChannel, onChannelClick, onProgramClick, program }: Props) {
+  const firstRender = useFirstRender();
   const breakpoint = useBreakpoint();
   const { t } = useTranslation('common');
 
@@ -39,19 +40,16 @@ export default function Epg({ channels, selectedChannel, onChannelClick, onProgr
   const itemHeight = isMobile ? 80 : 106;
 
   // Epg
-  const { highlightColor, backgroundColor } = config.styling;
   const { getEpgProps, getLayoutProps, onScrollToNow, onScrollLeft, onScrollRight } = usePlanByEpg({
     channels,
     sidebarWidth,
     itemHeight,
-    highlightColor,
-    backgroundColor,
   });
   const catchupHoursDict = useMemo(() => Object.fromEntries(channels.map((channel) => [channel.id, channel.catchupHours])), [channels]);
   const titlesDict = useMemo(() => Object.fromEntries(channels.map((channel) => [channel.id, channel.title])), [channels]);
 
   return (
-    <div className={styles.epg}>
+    <div className={classNames(styles.epg, firstRender && styles.firstFrame)}>
       <div className={styles.timelineControl}>
         <Button className={styles.timelineNowButton} variant="contained" label={t('now')} color="primary" onClick={onScrollToNow} size="small" />
         <IconButton className={styles.leftControl} aria-label={t('slide_left')} onClick={() => onScrollLeft()}>

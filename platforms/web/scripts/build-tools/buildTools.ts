@@ -1,6 +1,7 @@
 import fs from 'fs';
 
 import type { HtmlTagDescriptor } from 'vite';
+import type { ManifestOptions } from 'vite-plugin-pwa';
 import type { Target } from 'vite-plugin-static-copy';
 
 const initSettings = (mode: string) => {
@@ -39,19 +40,14 @@ export const getFileCopyTargets = (mode: string): Target[] => {
   return fileCopyTargets;
 };
 
-export const getGoogleVerificationTag = (env: Record<string, string>): HtmlTagDescriptor[] => {
-  if (!env.APP_GOOGLE_SITE_VERIFICATION_ID) return [];
-
-  return [
-    {
+export const getMetaTags = (tagData: Record<string, string | undefined>): HtmlTagDescriptor[] => {
+  return Object.entries(tagData)
+    .filter(([, value]) => !!value)
+    .map(([name, content]) => ({
       tag: 'meta',
       injectTo: 'head',
-      attrs: {
-        content: process.env.APP_GOOGLE_SITE_VERIFICATION_ID,
-        name: 'google-site-verification',
-      },
-    },
-  ];
+      attrs: { name, content },
+    }));
 };
 
 // @todo: move to common?
@@ -88,6 +84,33 @@ export const generateIconTags = (basePath: string, favIconSizes: number[], apple
     return `<link rel="apple-touch-icon" href="${basePath}apple-touch-icon-${size}x${size}.png">`;
   });
   return [...favIconTags, ...appleIconTags].join('\n');
+};
+
+export const getRelatedApplications = ({
+  appleAppId,
+  googleAppId,
+}: {
+  appleAppId?: string | undefined;
+  googleAppId?: string | undefined;
+} = {}): ManifestOptions['related_applications'] => {
+  const relatedApplications = [];
+
+  if (appleAppId) {
+    relatedApplications.push({
+      platform: 'itunes',
+      url: `https://apps.apple.com/app/${appleAppId}`,
+    });
+  }
+
+  if (googleAppId) {
+    relatedApplications.push({
+      platform: 'play',
+      id: googleAppId,
+      url: `https://play.google.com/store/apps/details?id=${googleAppId}`,
+    });
+  }
+
+  return relatedApplications;
 };
 
 const makeFontsUnique = (arr: ExternalFont[]) => {

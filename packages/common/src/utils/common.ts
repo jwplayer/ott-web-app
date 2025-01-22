@@ -1,15 +1,21 @@
+import type { Playlist, PlaylistItem } from '../../types/playlist';
+
 export function debounce<T extends (...args: any[]) => void>(callback: T, wait = 200) {
-  let timeout: NodeJS.Timeout | null;
-  return (...args: unknown[]) => {
+  let timeout: NodeJS.Timeout | undefined;
+  function debounced(...args: unknown[]) {
     if (timeout) clearTimeout(timeout);
     timeout = setTimeout(() => callback(...args), wait);
-  };
+  }
+
+  debounced.cancel = () => clearTimeout(timeout);
+  return debounced;
 }
-export function throttle<T extends (...args: any[]) => unknown>(func: T, limit: number): (...args: Parameters<T>) => void {
+
+export function throttle<T extends (...args: any[]) => unknown>(func: T, limit: number) {
   let lastFunc: NodeJS.Timeout | undefined;
   let lastRan: number | undefined;
 
-  return function (this: ThisParameterType<T>, ...args: Parameters<T>): void {
+  function throttled(this: ThisParameterType<T>, ...args: Parameters<T>): void {
     const timeSinceLastRan = lastRan ? Date.now() - lastRan : limit;
 
     if (timeSinceLastRan >= limit) {
@@ -27,7 +33,10 @@ export function throttle<T extends (...args: any[]) => unknown>(func: T, limit: 
         lastFunc = undefined;
       }, limit - timeSinceLastRan);
     }
-  };
+  }
+
+  throttled.cancel = () => clearTimeout(lastFunc);
+  return throttled;
 }
 
 export const unicodeToChar = (text: string) => {
@@ -68,7 +77,7 @@ export function hexToRgb(color: string) {
  * @link {https://stackoverflow.com/a/35970186/1790728}
  * @return {string}
  */
-export function calculateContrastColor(color: string) {
+export function calculateContrastColor(color: string): string {
   const rgb = hexToRgb(color);
 
   if (!rgb) {
@@ -92,15 +101,7 @@ export const IS_PREVIEW_MODE = __mode__ === 'preview';
 // Production mode
 export const IS_PROD_MODE = __mode__ === 'prod';
 
-export function logDev(message: unknown, ...optionalParams: unknown[]) {
-  if ((IS_DEVELOPMENT_BUILD || IS_PREVIEW_MODE) && !IS_TEST_MODE) {
-    if (optionalParams.length > 0) {
-      console.info(message, optionalParams);
-    } else {
-      console.info(message);
-    }
-  }
-}
+export const isContentType = (item: PlaylistItem | Playlist, contentType: string) => item.contentType?.toLowerCase() === contentType.toLowerCase();
 
 export const isTruthyCustomParamValue = (value: unknown): boolean => ['true', '1', 'yes', 'on'].includes(String(value)?.toLowerCase());
 

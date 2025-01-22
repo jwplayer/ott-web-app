@@ -30,20 +30,35 @@ export const ADYEN_LIVE_CLIENT_KEY = 'live_BQDOFBYTGZB3XKF62GBYSLPUJ4YW2TPL';
 // how often the live channel schedule is refetched in ms
 export const LIVE_CHANNELS_REFETCH_INTERVAL = 15 * 60_000;
 
-// Some predefined types of JW
-export const CONTENT_TYPE = {
+// Some predefined media types of JW
+export const MEDIA_CONTENT_TYPE = {
   // Series page with seasons / episodes
   series: 'series',
   // Separate episode page
   episode: 'episode',
-  // Page with a list of channels
-  live: 'live',
-  // Separate channel page
+  // Live channel (24x7)
   liveChannel: 'livechannel',
+  // Temporary live stream that starts at a specific time
+  liveEvent: 'liveevent',
   // Static page with markdown
   page: 'page',
   // Page with shelves list
   hub: 'hub',
+} as const;
+
+// Some predefined playlist types of JW
+export const PLAYLIST_CONTENT_TYPE = {
+  // Page with a list of live channels
+  live: 'live',
+} as const;
+
+// Some predefined shelf types of JW
+export const SHELF_LAYOUT_TYPE = {
+  // Fullwidth hero, only available as the first shelf (index === 0)
+  hero: 'hero',
+  // Larger cards
+  featured: 'featured',
+  // By default: standard size cards (default)
 } as const;
 
 // OTT shared player
@@ -75,9 +90,20 @@ export const DEFAULT_FEATURES = {
   watchListSizeLimit: MAX_WATCHLIST_ITEMS_COUNT,
 };
 
-export const simultaneousLoginWarningKey = 'simultaneous_logins';
-
 export const EPG_TYPE = {
   jwp: 'jwp',
   viewNexa: 'viewnexa',
 } as const;
+
+export const APP_CONFIG_ITEM_TYPE = {
+  playlist: 'playlist',
+  continue_watching: 'continue_watching',
+  favorites: 'favorites',
+  content_list: 'content_list',
+  media: 'media',
+} as const;
+
+export const MANIFEST_TYPE = {
+  dash: 'application/dash+xml"',
+  hls: 'application/vnd.apple.mpegurl',
+};

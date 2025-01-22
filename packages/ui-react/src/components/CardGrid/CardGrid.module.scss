@@ -1,10 +1,10 @@
 .cell {
   display: inline-block;
-  padding: 4px;
+  padding: 8px;
 }
 
 .container {
-  margin: 0 -4px;
+  margin: 0 -8px;
   text-align: left;
 
   @for $i from 1 through 10 {
