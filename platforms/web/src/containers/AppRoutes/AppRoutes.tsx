@@ -24,7 +24,7 @@ import {
   RELATIVE_PATH_USER_PAYMENTS,
 } from '@jwp/ott-common/src/paths';
 import { APP_CONFIG_ITEM_TYPE } from '@jwp/ott-common/src/constants';
-import Account from '@jwp/ott-ui-react/src/pages/User/sections/Account/Account';
+import AccountSection from '@jwp/ott-ui-react/src/pages/User/sections/AccountSection/AccountSection';
 import FavoritesSection from '@jwp/ott-ui-react/src/pages/User/sections/FavoritesSection/FavoritesSection';
 import PaymentsSection from '@jwp/ott-ui-react/src/pages/User/sections/PaymentsSection/PaymentsSection';
 
@@ -44,7 +44,7 @@ export default function AppRoutes() {
           <Route path={PATH_LEGACY_SERIES} element={<LegacySeries />} />
           <Route path={PATH_SEARCH} element={<Search />} />
           <Route path={PATH_USER} element={<User />}>
-            <Route path={RELATIVE_PATH_USER_ACCOUNT} element={<Account />} />
+            <Route path={RELATIVE_PATH_USER_ACCOUNT} element={<AccountSection />} />
             <Route path={RELATIVE_PATH_USER_FAVORITES} element={<FavoritesSection />} />
             <Route path={RELATIVE_PATH_USER_PAYMENTS} element={<PaymentsSection />} />
             <Route path="*" element={<Navigate to={RELATIVE_PATH_USER_ACCOUNT} />} />
