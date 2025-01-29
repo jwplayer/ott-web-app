@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Outlet } from 'react-router-dom';
 import { shallow } from '@jwp/ott-common/src/utils/compare';
 import { getModule } from '@jwp/ott-common/src/modules/container';
 import { useAccountStore } from '@jwp/ott-common/src/stores/AccountStore';
@@ -13,7 +13,6 @@ import BalanceWallet from '@jwp/ott-theme/assets/icons/balance_wallet.svg?react'
 import Exit from '@jwp/ott-theme/assets/icons/exit.svg?react';
 import Favorite from '@jwp/ott-theme/assets/icons/favorite.svg?react';
 import { RELATIVE_PATH_USER_ACCOUNT, RELATIVE_PATH_USER_FAVORITES, RELATIVE_PATH_USER_PAYMENTS } from '@jwp/ott-common/src/paths';
-import { Outlet } from 'react-router';
 
 import Button from '../../components/Button/Button';
 import LoadingOverlay from '../../components/LoadingOverlay/LoadingOverlay';
