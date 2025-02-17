@@ -11,6 +11,8 @@ import ChevronLeft from '@jwp/ott-theme/assets/icons/chevron_left.svg?react';
 import ChevronRight from '@jwp/ott-theme/assets/icons/chevron_right.svg?react';
 import useBreakpoint, { Breakpoint, type Breakpoints } from '@jwp/ott-ui-react/src/hooks/useBreakpoint';
 import type { PosterAspectRatio } from '@jwp/ott-common/src/utils/collection';
+import { hasSupplementaryCardInfo } from '@jwp/ott-common/src/utils/media';
+
 import '@videodock/tile-slider/lib/style.css';
 
 import Card from '../Card/Card';
@@ -73,6 +75,7 @@ const Shelf = ({
   const breakpoint: Breakpoint = useBreakpoint();
   const { t } = useTranslation('common');
   const tilesToShow: number = (featured ? featuredTileBreakpoints[breakpoint] : tileBreakpoints[breakpoint]) + visibleTilesDelta;
+  const showSubtitles = playlist.playlist.some(hasSupplementaryCardInfo);
 
   const renderTile = useCallback(
     ({ item, isVisible }: { item: PlaylistItem; isVisible: boolean }) => {
@@ -91,10 +94,11 @@ const Shelf = ({
           posterAspect={posterAspect}
           item={item}
           url={url}
+          hasSubtitle={showSubtitles}
         />
       );
     },
-    [watchHistory, onCardHover, featured, loading, accessModel, isLoggedIn, hasSubscription, posterAspect, playlist.feedid, type],
+    [watchHistory, onCardHover, featured, loading, accessModel, isLoggedIn, hasSubscription, posterAspect, playlist.feedid, type, showSubtitles],
   );
 
   const renderRightControl: RenderControl = useCallback(

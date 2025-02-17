@@ -51,13 +51,17 @@ exports[`Shelf Component tests > Featured shelf 1`] = `
                 class="_poster_d75732 _aspect169_d75732"
               >
                 <div
-                  class="_meta_d75732"
+                  class="_meta_d75732 _featured_d75732"
                 >
-                  <h3
-                    class="_title_d75732"
+                  <div
+                    class="_titleContainer_d75732"
                   >
-                    Last playlist item
-                  </h3>
+                    <h3
+                      class="_title_d75732"
+                    >
+                      Last playlist item
+                    </h3>
+                  </div>
                   <div
                     class="_tags_d75732"
                   >
@@ -87,13 +91,17 @@ exports[`Shelf Component tests > Featured shelf 1`] = `
                 class="_poster_d75732 _aspect169_d75732"
               >
                 <div
-                  class="_meta_d75732"
+                  class="_meta_d75732 _featured_d75732"
                 >
-                  <h3
-                    class="_title_d75732"
+                  <div
+                    class="_titleContainer_d75732"
                   >
-                    Movie 1
-                  </h3>
+                    <h3
+                      class="_title_d75732"
+                    >
+                      Movie 1
+                    </h3>
+                  </div>
                   <div
                     class="_tags_d75732"
                   >
@@ -123,13 +131,17 @@ exports[`Shelf Component tests > Featured shelf 1`] = `
                 class="_poster_d75732 _aspect169_d75732"
               >
                 <div
-                  class="_meta_d75732"
+                  class="_meta_d75732 _featured_d75732"
                 >
-                  <h3
-                    class="_title_d75732"
+                  <div
+                    class="_titleContainer_d75732"
                   >
-                    Movie 2
-                  </h3>
+                    <h3
+                      class="_title_d75732"
+                    >
+                      Movie 2
+                    </h3>
+                  </div>
                   <div
                     class="_tags_d75732"
                   >

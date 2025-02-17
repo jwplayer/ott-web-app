@@ -36,6 +36,7 @@ export type CardProps = {
   url: string;
   headingLevel?: number;
   tabIndex?: number;
+  hasSubtitle?: boolean;
 };
 
 function Card({
@@ -52,6 +53,7 @@ function Card({
   headingLevel = 3,
   url,
   tabIndex = 0,
+  hasSubtitle = false,
 }: CardProps): JSX.Element {
   const { title, duration, episodeNumber, seasonNumber, cardImage: image, mediaStatus, scheduledStart } = item;
   const {
@@ -94,8 +96,22 @@ function Card({
     }
   };
 
-  const heading = React.createElement(`h${headingLevel}`, { className: classNames(styles.title, { [styles.loading]: loading }) }, loading ? '' : title);
+  const renderHeading = () => {
+    const heading = React.createElement(`h${headingLevel}`, { className: styles.title }, title);
+    const itemSubtitle = typeof item.subtitle === 'string' ? item.subtitle : null;
+    const subtitle = !!scheduledStart && isLiveEvent(item) ? formatLocalizedDateTime(scheduledStart, language) : itemSubtitle;
 
+    if (loading) {
+      return <div className={classNames(styles.titleContainer, styles.loading)} />;
+    }
+
+    return (
+      <div className={classNames(styles.titleContainer, { [styles.hasSubtitle]: hasSubtitle })}>
+        {heading}
+        {subtitle && <p className={classNames(styles.subtitle)}>{subtitle}</p>}
+      </div>
+    );
+  };
   return (
     <Link
       role="button"
@@ -106,19 +122,12 @@ function Card({
       tabIndex={disabled ? -1 : tabIndex}
       data-testid={testId(title)}
     >
-      {!featured && (
-        <div className={styles.titleContainer}>
-          {heading}
-          {!!scheduledStart && isLiveEvent(item) && (
-            <div className={classNames(styles.scheduledStart, { [styles.loading]: loading })}>{formatLocalizedDateTime(scheduledStart, language)}</div>
-          )}
-        </div>
-      )}
+      {!featured && renderHeading()}
       <div className={posterClassNames}>
         <Image className={styles.posterImage} image={image} width={featured ? 640 : 320} alt="" />
         {!loading && (
-          <div className={styles.meta}>
-            {featured && heading}
+          <div className={classNames(styles.meta, { [styles.featured]: featured })}>
+            {featured && renderHeading()}
             <div className={styles.tags}>
               {isLocked && (
                 <div className={classNames(styles.tag, styles.lock)} aria-label={t('card_lock')} role="img">

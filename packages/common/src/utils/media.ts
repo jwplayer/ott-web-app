@@ -2,6 +2,7 @@ import type { PlaylistItem } from '../../types/playlist';
 import { MEDIA_CONTENT_TYPE } from '../constants';
 
 import { isContentType } from './common';
+import { isLiveEvent } from './liveEvent';
 
 type RequiredProperties<T, P extends keyof T> = T & Required<Pick<T, P>>;
 
@@ -48,3 +49,5 @@ export const getLegacySeriesPlaylistIdFromEpisodeTags = (item: PlaylistItem | un
 
 export const isLiveChannel = (item: PlaylistItem): item is RequiredProperties<PlaylistItem, 'contentType'> =>
   isContentType(item, MEDIA_CONTENT_TYPE.liveChannel);
+
+export const hasSupplementaryCardInfo = (item: PlaylistItem) => (!!item.scheduledStart && isLiveEvent(item)) || !!item.subtitle;

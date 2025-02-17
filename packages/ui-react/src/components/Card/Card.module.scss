@@ -125,21 +125,10 @@ $aspects: ((1, 1), (2, 1), (2, 3), (4, 3), (5, 3), (16, 9), (9, 16), (9, 13));
   margin-top: 8px;
   margin-bottom: 0;
   overflow: hidden;
-}
 
-.title {
-  display: -webkit-box;
-  height: calc(variables.$base-line-height * 2);
-  overflow: hidden;
-  font-family: var(--body-alt-font-family);
-  font-weight: var(--body-font-weight-bold);
-  font-size: 1em;
-  line-height: variables.$base-line-height;
-  text-align: left;
-  text-overflow: ellipsis;
-  text-shadow: var(--body-text-shadow);
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
+  &.hasSubtitle {
+    height: 70px;
+  }
 
   &.loading {
     &::before {
@@ -152,21 +141,40 @@ $aspects: ((1, 1), (2, 1), (2, 3), (4, 3), (5, 3), (16, 9), (9, 16), (9, 13));
       border-radius: 5px;
     }
   }
+}
+
+.title {
+  display: -webkit-box;
+  overflow: hidden;
+  font-family: var(--body-alt-font-family);
+  font-weight: var(--body-font-weight-bold);
+  font-size: 1em;
+  line-height: variables.$base-line-height;
+  text-align: left;
+  text-overflow: ellipsis;
+  text-shadow: var(--body-text-shadow);
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 
   @include responsive.mobile-only {
     font-size: 14px;
   }
 }
 
-.scheduledStart {
+.subtitle {
+  display: -webkit-box;
+  margin: 0;
+  overflow: hidden;
   font-size: 0.88em;
   line-height: variables.$base-line-height;
+  text-overflow: ellipsis;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 
   @include responsive.mobile-only {
     font-size: 12px;
   }
 }
-
 
 .meta {
   position: absolute;
@@ -178,6 +186,11 @@ $aspects: ((1, 1), (2, 1), (2, 3), (4, 3), (5, 3), (16, 9), (9, 16), (9, 13));
   width: 100%;
   padding: 8px;
   color: var(--card-color);
+
+  &.featured {
+    justify-content: space-between;
+    align-items: flex-end;
+  }
 }
 
 .tags {
