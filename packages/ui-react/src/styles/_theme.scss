@@ -59,7 +59,7 @@ $card-loading-bg-color: $secondary-color !default;
 
 // FormFeedback
 
-$form-feedback-error-bg-color: #FF3535 !default;
+$form-feedback-error-bg-color: #ff3535 !default;
 $form-feedback-error-color: variables.$black !default;
 $form-feedback-warning-bg-color: variables.$orange !default;
 $form-feedback-warning-color: variables.$white !default;
@@ -71,6 +71,10 @@ $form-feedback-success-color: variables.$black !default;
 $modal-bg: #202020 !default;
 $modal-color: variables.$white !default;
 $modal-backdrop-bg: rgba(variables.$black, 0.8) !default;
+
+// Cookie banner
+$cookie-banner-bg: #202020 !default;
+$cookie-banner-color: variables.$white !default;
 
 // Loading
 
@@ -86,13 +90,13 @@ $text-field-hover-bg-color: rgba(variables.$white, 0.08) !default;
 $text-field-active-color: variables.$white !default;
 $text-field-active-border-color: variables.$white !default;
 $text-field-placeholder-color: rgba(variables.$white, 0.7) !default;
-$text-field-error-color: #FF3535 !default;
+$text-field-error-color: #ff3535 !default;
 
 // Input
 
 $input-resting-border-color: rgba(variables.$white, 0.34) !default;
 $input-hover-border-color: rgba(variables.$white, 0.7) !default;
-$input-field-error-color: #FF3535 !default;
+$input-field-error-color: #ff3535 !default;
 
 // Toggle
 

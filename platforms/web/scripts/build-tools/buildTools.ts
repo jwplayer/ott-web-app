@@ -156,28 +156,37 @@ const createGoogleFontTags = (fontFamily: string[]) => {
   ] as HtmlTagDescriptor[];
 };
 
-export const getGtmTags = (env: Record<string, string>) => {
+export const getGtmTags = (script: string, env: Record<string, string>) => {
   const tags: HtmlTagDescriptor[] = [];
+  const enabled = env.APP_GTM_TAG_ID && env.APP_GTM_LOAD_ON_ACCEPT !== 'true';
+  const tagServer = env.APP_GTM_TAG_SERVER || 'https://www.googletagmanager.com';
 
-  if (env.APP_GTM_TAG_ID) {
+  // Load GTM immediately without waiting for consent. Consent should be handled by GTM.
+  if (enabled && script) {
+    if (tagServer.indexOf('www.googletagmanager.com') !== -1) {
+      console.warn('GTM is loaded immediately from the Google domain. This may not be GDPR compliant.');
+    }
+
     tags.push(
       {
         injectTo: 'head',
         tag: 'script',
-        children: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-        })(window,document,'script','dataLayer','${env.APP_GTM_TAG_ID}');`,
+        children: script,
       },
       {
         injectTo: 'body-prepend',
         tag: 'noscript',
-        children: `<iframe src="https://www.googletagmanager.com/ns.html?id=${env.APP_GTM_TAG_ID}"
+        children: `<iframe src="${tagServer}/ns.html?id=${env.APP_GTM_TAG_ID}"
         height="0" width="0" style="display:none;visibility:hidden"></iframe>`,
       },
     );
   }
 
   return tags;
+};
+
+export const getGtmScript = (file: string, tagId: string, tagServer: string) => {
+  if (!tagId) return '';
+  const script = fs.readFileSync(file, 'utf-8');
+  return script.replace('${tagServer}', tagServer || 'https://www.googletagmanager.com').replace('${tagId}', tagId);
 };

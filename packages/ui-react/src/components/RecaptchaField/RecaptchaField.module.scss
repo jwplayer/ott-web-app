@@ -1,3 +1,4 @@
+@use '@jwp/ott-ui-react/src/styles/mixins/responsive';
 @use '@jwp/ott-ui-react/src/styles/theme';
 
 .captcha {
@@ -5,4 +6,19 @@
   justify-content: flex-end;
   width: 100%;
   margin-bottom: 8px;
+}
+
+:global(#grecaptcha-challenge-container > div) {
+  @include responsive.tablet-and-larger() {
+    top: 5% !important;
+    left: 5% !important;
+
+    > div:first-child {
+      opacity: 0.5 !important;
+    }
+
+    :global(.g-recaptcha-bubble-arrow) {
+      display: none;
+    }
+  }
 }

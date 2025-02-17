@@ -1,6 +1,7 @@
 import React, { useEffect, useState, type FC, useCallback } from 'react';
 import { IS_DEMO_MODE, IS_DEVELOPMENT_BUILD, IS_PREVIEW_MODE, IS_PROD_MODE } from '@jwp/ott-common/src/utils/common';
 import ErrorPage from '@jwp/ott-ui-react/src/components/ErrorPage/ErrorPage';
+import CookieBanner from '@jwp/ott-ui-react/src/components/CookieBanner/CookieBanner';
 import AccountModal from '@jwp/ott-ui-react/src/containers/AccountModal/AccountModal';
 import DevConfigSelector from '@jwp/ott-ui-react/src/components/DevConfigSelector/DevConfigSelector';
 import LoadingOverlay from '@jwp/ott-ui-react/src/components/LoadingOverlay/LoadingOverlay';
@@ -8,6 +9,7 @@ import { type BootstrapData, type OnReadyCallback, useBootstrapApp } from '@jwp/
 import { setThemingVariables } from '@jwp/ott-ui-react/src/utils/theming';
 import type { Config } from '@jwp/ott-common/types/config';
 import { AppError } from '@jwp/ott-common/src/utils/error';
+import { useUIStore } from '@jwp/ott-common/src/stores/UIStore';
 
 import DemoConfigDialog from '../../components/DemoConfigDialog/DemoConfigDialog';
 import AppRoutes from '../AppRoutes/AppRoutes';
@@ -94,6 +96,7 @@ const Root: FC = () => {
     <>
       {isReady && <AppRoutes />}
       {isReady && <AccountModal />}
+      {isReady && <CookieBanner onOpen={() => useUIStore.setState({ cookieWallOpen: true })} onClose={() => useUIStore.setState({ cookieWallOpen: false })} />}
       {/*This is moved to a separate, parallel component to reduce rerenders */}
       <RootLoader onReady={onReadyCallback} />
     </>

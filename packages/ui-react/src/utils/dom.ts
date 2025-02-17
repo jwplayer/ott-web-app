@@ -33,3 +33,13 @@ export const addScript = (src: string): Promise<void> => {
     document.body.appendChild(script);
   });
 };
+
+export const injectScript = (script: string) => {
+  if (!script) return;
+
+  const scriptElement = document.createElement('script');
+  scriptElement.type = 'text/javascript';
+  scriptElement.textContent = script;
+
+  document.head.appendChild(scriptElement);
+};

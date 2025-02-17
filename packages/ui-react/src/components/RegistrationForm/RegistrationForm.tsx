@@ -7,6 +7,7 @@ import type { CustomFormField, RegistrationFormData } from '@jwp/ott-common/type
 import { testId } from '@jwp/ott-common/src/utils/common';
 import type { SocialLoginURLs } from '@jwp/ott-hooks-react/src/useSocialLoginUrls';
 import env from '@jwp/ott-common/src/env';
+import { useCookieConsent } from '@jwp/ott-ui-react/src/hooks/useCookieConsent';
 import type { ReCAPTCHA } from 'react-google-recaptcha';
 
 import TextField from '../form-fields/TextField/TextField';
@@ -57,6 +58,7 @@ const RegistrationForm: React.FC<Props> = ({
 }: Props) => {
   const { t, i18n } = useTranslation('account');
   const location = useLocation();
+  const { isActive, consent: cookieConsent } = useCookieConsent();
 
   const ref = useRef<HTMLDivElement>(null);
   const htmlLang = i18n.language !== env.APP_DEFAULT_LANGUAGE ? env.APP_DEFAULT_LANGUAGE : undefined;
@@ -78,6 +80,10 @@ const RegistrationForm: React.FC<Props> = ({
       ref.current?.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
     }
   }, [errors.form]);
+
+  const requiredConsentsChecked = publisherConsents?.filter(({ type, required }) => type === 'checkbox' && required).every(({ name }) => !!consentValues[name]);
+  const hasConsent = isActive ? cookieConsent === 'accepted' || requiredConsentsChecked : requiredConsentsChecked;
+  const loadRecaptcha = !!captchaSiteKey && hasConsent;
 
   return (
     <form onSubmit={onSubmit} data-testid={testId('registration-form')} noValidate>
@@ -137,7 +143,7 @@ const RegistrationForm: React.FC<Props> = ({
           })}
         </div>
       )}
-      {!!captchaSiteKey && <RecaptchaField siteKey={captchaSiteKey} ref={recaptchaRef} />}
+      {loadRecaptcha && <RecaptchaField siteKey={captchaSiteKey} ref={recaptchaRef} size={cookieConsent === 'accepted' ? 'invisible' : 'normal'} />}
       <Button
         className={styles.continue}
         type="submit"

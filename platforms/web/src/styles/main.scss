@@ -1,7 +1,7 @@
-@use "@jwp/ott-ui-react/src/styles/theme";
-@use "@jwp/ott-ui-react/src/styles/variables";
-@use "@jwp/ott-ui-react/src/styles/accessibility";
-@use "@jwp/ott-ui-react/src/styles/mixins/responsive";
+@use '@jwp/ott-ui-react/src/styles/theme';
+@use '@jwp/ott-ui-react/src/styles/variables';
+@use '@jwp/ott-ui-react/src/styles/accessibility';
+@use '@jwp/ott-ui-react/src/styles/mixins/responsive';
 
 :root {
   --primary-color: #{theme.$primary-color};
@@ -18,14 +18,16 @@
   --card-border-hover-color: #{theme.$card-border-hover-color};
   --card-tag-bg: #{theme.$card-tag-bg};
 
+  --cookie-banner-color: #{theme.$cookie-banner-color};
+  --cookie-banner-background-color: #{theme.$cookie-banner-bg};
+
   // Safe area insets, can be overridden for specific platforms
   /* stylelint-disable length-zero-no-unit */
-  --safe-area-top: 0px; 
+  --safe-area-top: 0px;
   --safe-area-right: 0px;
   --safe-area-bottom: 0px;
   --safe-area-left: 0px;
   /* stylelint-enable length-zero-no-unit */
-
 }
 
 @include accessibility.globalClassNames;

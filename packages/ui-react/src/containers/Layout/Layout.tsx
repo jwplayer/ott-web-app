@@ -40,9 +40,10 @@ const Layout = () => {
   const { footerText: configFooterText } = styling || {};
   const footerText = configFooterText || unicodeToChar(env.APP_FOOTER_TEXT);
 
-  const { sideBarOpen, searchActive } = useUIStore((state) => ({
+  const { sideBarOpen, searchActive, cookieWallOpen } = useUIStore((state) => ({
     sideBarOpen: state.sideBarOpen,
     searchActive: state.searchActive,
+    cookieWallOpen: state.cookieWallOpen,
   }));
   const banner = assets.banner;
 
@@ -56,7 +57,7 @@ const Layout = () => {
     })),
   ];
 
-  const containerProps = { inert: sideBarOpen ? '' : undefined }; // inert is not yet officially supported in react
+  const containerProps = { inert: sideBarOpen || cookieWallOpen ? '' : undefined }; // inert is not yet officially supported in react
 
   return (
     <div className={styles.layout}>

@@ -76,6 +76,10 @@ vi.mock('react-i18next', () => ({
     Component.defaultProps = { ...Component.defaultProps, t: () => '' };
     return Component;
   },
+  // Mocking the Trans component
+  Trans: ({ i18nKey, children }: { i18nKey?: string; children?: React.ReactNode }) => {
+    return i18nKey || children || null;
+  },
   // this mock makes sure any components using the translate hook can use it without a warning being shown
   useTranslation: () => {
     // noinspection JSUnusedGlobalSymbols

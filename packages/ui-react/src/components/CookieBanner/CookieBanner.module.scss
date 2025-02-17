@@ -1,0 +1,41 @@
+@use '@jwp/ott-ui-react/src/styles/theme';
+@use '@jwp/ott-ui-react/src/styles/mixins/responsive';
+
+.overlay {
+  display: flex;
+  align-items: flex-end;
+
+  > div {
+    width: 100%;
+    color: var(--cookie-banner-color);
+    background-color: var(--cookie-banner-background-color);
+  }
+}
+
+.banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  line-height: 1.5;
+
+  a {
+    color: inherit;
+  }
+
+  @include responsive.desktop-only() {
+    max-width: 960px;
+    margin: 0 auto;
+  }
+}
+
+.buttonBar {
+  display: flex;
+  align-content: center;
+  align-items: center;
+  gap: 8px;
+
+  @include responsive.mobile-only() {
+    flex-direction: column;
+  }
+}

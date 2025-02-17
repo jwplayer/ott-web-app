@@ -7,11 +7,19 @@ export type Env = {
   APP_DEFAULT_LANGUAGE: string;
   APP_PUBLIC_URL: string;
 
+  APP_CONSENT_COOKIE_NAME?: string;
+  APP_CONSENT_COOKIE_POLICY_URL?: string;
+
   APP_DEFAULT_CONFIG_SOURCE?: string;
   APP_PLAYER_LICENSE_KEY?: string;
 
   APP_BODY_FONT?: string;
   APP_BODY_ALT_FONT?: string;
+
+  APP_GTM_TAG_ID?: string;
+  APP_GTM_TAG_SERVER?: string;
+  APP_GTM_SCRIPT?: string;
+  APP_GTM_LOAD_ON_ACCEPT: boolean;
 };
 
 const env: Env = {
@@ -22,6 +30,7 @@ const env: Env = {
   APP_FOOTER_TEXT: '',
   APP_DEFAULT_LANGUAGE: 'en',
   APP_PUBLIC_URL: '',
+  APP_GTM_LOAD_ON_ACCEPT: false,
 };
 
 export const configureEnv = (options: Partial<Env>) => {
@@ -33,11 +42,18 @@ export const configureEnv = (options: Partial<Env>) => {
   env.APP_DEFAULT_LANGUAGE = options.APP_DEFAULT_LANGUAGE || env.APP_DEFAULT_LANGUAGE;
   env.APP_PUBLIC_URL = options.APP_PUBLIC_URL || env.APP_PUBLIC_URL;
 
+  env.APP_CONSENT_COOKIE_NAME ||= options.APP_CONSENT_COOKIE_NAME;
+  env.APP_CONSENT_COOKIE_POLICY_URL ||= options.APP_CONSENT_COOKIE_POLICY_URL;
   env.APP_DEFAULT_CONFIG_SOURCE ||= options.APP_DEFAULT_CONFIG_SOURCE;
   env.APP_PLAYER_LICENSE_KEY ||= options.APP_PLAYER_LICENSE_KEY;
 
   env.APP_BODY_FONT = options.APP_BODY_FONT || env.APP_BODY_FONT;
   env.APP_BODY_ALT_FONT = options.APP_BODY_ALT_FONT || env.APP_BODY_ALT_FONT;
+
+  env.APP_GTM_TAG_ID ||= options.APP_GTM_TAG_ID;
+  env.APP_GTM_TAG_SERVER ||= options.APP_GTM_TAG_SERVER;
+  env.APP_GTM_SCRIPT ||= options.APP_GTM_SCRIPT;
+  env.APP_GTM_LOAD_ON_ACCEPT = options.APP_GTM_LOAD_ON_ACCEPT || env.APP_GTM_LOAD_ON_ACCEPT;
 };
 
 export default env;

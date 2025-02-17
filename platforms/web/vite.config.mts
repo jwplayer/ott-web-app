@@ -20,6 +20,7 @@ import {
   getGtmTags,
   getMetaTags,
   getRelatedApplications,
+  getGtmScript,
 } from './scripts/build-tools/buildTools';
 
 export default ({ mode, command }: ConfigEnv): UserConfigExport => {
@@ -50,12 +51,13 @@ export default ({ mode, command }: ConfigEnv): UserConfigExport => {
   const bodyAltFontsString = bodyAltFonts.map((font) => font.fontFamily).join(', ');
 
   // Head tags
+  const gtmScript = getGtmScript(path.join(__dirname, 'scripts/gtm.js'), env.APP_GTM_TAG_ID, env.APP_GTM_TAG_SERVER);
   const fontTags = getGoogleFontTags([bodyFonts, bodyAltFonts].flat());
   const metaTags = getMetaTags({
     'apple-itunes-app': env.APP_APPLE_ITUNES_APP ? `app-id=${env.APP_APPLE_ITUNES_APP}` : undefined,
     'google-site-verification': env.APP_GOOGLE_SITE_VERIFICATION_ID,
   });
-  const tags = [fontTags, metaTags, getGtmTags(env)].flat();
+  const tags = [fontTags, metaTags, getGtmTags(gtmScript, env)].flat();
 
   const related_applications = getRelatedApplications({
     appleAppId: env.APP_APPLE_ITUNES_APP,
@@ -118,6 +120,7 @@ export default ({ mode, command }: ConfigEnv): UserConfigExport => {
       __debug__: process.env.APP_TEST_DEBUG === '1',
       'import.meta.env.APP_BODY_FONT': JSON.stringify(bodyFontsString),
       'import.meta.env.APP_BODY_ALT_FONT': JSON.stringify(bodyAltFontsString),
+      'import.meta.env.APP_GTM_SCRIPT': JSON.stringify(gtmScript),
     },
     publicDir: './public',
     envPrefix,

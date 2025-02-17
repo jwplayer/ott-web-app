@@ -23,6 +23,10 @@ export const setThemingVariables = (config: Config) => {
     root.style.setProperty('--body-background-color', backgroundColor);
     root.style.setProperty('--body-color', bodyColor);
 
+    // intentionally set the cookie banner colors to the opposite of the body colors
+    root.style.setProperty('--cookie-banner-background-color', calculateContrastColor(backgroundColor));
+    root.style.setProperty('--cookie-banner-color', backgroundColor);
+
     if (bodyColor === '#000000') {
       // disable text shadows when using a light background
       root.style.setProperty('--body-text-shadow', 'none');
