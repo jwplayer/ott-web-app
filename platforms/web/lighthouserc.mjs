@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   ci: {
     collect: {
       numberOfRuns: 3,
