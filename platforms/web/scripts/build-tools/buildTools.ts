@@ -73,6 +73,8 @@ export const getGoogleFontTags = (fonts: ExternalFont[]): HtmlTagDescriptor[] =>
   const uniqueFonts = makeFontsUnique(fonts);
   const googleFonts = uniqueFonts.filter(({ resource }) => resource === 'google').map(({ fontFamily }) => fontFamily);
 
+  if (!googleFonts.length) return [];
+
   return createGoogleFontTags(googleFonts);
 };
 
