@@ -27,6 +27,7 @@ import { useCheckoutStore } from '../stores/CheckoutStore';
 import { useAccountStore } from '../stores/AccountStore';
 import { FormValidationError } from '../errors/FormValidationError';
 import { determineSwitchDirection } from '../utils/subscription';
+import { logError } from '../logger';
 import { findDefaultCardMethodId } from '../utils/payments';
 
 @injectable()
@@ -56,9 +57,13 @@ export default class CheckoutController {
     }
 
     if (!useCheckoutStore.getState().switchSubscriptionOffers.length) {
-      const subscriptionSwitches = await this.getSubscriptionSwitches();
-      const switchSubscriptionOffers = subscriptionSwitches ? await this.getOffers({ offerIds: subscriptionSwitches }) : [];
-      useCheckoutStore.setState({ switchSubscriptionOffers });
+      try {
+        const subscriptionSwitches = await this.getSubscriptionSwitches();
+        const switchSubscriptionOffers = subscriptionSwitches ? await this.getOffers({ offerIds: subscriptionSwitches }) : [];
+        useCheckoutStore.setState({ switchSubscriptionOffers });
+      } catch (error) {
+        logError('Checkout', 'Cannot initialize offers', { error });
+      }
     }
   };
 
