@@ -22,7 +22,7 @@ export default class GenericEntitlementService extends EntitlementService {
     this.host = host;
   };
 
-  getMediaToken = async (config: Config, id: string, jwt?: string, params: GetMediaParams = {}, drmPolicyId?: string) => {
+  getMediaToken = async (config: Config, id: string, jwt?: string, params: GetMediaParams = {}, drmPolicyId?: string, accessType?: string) => {
     const provider = config.integrations.jwp?.clientId ? 'jwp' : config.integrations.cleeng?.id ? 'cleeng' : '';
 
     const data = await this.getToken<GetTokenResponse>(this.host, {
@@ -34,6 +34,7 @@ export default class GenericEntitlementService extends EntitlementService {
         id,
         drmPolicyId,
         params,
+        accessType,
       },
     });
 
