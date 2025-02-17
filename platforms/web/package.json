@@ -50,7 +50,7 @@
     "@testing-library/jest-dom": "^6.6.3",
     "@types/jwplayer": "^8.31.3",
     "@types/luxon": "^3.4.2",
-    "@types/node": "^18.19.67",
+    "@types/node": "^22.10.1",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "@types/react-helmet": "^6.1.11",
@@ -80,7 +80,7 @@
     "vite-plugin-eslint": "^1.8.1",
     "vite-plugin-html": "^3.2.2",
     "vite-plugin-pwa": "^0.19.8",
-    "vite-plugin-static-copy": "^0.17.1",
+    "vite-plugin-static-copy": "^2.2.0",
     "vite-plugin-stylelint": "^5.3.1",
     "vite-plugin-svgr": "^4.3.0",
     "vitest": "^2.1.8",
@@ -90,7 +90,6 @@
   },
   "optionalDependencies": {
     "gh-pages": "^6.1.1",
-    "lighthouse": "^12.1.0",
     "sharp": "^0.33.4"
   }
 }
