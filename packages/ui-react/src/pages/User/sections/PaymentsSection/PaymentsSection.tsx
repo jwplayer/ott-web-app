@@ -46,11 +46,18 @@ const processBillingReceipt = (receipt: Blob | string, transactionId: string) =>
   }
 };
 
-const EXTERNAL_PAYMENT_METHODS = ['Apple In-App', 'Google In-App', 'Roku In-App'];
+const EXTERNAL_PAYMENT_METHODS = ['Apple In-App', 'storekit2', 'Google In-App', 'android', 'Roku In-App'];
 const STORE_LINKS: Record<string, string> = {
   apple: 'https://support.apple.com/118428',
   google: 'https://support.google.com/googleplay/answer/7018481',
   roku: 'https://support.roku.com/article/208756478',
+};
+const STORE_LINK_MAP: Record<string, string> = {
+  apple: STORE_LINKS.apple,
+  storekit2: STORE_LINKS.apple,
+  google: STORE_LINKS.google,
+  android: STORE_LINKS.google,
+  roku: STORE_LINKS.roku,
 };
 
 const PaymentsSection = () => {
@@ -109,7 +116,7 @@ const PaymentsSection = () => {
   const pendingDowngradeOfferId = (customer.metadata?.[`${activeSubscription?.subscriptionId}_pending_downgrade`] as string) || '';
   const isExternalPaymentProvider = !!activeSubscription && EXTERNAL_PAYMENT_METHODS.includes(activeSubscription.paymentMethod);
   const paymentProvider = activeSubscription?.paymentMethod.split(' ')[0] || 'unknown';
-  const paymentProviderLink = STORE_LINKS[paymentProvider.toLowerCase()];
+  const paymentProviderLink = STORE_LINK_MAP[paymentProvider.toLowerCase()];
 
   return (
     <Payment
