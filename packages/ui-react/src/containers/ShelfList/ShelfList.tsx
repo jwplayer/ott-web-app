@@ -19,6 +19,7 @@ import InfiniteScrollLoader from '../../components/InfiniteScrollLoader/Infinite
 import ErrorPage from '../../components/ErrorPage/ErrorPage';
 import Fade from '../../components/Animation/Fade/Fade';
 import HeroShelf from '../../components/HeroShelf/HeroShelf';
+import { getScrollParent } from '../../utils/dom';
 
 import styles from './ShelfList.module.scss';
 
@@ -63,6 +64,7 @@ const ShelfList = ({ rows }: Props) => {
         loadMore={() => setRowsToLoad((current) => current + ROWS_TO_LOAD_STEP)}
         hasMore={rowsToLoad < rows.length}
         loader={<InfiniteScrollLoader key="loader" />}
+        getScrollParent={getScrollParent}
         useWindow={false}
       >
         {rows.slice(0, rowsToLoad).map(({ type, featured, title, custom }, index) => {

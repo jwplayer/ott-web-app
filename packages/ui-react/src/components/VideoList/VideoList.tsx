@@ -8,6 +8,7 @@ import { testId } from '@jwp/ott-common/src/utils/common';
 
 import VideoListItem from '../VideoListItem/VideoListItem';
 import InfiniteScrollLoader from '../InfiniteScrollLoader/InfiniteScrollLoader';
+import { getScrollParent } from '../../utils/dom';
 
 import styles from './VideoList.module.scss';
 
@@ -58,6 +59,7 @@ function VideoList({
           hasMore={hasMore ?? false}
           className={styles.list}
           loader={<InfiniteScrollLoader key="loader" />}
+          getScrollParent={getScrollParent}
           useWindow={false}
         >
           {playlist?.playlist?.map((playlistItem: PlaylistItem) => (
