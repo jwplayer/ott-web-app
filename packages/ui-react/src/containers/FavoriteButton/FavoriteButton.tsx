@@ -14,9 +14,10 @@ import Icon from '../../components/Icon/Icon';
 
 type Props = {
   item: PlaylistItem;
+  className?: string;
 };
 
-const FavoriteButton: React.VFC<Props> = ({ item }) => {
+const FavoriteButton: React.VFC<Props> = ({ item, className }) => {
   const { t } = useTranslation();
   const breakpoint = useBreakpoint();
   const favoritesController = getModule(FavoritesController);
@@ -46,6 +47,7 @@ const FavoriteButton: React.VFC<Props> = ({ item }) => {
         aria-pressed={isFavorite}
         color={isFavorite ? 'primary' : 'default'}
         fullWidth={breakpoint < Breakpoint.md}
+        className={className}
       />
       <Alert open={warning !== null} message={warning} onClose={clearWarning} />
     </>

@@ -12,9 +12,10 @@ type Props = {
   title: string;
   description: string;
   url: string;
+  className?: string;
 };
 
-const ShareButton = ({ title, description, url }: Props) => {
+const ShareButton = ({ title, description, url, className }: Props) => {
   const { t } = useTranslation();
   const breakpoint = useBreakpoint();
   const [hasShared, setHasShared] = useState<boolean>(false);
@@ -37,6 +38,7 @@ const ShareButton = ({ title, description, url }: Props) => {
       onClick={onShareClick}
       active={hasShared}
       fullWidth={breakpoint < Breakpoint.md}
+      className={className}
     />
   );
 };
