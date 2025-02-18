@@ -1,4 +1,5 @@
 import React, { useRef, type PropsWithChildren } from 'react';
+import classNames from 'classnames';
 
 import Image from '../Image/Image';
 import { useScrolledDown } from '../../hooks/useScrolledDown';
@@ -8,9 +9,10 @@ import styles from './Hero.module.scss';
 
 type Props = PropsWithChildren<{
   image?: string;
+  infoClassName?: string;
 }>;
 
-const Hero = ({ image, children }: Props) => {
+const Hero = ({ image, children, infoClassName }: Props) => {
   const alt = ''; // intentionally empty for a11y, because adjacent text alternative
   const posterRef = useRef<HTMLImageElement>(null);
   const breakpoint = useBreakpoint();
@@ -23,8 +25,11 @@ const Hero = ({ image, children }: Props) => {
   return (
     <div className={styles.hero}>
       <Image ref={posterRef} className={styles.poster} image={image} width={1280} alt={alt} />
-      <div className={styles.posterFade} />
-      <div className={styles.info}>{children}</div>
+      <div className={styles.posterFadeMenu} />
+      <div className={styles.posterFadeLeft} />
+      <div className={styles.posterFadeBottom} />
+      <div className={styles.posterBackground} />
+      <div className={classNames(styles.info, infoClassName)}>{children}</div>
     </div>
   );
 };

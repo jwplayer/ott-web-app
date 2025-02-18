@@ -82,20 +82,20 @@ const HeroShelf = ({ playlist, loading = false, error = null }: Props) => {
 
     if (side == 'left') {
       return {
-        transform: `scale(1.2) translateX(${animationPhase === 'init' ? backgroundX * -1 : 0}px)`,
-        opacity: isAnimating ? 1 : 0,
-        transition: isAnimating ? 'opacity 0.3s ease-out, transform 0.3s ease-out' : 'none',
+        transform: `translateX(${animationPhase === 'init' ? backgroundX * -1 : 0}px)`,
+        opacity: isAnimating && direction === 'left' ? 1 : 0,
+        transition: isAnimating && direction === 'left' ? 'opacity 0.3s ease-out, transform 0.3s ease-out' : 'none',
       };
     }
     if (side == 'right') {
       return {
-        transform: `scale(1.2) translateX(${animationPhase === 'init' ? backgroundX : 0}px)`,
-        opacity: isAnimating ? 1 : 0,
-        transition: isAnimating ? 'opacity 0.3s ease-out, transform 0.3s ease-out' : 'none',
+        transform: `translateX(${animationPhase === 'init' ? backgroundX : 0}px)`,
+        opacity: isAnimating && direction === 'right' ? 1 : 0,
+        transition: isAnimating && direction === 'right' ? 'opacity 0.3s ease-out, transform 0.3s ease-out' : 'none',
       };
     }
     return {
-      transform: `scale(1.2) translateX(${isAnimating ? backgroundX * directionFactor : 0}px)`,
+      transform: `translateX(${isAnimating ? backgroundX * directionFactor : 0}px)`,
       opacity: isAnimating ? 0 : 1,
       transition: isAnimating ? `opacity ${isMobile ? 0.3 : 0.1}s ease-out, transform 0.3s ease-in` : 'none',
     };
@@ -105,7 +105,7 @@ const HeroShelf = ({ playlist, loading = false, error = null }: Props) => {
     if (side === 'left') {
       return {
         left: isSwiping || isSwipeAnimation ? '-100%' : animationPhase === 'init' ? -60 : 0,
-        opacity: isSwiping || isSwipeAnimation || isAnimating ? 1 : 0,
+        opacity: isSwiping || isSwipeAnimation || (isAnimating && direction === 'left') ? 1 : 0,
         transition: isAnimating ? 'opacity 0.2s ease-out, left 0.2s ease-out' : 'none',
         pointerEvents: 'none',
       };
@@ -113,7 +113,7 @@ const HeroShelf = ({ playlist, loading = false, error = null }: Props) => {
     if (side === 'right') {
       return {
         left: isSwiping || isSwipeAnimation ? '100%' : animationPhase === 'init' ? 60 : 0,
-        opacity: isSwiping || isSwipeAnimation || isAnimating ? 1 : 0,
+        opacity: isSwiping || isSwipeAnimation || (isAnimating && direction === 'right') ? 1 : 0,
         transition: isAnimating ? 'opacity 0.2s ease-out, left 0.2s ease-out' : 'none',
         pointerEvents: 'none',
       };
@@ -153,6 +153,7 @@ const HeroShelf = ({ playlist, loading = false, error = null }: Props) => {
           />
           <div className={styles.fade} />
         </div>
+        <div className={styles.fadeMenu} />
         <div className={styles.fade2} />
       </div>
       <button

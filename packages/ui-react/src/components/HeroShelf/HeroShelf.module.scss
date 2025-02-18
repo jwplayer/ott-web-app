@@ -8,9 +8,9 @@ $desktop-max-height: 700px;
 $desktop-min-height: 275px;
 
 $tablet-height: 70vw;
-$tablet-min-height: 550px;
+$tablet-min-height: 600px;
 
-$mobile-height: 70vh;
+$mobile-height: 150vw;
 $mobile-min-height: 450px;
 $mobile-landscape-height: 100vh;
 
@@ -97,7 +97,7 @@ $mobile-landscape-height: 100vh;
   width: 100%;
   height: 56.25vw;
   max-height: 700px;
-  background-color: var(--hero-shelf-background-color);
+  background-color: var(--hero-shelf-background-color, rgba(0,0,0,0.1));
 
   @include responsive.tablet-only() {
     height: $tablet-height;
@@ -107,7 +107,7 @@ $mobile-landscape-height: 100vh;
   @include responsive.mobile-only() {
     height: $mobile-height;
     min-height: $mobile-min-height;
-    margin-top: var(--safe-area-top, 0);
+    min-height: calc(450px + var(--safe-area-top))
   }
 
   @include responsive.mobile-only-landscape() {
@@ -126,35 +126,47 @@ $mobile-landscape-height: 100vh;
   height: 100%;
   justify-self: flex-end;
 
-  -webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 0.05) 0, rgba(0, 0, 0, 0.35) 50%, rgba(0, 0, 0, 0.8) 80%);
-  mask-image: linear-gradient(to right, rgba(0, 0, 0, 0.05) 0, rgba(0, 0, 0, 0.35) 50%, rgba(0, 0, 0, 0.8) 80%);
+  -webkit-mask-image: linear-gradient(to right, rgba(0,0,0,0) 30%, rgba(0,0,0,0.2) 45%, rgba(0,0,0,1) 65%);
+  mask-image: linear-gradient(to right, rgba(0,0,0,0) 30%, rgba(0,0,0,0.2) 45%, rgba(0,0,0,1) 65%);
 
   > div {
     position: absolute;
     top: 0;
     right: 0;
     bottom: 0;
-    left: 0;
+    left: 30%;
     overflow: hidden;
   }
 
   @include responsive.tablet-small-only() {
-    -webkit-mask-image: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0, 0, 0, 1) 30%, transparent 90%);
-    mask-image: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0, 0, 0, 1) 30%, transparent 90%);
+    -webkit-mask-image: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0, 0, 0, 1) 30%,  rgba(0, 0, 0, 0.8) 50%, transparent 90%);
+    mask-image: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0, 0, 0, 1) 30%,  rgba(0, 0, 0, 0.8) 50%, transparent 90%);
+
+    > div {
+      left: 0;
+    }
   }
 
   @include responsive.mobile-only() {
-    -webkit-mask-image: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0, 0, 0, 1) 30%, transparent 75%);
-    mask-image: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0, 0, 0, 1) 30%, transparent 75%);
+    -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.5) 8%, rgb(0, 0, 0) 20%, rgb(0, 0, 0) 50%, transparent 75%);
+    mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.5) 8%, rgb(0, 0, 0) 20%, rgb(0, 0, 0) 50%, transparent 75%);
+
+    > div {
+      left: 0;
+    }
   }
 }
 
 .image {
-  width: 100%;
+  width: 100%; 
   height: 100%;
   object-fit: cover;
-  object-position: center 20%;
+  
+  @include responsive.mobile-only() {
+    height: 120vw;
+  }
 }
+
 
 .fade {
   position: absolute;
@@ -163,6 +175,16 @@ $mobile-landscape-height: 100vh;
   bottom: 0;
   left: 0;
   background: linear-gradient(rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 75%, rgba(0, 0, 0, 0.8) 95%, rgba(0, 0, 0, 1) 100%);
+}
+
+.fadeMenu {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 120px;
+  background: linear-gradient(0deg, transparent, var(--body-background-color, variables.$white));
+  opacity: 0.5;
 }
 
 .fade2 {
@@ -222,6 +244,7 @@ $mobile-landscape-height: 100vh;
     max-width: 100%;
     padding: calc(variables.$base-spacing * 3) calc(variables.$base-spacing * 2);
     gap: 20px;
+    text-align: center;
 
     > h2 {
       font-size: 24px;
@@ -244,7 +267,7 @@ $mobile-landscape-height: 100vh;
   }
 
   @include responsive.tablet-small-only() {
-    padding: 0 calc(variables.$base-spacing * 3) calc(variables.$base-spacing * 3) calc(variables.$base-spacing * 3);
+    padding: 0 calc(variables.$base-spacing * 3) calc(variables.$base-spacing * 4) calc(variables.$base-spacing * 3);
 
     > div > button {
       width: auto !important; // Override StartWatchingButton fullWidth prop
@@ -252,8 +275,7 @@ $mobile-landscape-height: 100vh;
   }
 
   @include responsive.mobile-only() {
-    padding: calc(variables.$base-spacing * 3) variables.$base-spacing;
-    text-align: center;
+    padding: 0 variables.$base-spacing calc(variables.$base-spacing * 4);
   }
 }
 

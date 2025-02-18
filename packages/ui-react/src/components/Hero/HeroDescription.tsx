@@ -9,7 +9,7 @@ import styles from './Hero.module.scss';
 
 const HeroDescription = ({ className, description, maximumLines = 8 }: { className?: string; description: string; maximumLines?: number }) => {
   const breakpoint: Breakpoint = useBreakpoint();
-  const isMobile = breakpoint === Breakpoint.xs;
+  const isMobile = breakpoint <= Breakpoint.sm;
 
   return isMobile ? (
     <CollapsibleText text={description} className={classNames(styles.description, className)} />
