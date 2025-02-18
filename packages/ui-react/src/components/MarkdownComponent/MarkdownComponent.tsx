@@ -30,14 +30,24 @@ type Props = {
   className?: string;
   inline?: boolean;
   tag?: string;
+  headerOffset?: number;
 };
 
-const MarkdownComponent: React.FC<Props> = ({ markdownString, className, tag = 'div', inline = false }) => {
+const adjustHeaderLevels = (markdown: string, offset: number): string => {
+  const adjustedMarkdown = markdown.replace(/^(#{1,6})\s/gm, (_, hashes) => {
+    const newLevel = Math.min(hashes.length + offset, 6);
+    return `${'#'.repeat(newLevel)} `;
+  });
+  return adjustedMarkdown;
+};
+
+const MarkdownComponent: React.FC<Props> = ({ markdownString, className, tag = 'div', inline = false, headerOffset = 0 }) => {
   const sanitizedHTMLString = useMemo(() => {
-    const dirtyHTMLString = inline ? marked.parseInline(markdownString, { async: false }) : marked.parse(markdownString, { async: false });
+    const adjustedMarkdown = adjustHeaderLevels(markdownString, headerOffset);
+    const dirtyHTMLString = inline ? marked.parseInline(adjustedMarkdown, { async: false }) : marked.parse(adjustedMarkdown, { async: false });
 
     return DOMPurify.sanitize(dirtyHTMLString, { ADD_ATTR: ['target'] });
-  }, [inline, markdownString]);
+  }, [inline, markdownString, headerOffset]);
 
   return React.createElement(tag, {
     dangerouslySetInnerHTML: { __html: sanitizedHTMLString },
