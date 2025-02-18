@@ -9,18 +9,29 @@ type Props = {
   delay?: number;
   children?: ReactNode;
   keepMounted?: boolean;
+  willChange?: boolean;
   onOpenAnimationEnd?: () => void;
   onCloseAnimationEnd?: () => void;
 };
 
-const Fade: React.FC<Props> = ({ className, open = true, duration = 250, delay = 0, onOpenAnimationEnd, onCloseAnimationEnd, keepMounted, children }) => {
+const Fade: React.FC<Props> = ({
+  className,
+  open = true,
+  duration = 250,
+  delay = 0,
+  willChange = true,
+  onOpenAnimationEnd,
+  onCloseAnimationEnd,
+  keepMounted,
+  children,
+}) => {
   const seconds = duration / 1000;
   const transition = `opacity ${seconds}s ease-in-out`;
 
   const createStyle = (status: Status): CSSProperties => ({
     transition,
     opacity: status === 'opening' || status === 'open' ? 1 : 0,
-    willChange: 'opacity',
+    willChange: willChange ? 'opacity' : undefined,
   });
 
   return (

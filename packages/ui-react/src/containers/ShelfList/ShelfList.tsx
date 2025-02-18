@@ -106,7 +106,7 @@ const ShelfList = ({ rows }: Props) => {
               data-testid={testId(`shelf-${isHero ? 'hero' : isFeatured ? 'featured' : type === 'playlist' ? slugify(translatedTitle) : type}`)}
               aria-label={translatedTitle}
             >
-              <Fade duration={250} delay={index * 33} open>
+              <Fade duration={250} delay={index * 33} willChange={!isHero} open>
                 {isHero ? (
                   <HeroShelf loading={isPlaceholderData} error={error} playlist={playlist} />
                 ) : (
