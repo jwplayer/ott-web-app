@@ -52,6 +52,14 @@ const StartWatchingButton: React.VFC<Props> = ({ item, playUrl, disabled = false
     return t('complete_your_subscription');
   }, [isEntitled, isLoggedIn, hasMediaOffers, videoProgress, t]);
 
+  const testId = useMemo(() => {
+    if (isEntitled) return 'start_watching';
+    if (hasMediaOffers) return 'buy';
+    if (!isLoggedIn) return 'sign_up';
+
+    return 'complete_subscription';
+  }, [hasMediaOffers, isEntitled, isLoggedIn]);
+
   const handleStartWatchingClick = useCallback(() => {
     if (isEntitled) {
       if (onClick) {
@@ -88,6 +96,8 @@ const StartWatchingButton: React.VFC<Props> = ({ item, playUrl, disabled = false
       onClick={handleStartWatchingClick}
       fullWidth={breakpoint < Breakpoint.md}
       disabled={disabled}
+      data-testid={testId}
+      data-mediaid={item.mediaid}
     >
       {videoProgress ? (
         <div className={styles.progressRail}>

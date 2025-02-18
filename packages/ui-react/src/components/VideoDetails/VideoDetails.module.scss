@@ -32,7 +32,7 @@
   line-height: variables.$base-line-height;
   letter-spacing: 0.5px;
 
-  @include responsive.mobile-only() {
+  @include responsive.mobile-and-small-tablet() {
     order: 1;
     margin: 4px 0;
     font-size: 18px;
@@ -50,6 +50,7 @@
   align-items: center;
   gap: calc(variables.$base-spacing / 2);
   width: 100%;
+  max-width: 400px;
 
   > button {
     flex: 1;
@@ -60,8 +61,8 @@
     }
   }
 
-  @include responsive.tablet-and-larger() {
-    max-width: 400px;
+  @include responsive.mobile-and-small-tablet() {
+    max-width: none;
   }
 }
 
