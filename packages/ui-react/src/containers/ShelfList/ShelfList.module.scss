@@ -25,6 +25,9 @@
     &.featured {
       padding: 24px variables.$base-spacing;
     }
+    &.grid {
+      padding: 8px variables.$base-spacing;
+    }
   }
 
   @include responsive.tablet-only() {

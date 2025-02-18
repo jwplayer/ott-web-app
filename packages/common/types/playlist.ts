@@ -1,6 +1,6 @@
 import type { CustomParams } from './custom-params';
 
-export type GetPlaylistParams = { page_limit?: string; token?: string; search?: string; related_media_id?: string };
+export type GetPlaylistParams = { page_limit?: number; token?: string; search?: string; related_media_id?: string };
 
 export type Image = {
   src: string;
