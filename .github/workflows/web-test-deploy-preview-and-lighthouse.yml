@@ -38,4 +38,4 @@ jobs:
       - name: Install Lighthouse CI
         run: sudo yarn global add @lhci/cli@0.12.x
       - name: Run Lighthouse CI
-        run: lhci autorun --collect.url=${{ needs.build_and_preview.outputs.output1 }}?app-config=gnnuzabk --config=./lighthouserc.mjs
+        run: lhci autorun --collect.url=${{ needs.build_and_preview.outputs.output1 }}?app-config=gnnuzabk --config=./lighthouserc.cjs
