@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react';
 import type { PlaylistItem } from '@jwp/ott-common/types/playlist';
 
 import Modal from '../../components/Modal/Modal';
-import Player from '../../components/Player/Player';
+import PlayerContainer from '../../containers/PlayerContainer/PlayerContainer';
 import ModalCloseButton from '../../components/ModalCloseButton/ModalCloseButton';
 import Fade from '../../components/Animation/Fade/Fade';
 
@@ -29,7 +29,7 @@ const TrailerModal: React.FC<Props> = ({ item, open, title, onClose }) => {
   return (
     <Modal open={open} onClose={onClose} aria-labelledby="trailer-modal-title" centered>
       <div className={styles.container}>
-        <Player
+        <PlayerContainer
           item={item}
           onPlay={handlePlay}
           onPause={handlePause}
