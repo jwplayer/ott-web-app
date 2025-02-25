@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import ErrorPage from '@jwp/ott-ui-react/src/components/ErrorPage/ErrorPage';
 import RootErrorPage from '@jwp/ott-ui-react/src/components/RootErrorPage/RootErrorPage';
 import About from '@jwp/ott-ui-react/src/pages/About/About';
@@ -11,8 +11,22 @@ import LegacySeries from '@jwp/ott-ui-react/src/pages/LegacySeries/LegacySeries'
 import MediaScreenRouter from '@jwp/ott-ui-react/src/pages/ScreenRouting/MediaScreenRouter';
 import PlaylistScreenRouter from '@jwp/ott-ui-react/src/pages/ScreenRouting/PlaylistScreenRouter';
 import Layout from '@jwp/ott-ui-react/src/containers/Layout/Layout';
-import { PATH_ABOUT, PATH_CONTENT_LIST, PATH_LEGACY_SERIES, PATH_MEDIA, PATH_PLAYLIST, PATH_SEARCH, PATH_USER } from '@jwp/ott-common/src/paths';
+import {
+  PATH_ABOUT,
+  PATH_CONTENT_LIST,
+  PATH_LEGACY_SERIES,
+  PATH_MEDIA,
+  PATH_PLAYLIST,
+  PATH_SEARCH,
+  PATH_USER,
+  RELATIVE_PATH_USER_ACCOUNT,
+  RELATIVE_PATH_USER_FAVORITES,
+  RELATIVE_PATH_USER_PAYMENTS,
+} from '@jwp/ott-common/src/paths';
 import { APP_CONFIG_ITEM_TYPE } from '@jwp/ott-common/src/constants';
+import AccountSection from '@jwp/ott-ui-react/src/pages/User/sections/AccountSection/AccountSection';
+import FavoritesSection from '@jwp/ott-ui-react/src/pages/User/sections/FavoritesSection/FavoritesSection';
+import PaymentsSection from '@jwp/ott-ui-react/src/pages/User/sections/PaymentsSection/PaymentsSection';
 
 import RoutesContainer from '#src/containers/RoutesContainer/RoutesContainer';
 
@@ -29,7 +43,12 @@ export default function AppRoutes() {
           <Route path={PATH_MEDIA} element={<MediaScreenRouter />} />
           <Route path={PATH_LEGACY_SERIES} element={<LegacySeries />} />
           <Route path={PATH_SEARCH} element={<Search />} />
-          <Route path={PATH_USER} element={<User />} />
+          <Route path={PATH_USER} element={<User />}>
+            <Route path={RELATIVE_PATH_USER_ACCOUNT} element={<AccountSection />} />
+            <Route path={RELATIVE_PATH_USER_FAVORITES} element={<FavoritesSection />} />
+            <Route path={RELATIVE_PATH_USER_PAYMENTS} element={<PaymentsSection />} />
+            <Route path="*" element={<Navigate to={RELATIVE_PATH_USER_ACCOUNT} />} />
+          </Route>
           <Route path={PATH_ABOUT} element={<About />} />
           <Route
             path="/*"

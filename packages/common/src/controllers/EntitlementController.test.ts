@@ -113,7 +113,7 @@ describe('entitlementController', () => {
       const result = await entitlementController.getSignedMedia('uB8aRnu6', 'nl');
 
       expect(result?.mediaid).toEqual('uB8aRnu6');
-      expect(getMediaTokenJwp).toBeCalledWith(jwpSigningConfig, 'uB8aRnu6', 'jwttoken', undefined, undefined);
+      expect(getMediaTokenJwp).toBeCalledWith(jwpSigningConfig, 'uB8aRnu6', 'jwttoken', undefined, undefined, 'avod');
       expect(getMediaById).toBeCalledWith({ id: 'uB8aRnu6', token: 'jwpmediatoken', drmPolicyId: undefined, language: 'nl' });
 
       expect(getMediaByIdAccessController).not.toBeCalled();
@@ -139,7 +139,7 @@ describe('entitlementController', () => {
       const result = await entitlementController.getSignedMedia('uB8aRnu6');
 
       expect(result?.mediaid).toEqual('uB8aRnu6');
-      expect(getMediaTokenJwp).toBeCalledWith(jwpSigningDrmConfig, 'uB8aRnu6', 'jwttoken', undefined, 'drmpolicyid');
+      expect(getMediaTokenJwp).toBeCalledWith(jwpSigningDrmConfig, 'uB8aRnu6', 'jwttoken', undefined, 'drmpolicyid', 'avod');
       expect(getMediaById).toBeCalledWith({ id: 'uB8aRnu6', token: 'jwpmediatoken', drmPolicyId: 'drmpolicyid' });
 
       expect(getMediaByIdAccessController).not.toBeCalled();
@@ -189,7 +189,7 @@ describe('entitlementController', () => {
 
       expect(result?.mediaid).toEqual('uB8aRnu6');
       expect(setHost).toBeCalledWith('https://sign.jwplayer.com');
-      expect(getMediaTokenGeneric).toBeCalledWith(genericSigningConfig, 'uB8aRnu6', 'jwttoken', undefined, undefined);
+      expect(getMediaTokenGeneric).toBeCalledWith(genericSigningConfig, 'uB8aRnu6', 'jwttoken', undefined, undefined, 'avod');
       expect(getMediaById).toBeCalledWith({ id: 'uB8aRnu6', token: 'genericmediatoken', drmPolicyId: undefined });
 
       expect(getMediaByIdAccessController).not.toBeCalled();
@@ -216,7 +216,7 @@ describe('entitlementController', () => {
 
       expect(result?.mediaid).toEqual('uB8aRnu6');
       expect(setHost).toBeCalledWith('https://sign.jwplayer.com');
-      expect(getMediaTokenGeneric).toBeCalledWith(genericSigningDrmConfig, 'uB8aRnu6', 'jwttoken', undefined, 'drmpolicyid');
+      expect(getMediaTokenGeneric).toBeCalledWith(genericSigningDrmConfig, 'uB8aRnu6', 'jwttoken', undefined, 'drmpolicyid', 'avod');
       expect(getMediaById).toBeCalledWith({ id: 'uB8aRnu6', token: 'genericmediatoken', drmPolicyId: 'drmpolicyid' });
 
       expect(getMediaByIdAccessController).not.toBeCalled();

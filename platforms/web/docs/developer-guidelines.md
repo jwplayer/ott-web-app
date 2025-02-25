@@ -42,7 +42,7 @@
 /firebase.json          - Config for firebase static hosting
 /index.html             - Main html file entrypoint for the application
 /package.json           - Yarn file for dependencies and scripts
-/vite.config.ts         - Vite build and test configuration file
+/vite.config.mts        - Vite build and test configuration file
 
 * = Generated directories, not in source control
 
