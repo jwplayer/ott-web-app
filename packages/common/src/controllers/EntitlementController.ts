@@ -65,12 +65,13 @@ export default class EntitlementController {
     }
   };
 
-  getSignedMedia = async (id: string, language?: string, params?: GetMediaParams) => {
-    const { config, settings } = useConfigStore.getState();
+  getSignedMedia = async (id: string, language?: string, params?: GetMediaParams, isPublic?: boolean) => {
+    const { config, settings, accessModel } = useConfigStore.getState();
     const { custom, contentProtection } = config;
 
     const isAccessBridgeEnabled = !!settings?.apiAccessBridgeUrl;
     const drmPolicyId = contentProtection?.drm?.defaultPolicyId ?? (custom?.drmPolicyId as string | undefined);
+    const accessType = isPublic ? 'public' : accessModel.toLowerCase(); // Can be: public | avod | authvod | svod
 
     let signedMediaItem;
 
@@ -80,7 +81,7 @@ export default class EntitlementController {
     } else {
       const authData = await this.accountController.getAuthData();
       const entitlementService = this.getEntitlementService();
-      const token = await entitlementService?.getMediaToken(config, id, authData?.jwt, params, drmPolicyId);
+      const token = await entitlementService?.getMediaToken(config, id, authData?.jwt, params, drmPolicyId, accessType);
 
       signedMediaItem = await this.apiService.getMediaById({ id, token, drmPolicyId, language });
     }

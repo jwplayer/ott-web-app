@@ -5,6 +5,10 @@ import type { PlaylistItem } from '../../types/playlist';
 
 import { isFalsyCustomParamValue, isTruthyCustomParamValue, isContentType } from './common';
 
+export const isFreeItem = (playlistItem: PlaylistItem) => {
+  return isFalsyCustomParamValue(playlistItem?.requiresSubscription) || isTruthyCustomParamValue(playlistItem?.free);
+};
+
 /**
  * The appearance of the lock icon, depending on the access model
  *
@@ -15,10 +19,9 @@ import { isFalsyCustomParamValue, isTruthyCustomParamValue, isContentType } from
  * @returns
  */
 export const isLocked = (accessModel: AccessModel, isLoggedIn: boolean, hasSubscription: boolean, playlistItem: PlaylistItem): boolean => {
-  const isItemFree = isFalsyCustomParamValue(playlistItem?.requiresSubscription) || isTruthyCustomParamValue(playlistItem?.free);
   const mediaOffers = playlistItem?.mediaOffers;
 
-  if (isItemFree) return false;
+  if (isFreeItem(playlistItem)) return false;
   if (isContentType(playlistItem, MEDIA_CONTENT_TYPE.hub)) return false;
   if (accessModel === ACCESS_MODEL.AVOD && !mediaOffers) return false;
   if (accessModel === ACCESS_MODEL.AUTHVOD && isLoggedIn && !mediaOffers) return false;

@@ -1,7 +1,6 @@
 import React from 'react';
 import { axe } from 'vitest-axe';
 import AccountCircle from '@jwp/ott-theme/assets/icons/account_circle.svg?react';
-import 'vitest-axe/extend-expect';
 
 import { renderWithRouter } from '../../../test/utils';
 import Icon from '../Icon/Icon';

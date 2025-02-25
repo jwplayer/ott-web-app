@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { shallow } from '@jwp/ott-common/src/utils/compare';
 import { getModule } from '@jwp/ott-common/src/modules/container';
@@ -7,11 +7,13 @@ import { useConfigStore } from '@jwp/ott-common/src/stores/ConfigStore';
 import AccountController from '@jwp/ott-common/src/controllers/AccountController';
 import useOffers from '@jwp/ott-hooks-react/src/useOffers';
 import { useSubscriptionChange } from '@jwp/ott-hooks-react/src/useSubscriptionChange';
+import { ACCESS_MODEL } from '@jwp/ott-common/src/constants';
+import { RELATIVE_PATH_USER_ACCOUNT } from '@jwp/ott-common/src/paths';
 
-import styles from '../../pages/User/User.module.scss';
-import LoadingOverlay from '../../components/LoadingOverlay/LoadingOverlay';
-import Payment from '../../components/Payment/Payment';
-import { modalURLFromLocation } from '../../utils/location';
+import styles from '../../User.module.scss';
+import LoadingOverlay from '../../../../components/LoadingOverlay/LoadingOverlay';
+import Payment from '../../../../components/Payment/Payment';
+import { modalURLFromLocation } from '../../../../utils/location';
 
 /**
  * Handles billing receipts by either downloading the receipt directly if it is an instance of Blob,
@@ -44,14 +46,21 @@ const processBillingReceipt = (receipt: Blob | string, transactionId: string) =>
   }
 };
 
-const EXTERNAL_PAYMENT_METHODS = ['Apple In-App', 'Google In-App', 'Roku In-App'];
+const EXTERNAL_PAYMENT_METHODS = ['Apple In-App', 'storekit2', 'Google In-App', 'android', 'Roku In-App'];
 const STORE_LINKS: Record<string, string> = {
   apple: 'https://support.apple.com/118428',
   google: 'https://support.google.com/googleplay/answer/7018481',
   roku: 'https://support.roku.com/article/208756478',
 };
+const STORE_LINK_MAP: Record<string, string> = {
+  apple: STORE_LINKS.apple,
+  storekit2: STORE_LINKS.apple,
+  google: STORE_LINKS.google,
+  android: STORE_LINKS.google,
+  roku: STORE_LINKS.roku,
+};
 
-const PaymentContainer = () => {
+const PaymentsSection = () => {
   const accountController = getModule(AccountController);
 
   const navigate = useNavigate();
@@ -67,6 +76,10 @@ const PaymentContainer = () => {
   const [isUpgradeOffer, setIsUpgradeOffer] = useState<boolean | undefined>(undefined);
 
   const location = useLocation();
+
+  useEffect(() => {
+    if (accessModel === ACCESS_MODEL.AVOD) navigate(RELATIVE_PATH_USER_ACCOUNT);
+  }, [accessModel, navigate]);
 
   const handleUpgradeSubscriptionClick = async () => navigate(modalURLFromLocation(location, 'upgrade-subscription'));
 
@@ -103,7 +116,7 @@ const PaymentContainer = () => {
   const pendingDowngradeOfferId = (customer.metadata?.[`${activeSubscription?.subscriptionId}_pending_downgrade`] as string) || '';
   const isExternalPaymentProvider = !!activeSubscription && EXTERNAL_PAYMENT_METHODS.includes(activeSubscription.paymentMethod);
   const paymentProvider = activeSubscription?.paymentMethod.split(' ')[0] || 'unknown';
-  const paymentProviderLink = STORE_LINKS[paymentProvider.toLowerCase()];
+  const paymentProviderLink = STORE_LINK_MAP[paymentProvider.toLowerCase()];
 
   return (
     <Payment
@@ -139,4 +152,4 @@ const PaymentContainer = () => {
   );
 };
 
-export default PaymentContainer;
+export default PaymentsSection;

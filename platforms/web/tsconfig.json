@@ -21,7 +21,7 @@
     "types",
     "scripts",
     "test",
-    "vite.config.ts",
+    "vite.config.mts",
     "../../packages/common/types",
     "../../packages/ui-react/types"
   ]

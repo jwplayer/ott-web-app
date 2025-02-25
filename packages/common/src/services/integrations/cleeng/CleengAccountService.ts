@@ -124,6 +124,8 @@ export default class CleengAccountService extends AccountService {
 
   getAuthData = async () => {
     if (this.cleengService.tokens) {
+      await this.cleengService.maybeRefreshAccessToken();
+
       return {
         jwt: this.cleengService.tokens.accessToken,
         refreshToken: this.cleengService.tokens.refreshToken,
