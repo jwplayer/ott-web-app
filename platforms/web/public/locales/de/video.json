@@ -7,7 +7,7 @@
   "copied_url": "URL kopiert",
   "current_episode": "Aktuelle Episode",
   "current_video": "Aktuelles Video",
-  "episode": "Episode",
+  "episode": "episode",
   "episodes": "Episoden",
   "favorite": "Favorit",
   "favorites_warning": "Maximale Anzahl an Favoritenvideos überschritten. Sie können nur bis zu {{maxCount}} Favoritenvideos hinzufügen. Bitte löschen Sie eines der Favoritenvideos wiederholen Sie die Aktion.",
@@ -16,7 +16,7 @@
     "geo_blocked_description": "Es tut uns leid, aber dieser Inhalt ist derzeit in Ihrer Region nicht verfügbar.",
     "geo_blocked_title": "Inhalt nicht verfügbar"
   },
-  "season": "Staffel",
+  "season": "staffel",
   "season_number_filter_template": "Staffel {{seasonNumber}}",
   "series": "Serie",
   "series_error": "Es gab ein Problem beim Anfordern der Serie",

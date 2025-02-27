@@ -18,7 +18,7 @@
         "text_contacts": "Si vous avez des questions supplémentaires, n'hésitez pas à contacter notre équipe d'assistance.",
         "text_data_erasure": "Veuillez noter que si vous choisissez de poursuivre ce processus, toutes vos données personnelles seront effacées de notre système. Cela inclut toutes les informations personnelles que vous avez fournies lors de l'inscription, ainsi que toute information sur votre localisation et vos appareils collectée pendant le processus d'authentification. De plus, toutes les autres informations personnelles stockées dans diverses parties de notre base de données seront également supprimées. Toutefois, veuillez noter qu'en vertu de certaines législations, nous sommes tenus de conserver certaines données personnelles dans les dossiers de transactions et d'abonnements.",
         "text_revoked_access": "Une fois l'effacement terminé, tous vos accès actifs seront révoqués, et toute session de connexion active, y compris celle-ci, sera terminée. Vos informations de compte ne seront plus accessibles à notre personnel.",
-        "warning": "Toutes les souscriptions actives achetées via un navigateur web seront automatiquement annulées lors de l'effacement des données personnelles. Toutefois, si vous avez souscrit à un abonnement via les applications iOS, Android, Roku ou Amazon, sachez qu'il ne sera pas annulé automatiquement. Dans ce cas, vous devrez suivre les étapes habituelles d'annulation de souscription sur chaque plateforme respective."
+        "warning": "Toutes les souscriptions actives achetées via un navigateur web seront automatiquement annulées lors de l'effacement des données personnelles. Toutefois, si vous avez souscrit à un abonnement via les applications iOS, Android, Roku ou Amazon, sachez qu'il ne sera pas annulé automatiquement. Dans ce cas, vous devrez suivre les étapes habituelles d'annulation de souscription sur chaque plateforme."
       },
       "success": "Votre compte a été supprimé",
       "title": "Supprimer le compte"
@@ -60,7 +60,7 @@
     "update_consents": "Mettre à jour les consentements",
     "update_success": "Votre {{section}} a été mis à jour avec succès.",
     "view_password": "Voir le mot de passe"
-  }, 
+  },
   "favorites": {
     "clear": "Effacer les favoris",
     "clear_favorites_body": "Vous êtes sur le point d'effacer tous vos vidéos favorites. Êtes-vous sûr ?",
