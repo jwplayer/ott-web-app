@@ -33,6 +33,8 @@ configureEnv({
   APP_GTM_TAG_SERVER: import.meta.env.APP_GTM_TAG_SERVER,
   APP_GTM_LOAD_ON_ACCEPT: import.meta.env.APP_GTM_LOAD_ON_ACCEPT,
   APP_GTM_SCRIPT: import.meta.env.APP_GTM_SCRIPT,
+
+  APP_CHROMECAST_APPLICATION_ID: import.meta.env.APP_CHROMECAST_APPLICATION_ID,
 });
 
 attachAccessibilityListener();

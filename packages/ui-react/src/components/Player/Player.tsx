@@ -225,7 +225,7 @@ const Player: React.FC<Props> = ({
         pipIcon: 'disabled',
         playlist: [deepCopy({ ...item, starttime: startTimeRef.current, feedid: feedId, sources })],
         repeat: false,
-        cast: {},
+        cast: env.APP_CHROMECAST_APPLICATION_ID ? { appid: env.APP_CHROMECAST_APPLICATION_ID } : {},
         stretching: 'uniform',
         width: '100%',
       };

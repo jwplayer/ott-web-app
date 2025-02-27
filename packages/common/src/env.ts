@@ -20,6 +20,8 @@ export type Env = {
   APP_GTM_TAG_SERVER?: string;
   APP_GTM_SCRIPT?: string;
   APP_GTM_LOAD_ON_ACCEPT: boolean;
+
+  APP_CHROMECAST_APPLICATION_ID?: string;
 };
 
 const env: Env = {
@@ -34,6 +36,7 @@ const env: Env = {
 };
 
 export const configureEnv = (options: Partial<Env>) => {
+  // @TODO should we loop over each option instead?
   env.APP_VERSION = options.APP_VERSION || env.APP_VERSION;
   env.APP_API_BASE_URL = options.APP_API_BASE_URL || env.APP_API_BASE_URL;
   env.APP_API_ACCESS_BRIDGE_URL = options.APP_API_ACCESS_BRIDGE_URL || env.APP_API_ACCESS_BRIDGE_URL;
@@ -54,6 +57,8 @@ export const configureEnv = (options: Partial<Env>) => {
   env.APP_GTM_TAG_SERVER ||= options.APP_GTM_TAG_SERVER;
   env.APP_GTM_SCRIPT ||= options.APP_GTM_SCRIPT;
   env.APP_GTM_LOAD_ON_ACCEPT = options.APP_GTM_LOAD_ON_ACCEPT || env.APP_GTM_LOAD_ON_ACCEPT;
+
+  env.APP_CHROMECAST_APPLICATION_ID = options.APP_CHROMECAST_APPLICATION_ID || env.APP_CHROMECAST_APPLICATION_ID;
 };
 
 export default env;
