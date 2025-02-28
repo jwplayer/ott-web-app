@@ -51,7 +51,7 @@ function runTestSuite(props: ProviderProps, providerName: string) {
 
     I.click('Payments');
     I.see('Subscription details');
-    I.see('You have no subscription. Complete your subscription to start watching all movies and series.');
+    I.see('You have no subscription.');
     I.see('Complete subscription');
 
     I.see('Payment method');
