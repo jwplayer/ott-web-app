@@ -13,8 +13,18 @@
   "favorites_warning": "Le nombre maximal de vidéos favorites a été dépassé. Vous pouvez ajouter jusqu'à {{maxCount}} vidéos favorites. Veuillez en supprimer une et répéter l'opération.",
   "live": "En direct",
   "player_error": {
-    "geo_blocked_description": "Nous nous excusons, mais ce contenu est actuellement indisponible dans votre région.",
-    "geo_blocked_title": "Contenu indisponible"
+    "geo_blocked": {
+      "description": "Nous nous excusons, mais ce contenu est actuellement indisponible dans votre région.",
+      "title": "Contenu indisponible"
+    },
+    "unauthorized": {
+      "description": "Nous nous excusons, mais vous n'êtes pas autorisé à regarder ce contenu.",
+      "title": "Contenu indisponible"
+    },
+    "unknown": {
+      "description": "Nous nous excusons, mais quelque chose s'est mal passé lors du chargement du contenu.",
+      "title": "Contenu indisponible"
+    }
   },
   "season": "saison",
   "season_number_filter_template": "Saison {{seasonNumber}}",
@@ -25,6 +35,7 @@
   "sign_up_to_start_watching": "Inscrivez-vous pour commencer à regarder !",
   "start_watching": "Commencer à regarder",
   "total_episodes_one": "{{count}} épisode",
+  "total_episodes_many": "",
   "total_episodes_other": "{{count}} épisodes",
   "trailer": "Bande-annonce",
   "watch_trailer": "Regarder la bande-annonce"

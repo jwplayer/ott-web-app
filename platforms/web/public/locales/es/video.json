@@ -18,11 +18,11 @@
       "title": "Contenido no disponible"
     },
     "unauthorized": {
-      "description": "Pedimos disculpas, pero no estás autorizado para ver este contenido",
+      "description": "Pedimos disculpas, pero no estás autorizado para ver este contenido.",
       "title": "Contenido no disponible"
     },
     "unknown": {
-      "description": "Pedimos disculpas, pero algo salió mal al cargar el contenido",
+      "description": "Pedimos disculpas, pero algo salió mal al cargar el contenido.",
       "title": "Contenido no disponible"
     }
   },

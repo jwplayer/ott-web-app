@@ -1,6 +1,6 @@
 {
-  "title": "Cookie policy",
   "accept": "Accept",
+  "consent_text": "We use cookies for a better experience, personalized content, and analytics. By clicking Accept, you agree to our <0>cookie & privacy policy</0> which details their use, purpose and management.",
   "decline": "Decline",
-  "consent_text": "We use cookies for a better experience, personalized content, and analytics. By clicking Accept, you agree to our <0>cookie & privacy policy</0> which details their use, purpose and management."
+  "title": "Cookie policy"
 }

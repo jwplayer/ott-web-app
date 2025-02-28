@@ -13,8 +13,18 @@
   "favorites_warning": "Maximale aantal favoriete video's overschreden. Je kunt maximaal {{maxCount}} favoriete video's toevoegen.",
   "live": "Live",
   "player_error": {
-    "geo_blocked_description": "Onze excuses, maar deze content is momenteel niet beschikbaar in je regio.",
-    "geo_blocked_title": "Content niet beschikbaar"
+    "geo_blocked": {
+      "description": "Onze excuses, maar deze content is momenteel niet beschikbaar in je regio.",
+      "title": "Content niet beschikbaar"
+    },
+    "unauthorized": {
+      "description": "Onze excuses, je hebt momenteel geen toegang tot deze content.",
+      "title": "Content niet beschikbaar"
+    },
+    "unknown": {
+      "description": "Onze excuses, er is iets misgegaan bij het ophalen van de content.",
+      "title": "Content niet beschikbaar"
+    }
   },
   "season": "seizoen",
   "season_number_filter_template": "Seizoen {{seasonNumber}}",

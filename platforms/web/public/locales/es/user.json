@@ -103,7 +103,7 @@
     "monthly_subscription": "Suscripción mensual",
     "next_billing_date_on": "La próxima fecha de facturación es el {{date}}",
     "no_payment_methods": "No hay métodos de pago",
-    "no_subscription": "No tienes una suscripción. Completa tu suscripción para comenzar a ver todas las películas y series.",
+    "no_subscription": "No tienes una suscripción.",
     "no_transaction": "No hay transacción",
     "no_transactions": "No hay transacciones",
     "other": "otro",

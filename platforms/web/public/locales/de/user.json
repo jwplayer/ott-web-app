@@ -102,7 +102,7 @@
     "monthly_subscription": "Monatliches Abonnement",
     "next_billing_date_on": "Die nächste Rechnungsstellung erfolgt am {{date}}",
     "no_payment_methods": "Keine Zahlungsmethoden",
-    "no_subscription": "Sie haben kein Abonnement. Schließen Sie ein Abonnement ab, um alle Filme und Serien zu sehen.",
+    "no_subscription": "Sie haben kein Abonnement.",
     "no_transaction": "Keine Transaktion",
     "no_transactions": "Keine Transaktionen",
     "other": "anderes",

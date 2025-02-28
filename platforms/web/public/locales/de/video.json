@@ -13,8 +13,18 @@
   "favorites_warning": "Maximale Anzahl an Favoritenvideos überschritten. Sie können nur bis zu {{maxCount}} Favoritenvideos hinzufügen. Bitte löschen Sie eines der Favoritenvideos wiederholen Sie die Aktion.",
   "live": "Live",
   "player_error": {
-    "geo_blocked_description": "Es tut uns leid, aber dieser Inhalt ist derzeit in Ihrer Region nicht verfügbar.",
-    "geo_blocked_title": "Inhalt nicht verfügbar"
+    "geo_blocked": {
+      "description": "Es tut uns leid, aber dieser Inhalt ist derzeit in Ihrer Region nicht verfügbar.",
+      "title": "Inhalt nicht verfügbar"
+    },
+    "unauthorized": {
+      "description": "Es tut uns leid, aber Sie sind nicht berechtigt, diesen Inhalt anzusehen.",
+      "title": "Inhalt nicht verfügbar"
+    },
+    "unknown": {
+      "description": "Wir entschuldigen uns, aber beim Laden des Inhalts ist ein Fehler aufgetreten.",
+      "title": "Inhalt nicht verfügbar"
+    }
   },
   "season": "staffel",
   "season_number_filter_template": "Staffel {{seasonNumber}}",

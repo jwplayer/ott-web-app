@@ -102,7 +102,7 @@
     "monthly_subscription": "Monthly subscription",
     "next_billing_date_on": "Next billing date is on {{date}}",
     "no_payment_methods": "No payment methods",
-    "no_subscription": "You have no subscription. Complete your subscription to start watching all movies and series.",
+    "no_subscription": "You have no subscription.",
     "no_transaction": "No transaction",
     "no_transactions": "No transactions",
     "other": "other",

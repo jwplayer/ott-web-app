@@ -135,7 +135,7 @@
     "this_field_is_required": "Dit veld is verplicht",
     "title": "Persoonlijke gegevens"
   },
-"registration": {
+  "registration": {
     "already_account": "Heb je al een account?",
     "consents_error": "Accepteer alle vereiste toestemmingen om door te gaan.",
     "continue": "Doorgaan",

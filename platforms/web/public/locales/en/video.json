@@ -18,11 +18,11 @@
       "title": "Content unavailable"
     },
     "unauthorized": {
-      "description": "We apologize, but you are not authorized to watch this content",
+      "description": "We apologize, but you are not authorized to watch this content.",
       "title": "Content unavailable"
     },
     "unknown": {
-      "description": "We apologize, but something went wrong while loading the content",
+      "description": "We apologize, but something went wrong while loading the content.",
       "title": "Content unavailable"
     }
   },
