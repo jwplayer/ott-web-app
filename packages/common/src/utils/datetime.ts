@@ -28,3 +28,19 @@ export const is12HourClock = () => {
   const date = new Date(Date.UTC(2022, 6, 20, 18, 0, 0));
   return /am|pm/.test(date.toLocaleTimeString());
 };
+
+export const formatItemDate = (date?: string | null, locale?: string) => {
+  if (!date) return null;
+
+  if (date.length <= 4) return date;
+
+  try {
+    const [day, month, year] = date.split('-');
+    const dateObj = new Date(`${year}-${month}-${day}`);
+    if (dateObj.toString() === 'Invalid Date') return date; // fallback to original string
+
+    return dateObj.toLocaleDateString(locale, { year: 'numeric', month: 'long', day: 'numeric' });
+  } catch (error: unknown) {
+    return date; // fallback to original string
+  }
+};

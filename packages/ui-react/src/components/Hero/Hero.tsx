@@ -9,10 +9,11 @@ import styles from './Hero.module.scss';
 
 type Props = PropsWithChildren<{
   image?: string;
+  className?: string;
   infoClassName?: string;
 }>;
 
-const Hero = ({ image, children, infoClassName }: Props) => {
+const Hero = ({ image, children, className, infoClassName }: Props) => {
   const alt = ''; // intentionally empty for a11y, because adjacent text alternative
   const posterRef = useRef<HTMLImageElement>(null);
   const breakpoint = useBreakpoint();
@@ -23,7 +24,7 @@ const Hero = ({ image, children, infoClassName }: Props) => {
   });
 
   return (
-    <div className={styles.hero}>
+    <div className={classNames([styles.hero, className])}>
       <Image ref={posterRef} className={styles.poster} image={image} width={1280} alt={alt} />
       <div className={styles.posterFadeMenu} />
       <div className={styles.posterFadeLeft} />

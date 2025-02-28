@@ -1,0 +1,49 @@
+@use '@jwp/ott-ui-react/src/styles/variables';
+@use '@jwp/ott-ui-react/src/styles/theme';
+@use '@jwp/ott-ui-react/src/styles/mixins/responsive';
+
+.relatedVideosList {
+  grid-area: related;
+  position: relative;
+
+  .relatedVideosListHeader {
+    display: flex;
+    flex-direction: column;
+    gap: variables.$base-spacing;
+    margin-bottom: variables.$base-spacing;
+    padding-left: calc(variables.$base-spacing * 2);
+
+    @include responsive.mobile-only() {
+      padding-left: 0;
+    }
+  }
+}
+
+.relatedVideosGrid {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-items: initial;
+  width: 100%;
+  height: 100%;
+  padding: 0 0 variables.$base-spacing 0;
+  grid-area: related;
+  gap: variables.$base-spacing;
+
+  > h3 {
+    font-size: 20px;
+  }
+
+  @include responsive.mobile-and-tablet() {
+    justify-content: space-between;
+  }
+}
+
+.relatedVideosListTitle {
+  font-family: var(--body-alt-font-family);
+  font-weight: var(--body-font-weight-bold);
+  font-size: 20px;
+  line-height: variables.$base-line-height;
+  text-shadow: var(--body-text-shadow);
+}

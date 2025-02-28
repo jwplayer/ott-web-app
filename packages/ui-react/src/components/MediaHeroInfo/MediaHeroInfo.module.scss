@@ -1,0 +1,37 @@
+@use '@jwp/ott-ui-react/src/styles/variables';
+@use '@jwp/ott-ui-react/src/styles/mixins/typography';
+@use '@jwp/ott-ui-react/src/styles/mixins/responsive';
+
+.title {
+  @include typography.video-title-base() {
+    margin-bottom: calc(variables.$base-spacing / 2);
+  }
+}
+
+.description {
+  line-height: variables.$base-line-height;
+}
+
+.metaContainer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 8px;
+  gap: 16px;
+  font-size: 1em;
+  line-height: variables.$base-line-height;
+  letter-spacing: 0.15px;
+
+  > div:last-of-type {
+    // Enforce lengthy single-line metadata list in VideoMetaData on large screens
+    white-space: nowrap;
+  }
+
+  @include responsive.mobile-only() {
+    font-size: 0.8em;
+
+    > div:last-of-type {
+      white-space: initial;
+    }
+  }
+}

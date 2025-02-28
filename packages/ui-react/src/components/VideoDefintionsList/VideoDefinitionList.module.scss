@@ -1,0 +1,23 @@
+@use '@jwp/ott-ui-react/src/styles/variables';
+
+.definitionList {
+  display: flex;
+  flex-direction: column;
+  margin: 0 0 24px 0;
+  gap: 8px;
+
+  > div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+
+    dt {
+      margin: 0;
+      color: variables.$gray-light;
+    }
+
+    dd {
+      margin: 0;
+    }
+  }
+}

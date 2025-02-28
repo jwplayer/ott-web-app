@@ -1,0 +1,62 @@
+@use '@jwp/ott-ui-react/src/styles/variables';
+@use '@jwp/ott-ui-react/src/styles/theme';
+@use '@jwp/ott-ui-react/src/styles/mixins/responsive';
+
+.videoInlineLayout {
+  position: relative;
+  display: grid;
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: calc(variables.$base-spacing * 3);
+  grid-template-areas:
+    'player related'
+    'details related';
+  grid-template-columns: 1fr 360px;
+  grid-template-rows: auto 1fr;
+
+  @include responsive.mobile-and-tablet() {
+    grid-template-areas:
+      'player'
+      'details'
+      'related';
+    grid-template-columns: 1fr;
+  }
+
+  @include responsive.tablet-only() {
+    padding: calc(variables.$base-spacing * 2);
+  }
+
+  @include responsive.mobile-only() {
+    padding: variables.$base-spacing;
+  }
+}
+
+.player {
+  position: relative;
+  grid-area: player;
+  aspect-ratio: 16 / 9;
+  box-shadow: 0 8px 10px rgb(0 0 0 / 14%), 0 3px 14px rgb(0 0 0 / 12%), 0 4px 5px rgb(0 0 0 / 20%);
+
+  @supports not (aspect-ratio: 16 / 9) {
+    &::after {
+      display: block;
+      content: '';
+      clear: both;
+    }
+    &::before {
+      float: left;
+      padding-top: 56.25%;
+      content: '';
+    }
+  }
+
+  @include responsive.mobile-only() {
+    margin: calc(variables.$base-spacing * -1) calc(variables.$base-spacing * -1) 0;
+  }
+}
+
+.videoDetailsInline {
+  grid-area: details;
+  height: 100%;
+}
