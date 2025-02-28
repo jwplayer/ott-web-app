@@ -97,7 +97,7 @@
     "expiry_date": "Date d'expiration",
     "granted_subscription": "Abonnement accordé",
     "hidden_transactions_one": "Une autre transaction",
-    "hidden_transactions_many": "",
+    "hidden_transactions_many": "{{count}} autres transactions",
     "hidden_transactions_other": "{{count}} autres transactions",
     "longer_than_usual": "Le paiement prend plus de temps que d'habitude. Veuillez réessayer plus tard.",
     "monthly_subscription": "Abonnement mensuel",

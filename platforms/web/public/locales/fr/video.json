@@ -35,7 +35,7 @@
   "sign_up_to_start_watching": "Inscrivez-vous pour commencer à regarder !",
   "start_watching": "Commencer à regarder",
   "total_episodes_one": "{{count}} épisode",
-  "total_episodes_many": "",
+  "total_episodes_many": "{{count}} épisodes",
   "total_episodes_other": "{{count}} épisodes",
   "trailer": "Bande-annonce",
   "watch_trailer": "Regarder la bande-annonce"
