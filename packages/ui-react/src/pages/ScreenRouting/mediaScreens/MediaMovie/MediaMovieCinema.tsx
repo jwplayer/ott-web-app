@@ -49,7 +49,7 @@ const MediaMovieCinema: ScreenComponent<PlaylistItem> = ({ data, isLoading }) =>
   return (
     <React.Fragment>
       <MediaHead canonicalUrl={canonicalUrl} data={data} />
-      <MediaHero image={data.image}>
+      <MediaHero image={data.backgroundImage}>
         <MediaHeroInfo
           title={data.title}
           description={<HeroDescription description={data.description} />}
