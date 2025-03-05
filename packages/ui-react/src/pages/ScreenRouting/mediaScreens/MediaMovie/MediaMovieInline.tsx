@@ -97,6 +97,7 @@ const MediaMovie: ScreenComponent<PlaylistItem> = ({ data, isLoading }) => {
                   startIcon={<Icon icon={PlayTrailer} />}
                   onClick={() => setPlayTrailer(true)}
                   active={playTrailer}
+                  fullWidth={breakpoint < Breakpoint.md}
                   disabled={!trailerItem}
                 />
               )
