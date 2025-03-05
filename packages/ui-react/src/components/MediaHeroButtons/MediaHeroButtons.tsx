@@ -9,7 +9,7 @@ const MediaHeroButtons = ({
   buttonClassOverride = true,
 }: {
   cta: React.ReactNode;
-  children: React.ReactNode[];
+  children: React.ReactNode | React.ReactNode[];
   buttonClassOverride?: boolean;
 }) => {
   const breakpoint = useBreakpoint();
