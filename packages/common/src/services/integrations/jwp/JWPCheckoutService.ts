@@ -99,9 +99,12 @@ export default class JWPCheckoutService extends CheckoutService {
       customerCurrency: offer.currency,
       offerTitle: offer.description,
       active: true,
-      period: offer.access_type.period === 'month' && offer.access_type.quantity === 12 ? 'year' : offer.access_type.period,
-      freePeriods: offer.trial_period ? 1 : 0,
+      period:
+        offer.access_type.period === 'month' && offer.access_type.quantity === 12 ? 'year' : (offer.access_type.period as 'day' | 'week' | 'month' | 'year'),
       planSwitchEnabled: offer.item.plan_switch_enabled ?? false,
+
+      // trial period is always assumed to be in days
+      freeDays: offer.trial_period?.quantity || 0,
     } as Offer;
   };
 

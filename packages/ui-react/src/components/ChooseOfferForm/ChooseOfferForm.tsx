@@ -26,7 +26,9 @@ const OfferBox: React.FC<OfferBoxProps> = ({ offer, selected, onChange }: OfferB
 
   const getFreeTrialText = (offer: Offer) => {
     if (offer.freeDays) {
-      return t('choose_offer.benefits.first_days_free', { count: offer.freeDays });
+      return offer.freeDays === 1
+        ? t('choose_offer.benefits.first_days_free_one')
+        : t('choose_offer.benefits.first_days_free_other', { count: offer.freeDays });
     } else if (offer.freePeriods) {
       // t('periods.day', { count })
       // t('periods.week', { count })
