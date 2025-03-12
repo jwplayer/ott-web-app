@@ -80,11 +80,13 @@ export default {
         label: `label[for="S970187168_NL"]`,
         price: formatPrice(6.99, 'EUR', 'NL'),
         paymentFee: formatPrice(0, 'EUR', 'NL'),
+        trialDescription: 'First month free',
       },
       inplayer: {
         label: `label[for="S118699_38279"]`,
         price: formatPrice(6.99, 'EUR'),
         paymentFee: formatPrice(0, 'EUR'),
+        trialDescription: 'First 5 days free',
       },
     },
     yearlyOffer: {

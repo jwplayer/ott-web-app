@@ -4,6 +4,7 @@ export type PaymentOffer = {
   label: string;
   price: string;
   paymentFee: string;
+  trialDescription?: string;
 };
 
 export type PaymentFields = {
