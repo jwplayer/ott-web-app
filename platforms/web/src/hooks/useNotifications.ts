@@ -49,7 +49,7 @@ export default function useNotifications() {
               navigateToModal('payment-error', notification.resource?.message);
               break;
             case NotificationsTypes.CARD_SUCCESS:
-              await queryClient.invalidateQueries(['entitlements']);
+              await Promise.allSettled([queryClient.invalidateQueries(['entitlements']), accountController.reloadSubscriptions()]);
               navigateToModal(null); // close modal
               break;
             case NotificationsTypes.SUBSCRIBE_SUCCESS:

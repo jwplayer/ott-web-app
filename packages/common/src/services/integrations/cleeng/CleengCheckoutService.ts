@@ -184,4 +184,6 @@ export default class CleengCheckoutService extends CheckoutService {
     this.cleengService.post('/connectors/adyen/payment-details/finalize', JSON.stringify(payload), { authenticate: true });
 
   directPostCardPayment = async () => false;
+
+  finalizePpvPayment = undefined;
 }

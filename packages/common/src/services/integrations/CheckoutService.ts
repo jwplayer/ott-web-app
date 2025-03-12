@@ -3,6 +3,7 @@ import type {
   CreateOrder,
   DeletePaymentMethod,
   FinalizeAdyenPaymentDetails,
+  FinalizePpvPayment,
   GetAdyenPaymentSession,
   GetDirectPostCardPayment,
   GetEntitlements,
@@ -61,4 +62,6 @@ export default abstract class CheckoutService {
   abstract addAdyenPaymentDetails?: AddAdyenPaymentDetails;
 
   abstract finalizeAdyenPaymentDetails?: FinalizeAdyenPaymentDetails;
+
+  abstract finalizePpvPayment?: FinalizePpvPayment;
 }
