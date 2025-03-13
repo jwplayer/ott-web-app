@@ -13,7 +13,6 @@ import PaymentFailed from '../../components/PaymentFailed/PaymentFailed';
 import Dialog from '../../components/Dialog/Dialog';
 import DeleteAccountModal from '../../components/DeleteAccountModal/DeleteAccountModal';
 import FinalizePayment from '../../components/FinalizePayment/FinalizePayment';
-import FinalizePPVPayment from '../../components/FinalizePPVPayment/FinalizePPVPayment';
 import WaitingForPayment from '../../components/WaitingForPayment/WaitingForPayment';
 import UpgradeSubscription from '../../components/UpgradeSubscription/UpgradeSubscription';
 import DeleteAccountPasswordWarning from '../../components/DeleteAccountPasswordWarning/DeleteAccountPasswordWarning';
@@ -62,7 +61,6 @@ export type AccountModals = {
   'payment-method-success': 'payment-method-success';
   'waiting-for-payment': 'waiting-for-payment';
   'finalize-payment': 'finalize-payment';
-  'finalize-ppv-payment': 'finalize-ppv-payment';
 };
 
 const AccountModal = () => {
@@ -161,8 +159,6 @@ const AccountModal = () => {
         return <WaitingForPayment />;
       case 'finalize-payment':
         return <FinalizePayment />;
-      case 'finalize-ppv-payment':
-        return <FinalizePPVPayment />;
     }
   };
 

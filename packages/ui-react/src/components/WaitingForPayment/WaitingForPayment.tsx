@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import useCheckAccess from '@jwp/ott-hooks-react/src/useCheckAccess';
 import { modalURLFromLocation } from '@jwp/ott-ui-react/src/utils/location';
 
@@ -17,13 +17,6 @@ const WaitingForPayment = () => {
   const navigate = useNavigate();
   const announce = useAriaAnnouncer();
   const { intervalCheckAccess, errorMessage } = useCheckAccess();
-  const [searchParams] = useSearchParams();
-
-  useEffect(() => {
-    if (searchParams.get('payment_intent')) {
-      navigate(modalURLFromLocation(location, 'finalize-ppv-payment'), { replace: true });
-    }
-  }, [navigate, location, searchParams]);
 
   useEffect(() => {
     intervalCheckAccess({

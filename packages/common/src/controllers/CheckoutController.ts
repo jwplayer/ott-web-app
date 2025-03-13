@@ -8,7 +8,6 @@ import type {
   CreateOrderArgs,
   FinalizeAdyenPayment,
   FinalizeAdyenPaymentDetailsResponse,
-  FinalizePpvPayment,
   GetEntitlements,
   GetOffers,
   InitialAdyenPayment,
@@ -384,6 +383,4 @@ export default class CheckoutController {
 
     return this.checkoutService.getEntitlements(payload);
   };
-
-  finalizePpvPayment: FinalizePpvPayment = async (paymentIntent: string) => this.checkoutService?.finalizePpvPayment?.(paymentIntent);
 }

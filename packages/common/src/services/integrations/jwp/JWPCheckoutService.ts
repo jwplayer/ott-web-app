@@ -5,7 +5,6 @@ import type {
   CardPaymentData,
   CreateOrder,
   CreateOrderArgs,
-  FinalizePpvPayment,
   GetEntitlements,
   GetEntitlementsResponse,
   GetOffers,
@@ -301,14 +300,6 @@ export default class JWPCheckoutService extends CheckoutService {
       return true;
     } catch {
       throw new Error('Failed to make payment');
-    }
-  };
-
-  finalizePpvPayment: FinalizePpvPayment = async (pi_id: string) => {
-    try {
-      await this.apiService.post<CommonResponse>('/payments', { pi_id }, { withAuthentication: true });
-    } catch {
-      throw new Error('Failed to confirm payment');
     }
   };
 
