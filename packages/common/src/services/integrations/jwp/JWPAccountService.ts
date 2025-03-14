@@ -167,10 +167,10 @@ export default class JWPAccountService extends AccountService {
     }
 
     // restore session from URL params
-    const searchParams = new URLSearchParams(url.split('#')[1]);
-    const token = searchParams.get('token');
-    const refreshToken = searchParams.get('refresh_token');
-    const expires = searchParams.get('expires');
+    const queryParams = new URLSearchParams(url.split('#')[1]);
+    const token = queryParams.get('token');
+    const refreshToken = queryParams.get('refresh_token');
+    const expires = queryParams.get('expires');
 
     if (!token || !refreshToken || !expires) {
       return;
