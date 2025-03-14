@@ -176,7 +176,7 @@ export default class JWPAccountService extends AccountService {
       return;
     }
 
-    await this.apiService.setToken(token, refreshToken, parseInt(expires));
+    this.apiService.setToken(token, refreshToken, parseInt(expires));
   };
 
   getAuthData = async () => {
