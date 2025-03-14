@@ -224,6 +224,8 @@ export default class CheckoutController {
     return response.responseData;
   };
 
+  finalizeStripePpvPayment = (paymentIntent: string) => this.checkoutService?.finalizeStripePpvPayment?.({ paymentIntent });
+
   paypalPayment = async ({
     successUrl,
     waitingUrl,

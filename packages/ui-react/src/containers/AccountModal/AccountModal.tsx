@@ -60,7 +60,8 @@ export type AccountModals = {
   'payment-method': 'payment-method';
   'payment-method-success': 'payment-method-success';
   'waiting-for-payment': 'waiting-for-payment';
-  'finalize-payment': 'finalize-payment';
+  'finalize-payment-adyen': 'finalize-payment-adyen';
+  'finalize-payment-stripe-ppv': 'finalize-payment-stripe-ppv';
 };
 
 const AccountModal = () => {
@@ -157,8 +158,10 @@ const AccountModal = () => {
         return <UpdatePaymentMethod onCloseButtonClick={closeHandler} />;
       case 'waiting-for-payment':
         return <WaitingForPayment />;
-      case 'finalize-payment':
-        return <FinalizePayment />;
+      case 'finalize-payment-adyen':
+        return <FinalizePayment type="adyen" />;
+      case 'finalize-payment-stripe-ppv':
+        return <FinalizePayment type="stripe" />;
     }
   };
 

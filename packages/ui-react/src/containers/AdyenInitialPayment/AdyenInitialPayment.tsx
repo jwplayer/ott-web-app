@@ -69,7 +69,7 @@ export default function AdyenInitialPayment({ setUpdatingOrder, type, paymentSuc
         const captchaValue = await getCaptchaValue();
 
         const returnUrl = createURL(window.location.href, {
-          u: 'finalize-payment',
+          u: 'finalize-payment-adyen',
           orderId: orderId,
         });
         const result = await checkoutController.initialAdyenPayment(state.data.paymentMethod, returnUrl, captchaValue);
