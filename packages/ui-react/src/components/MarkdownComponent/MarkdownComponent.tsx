@@ -44,7 +44,7 @@ const adjustHeaderLevels = (markdown: string, offset: number): string => {
 const MarkdownComponent: React.FC<Props> = ({ markdownString, className, tag = 'div', inline = false, headerOffset = 0 }) => {
   const sanitizedHTMLString = useMemo(() => {
     const adjustedMarkdown = adjustHeaderLevels(markdownString, headerOffset);
-    const dirtyHTMLString = inline ? marked.parseInline(adjustedMarkdown, { async: false }) : marked.parse(adjustedMarkdown, { async: false });
+    const dirtyHTMLString = inline ? marked.parseInline(adjustedMarkdown, { async: false }) : marked.parse(adjustedMarkdown, { async: false, breaks: true });
 
     return DOMPurify.sanitize(dirtyHTMLString, { ADD_ATTR: ['target'] });
   }, [inline, markdownString, headerOffset]);
