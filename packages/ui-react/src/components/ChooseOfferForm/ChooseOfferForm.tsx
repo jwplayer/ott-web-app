@@ -26,15 +26,19 @@ const OfferBox: React.FC<OfferBoxProps> = ({ offer, selected, onChange }: OfferB
 
   const getFreeTrialText = (offer: Offer) => {
     if (offer.freeDays) {
-      return t('choose_offer.benefits.first_days_free', { count: offer.freeDays });
+      return offer.freeDays === 1
+        ? t('choose_offer.benefits.first_days_free_one')
+        : t('choose_offer.benefits.first_days_free_other', { count: offer.freeDays });
     } else if (offer.freePeriods) {
-      // t('periods.day', { count })
-      // t('periods.week', { count })
-      // t('periods.month', { count })
-      // t('periods.year', { count })
-      const period = t(`periods.${offer.period}`, { count: offer.freePeriods });
+      // t('periods.day_one') = 'day' or t('periods.day_other') = 'days'
+      // t('periods.week_one') = 'week' or t('periods.week_other') = 'weeks'
+      // t('periods.month_one') = 'month' or t('periods.month_other') = 'months'
+      // t('periods.year_one') = 'year' or t('periods.year_other') = 'years'
+      const period = t(`periods.${offer.period}_${offer.freePeriods === 1 ? 'one' : 'other'}`);
 
-      return t('choose_offer.benefits.first_periods_free', { count: offer.freePeriods, period });
+      return offer.freePeriods === 1
+        ? t('choose_offer.benefits.first_periods_free_one', { period })
+        : t('choose_offer.benefits.first_periods_free_other', { count: offer.freePeriods, period });
     }
 
     return null;
