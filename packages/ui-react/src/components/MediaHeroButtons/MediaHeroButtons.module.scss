@@ -1,0 +1,62 @@
+@use '@jwp/ott-ui-react/src/styles/variables';
+@use '@jwp/ott-ui-react/src/styles/mixins/responsive';
+
+.buttonBar {
+  display: flex;
+  align-items: center;
+  margin-top: 24px;
+  gap: calc(variables.$base-spacing / 2);
+
+  > button {
+    flex-shrink: 0;
+  }
+
+  @include responsive.mobile-and-small-tablet() {
+    flex-wrap: wrap;
+    > button {
+      flex: 1;
+      justify-content: center;
+
+      &:first-child {
+        flex-basis: 100%;
+        margin-bottom: 8px;
+      }
+    }
+  }
+}
+
+.roundButton {
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+
+  > [class^='_startIcon'] {
+    margin-right: 0;
+  }
+
+  > span {
+    display: none;
+  }
+}
+
+.rectangleButton {
+  flex-direction: column;
+  height: auto;
+  padding: 16px;
+  background-color: transparent !important;
+  border: none !important;
+
+  > [class^='_startIcon'] {
+    margin-right: 0;
+    margin-bottom: 8px;
+  }
+
+  > span {
+    font-weight: var(--body-font-weight-bold);
+  }
+
+  &[class*='primary'] {
+    color: inherit; // Toggle state for Favorite button
+  }
+}

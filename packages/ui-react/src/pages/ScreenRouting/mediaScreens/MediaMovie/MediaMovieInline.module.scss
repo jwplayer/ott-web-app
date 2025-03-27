@@ -1,0 +1,24 @@
+@use '@jwp/ott-ui-react/src/styles/variables';
+@use '@jwp/ott-ui-react/src/styles/theme';
+@use '@jwp/ott-ui-react/src/styles/mixins/responsive';
+
+.relatedVideosGrid {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-items: initial;
+  width: 100%;
+  height: 100%;
+  padding: 0 0 variables.$base-spacing 0;
+  grid-area: related;
+  gap: variables.$base-spacing;
+
+  > h3 {
+    font-size: 20px;
+  }
+
+  @include responsive.mobile-and-tablet() {
+    justify-content: space-between;
+  }
+}

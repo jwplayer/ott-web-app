@@ -1,0 +1,16 @@
+@use '@jwp/ott-ui-react/src/styles/variables';
+
+.formats {
+  display: flex;
+  gap: calc(variables.$base-spacing / 4);
+  flex-wrap: nowrap;
+}
+
+.formatTag {
+  display: inline-block;
+  padding: 6px;
+  font-size: 0.875em;
+  line-height: 10px;
+  border: 1px solid currentColor;
+  border-radius: 2px;
+}

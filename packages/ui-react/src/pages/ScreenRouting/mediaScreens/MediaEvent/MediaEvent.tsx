@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { Helmet } from 'react-helmet';
 import { useTranslation } from 'react-i18next';
+import { useTranslationKey } from '@jwp/ott-hooks-react/src/useTranslationKey';
 import { shallow } from '@jwp/ott-common/src/utils/compare';
 import type { PlaylistItem } from '@jwp/ott-common/types/playlist';
 import { useConfigStore } from '@jwp/ott-common/src/stores/ConfigStore';
@@ -34,6 +35,7 @@ import Icon from '../../../../components/Icon/Icon';
 
 const MediaEvent: ScreenComponent<PlaylistItem> = ({ data: media, isLoading }) => {
   const { t, i18n } = useTranslation(['video', 'common']);
+  const translationKey = useTranslationKey('title');
 
   const [playTrailer, setPlayTrailer] = useState<boolean>(false);
   const breakpoint = useBreakpoint();
@@ -173,7 +175,7 @@ const MediaEvent: ScreenComponent<PlaylistItem> = ({ data: media, isLoading }) =
         trailerButton={trailerButton}
         startWatchingButton={startWatchingButton}
         playlist={playlist}
-        relatedTitle={playlist?.title}
+        relatedTitle={(playlist?.[translationKey] as string) || playlist?.title}
         getURL={getUrl}
         activeLabel={t('current_video')}
         player={

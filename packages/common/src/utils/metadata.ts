@@ -36,3 +36,7 @@ export const createLiveEventMetadata = (media: PlaylistItem, locale: string, i18
 
   return metaData;
 };
+
+export const countListValues = (value: string) => (!value ? 0 : value.split(',').length);
+
+export const hasFormatMetadata = (media: PlaylistItem) => ['subtitleFormat', 'videoFormat', 'audioFormat'].some((property) => media[property]);
