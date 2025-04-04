@@ -59,8 +59,12 @@
       "cancel_anytime": "Cancel anytime",
       "first_days_free_one": "First day free",
       "first_days_free_other": "First {{count}} days free",
+      "first_days_free_other_one": "",
+      "first_days_free_other_other": "",
       "first_periods_free_one": "First {{period}} free",
       "first_periods_free_other": "First {{count}} {{period}} free",
+      "first_periods_free_other_one": "",
+      "first_periods_free_other_other": "",
       "watch_on_all_devices": "Watch on all devices"
     },
     "continue": "Continue",

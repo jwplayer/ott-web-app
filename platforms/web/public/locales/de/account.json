@@ -59,8 +59,12 @@
       "cancel_anytime": "Jederzeit kündbar",
       "first_days_free_one": "Erster Tag kostenlos",
       "first_days_free_other": "Die ersten {{count}} Tage kostenlos",
+      "first_days_free_other_one": "",
+      "first_days_free_other_other": "",
       "first_periods_free_one": "Die ersten {{period}} kostenlos",
       "first_periods_free_other": "Die ersten {{count}} {{period}} kostenlos",
+      "first_periods_free_other_one": "",
+      "first_periods_free_other_other": "",
       "watch_on_all_devices": "Auf allen Geräten ansehen"
     },
     "continue": "Fortfahren",
