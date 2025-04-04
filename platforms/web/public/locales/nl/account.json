@@ -59,8 +59,12 @@
       "cancel_anytime": "Op elk moment annuleren",
       "first_days_free_one": "Eerste dag gratis",
       "first_days_free_other": "Eerste {{count}} dagen gratis",
+      "first_days_free_other_one": "",
+      "first_days_free_other_other": "",
       "first_periods_free_one": "Eerste {{period}} gratis",
       "first_periods_free_other": "Eerste {{count}} {{period}} gratis",
+      "first_periods_free_other_one": "",
+      "first_periods_free_other_other": "",
       "watch_on_all_devices": "Kijk op alle apparaten"
     },
     "continue": "Doorgaan",
