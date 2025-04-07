@@ -162,6 +162,8 @@ export default class CleengCheckoutService extends CheckoutService {
   finalizeAdyenPayment: GetFinalizeAdyenPayment = async (payload) =>
     this.cleengService.post('/connectors/adyen/initial-payment/finalize', JSON.stringify(payload), { authenticate: true });
 
+  finalizeStripePpvPayment: undefined;
+
   updatePaymentMethodWithPayPal: UpdatePaymentWithPayPal = async (payload) => {
     return this.cleengService.post('/connectors/paypal/v1/payment_details/tokens', JSON.stringify(payload), { authenticate: true });
   };

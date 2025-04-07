@@ -94,10 +94,12 @@ export type Order = {
   requiredPaymentDetails: boolean;
 };
 
+export type PaymentProvider = 'stripe' | 'adyen';
+
 export type PaymentMethod = {
   id: number;
   methodName: 'card' | 'paypal';
-  provider?: 'stripe' | 'adyen';
+  provider?: PaymentProvider;
   paymentGateway?: 'adyen' | 'paypal'; // @todo: merge with provider
   logoUrl: string;
 };
@@ -383,6 +385,7 @@ export type GetEntitlements = EnvironmentServiceRequest<GetEntitlementsPayload, 
 export type GetAdyenPaymentSession = EnvironmentServiceRequest<AdyenPaymentMethodPayload, AdyenPaymentSession>;
 export type GetInitialAdyenPayment = EnvironmentServiceRequest<InitialAdyenPaymentPayload, InitialAdyenPayment>;
 export type GetFinalizeAdyenPayment = EnvironmentServiceRequest<FinalizeAdyenPaymentPayload, FinalizeAdyenPayment>;
+export type GetFinalizeStripePpvPayment = PromiseRequest<{ paymentIntent: string }, void>;
 export type UpdatePaymentWithPayPal = EnvironmentServiceRequest<UpdatePaymentWithPayPalPayload, PaymentWithPayPalResponse>;
 export type DeletePaymentMethod = EnvironmentServiceRequest<DeletePaymentMethodPayload, DeletePaymentMethodResponse>;
 export type AddAdyenPaymentDetails = EnvironmentServiceRequest<AddAdyenPaymentDetailsPayload, AddAdyenPaymentDetailsResponse>;

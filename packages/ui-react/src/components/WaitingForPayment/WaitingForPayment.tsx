@@ -37,7 +37,8 @@ const WaitingForPayment = () => {
         }
       },
     });
-    //eslint-disable-next-line
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <div className={styles.center}>

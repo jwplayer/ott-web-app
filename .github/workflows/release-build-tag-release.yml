@@ -56,4 +56,4 @@ jobs:
           artifacts: 'platforms/web/build/ott-web-app-build-*.tar.gz, platforms/web/build/ott-web-app-build-*.zip'
           tag: v${{ steps.package-version.outputs.current-version }}
           bodyFile: '.github/RELEASE_BODY_TEMPLATE.md'
-          token: ${{ secrets.github_token }}
+          token: ${{ secrets.GITHUB_TOKEN }}

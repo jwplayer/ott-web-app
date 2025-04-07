@@ -153,7 +153,11 @@ const Checkout = () => {
       {isStripePayment && (
         <PaymentForm
           onPaymentFormSubmit={async (cardPaymentPayload: PaymentFormData) =>
-            await submitPaymentStripe.mutateAsync({ cardPaymentPayload, referrer, returnUrl: waitingUrl })
+            await submitPaymentStripe.mutateAsync({
+              cardPaymentPayload,
+              referrer,
+              returnUrl: modalURLFromWindowLocation('finalize-payment-stripe-ppv'),
+            })
           }
         />
       )}

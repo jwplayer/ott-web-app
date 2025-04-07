@@ -7,6 +7,7 @@ import type {
   GetDirectPostCardPayment,
   GetEntitlements,
   GetFinalizeAdyenPayment,
+  GetFinalizeStripePpvPayment,
   GetInitialAdyenPayment,
   GetOffer,
   GetOffers,
@@ -53,6 +54,8 @@ export default abstract class CheckoutService {
   abstract initialAdyenPayment?: GetInitialAdyenPayment;
 
   abstract finalizeAdyenPayment?: GetFinalizeAdyenPayment;
+
+  abstract finalizeStripePpvPayment?: GetFinalizeStripePpvPayment;
 
   abstract updatePaymentMethodWithPayPal?: UpdatePaymentWithPayPal;
 

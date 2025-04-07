@@ -306,6 +306,14 @@ export default class JWPCheckoutService extends CheckoutService {
     }
   };
 
+  finalizeStripePpvPayment = async ({ paymentIntent }: { paymentIntent: string }) => {
+    try {
+      await this.apiService.post<CommonResponse>('/payments', { pi_id: paymentIntent }, { withAuthentication: true });
+    } catch {
+      throw new Error('Failed to confirm payment');
+    }
+  };
+
   getSubscriptionSwitches = undefined;
 
   getOrder = undefined;
