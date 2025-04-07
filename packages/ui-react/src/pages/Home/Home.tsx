@@ -11,10 +11,13 @@ const Home = () => {
   const content: Content[] = config?.content;
   const { t } = useTranslation('common');
 
+  // Demo: reference implementation for landing page labels filtering
+  const filteredContent = content?.filter((item) => !item.filterTags?.includes('mobile'));
+
   return (
     <>
       <h1 className="hideUntilFocus">{t('home')}</h1>
-      <ShelfList rows={content} />
+      <ShelfList rows={filteredContent} />
     </>
   );
 };

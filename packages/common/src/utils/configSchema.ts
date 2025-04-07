@@ -9,6 +9,7 @@ const contentSchema: ObjectSchema<Content> = object({
   backgroundColor: string().nullable().optional(),
   type: string().oneOf(['playlist', 'continue_watching', 'favorites', 'content_list']).required(),
   custom: object().optional(),
+  filterTags: string().optional(),
 }).defined();
 
 const menuSchema: ObjectSchema<Menu> = object().shape({
