@@ -12,7 +12,8 @@ const Home = () => {
   const { t } = useTranslation('common');
 
   // Demo: reference implementation for landing page labels filtering
-  const filteredContent = content?.filter((item) => !item.filterTags?.includes('mobile'));
+  const isMobile = navigator.userAgent.includes('Mobile');
+  const filteredContent = isMobile ? content : content?.filter((item) => !item.filterTags?.includes('mobile'));
 
   return (
     <>
