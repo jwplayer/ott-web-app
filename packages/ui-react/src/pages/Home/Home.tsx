@@ -3,6 +3,7 @@ import { shallow } from '@jwp/ott-common/src/utils/compare';
 import type { Content } from '@jwp/ott-common/types/config';
 import { useConfigStore } from '@jwp/ott-common/src/stores/ConfigStore';
 import { useTranslation } from 'react-i18next';
+import useBreakpoint, { Breakpoint } from '@jwp/ott-ui-react/src/hooks/useBreakpoint';
 
 import ShelfList from '../../containers/ShelfList/ShelfList';
 
@@ -12,7 +13,8 @@ const Home = () => {
   const { t } = useTranslation('common');
 
   // Demo: reference implementation for landing page labels filtering
-  const isMobile = navigator.userAgent.includes('Mobile');
+  const breakpoint = useBreakpoint();
+  const isMobile = breakpoint < Breakpoint.md;
   const filteredContent = isMobile ? content : content?.filter((item) => !item.filterTags?.includes('mobile'));
 
   return (
