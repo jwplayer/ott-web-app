@@ -32,8 +32,7 @@ const OfferBox: React.FC<OfferBoxProps> = ({ offer, selected, onChange }: OfferB
       // t('periods.week_one') = 'week' or t('periods.week_other') = 'weeks'
       // t('periods.month_one') = 'month' or t('periods.month_other') = 'months'
       // t('periods.year_one') = 'year' or t('periods.year_other') = 'years'
-      const period = t(`periods.${offer.period}_${offer.freePeriods === 1 ? 'one' : 'other'}`);
-
+      const period = t(`periods.${offer.period}`, { count: offer.freePeriods });
       return t('choose_offer.benefits.first_periods_free', { count: offer.freePeriods, period });
     }
 
