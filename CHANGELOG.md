@@ -1,3 +1,34 @@
+## [6.10.0](https://github.com/jwplayer/ott-web-app/compare/v6.9.0...v6.10.0) (2025-04-09)
+
+
+### Features
+
+* add external payment methods and mapping ([86dce68](https://github.com/jwplayer/ott-web-app/commit/86dce687952cb597060a6fb2809d4bbbc2073626))
+* card subtitle support ([5b83938](https://github.com/jwplayer/ott-web-app/commit/5b8393820120f047605e34a88e4ab7325bc7a862))
+* cookie banner and defer gtm load ([afa916d](https://github.com/jwplayer/ott-web-app/commit/afa916d5196e3dae91b2f9e33ed6d3a62b21212b))
+* **entitlement:** add access type to generic entitlement payload ([4e7ced7](https://github.com/jwplayer/ott-web-app/commit/4e7ced71b8ba8aebd2a427dd00f0a940b2f32d07))
+* **entitlement:** remove lock icon from cards to hub screens ([1e3c3dc](https://github.com/jwplayer/ott-web-app/commit/1e3c3dc181f849f08a72005acca577b0e2ae98e0))
+* **home:** hero shelf styling improvements ([8bc0835](https://github.com/jwplayer/ott-web-app/commit/8bc0835191ddd9689baabfb644186208cf00de05))
+* **i18n:** add nl/fr/de languages ([788497d](https://github.com/jwplayer/ott-web-app/commit/788497d54f21a8f6a039bca0f9a154dfc5d13164))
+* movie screen by composition ([bba7337](https://github.com/jwplayer/ott-web-app/commit/bba73378fc64ea364b4c00143f1d14d16830b526))
+* **player:** add support for custom chromecast receiver ([8cff147](https://github.com/jwplayer/ott-web-app/commit/8cff14793c83c09f17e85bd51a8c341ba41e9ced))
+* show hub items in grid layout when single shelf ([fc9c7a3](https://github.com/jwplayer/ott-web-app/commit/fc9c7a3c4a4e917d673f9ccd4eb41b0a31f40497))
+
+
+### Bug Fixes
+
+* allow playing signed trailer items ([9c1c967](https://github.com/jwplayer/ott-web-app/commit/9c1c9673265dda6bb2b75256a6c57b5536ae9af6))
+* catch error when retrieving the offers fail ([28b300a](https://github.com/jwplayer/ott-web-app/commit/28b300a3fbd46ab8420bf18dfaa8fa65a9296298))
+* **entitlement:** refresh token before calling entitlement ([f4bc386](https://github.com/jwplayer/ott-web-app/commit/f4bc386cd07d0316360293c2e1c62675f2e70938))
+* hero shelf clipping on safari browsers ([c5ea54f](https://github.com/jwplayer/ott-web-app/commit/c5ea54f7436ccc2e44cf03a5a27f113d8570f0e2))
+* **home:** decrease shelf title font size on mobile ([741b9d5](https://github.com/jwplayer/ott-web-app/commit/741b9d5e61638600256547acb85dfcf65aacbdec))
+* **i18n:** sync translations ([#675](https://github.com/jwplayer/ott-web-app/issues/675)) ([189a27f](https://github.com/jwplayer/ott-web-app/commit/189a27fcd63d5b51276d6668ad65c1d83e704e1f))
+* **i18n:** update i18n keys ([#683](https://github.com/jwplayer/ott-web-app/issues/683)) ([673b199](https://github.com/jwplayer/ott-web-app/commit/673b199f9febd02b5f580c459de3a4a5696781ec))
+* infinite scrolling ([b26d2f1](https://github.com/jwplayer/ott-web-app/commit/b26d2f1aa681c1665b51ebb175598d088282ba64))
+* prevent google fonts preload when using system font ([4a70728](https://github.com/jwplayer/ott-web-app/commit/4a707287733678d9a729b9725106a4c04b8dd18a))
+* support newline break in markdown content ([77b66b7](https://github.com/jwplayer/ott-web-app/commit/77b66b74380115d76922230781d4191d9fb7e369))
+* video details buttons wrapping ([82f2143](https://github.com/jwplayer/ott-web-app/commit/82f2143fce74353645ed069cc6a0be6a8f535792))
+
 ## [6.9.0](https://github.com/jwplayer/ott-web-app/compare/v6.8.0...v6.9.0) (2024-12-17)
 
 
