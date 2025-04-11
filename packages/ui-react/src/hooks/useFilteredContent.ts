@@ -16,16 +16,14 @@ const useDeviceType = () => {
   return { isMobile, isTablet, isDesktop };
 };
 
-const useFilterContentByDevice = (content: Content[]) => {
+export const useFilterContent = (content: Content[]) => {
   const { isMobile, isTablet, isDesktop } = useDeviceType();
 
-  return content?.filter((item) => {
-    if (!isMobile) return !item.filterTags?.includes(DEVICE_FILTER_LABELS.mobile);
-    if (!isTablet) return !item.filterTags?.includes(DEVICE_FILTER_LABELS.tablet);
-    if (!isDesktop) return !item.filterTags?.includes(DEVICE_FILTER_LABELS.desktop);
+  const deviceFilterMap = {
+    [DEVICE_FILTER_LABELS.mobile]: isMobile,
+    [DEVICE_FILTER_LABELS.tablet]: isTablet,
+    [DEVICE_FILTER_LABELS.desktop]: isDesktop,
+  };
 
-    return true;
-  });
+  return content?.filter((item) => Object.entries(deviceFilterMap).every(([label, isActive]) => isActive || !item.filterTags?.includes(label)));
 };
-
-export const useFilteredContent = (content: Content[]) => [...useFilterContentByDevice(content)];
