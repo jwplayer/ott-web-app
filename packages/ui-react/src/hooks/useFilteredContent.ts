@@ -2,9 +2,9 @@ import type { Content } from '@jwp/ott-common/types/config';
 import useBreakpoint, { Breakpoint } from '@jwp/ott-ui-react/src/hooks/useBreakpoint';
 
 const DEVICE_FILTER_LABELS = {
-  mobile: 'mobile',
-  tablet: 'tablet',
-  desktop: 'desktop',
+  mobile: 'mobile-device',
+  tablet: 'tablet-device',
+  desktop: 'desktop-device',
 };
 
 const useDeviceType = () => {
