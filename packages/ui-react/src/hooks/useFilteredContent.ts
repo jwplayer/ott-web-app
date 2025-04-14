@@ -17,6 +17,36 @@ const WEEK_DAY_FILTER_LABELS = {
   Sunday: 'Sunday',
 };
 
+const COUNTRIES = {
+  DE: 'Germany',
+  FR: 'France',
+  NL: 'Netherlands',
+  RO: 'Romania',
+};
+
+const TIMEZONES = {
+  'Europe/Berlin': {
+    u: 60,
+    d: 120,
+    c: ['DE'],
+  },
+  'Europe/Paris': {
+    u: 60,
+    d: 120,
+    c: ['FR'],
+  },
+  'Europe/Amsterdam': {
+    u: 60,
+    d: 120,
+    c: ['NL'],
+  },
+  'Europe/Bucharest': {
+    u: 120,
+    d: 180,
+    c: ['RO'],
+  },
+};
+
 const useDeviceType = () => {
   const breakpoint = useBreakpoint();
   const isMobile = breakpoint < Breakpoint.md;
@@ -24,6 +54,17 @@ const useDeviceType = () => {
   const isDesktop = breakpoint >= Breakpoint.lg;
 
   return { isMobile, isTablet, isDesktop };
+};
+
+const getCountryByTimezone = () => {
+  const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+  if (!timezone) {
+    return undefined;
+  }
+
+  const countryTimezone = TIMEZONES[timezone as keyof typeof TIMEZONES]?.c[0] as keyof typeof COUNTRIES;
+  return countryTimezone ? COUNTRIES[countryTimezone] : undefined;
 };
 
 const filterContentByDevice = (content: Content[], isMobile: boolean, isTablet: boolean, isDesktop: boolean) => {
@@ -52,11 +93,27 @@ const filterContentByWeekDay = (content: Content[]) => {
   return content?.filter((item) => Object.entries(weekDayFilterMap).every(([label, isActive]) => isActive || !item.filterTags?.includes(label)));
 };
 
+const filterContentByCountry = (content: Content[]) => {
+  const country = getCountryByTimezone();
+
+  if (!country) return content;
+
+  const countryFilterMap = {
+    [COUNTRIES.DE]: country === COUNTRIES.DE,
+    [COUNTRIES.FR]: country === COUNTRIES.FR,
+    [COUNTRIES.NL]: country === COUNTRIES.NL,
+    [COUNTRIES.RO]: country === COUNTRIES.RO,
+  };
+
+  return content?.filter((item) => Object.entries(countryFilterMap).every(([label, isActive]) => isActive || !item.filterTags?.includes(label)));
+};
+
 export const useFilterContent = (content: Content[]) => {
   const { isMobile, isTablet, isDesktop } = useDeviceType();
 
   const filteredContentByDevice = filterContentByDevice(content, isMobile, isTablet, isDesktop);
   const filteredContentByWeekDay = filterContentByWeekDay(content);
+  const filteredContentByCountry = filterContentByCountry(content);
 
-  return filteredContentByDevice?.filter((item) => filteredContentByWeekDay?.includes(item));
+  return filteredContentByDevice.filter((item) => filteredContentByWeekDay.includes(item) && filteredContentByCountry.includes(item));
 };
