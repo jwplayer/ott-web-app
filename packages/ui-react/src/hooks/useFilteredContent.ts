@@ -59,18 +59,29 @@ const getCountryByTimezone = () => {
 
 const getCurrentDay = () => new Date().toLocaleString('en-US', { weekday: 'long' });
 
+const filterDefaultContent = (item: Content) => item?.filterTags?.length === 0;
+
+const filterContentByDevice = (item: Content, isMobile: boolean, isTablet: boolean, isDesktop: boolean) => {
+  if (item?.filterTags?.includes(DEVICE_FILTER_LABELS.mobile) && isMobile) return true;
+  if (item?.filterTags?.includes(DEVICE_FILTER_LABELS.tablet) && isTablet) return true;
+  if (item?.filterTags?.includes(DEVICE_FILTER_LABELS.desktop) && isDesktop) return true;
+};
+
+const filterContentByWeekDay = (item: Content, currentDay: string) => item.filterTags?.includes(currentDay);
+
+const filterContentByCountry = (item: Content, country: string | undefined) => country && item.filterTags?.includes(country);
+
 export const useFilterContent = (content: Content[]) => {
   const { isMobile, isTablet, isDesktop } = useDeviceType();
   const currentDay = getCurrentDay();
   const country = getCountryByTimezone();
 
   return content?.filter((item) => {
-    if (item?.filterTags?.length === 0) return true;
-    if (item?.filterTags?.includes(DEVICE_FILTER_LABELS.mobile) && isMobile) return true;
-    if (item?.filterTags?.includes(DEVICE_FILTER_LABELS.tablet) && isTablet) return true;
-    if (item?.filterTags?.includes(DEVICE_FILTER_LABELS.desktop) && isDesktop) return true;
-    if (item?.filterTags?.includes(currentDay)) return true;
-    if (country && item?.filterTags?.includes(country)) return true;
-    return false;
+    return (
+      filterDefaultContent(item) ||
+      filterContentByDevice(item, isMobile, isTablet, isDesktop) ||
+      filterContentByWeekDay(item, currentDay) ||
+      filterContentByCountry(item, country)
+    );
   });
 };
