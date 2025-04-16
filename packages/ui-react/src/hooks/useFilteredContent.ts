@@ -64,7 +64,7 @@ const getCountryByTimezone = () => {
 
 const getCurrentDay = () => new Date().toLocaleString('en-US', { weekday: 'long' });
 
-const filterDefaultContent = (item: Content) => item?.filterTags?.length === 0;
+const filterDefaultContent = (item: Content) => !item?.filterTags?.length;
 
 const filterContentByDevice = (item: Content, isMobile: boolean, isTablet: boolean, isDesktop: boolean) => {
   if (item?.filterTags?.includes(DEVICE_FILTER_LABELS.mobile) && isMobile) return true;
