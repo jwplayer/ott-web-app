@@ -49,12 +49,17 @@ const useDeviceType = () => {
 const getCountryByTimezone = () => {
   const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-  if (!timezone) {
+  if (!timezone || !(timezone in TIMEZONES)) {
     return undefined;
   }
 
-  const countryTimezone = TIMEZONES[timezone as keyof typeof TIMEZONES]?.c[0] as keyof typeof COUNTRIES;
-  return countryTimezone ? COUNTRIES[countryTimezone] : undefined;
+  const countryCodes = TIMEZONES[timezone as keyof typeof TIMEZONES]?.c;
+  if (!countryCodes || countryCodes.length === 0) {
+    return undefined;
+  }
+
+  const countryCode = countryCodes[0] as keyof typeof COUNTRIES;
+  return COUNTRIES[countryCode];
 };
 
 const getCurrentDay = () => new Date().toLocaleString('en-US', { weekday: 'long' });
@@ -76,12 +81,12 @@ export const useFilterContent = (content: Content[]) => {
   const currentDay = getCurrentDay();
   const country = getCountryByTimezone();
 
-  return content?.filter((item) => {
-    return (
-      filterDefaultContent(item) ||
-      filterContentByDevice(item, isMobile, isTablet, isDesktop) ||
-      filterContentByWeekDay(item, currentDay) ||
-      filterContentByCountry(item, country)
-    );
-  });
+  return content?.filter((item) =>
+    [
+      filterDefaultContent(item),
+      filterContentByDevice(item, isMobile, isTablet, isDesktop),
+      filterContentByWeekDay(item, currentDay),
+      filterContentByCountry(item, country),
+    ].some(Boolean),
+  );
 };
