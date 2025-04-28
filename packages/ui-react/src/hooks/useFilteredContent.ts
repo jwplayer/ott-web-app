@@ -76,8 +76,10 @@ const filterContentByCountry = (item: Content) => {
   return country && item.filterTags?.includes(country);
 };
 
-export const useFilterContent = (content: Content[]) => {
-  return content?.filter((item) =>
-    [filterDefaultContent(item), filterContentByDevice(item), filterContentByWeekDay(item), filterContentByCountry(item)].some(Boolean),
-  );
+const combineFilters = (filters: ((item: Content) => boolean | string | undefined)[]) => (item: Content) => {
+  return filters.some((filter) => filter(item));
 };
+
+const filters = [filterDefaultContent, filterContentByDevice, filterContentByWeekDay, filterContentByCountry];
+
+export const useFilterContent = (content: Content[]) => content?.filter(combineFilters(filters));
