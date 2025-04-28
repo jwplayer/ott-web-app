@@ -23,7 +23,7 @@ export type Breakpoints = {
   [Breakpoint.xl]: number;
 };
 
-const getScreenSize = (): Breakpoint => {
+export const getScreenSize = (): Breakpoint => {
   if (XS_MATCH_MEDIA.matches) return Breakpoint.xs;
   if (SM_MATCH_MEDIA.matches) return Breakpoint.sm;
   if (MD_MATCH_MEDIA.matches) return Breakpoint.md;

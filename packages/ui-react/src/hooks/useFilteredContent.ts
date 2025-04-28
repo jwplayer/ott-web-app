@@ -1,5 +1,5 @@
 import type { Content } from '@jwp/ott-common/types/config';
-import useBreakpoint, { Breakpoint } from '@jwp/ott-ui-react/src/hooks/useBreakpoint';
+import { Breakpoint, getScreenSize } from '@jwp/ott-ui-react/src/hooks/useBreakpoint';
 
 const DEVICE_FILTER_LABELS = {
   mobile: 'mobile',
@@ -16,29 +16,21 @@ const COUNTRIES = {
 
 const TIMEZONES = {
   'Europe/Berlin': {
-    u: 60,
-    d: 120,
     c: ['DE'],
   },
   'Europe/Paris': {
-    u: 60,
-    d: 120,
     c: ['FR'],
   },
   'Europe/Amsterdam': {
-    u: 60,
-    d: 120,
     c: ['NL'],
   },
   'Europe/Bucharest': {
-    u: 120,
-    d: 180,
     c: ['RO'],
   },
 };
 
-const useDeviceType = () => {
-  const breakpoint = useBreakpoint();
+const getDeviceType = () => {
+  const breakpoint = getScreenSize();
   const isMobile = breakpoint < Breakpoint.md;
   const isTablet = breakpoint >= Breakpoint.md && breakpoint < Breakpoint.lg;
   const isDesktop = breakpoint >= Breakpoint.lg;
@@ -66,27 +58,26 @@ const getCurrentDay = () => new Date().toLocaleString('en-US', { weekday: 'long'
 
 const filterDefaultContent = (item: Content) => !item?.filterTags?.length;
 
-const filterContentByDevice = (item: Content, isMobile: boolean, isTablet: boolean, isDesktop: boolean) => {
+const filterContentByDevice = (item: Content) => {
+  const { isMobile, isTablet, isDesktop } = getDeviceType();
+
   if (item?.filterTags?.includes(DEVICE_FILTER_LABELS.mobile) && isMobile) return true;
   if (item?.filterTags?.includes(DEVICE_FILTER_LABELS.tablet) && isTablet) return true;
   if (item?.filterTags?.includes(DEVICE_FILTER_LABELS.desktop) && isDesktop) return true;
 };
 
-const filterContentByWeekDay = (item: Content, currentDay: string) => item.filterTags?.includes(currentDay);
+const filterContentByWeekDay = (item: Content) => {
+  const currentDay = getCurrentDay();
+  return item.filterTags?.includes(currentDay);
+};
 
-const filterContentByCountry = (item: Content, country: string | undefined) => country && item.filterTags?.includes(country);
+const filterContentByCountry = (item: Content) => {
+  const country = getCountryByTimezone();
+  return country && item.filterTags?.includes(country);
+};
 
 export const useFilterContent = (content: Content[]) => {
-  const { isMobile, isTablet, isDesktop } = useDeviceType();
-  const currentDay = getCurrentDay();
-  const country = getCountryByTimezone();
-
   return content?.filter((item) =>
-    [
-      filterDefaultContent(item),
-      filterContentByDevice(item, isMobile, isTablet, isDesktop),
-      filterContentByWeekDay(item, currentDay),
-      filterContentByCountry(item, country),
-    ].some(Boolean),
+    [filterDefaultContent(item), filterContentByDevice(item), filterContentByWeekDay(item), filterContentByCountry(item)].some(Boolean),
   );
 };
