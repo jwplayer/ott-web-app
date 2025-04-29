@@ -1,33 +1,25 @@
 import type { Content } from '@jwp/ott-common/types/config';
 import { Breakpoint, getScreenSize } from '@jwp/ott-ui-react/src/hooks/useBreakpoint';
 
-const DEVICE_FILTER_LABELS = {
+const DEVICE_FILTER_LABELS: Record<string, string> = {
   mobile: 'mobile',
   tablet: 'tablet',
   desktop: 'desktop',
-};
+} as const;
 
-const COUNTRIES = {
+const COUNTRIES: Record<string, string> = {
   DE: 'Germany',
   FR: 'France',
   NL: 'Netherlands',
   RO: 'Romania',
-};
+} as const;
 
-const TIMEZONES = {
-  'Europe/Berlin': {
-    c: ['DE'],
-  },
-  'Europe/Paris': {
-    c: ['FR'],
-  },
-  'Europe/Amsterdam': {
-    c: ['NL'],
-  },
-  'Europe/Bucharest': {
-    c: ['RO'],
-  },
-};
+const TIMEZONES: Record<string, string> = {
+  'Europe/Berlin': 'DE',
+  'Europe/Paris': 'FR',
+  'Europe/Amsterdam': 'NL',
+  'Europe/Bucharest': 'RO',
+} as const;
 
 const getDeviceType = () => {
   const breakpoint = getScreenSize();
@@ -45,12 +37,7 @@ const getCountryByTimezone = () => {
     return undefined;
   }
 
-  const countryCodes = TIMEZONES[timezone as keyof typeof TIMEZONES]?.c;
-  if (!countryCodes || countryCodes.length === 0) {
-    return undefined;
-  }
-
-  const countryCode = countryCodes[0] as keyof typeof COUNTRIES;
+  const countryCode = TIMEZONES[timezone];
   return COUNTRIES[countryCode];
 };
 
