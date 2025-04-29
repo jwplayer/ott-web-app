@@ -74,9 +74,6 @@ the given screen.
 **menu[].filterTags** (optional)
 
 You can optionally define a list of comma separated tags which are used in the "filters" section on the screen.
-The OTT Web App offers a demonstration of its filtering capabilities. This example can be enabled by configuring the `enableLabelsFiltering` custom parameter.
-
-Filtering by device type, country, and day of week is supported. See the Home.tsx file for a code example.
 
 ---
 
@@ -145,6 +142,16 @@ Controls if the playlist should be used as a large "Featured" shelf on your JW O
 **content[].backgroundColor** (optional)
 
 You can change the background color of the shelf with the help of this property (e.g., #ff0000).
+
+---
+
+**content[].filterTags** (optional)
+
+You can optionally define a list of comma separated labels which are used to filter shelves.
+
+The OTT Web App offers a demonstration of its filtering capabilities. This example can be enabled by configuring the `enableLabelsFiltering` custom parameter.
+
+Filtering by device type, country, and day of week is supported. See the `Home.tsx` file for a code example.
 
 ---
 
