@@ -82,4 +82,5 @@ const combineFilters = (filters: ((item: Content) => boolean | string | undefine
 
 const filters = [filterDefaultContent, filterContentByDevice, filterContentByWeekDay, filterContentByCountry];
 
-export const useFilterContent = (content: Content[]) => content?.filter(combineFilters(filters));
+export const useFilterContent = ({ content, labelsFilteringEnabled }: { content: Content[]; labelsFilteringEnabled: boolean }) =>
+  labelsFilteringEnabled ? content?.filter(combineFilters(filters)) : content;

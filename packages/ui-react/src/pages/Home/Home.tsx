@@ -11,12 +11,13 @@ const Home = () => {
   const { config } = useConfigStore(({ config, accessModel }) => ({ config, accessModel }), shallow);
   const content: Content[] = config?.content;
   const { t } = useTranslation('common');
-  const filteredContent = useFilterContent(content);
+  const labelsFilteringEnabled = Boolean(config?.custom?.enableLabelsFiltering);
+  const configContent = useFilterContent({ content, labelsFilteringEnabled });
 
   return (
     <>
       <h1 className="hideUntilFocus">{t('home')}</h1>
-      <ShelfList rows={filteredContent} />
+      <ShelfList rows={configContent} />
     </>
   );
 };
