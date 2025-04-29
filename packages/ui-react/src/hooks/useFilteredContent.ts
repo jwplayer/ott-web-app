@@ -37,8 +37,7 @@ const getCountryByTimezone = () => {
     return undefined;
   }
 
-  const countryCode = TIMEZONES[timezone];
-  return COUNTRIES[countryCode];
+  return COUNTRIES[TIMEZONES[timezone]];
 };
 
 const getCurrentDay = () => new Date().toLocaleString('en-US', { weekday: 'long' });
@@ -47,6 +46,7 @@ const filterDefaultContent = (item: Content) => !item?.filterTags?.length;
 
 const filterContentByDevice = (item: Content) => {
   const { isMobile, isTablet, isDesktop } = getDeviceType();
+
   const filterTags = item?.filterTags?.split(',') || [];
 
   if (filterTags.includes(DEVICE_FILTER_LABELS.mobile) && isMobile) return true;
