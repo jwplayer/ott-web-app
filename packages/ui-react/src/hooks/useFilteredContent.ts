@@ -47,20 +47,25 @@ const filterDefaultContent = (item: Content) => !item?.filterTags?.length;
 
 const filterContentByDevice = (item: Content) => {
   const { isMobile, isTablet, isDesktop } = getDeviceType();
+  const filterTags = item?.filterTags?.split(',') || [];
 
-  if (item?.filterTags?.includes(DEVICE_FILTER_LABELS.mobile) && isMobile) return true;
-  if (item?.filterTags?.includes(DEVICE_FILTER_LABELS.tablet) && isTablet) return true;
-  if (item?.filterTags?.includes(DEVICE_FILTER_LABELS.desktop) && isDesktop) return true;
+  if (filterTags.includes(DEVICE_FILTER_LABELS.mobile) && isMobile) return true;
+  if (filterTags.includes(DEVICE_FILTER_LABELS.tablet) && isTablet) return true;
+  if (filterTags.includes(DEVICE_FILTER_LABELS.desktop) && isDesktop) return true;
 };
 
 const filterContentByWeekDay = (item: Content) => {
   const currentDay = getCurrentDay();
-  return item.filterTags?.includes(currentDay);
+  const filterTags = item?.filterTags?.split(',') || [];
+
+  return filterTags.includes(currentDay);
 };
 
 const filterContentByCountry = (item: Content) => {
   const country = getCountryByTimezone();
-  return country && item.filterTags?.includes(country);
+  const filterTags = item?.filterTags?.split(',') || [];
+
+  return country && filterTags.includes(country);
 };
 
 const combineFilters = (filters: ((item: Content) => boolean | string | undefined)[]) => (item: Content) => {
