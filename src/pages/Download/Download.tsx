@@ -30,12 +30,6 @@ const Download = () => {
             <h6>Tankee for Android Phones & Tablets</h6>
           </div>
           <div className={styles.card}>
-            <Link to={'https://www.amazon.com/Tankee-Inc/dp/B07VQHV1M7/ref=sr_1_1?keywords=tankee&qid=1565427411&s=mobile-apps&sr=1-1'}>
-              <img alt={amazonStore} src={amazonStore} className={styles.image} />
-            </Link>
-            <h6>Tankee for Kindle Fire Tablets</h6>
-          </div>
-          <div className={styles.card}>
             <Link to={'https://channelstore.roku.com/en-ot/details/accae28b3787770272483f98e0c8e043/tankee-minecraft-roblox-and-more'}>
               <img alt={rokuStore} src={rokuStore} className={styles.image} />
             </Link>
