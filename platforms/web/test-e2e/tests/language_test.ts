@@ -58,11 +58,27 @@ Scenario('English language is selected when the locale is `en-GB`', async ({ I }
   await assertActiveLanguage(I, 'en');
 });
 
+Scenario('English title and description are displayed when the locale is `en-GB`', async ({ I }) => {
+  await I.openVideoCard('Agent 327');
+  I.see(constants.agent327Title);
+  I.see(constants.agent327Description);
+});
+
 Scenario('Spanish language is selected when the locale is `es-ES`', async ({ I }) => {
   I.restartBrowser({ locale: 'es-ES' });
   I.useConfig(testConfigs.basicNoAuth);
 
   await assertActiveLanguage(I, 'es');
+});
+
+Scenario('Spanish title and description are displayed when the locale is `es-ES`', async ({ I }) => {
+  I.restartBrowser({ locale: 'es-ES' });
+  I.useConfig(testConfigs.basicNoAuth);
+  await assertActiveLanguage(I, 'es');
+
+  await I.openVideoCard('Agente 327');
+  I.see(constants.agent327TitleSpanish);
+  I.see(constants.agent327DescriptionSpanish);
 });
 
 Scenario('Changing the language is persisted in the localStorage`', async ({ I }) => {
