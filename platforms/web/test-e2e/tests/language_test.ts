@@ -59,6 +59,10 @@ Scenario('English language is selected when the locale is `en-GB`', async ({ I }
 });
 
 Scenario('English title and description are displayed when the locale is `en-GB`', async ({ I }) => {
+  I.restartBrowser({ locale: 'en-GB' });
+  I.useConfig(testConfigs.basicNoAuth);
+  await assertActiveLanguage(I, 'en');
+
   await I.openVideoCard('Agent 327');
   I.see(constants.agent327Title);
   I.see(constants.agent327Description);
