@@ -107,6 +107,21 @@ Scenario('Spanish title and description are displayed when the locale is `es-ES`
   I.see(constants.elephantsDreamDescriptionSpanish);
 });
 
+Scenario('Changing language to Spanish on movie details page updates title and description', async ({ I }) => {
+  I.restartBrowser({ locale: 'en-GB' });
+  I.useConfig(testConfigs.basicNoAuth);
+  await assertActiveLanguage(I, 'en');
+
+  I.amOnPage(constants.baseUrl);
+  await I.openVideoCard(constants.agent327Title);
+  I.see(constants.agent327Title);
+  I.see(constants.agent327Description);
+
+  switchLanguage(I, 'es');
+  I.see(constants.agent327TitleSpanish);
+  I.see(constants.agent327DescriptionSpanish);
+});
+
 Scenario('Changing the language is persisted in the localStorage`', async ({ I }) => {
   I.restartBrowser({ locale: 'en-US' });
   I.useConfig(testConfigs.basicNoAuth);
