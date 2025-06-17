@@ -63,14 +63,17 @@ Scenario('English title and description are displayed when the locale is `en-GB`
   I.useConfig(testConfigs.basicNoAuth);
   await assertActiveLanguage(I, 'en');
 
+  I.amOnPage(constants.baseUrl);
   await I.openVideoCard(constants.agent327Title);
   I.see(constants.agent327Title);
   I.see(constants.agent327Description);
 
+  I.amOnPage(constants.baseUrl);
   await I.openVideoCard(constants.bigBuckBunnyTitle);
   I.see(constants.bigBuckBunnyTitle);
   I.see(constants.bigBuckBunnyDescription);
 
+  I.amOnPage(constants.baseUrl);
   await I.openVideoCard(constants.elephantsDreamTitle);
   I.see(constants.elephantsDreamTitle);
   I.see(constants.elephantsDreamDescription);
@@ -88,14 +91,17 @@ Scenario('Spanish title and description are displayed when the locale is `es-ES`
   I.useConfig(testConfigs.basicNoAuth);
   await assertActiveLanguage(I, 'es');
 
+  I.amOnPage(constants.baseUrl);
   await I.openVideoCard(constants.agent327TitleSpanish);
   I.see(constants.agent327TitleSpanish);
   I.see(constants.agent327DescriptionSpanish);
 
+  I.amOnPage(constants.baseUrl);
   await I.openVideoCard(constants.bigBuckBunnyTitleSpanish);
   I.see(constants.bigBuckBunnyTitleSpanish);
   I.see(constants.bigBuckBunnyDescriptionSpanish);
 
+  I.amOnPage(constants.baseUrl);
   await I.openVideoCard(constants.elephantsDreamTitleSpanish);
   I.see(constants.elephantsDreamTitleSpanish);
   I.see(constants.elephantsDreamDescriptionSpanish);
