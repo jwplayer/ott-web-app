@@ -63,7 +63,6 @@ Scenario('English title and description are displayed when the locale is `en-GB`
   I.useConfig(testConfigs.basicNoAuth);
   await assertActiveLanguage(I, 'en');
 
-  I.amOnPage(constants.baseUrl);
   await I.openVideoCard(constants.agent327Title);
   I.see(constants.agent327Title);
   I.see(constants.agent327Description);
@@ -91,7 +90,6 @@ Scenario('Spanish title and description are displayed when the locale is `es-ES`
   I.useConfig(testConfigs.basicNoAuth);
   await assertActiveLanguage(I, 'es');
 
-  I.amOnPage(constants.baseUrl);
   await I.openVideoCard(constants.agent327TitleSpanish);
   I.see(constants.agent327TitleSpanish);
   I.see(constants.agent327DescriptionSpanish);
@@ -112,7 +110,6 @@ Scenario('Changing language to Spanish on movie details page updates title and d
   I.useConfig(testConfigs.basicNoAuth);
   await assertActiveLanguage(I, 'en');
 
-  I.amOnPage(constants.baseUrl);
   await I.openVideoCard(constants.agent327Title);
   I.see(constants.agent327Title);
   I.see(constants.agent327Description);
