@@ -26,20 +26,18 @@ Scenario('Content list screen loads', async ({ I }) => {
 
 Scenario('I can change the filter to "fantasy"', async ({ I }) => {
   await checkSelectedFilterButton(I, 'All');
-
   await selectFilterAndCheck(I, 'Fantasy');
+
   I.seeAll(fantasyFilms);
   I.dontSeeAny(dramaFilms);
 });
 
 Scenario('I can reset the filter by selecting "all" button', async ({ I }) => {
   await selectFilterAndCheck(I, 'Drama');
-
   I.seeAll(dramaFilms);
   I.dontSeeAny(fantasyFilms);
 
   await selectFilterAndCheck(I, 'All');
-
   I.seeAll(fantasyFilms);
   I.seeAll(dramaFilms);
 });
@@ -58,7 +56,6 @@ function canNavigateToElephantsDreamTrailer(I: CodeceptJS.I) {
   I.see(constants.elephantsDreamTrailerTitle);
   I.see(constants.startWatchingButton);
 
-  // Check the URL structure, but not the playlist and video ID
   I.seeInCurrentUrl(`${constants.baseUrl}m/`);
   I.seeInCurrentUrl('/elephants-dream-trailer?');
 }
@@ -83,7 +80,7 @@ async function checkSelectedFilterButton(I: CodeceptJS.I, expectedButton) {
   } else {
     I.seeAll(allFilters);
     I.see(expectedButton, 'div[class*=filterRow] button[class*=active]');
-    I.wait(0.1); // animation
+    I.wait(0.1);
 
     // Check that the 'All' button is visually active
     await I.seeCssProperties({ xpath: `//button[contains(., "${expectedButton}")]` }, { color: 'rgb(0, 0, 0)', 'background-color': 'rgb(204, 204, 204)' });
