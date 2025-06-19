@@ -71,7 +71,7 @@ export default class ApiService {
   protected transformContentList = (contentList: ContentList, language: string): Playlist => {
     const { list, ...rest } = contentList;
 
-    const playlist: Playlist = { ...rest, playlist: [] };
+    const playlist: Playlist = { ...rest, feedid: contentList?.id, playlist: [] };
 
     playlist.playlist = list.map((item) => {
       const { custom_params, media_id, description, tags, ...rest } = item;
