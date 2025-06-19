@@ -58,6 +58,7 @@ export type Playlist = {
   description?: string;
   feed_instance_id?: string;
   feedid?: string;
+  id?: string;
   kind?: string;
   links?: Link;
   playlist: PlaylistItem[];

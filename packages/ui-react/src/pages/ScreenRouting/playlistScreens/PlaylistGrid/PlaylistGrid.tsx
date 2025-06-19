@@ -20,7 +20,7 @@ const PlaylistGrid: ScreenComponent<Playlist> = ({ data, isLoading }) => {
 
   const [filter, setFilter] = useState<string>('');
 
-  const categories = getFiltersFromConfig(config, data.feedid);
+  const categories = getFiltersFromConfig(config, data.feedid || data.id);
   const filteredPlaylist = useMemo(() => filterPlaylist(data, filter), [data, filter]);
   const shouldShowFilter = Boolean(categories.length);
 
