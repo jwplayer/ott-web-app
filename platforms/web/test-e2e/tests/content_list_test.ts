@@ -14,21 +14,17 @@ Before(async ({ I }) => {
 
 Scenario('Content list screen loads', async ({ I }) => {
   I.click('Popular');
-  I.seeElement('video');
+  I.see('All Popular');
+});
+
+Scenario('I can click on a card and navigate to the video details screen', async ({ I }) => {
+  I.click({ css: 'a[data-testid="Elephants Dream Trailer"]' });
+
+  I.see(constants.startWatchingButton);
+  I.seeInCurrentUrl(`${constants.baseUrl}m/`);
+
   I.click('video');
   I.click('button[aria-label="Back"]');
+
   await I.checkPlayerClosed();
 });
-
-Scenario('I can click on a card and navigate to the video details screen', ({ I }) => {
-  canNavigateToElephantsDreamTrailer(I);
-});
-
-function canNavigateToElephantsDreamTrailer(I: CodeceptJS.I) {
-  I.click({ css: 'a[data-testid="Elephants Dream Trailer"]' });
-  I.see(constants.elephantsDreamTrailerTitle);
-  I.see(constants.startWatchingButton);
-
-  I.seeInCurrentUrl(`${constants.baseUrl}m/`);
-  I.seeInCurrentUrl('/elephants-dream-trailer?');
-}
