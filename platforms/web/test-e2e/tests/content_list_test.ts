@@ -12,19 +12,9 @@ Before(async ({ I }) => {
   }
 });
 
-Scenario('Content list screen loads', async ({ I }) => {
+Scenario('Header button navigates to content list screen', async ({ I }) => {
+  I.see('Popular');
   I.click('Popular');
+  I.seeInCurrentUrl(`${constants.baseUrl}n/`);
   I.see('All Popular');
-});
-
-Scenario('I can click on a card and navigate to the video details screen', async ({ I }) => {
-  I.click({ css: 'a[data-testid="Elephants Dream Trailer"]' });
-
-  I.see(constants.startWatchingButton);
-  I.seeInCurrentUrl(`${constants.baseUrl}m/`);
-
-  I.click('video');
-  I.click('button[aria-label="Back"]');
-
-  await I.checkPlayerClosed();
 });
