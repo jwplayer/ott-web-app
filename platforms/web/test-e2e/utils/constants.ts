@@ -43,7 +43,6 @@ export default {
   bigBuckBunnyTitleSpanish: 'Gran Conejo Buck',
   bigBuckBunnyDescriptionSpanish:
     'Gran Conejo Buck (código de nombre Proyecto Durazno) es un cortometraje de comedia animado por computadora de 2008 que presenta animales del bosque, realizado por el Instituto Blender, parte de la Fundación Blender. Al igual que la película anterior de la fundación, Elephants Dream, la película fue realizada utilizando Blender, una aplicación gratuita y de código abierto para modelado y animación 3D desarrollada por la misma fundación.',
-  elephantsDreamTrailerTitle: 'Elephants Dream Trailer',
   elephantsDreamTitle: 'Elephants Dream',
   elephantsDreamDescription:
     'Elephants Dream (code-named Project Orange during production and originally titled Machina) is a 2006 Dutch computer animated science fiction fantasy experimental short film produced by Blender Foundation using, almost exclusively, free and open-source software. The film is English-language and includes subtitles in over 30 languages.',

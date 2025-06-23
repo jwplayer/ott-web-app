@@ -10,11 +10,11 @@ Before(async ({ I }) => {
   if (await I.isMobile()) {
     I.openMenuDrawer();
   }
+
+  I.click('Popular');
 });
 
 Scenario('Header button navigates to content list screen', async ({ I }) => {
-  I.see('Popular');
-  I.click('Popular');
-  I.seeInCurrentUrl(`${constants.baseUrl}n/`);
   I.see('All Popular');
+  I.seeInCurrentUrl(`${constants.baseUrl}n/`);
 });
