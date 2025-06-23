@@ -1,6 +1,12 @@
 import { testConfigs } from '@jwp/ott-testing/constants';
 
 import constants from '#utils/constants';
+import { checkSelectedFilterButton, selectFilterAndCheck } from '#utils/filters';
+
+const allFilters = ['Action', 'Fantasy', 'Comedy', 'Drama', 'All'];
+const actionFilms = ['Agent 327', 'Coffee Run', 'Tears of Steel'];
+const comedyFilms = ['Big Buck Bunny', 'Caminandes 1: Llama Drama', 'Caminandes 2: Gran Dillama'];
+const dramaFilms = ['Elephants Dream', 'Glass Half'];
 
 Feature('playlist').retry(Number(process.env.TEST_RETRY_COUNT) || 0);
 
@@ -18,19 +24,14 @@ Before(async ({ I }) => {
   I.seeAll(dramaFilms);
 });
 
-const allFilters = ['Action', 'Fantasy', 'Comedy', 'Drama', 'All'];
-const actionFilms = ['Agent 327', 'Coffee Run', 'Tears of Steel'];
-const comedyFilms = ['Big Buck Bunny', 'Caminandes 1: Llama Drama', 'Caminandes 2: Gran Dillama'];
-const dramaFilms = ['Elephants Dream', 'Glass Half'];
-
 Scenario('Playlist screen loads', async ({ I }) => {
-  await checkSelectedFilterButton(I, 'All');
+  await checkSelectedFilterButton(I, 'All', allFilters);
 });
 
 Scenario('I can change the filter to "action"', async ({ I }) => {
-  await checkSelectedFilterButton(I, 'All');
+  await checkSelectedFilterButton(I, 'All', allFilters);
 
-  await selectFilterAndCheck(I, 'Action');
+  await selectFilterAndCheck(I, 'Action', allFilters);
 
   I.seeAll(actionFilms);
   I.dontSeeAny(comedyFilms);
@@ -38,13 +39,13 @@ Scenario('I can change the filter to "action"', async ({ I }) => {
 });
 
 Scenario('I can reset the filter by selection the "All" option', async ({ I }) => {
-  await selectFilterAndCheck(I, 'Drama');
+  await selectFilterAndCheck(I, 'Drama', allFilters);
 
   I.seeAll(dramaFilms);
   I.dontSeeAny(actionFilms);
   I.dontSeeAny(comedyFilms);
 
-  await selectFilterAndCheck(I, 'All');
+  await selectFilterAndCheck(I, 'All', allFilters);
 
   I.seeAll(actionFilms);
   I.seeAll(comedyFilms);
@@ -56,7 +57,7 @@ Scenario('I can click on a card and navigate to the video screen', ({ I }) => {
 });
 
 Scenario('I can filter and click on a card and navigate to the video screen', async ({ I }) => {
-  await selectFilterAndCheck(I, 'Comedy');
+  await selectFilterAndCheck(I, 'Comedy', allFilters);
   canNavigateToBigBuckBunny(I);
 });
 
@@ -69,36 +70,4 @@ function canNavigateToBigBuckBunny(I: CodeceptJS.I) {
   // Check the URL structure, but not the playlist and video ID
   I.seeInCurrentUrl(`${constants.baseUrl}m/`);
   I.seeInCurrentUrl('/big-buck-bunny?');
-}
-
-async function selectFilterAndCheck(I: CodeceptJS.I, option) {
-  if (await I.isMobile()) {
-    I.selectOption('Filter videos by genre', option);
-  } else {
-    I.click(option);
-  }
-
-  await checkSelectedFilterButton(I, option);
-}
-
-async function checkSelectedFilterButton(I: CodeceptJS.I, expectedButton) {
-  if (await I.isMobile()) {
-    I.see(expectedButton);
-    I.waitForAllInvisible(
-      allFilters.filter((f) => f !== expectedButton),
-      0,
-    );
-  } else {
-    I.seeAll(allFilters);
-    I.see(expectedButton, 'div[class*=filterRow] button[class*=active]');
-    I.wait(0.1); // animation
-
-    // Check that the 'All' button is visually active
-    await I.seeCssProperties({ xpath: `//button[contains(., "${expectedButton}")]` }, { color: 'rgb(0, 0, 0)', 'background-color': 'rgb(204, 204, 204)' });
-    // Check that the other filter buttons are not visually active
-    await I.seeCssProperties(
-      { xpath: `//div[contains(@class, "filterRow")]/button[not(contains(., "${expectedButton}"))]` },
-      { color: 'rgb(255, 255, 255)', 'background-color': 'rgba(0, 0, 0, 0.3)' },
-    );
-  }
 }
