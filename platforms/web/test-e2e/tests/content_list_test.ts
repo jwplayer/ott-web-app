@@ -5,6 +5,7 @@ import constants from '#utils/constants';
 const locators = {
   layoutGrid: '$layout-grid-content',
   layoutGridFirstElement: 'layout_grid_0-0',
+  playerBackButton: 'button[aria-label="Back"]',
 };
 
 Feature('content list').retry(Number(process.env.TEST_RETRY_COUNT) || 0);
@@ -37,6 +38,6 @@ Scenario('I can click on first card and navigate to the video details screen', a
   I.seeElement('video');
 
   I.click('video');
-  I.click('button[aria-label="Back"]');
+  I.click(locators.playerBackButton);
   await I.checkPlayerClosed();
 });
