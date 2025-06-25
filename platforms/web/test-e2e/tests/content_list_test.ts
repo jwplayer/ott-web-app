@@ -4,7 +4,7 @@ import constants from '#utils/constants';
 
 const locators = {
   layoutGrid: '$layout-grid-content',
-  layoutGridFirstElement: '$layout_grid_0-0',
+  layoutGridFirstElement: 'layout_grid_0-0',
 };
 
 Feature('content list').retry(Number(process.env.TEST_RETRY_COUNT) || 0);
@@ -26,11 +26,11 @@ Scenario('Header button navigates to content list screen', async ({ I }) => {
 
 Scenario('Content list screen loads', async ({ I }) => {
   I.seeElement(locators.layoutGrid);
-  I.seeElement(locators.layoutGridFirstElement);
+  I.seeElement({ id: locators.layoutGridFirstElement });
 });
 
 Scenario('I can click on first card and navigate to the video details screen', async ({ I }) => {
-  I.click(locators.layoutGridFirstElement);
+  I.click({ id: locators.layoutGridFirstElement });
   I.see(constants.startWatchingButton);
 
   I.click(constants.startWatchingButton);

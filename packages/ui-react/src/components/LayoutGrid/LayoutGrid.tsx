@@ -121,7 +121,6 @@ const LayoutGrid = <Item extends object>({ className, columnCount, data, renderC
             <div
               role="gridcell"
               id={`layout_grid_${rowIndex}-${columnIndex}`}
-              data-testid={testId(`layout_grid_${rowIndex}-${columnIndex}`)}
               key={getCellKey(item)}
               aria-colindex={columnIndex + 1}
               className={styles.cell}
