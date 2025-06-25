@@ -22,6 +22,7 @@ exports[`<Favorites> > renders and matches snapshot 1`] = `
       <div
         aria-rowcount="1"
         class="_container_7175d1 _cols-3_7175d1"
+        data-testid="layout-grid-content"
         role="grid"
       >
         <div

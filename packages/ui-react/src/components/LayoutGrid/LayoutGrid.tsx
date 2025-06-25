@@ -1,4 +1,4 @@
-import { throttle } from '@jwp/ott-common/src/utils/common';
+import { testId, throttle } from '@jwp/ott-common/src/utils/common';
 import useEventCallback from '@jwp/ott-hooks-react/src/useEventCallback';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
@@ -114,7 +114,7 @@ const LayoutGrid = <Item extends object>({ className, columnCount, data, renderC
   const gridCellStyle = useMemo(() => ({ width: `${Math.floor((100 / columnCount) * 100) / 100}%` }), [columnCount]);
 
   return (
-    <div role="grid" ref={gridRef} aria-rowcount={rowCount} className={className} onKeyDown={handleKeyDown}>
+    <div role="grid" data-testid={testId('layout-grid-content')} ref={gridRef} aria-rowcount={rowCount} className={className} onKeyDown={handleKeyDown}>
       {Array.from({ length: rowCount }).map((_, rowIndex) => (
         <div role="row" key={rowIndex} aria-rowindex={rowIndex + 1} className={styles.row}>
           {data.slice(rowIndex * columnCount, rowIndex * columnCount + columnCount).map((item, columnIndex) => (
