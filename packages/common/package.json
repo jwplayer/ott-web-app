@@ -14,7 +14,7 @@
     "fast-xml-parser": "^4.5.3",
     "i18next": "^24.2.2",
     "ini": "^3.0.1",
-    "inversify": "^6.1.5",
+    "inversify": "^7.5.4",
     "jwt-decode": "^4.0.0",
     "lodash.merge": "^4.6.2",
     "react-i18next": "^15.4.1",
