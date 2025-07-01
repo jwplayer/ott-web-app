@@ -4,24 +4,24 @@ exports[`<CheckoutForm> > renders and matches snapshot 1`] = `
 <div>
   <div>
     <h1
-      class="_title_abc9bc"
+      class="_title_8e6736"
     >
       checkout.payment_method
     </h1>
     <div
-      class="_order_abc9bc"
+      class="_order_8e6736"
     >
       <div
-        class="_orderInfo_abc9bc"
+        class="_orderInfo_8e6736"
       >
         <p
-          class="_orderTitle_abc9bc _orderTitleMargin_abc9bc"
+          class="_orderTitle_8e6736 _orderTitleMargin_8e6736"
         >
           checkout.monthly
         </p>
       </div>
       <div
-        class="_orderPrice_abc9bc"
+        class="_orderPrice_8e6736"
       >
         <span>
           € 6,99
@@ -33,10 +33,10 @@ exports[`<CheckoutForm> > renders and matches snapshot 1`] = `
       </div>
     </div>
     <div
-      class="_couponForm_abc9bc"
+      class="_couponForm_8e6736"
     >
       <button
-        class="_button_f8f296 _default_f8f296 _outlined_f8f296"
+        class="_button_ee73f7 _default_ee73f7 _outlined_ee73f7"
         type="button"
       >
         <span>
@@ -46,7 +46,7 @@ exports[`<CheckoutForm> > renders and matches snapshot 1`] = `
     </div>
     <div>
       <table
-        class="_orderTotals_abc9bc"
+        class="_orderTotals_8e6736"
       >
         <tbody />
         <tfoot>
@@ -70,14 +70,14 @@ exports[`<CheckoutForm> > renders and matches snapshot 1`] = `
       </table>
     </div>
     <hr
-      class="_divider_abc9bc"
+      class="_divider_8e6736"
     />
     <div
-      class="_paymentMethods_abc9bc"
+      class="_paymentMethods_8e6736"
     />
     <div>
       <div
-        class="_paymentForm_65d7c4"
+        class="_paymentForm_8145b2"
       >
         <form
           data-testid="payment_form"
@@ -85,10 +85,10 @@ exports[`<CheckoutForm> > renders and matches snapshot 1`] = `
         >
           <div>
             <div
-              class="_formField_86f2f5 _textField_c799b0"
+              class="_formField_aa17b3 _textField_63409b"
             >
               <label
-                class="_label_86f2f5"
+                class="_label_aa17b3"
                 for="text-field_1235_cardholdername"
               >
                 checkout.card_holder_name
@@ -99,14 +99,14 @@ exports[`<CheckoutForm> > renders and matches snapshot 1`] = `
                 </span>
               </label>
               <div
-                class="_container_859b20"
+                class="_container_9af53b"
               >
                 <input
                   aria-describedby="helper_text_1235_cardholdername"
                   aria-invalid="false"
                   aria-required="true"
                   autocomplete="cc-name"
-                  class="_input_859b20"
+                  class="_input_9af53b"
                   id="text-field_1235_cardholdername"
                   name="cardholderName"
                   placeholder="checkout.credit_card_name"
@@ -119,10 +119,10 @@ exports[`<CheckoutForm> > renders and matches snapshot 1`] = `
           </div>
           <div>
             <div
-              class="_formField_86f2f5 _textField_c799b0 directPostCreditCardNumber"
+              class="_formField_aa17b3 _textField_63409b directPostCreditCardNumber"
             >
               <label
-                class="_label_86f2f5"
+                class="_label_aa17b3"
                 for="text-field_1235_cardnumber"
               >
                 payment.credit_card_number
@@ -133,14 +133,14 @@ exports[`<CheckoutForm> > renders and matches snapshot 1`] = `
                 </span>
               </label>
               <div
-                class="_container_859b20"
+                class="_container_9af53b"
               >
                 <input
                   aria-describedby="helper_text_1235_cardnumber"
                   aria-invalid="false"
                   aria-required="true"
                   autocomplete="cc-number"
-                  class="_input_859b20"
+                  class="_input_9af53b"
                   id="text-field_1235_cardnumber"
                   name="cardNumber"
                   pattern="\\d*"
@@ -153,14 +153,14 @@ exports[`<CheckoutForm> > renders and matches snapshot 1`] = `
             </div>
           </div>
           <div
-            class="_columns_65d7c4"
+            class="_columns_8145b2"
           >
             <div>
               <div
-                class="_formField_86f2f5 _textField_c799b0 directPostExpiryDate"
+                class="_formField_aa17b3 _textField_63409b directPostExpiryDate"
               >
                 <label
-                  class="_label_86f2f5"
+                  class="_label_aa17b3"
                   for="text-field_1235_cardexpiry"
                 >
                   payment.credit_card_expiry_date
@@ -171,14 +171,14 @@ exports[`<CheckoutForm> > renders and matches snapshot 1`] = `
                   </span>
                 </label>
                 <div
-                  class="_container_859b20"
+                  class="_container_9af53b"
                 >
                   <input
                     aria-describedby="helper_text_1235_cardexpiry"
                     aria-invalid="false"
                     aria-required="true"
                     autocomplete="cc-exp"
-                    class="_input_859b20"
+                    class="_input_9af53b"
                     id="text-field_1235_cardexpiry"
                     name="cardExpiry"
                     pattern="\\d*"
@@ -192,10 +192,10 @@ exports[`<CheckoutForm> > renders and matches snapshot 1`] = `
             </div>
             <div>
               <div
-                class="_formField_86f2f5 _textField_c799b0 directPostSecurityCode"
+                class="_formField_aa17b3 _textField_63409b directPostSecurityCode"
               >
                 <label
-                  class="_label_86f2f5"
+                  class="_label_aa17b3"
                   for="text-field_1235_cardcvc"
                 >
                   payment.security_code
@@ -206,7 +206,7 @@ exports[`<CheckoutForm> > renders and matches snapshot 1`] = `
                   </span>
                 </label>
                 <div
-                  class="_container_859b20"
+                  class="_container_9af53b"
                 >
                   <input
                     aria-describedby="helper_text_1235_cardcvc"
@@ -214,7 +214,7 @@ exports[`<CheckoutForm> > renders and matches snapshot 1`] = `
                     aria-label="payment.security_code"
                     aria-required="true"
                     autocomplete="cc-csc"
-                    class="_input_859b20"
+                    class="_input_9af53b"
                     id="text-field_1235_cardcvc"
                     name="cardCVC"
                     pattern="\\d*"
@@ -229,7 +229,7 @@ exports[`<CheckoutForm> > renders and matches snapshot 1`] = `
           </div>
           <div>
             <button
-              class="_button_f8f296 _primary_f8f296 _fullWidth_f8f296 _large_f8f296"
+              class="_button_ee73f7 _primary_ee73f7 _fullWidth_ee73f7 _large_ee73f7"
               type="submit"
             >
               <span>
@@ -242,12 +242,12 @@ exports[`<CheckoutForm> > renders and matches snapshot 1`] = `
     </div>
     <button
       aria-label="common:back"
-      class="_iconButton_0fef65 _dialogBackButton_248199"
+      class="_iconButton_7eff5b _dialogBackButton_85868d"
       type="button"
     >
       <svg
         aria-hidden="true"
-        class="_icon_585b29"
+        class="_icon_596ab4"
         viewBox="0 0 24 24"
         xmlns="http://www.w3.org/2000/svg"
       >

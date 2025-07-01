@@ -8,13 +8,13 @@ exports[`<LanguageMenu> > renders and matches snapshot 1`] = `
       aria-expanded="false"
       aria-haspopup="menu"
       aria-label="language_menu"
-      class="_iconButton_0fef65 _iconButton_f4f7a7"
+      class="_iconButton_7eff5b _iconButton_d975ee"
       data-testid="language-menu-button"
       type="button"
     >
       <svg
         aria-hidden="true"
-        class="_icon_585b29"
+        class="_icon_596ab4"
         viewBox="0 0 24 24"
         xmlns="http://www.w3.org/2000/svg"
       >

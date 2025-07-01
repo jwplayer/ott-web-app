@@ -5,49 +5,49 @@ exports[`<CardGrid> > renders and matches snapshot 1`] = `
   <div>
     <div
       aria-rowcount="1"
-      class="_container_7175d1 _cols-5_7175d1"
+      class="_container_3d3f00 _cols-5_3d3f00"
       data-testid="layout-grid-content"
       role="grid"
     >
       <div
         aria-rowindex="1"
-        class="_row_19b484"
+        class="_row_36b750"
         role="row"
       >
         <div
           aria-colindex="1"
-          class="_cell_19b484"
+          class="_cell_36b750"
           id="layout_grid_0-0"
           role="gridcell"
           style="width: 20%;"
         >
           <a
-            class="_card_d75732"
+            class="_card_526f9d"
             data-testid="Agent 327"
             href="/m/uB8aRnu6"
             role="button"
             tabindex="0"
           >
             <div
-              class="_titleContainer_d75732"
+              class="_titleContainer_526f9d"
             >
               <h3
-                class="_title_d75732"
+                class="_title_526f9d"
               >
                 Agent 327
               </h3>
             </div>
             <div
-              class="_poster_d75732 _aspect169_d75732"
+              class="_poster_526f9d _aspect169_526f9d"
             >
               <div
-                class="_meta_d75732"
+                class="_meta_526f9d"
               >
                 <div
-                  class="_tags_d75732"
+                  class="_tags_526f9d"
                 >
                   <div
-                    class="_tag_d75732"
+                    class="_tag_526f9d"
                   >
                     4 common:abbreviation.minutes
                   </div>
@@ -58,38 +58,38 @@ exports[`<CardGrid> > renders and matches snapshot 1`] = `
         </div>
         <div
           aria-colindex="2"
-          class="_cell_19b484"
+          class="_cell_36b750"
           id="layout_grid_0-1"
           role="gridcell"
           style="width: 20%;"
         >
           <a
-            class="_card_d75732"
+            class="_card_526f9d"
             data-testid="Big Buck Bunny"
             href="/m/awWEFyPu"
             role="button"
             tabindex="-1"
           >
             <div
-              class="_titleContainer_d75732"
+              class="_titleContainer_526f9d"
             >
               <h3
-                class="_title_d75732"
+                class="_title_526f9d"
               >
                 Big Buck Bunny
               </h3>
             </div>
             <div
-              class="_poster_d75732 _aspect169_d75732"
+              class="_poster_526f9d _aspect169_526f9d"
             >
               <div
-                class="_meta_d75732"
+                class="_meta_526f9d"
               >
                 <div
-                  class="_tags_d75732"
+                  class="_tags_526f9d"
                 >
                   <div
-                    class="_tag_d75732"
+                    class="_tag_526f9d"
                   >
                     10 common:abbreviation.minutes
                   </div>
@@ -100,38 +100,38 @@ exports[`<CardGrid> > renders and matches snapshot 1`] = `
         </div>
         <div
           aria-colindex="3"
-          class="_cell_19b484"
+          class="_cell_36b750"
           id="layout_grid_0-2"
           role="gridcell"
           style="width: 20%;"
         >
           <a
-            class="_card_d75732"
+            class="_card_526f9d"
             data-testid="Elephants Dream"
             href="/m/eFPH2tVG"
             role="button"
             tabindex="-1"
           >
             <div
-              class="_titleContainer_d75732"
+              class="_titleContainer_526f9d"
             >
               <h3
-                class="_title_d75732"
+                class="_title_526f9d"
               >
                 Elephants Dream
               </h3>
             </div>
             <div
-              class="_poster_d75732 _aspect169_d75732"
+              class="_poster_526f9d _aspect169_526f9d"
             >
               <div
-                class="_meta_d75732"
+                class="_meta_526f9d"
               >
                 <div
-                  class="_tags_d75732"
+                  class="_tags_526f9d"
                 >
                   <div
-                    class="_tag_d75732"
+                    class="_tag_526f9d"
                   >
                     11 common:abbreviation.minutes
                   </div>

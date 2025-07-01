@@ -24,20 +24,20 @@ exports[`<SideBar /> > renders sideBar opened 1`] = `
       style="transition: transform 0.3s ease, opacity 0.3s ease; transform: translate(0, 0); opacity: 1; z-index: 15;"
     >
       <div
-        class="_sidebar_577f70"
+        class="_sidebar_51efae"
         id="sidebar"
       >
         <div
-          class="_heading_577f70"
+          class="_heading_51efae"
         >
           <button
             aria-label="close_menu"
-            class="_iconButton_0fef65"
+            class="_iconButton_7eff5b"
             type="button"
           >
             <svg
               aria-hidden="true"
-              class="_icon_585b29"
+              class="_icon_596ab4"
               viewBox="0 0 24 24"
               xmlns="http://www.w3.org/2000/svg"
             >
@@ -52,11 +52,11 @@ exports[`<SideBar /> > renders sideBar opened 1`] = `
           </button>
         </div>
         <nav
-          class="_group_577f70"
+          class="_group_51efae"
         >
           <a
             aria-current="page"
-            class="_button_f8f296 _default_f8f296 _outlined_f8f296 _active_f8f296"
+            class="_button_ee73f7 _default_ee73f7 _outlined_ee73f7 _active_ee73f7"
             href="/"
           >
             <span>

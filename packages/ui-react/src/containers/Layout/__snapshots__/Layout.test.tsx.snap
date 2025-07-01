@@ -3,33 +3,33 @@
 exports[`<Layout /> > renders layout 1`] = `
 <div>
   <div
-    class="_layout_c71437"
+    class="_layout_bfd3ee"
   >
     <div>
       <header
-        class="_header_f4f7a7 _static_f4f7a7"
+        class="_header_d975ee _static_d975ee"
       >
         <div
-          class="_container_f4f7a7"
+          class="_container_d975ee"
         >
           <a
-            class="_skipToContent_f4f7a7"
+            class="_skipToContent_d975ee"
             href="#content"
           >
             skip_to_content
           </a>
           <div
-            class="_menu_f4f7a7"
+            class="_menu_d975ee"
           >
             <button
               aria-expanded="false"
               aria-label="open_menu"
-              class="_iconButton_0fef65 _iconButton_f4f7a7"
+              class="_iconButton_7eff5b _iconButton_d975ee"
               type="button"
             >
               <svg
                 aria-hidden="true"
-                class="_icon_585b29"
+                class="_icon_596ab4"
                 viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg"
               >
@@ -44,13 +44,13 @@ exports[`<Layout /> > renders layout 1`] = `
             </button>
           </div>
           <nav
-            class="_nav_f4f7a7"
+            class="_nav_d975ee"
           >
             <ul>
               <li>
                 <a
                   aria-current="page"
-                  class="_button_f8f296 _default_f8f296 _text_f8f296 _active_f8f296 _navButton_f4f7a7"
+                  class="_button_ee73f7 _default_ee73f7 _text_ee73f7 _active_ee73f7 _navButton_d975ee"
                   href="/"
                 >
                   <span>
@@ -61,12 +61,12 @@ exports[`<Layout /> > renders layout 1`] = `
             </ul>
           </nav>
           <div
-            class="_actions_f4f7a7"
+            class="_actions_d975ee"
           />
         </div>
       </header>
       <main
-        class="_main_c71437"
+        class="_main_bfd3ee"
         id="content"
         tabindex="-1"
       />

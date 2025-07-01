@@ -3,21 +3,21 @@
 exports[`Shelf Component tests > Featured shelf 1`] = `
 <div>
   <div
-    class="_shelf_81910b"
+    class="_shelf_7fdc3e"
   >
     <div
-      class="TileSlider _slider_81910b"
+      class="TileSlider _slider_7fdc3e"
     >
       <div
         class="TileSlider-leftControl"
       >
         <button
           aria-label="slide_previous"
-          class="_chevron_81910b"
+          class="_chevron_7fdc3e"
         >
           <svg
             aria-hidden="true"
-            class="_icon_585b29"
+            class="_icon_596ab4"
             viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"
           >
@@ -41,32 +41,32 @@ exports[`Shelf Component tests > Featured shelf 1`] = `
             style="width: 100%; padding-left: 8px; padding-right: 8px;"
           >
             <a
-              class="_card_d75732 _featured_d75732 _disabled_d75732"
+              class="_card_526f9d _featured_526f9d _disabled_526f9d"
               data-testid="Last playlist item"
               href="/m/ddeeddee/last-playlist-item"
               role="button"
               tabindex="-1"
             >
               <div
-                class="_poster_d75732 _aspect169_d75732"
+                class="_poster_526f9d _aspect169_526f9d"
               >
                 <div
-                  class="_meta_d75732 _featured_d75732"
+                  class="_meta_526f9d _featured_526f9d"
                 >
                   <div
-                    class="_titleContainer_d75732"
+                    class="_titleContainer_526f9d"
                   >
                     <h3
-                      class="_title_d75732"
+                      class="_title_526f9d"
                     >
                       Last playlist item
                     </h3>
                   </div>
                   <div
-                    class="_tags_d75732"
+                    class="_tags_526f9d"
                   >
                     <div
-                      class="_tag_d75732"
+                      class="_tag_526f9d"
                     >
                       21 common:abbreviation.minutes
                     </div>
@@ -81,32 +81,32 @@ exports[`Shelf Component tests > Featured shelf 1`] = `
             style="width: 100%; padding-left: 8px; padding-right: 8px;"
           >
             <a
-              class="_card_d75732 _featured_d75732"
+              class="_card_526f9d _featured_526f9d"
               data-testid="Movie 1"
               href="/m/1234abcd/movie-1"
               role="button"
               tabindex="0"
             >
               <div
-                class="_poster_d75732 _aspect169_d75732"
+                class="_poster_526f9d _aspect169_526f9d"
               >
                 <div
-                  class="_meta_d75732 _featured_d75732"
+                  class="_meta_526f9d _featured_526f9d"
                 >
                   <div
-                    class="_titleContainer_d75732"
+                    class="_titleContainer_526f9d"
                   >
                     <h3
-                      class="_title_d75732"
+                      class="_title_526f9d"
                     >
                       Movie 1
                     </h3>
                   </div>
                   <div
-                    class="_tags_d75732"
+                    class="_tags_526f9d"
                   >
                     <div
-                      class="_tag_d75732"
+                      class="_tag_526f9d"
                     >
                       1 common:abbreviation.minutes
                     </div>
@@ -121,32 +121,32 @@ exports[`Shelf Component tests > Featured shelf 1`] = `
             style="width: 100%; padding-left: 8px; padding-right: 8px;"
           >
             <a
-              class="_card_d75732 _featured_d75732 _disabled_d75732"
+              class="_card_526f9d _featured_526f9d _disabled_526f9d"
               data-testid="Movie 2"
               href="/m/aaaaaaaa/movie-2"
               role="button"
               tabindex="-1"
             >
               <div
-                class="_poster_d75732 _aspect169_d75732"
+                class="_poster_526f9d _aspect169_526f9d"
               >
                 <div
-                  class="_meta_d75732 _featured_d75732"
+                  class="_meta_526f9d _featured_526f9d"
                 >
                   <div
-                    class="_titleContainer_d75732"
+                    class="_titleContainer_526f9d"
                   >
                     <h3
-                      class="_title_d75732"
+                      class="_title_526f9d"
                     >
                       Movie 2
                     </h3>
                   </div>
                   <div
-                    class="_tags_d75732"
+                    class="_tags_526f9d"
                   >
                     <div
-                      class="_tag_d75732"
+                      class="_tag_526f9d"
                     >
                       1 common:abbreviation.minutes
                     </div>
@@ -162,11 +162,11 @@ exports[`Shelf Component tests > Featured shelf 1`] = `
       >
         <button
           aria-label="slide_next"
-          class="_chevron_81910b"
+          class="_chevron_7fdc3e"
         >
           <svg
             aria-hidden="true"
-            class="_icon_585b29"
+            class="_icon_596ab4"
             viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"
           >
@@ -184,19 +184,19 @@ exports[`Shelf Component tests > Featured shelf 1`] = `
       </div>
       <div
         aria-hidden="true"
-        class="_dots_81910b"
+        class="_dots_7fdc3e"
       >
         <span
-          class="_dot_81910b _active_81910b"
+          class="_dot_7fdc3e _active_7fdc3e"
         />
         <span
-          class="_dot_81910b"
+          class="_dot_7fdc3e"
         />
         <span
-          class="_dot_81910b"
+          class="_dot_7fdc3e"
         />
         <span
-          class="_dot_81910b"
+          class="_dot_7fdc3e"
         />
       </div>
     </div>
@@ -207,15 +207,15 @@ exports[`Shelf Component tests > Featured shelf 1`] = `
 exports[`Shelf Component tests > Regular shelf 1`] = `
 <div>
   <div
-    class="_shelf_81910b"
+    class="_shelf_7fdc3e"
   >
     <h2
-      class="_title_81910b"
+      class="_title_7fdc3e"
     >
       Test Shelf
     </h2>
     <div
-      class="TileSlider _slider_81910b"
+      class="TileSlider _slider_7fdc3e"
     >
       <div
         class="TileSlider-gestures"
@@ -231,32 +231,32 @@ exports[`Shelf Component tests > Regular shelf 1`] = `
             style="width: 20%; padding-left: 8px; padding-right: 8px;"
           >
             <a
-              class="_card_d75732"
+              class="_card_526f9d"
               data-testid="Movie 1"
               href="/m/1234abcd/movie-1"
               role="button"
               tabindex="0"
             >
               <div
-                class="_titleContainer_d75732"
+                class="_titleContainer_526f9d"
               >
                 <h3
-                  class="_title_d75732"
+                  class="_title_526f9d"
                 >
                   Movie 1
                 </h3>
               </div>
               <div
-                class="_poster_d75732 _aspect169_d75732"
+                class="_poster_526f9d _aspect169_526f9d"
               >
                 <div
-                  class="_meta_d75732"
+                  class="_meta_526f9d"
                 >
                   <div
-                    class="_tags_d75732"
+                    class="_tags_526f9d"
                   >
                     <div
-                      class="_tag_d75732"
+                      class="_tag_526f9d"
                     >
                       1 common:abbreviation.minutes
                     </div>
@@ -271,32 +271,32 @@ exports[`Shelf Component tests > Regular shelf 1`] = `
             style="width: 20%; padding-left: 8px; padding-right: 8px;"
           >
             <a
-              class="_card_d75732"
+              class="_card_526f9d"
               data-testid="Movie 2"
               href="/m/aaaaaaaa/movie-2"
               role="button"
               tabindex="0"
             >
               <div
-                class="_titleContainer_d75732"
+                class="_titleContainer_526f9d"
               >
                 <h3
-                  class="_title_d75732"
+                  class="_title_526f9d"
                 >
                   Movie 2
                 </h3>
               </div>
               <div
-                class="_poster_d75732 _aspect169_d75732"
+                class="_poster_526f9d _aspect169_526f9d"
               >
                 <div
-                  class="_meta_d75732"
+                  class="_meta_526f9d"
                 >
                   <div
-                    class="_tags_d75732"
+                    class="_tags_526f9d"
                   >
                     <div
-                      class="_tag_d75732"
+                      class="_tag_526f9d"
                     >
                       1 common:abbreviation.minutes
                     </div>
@@ -311,32 +311,32 @@ exports[`Shelf Component tests > Regular shelf 1`] = `
             style="width: 20%; padding-left: 8px; padding-right: 8px;"
           >
             <a
-              class="_card_d75732"
+              class="_card_526f9d"
               data-testid="Third movie"
               href="/m/12332123/third-movie"
               role="button"
               tabindex="0"
             >
               <div
-                class="_titleContainer_d75732"
+                class="_titleContainer_526f9d"
               >
                 <h3
-                  class="_title_d75732"
+                  class="_title_526f9d"
                 >
                   Third movie
                 </h3>
               </div>
               <div
-                class="_poster_d75732 _aspect169_d75732"
+                class="_poster_526f9d _aspect169_526f9d"
               >
                 <div
-                  class="_meta_d75732"
+                  class="_meta_526f9d"
                 >
                   <div
-                    class="_tags_d75732"
+                    class="_tags_526f9d"
                   >
                     <div
-                      class="_tag_d75732"
+                      class="_tag_526f9d"
                     >
                       1 common:abbreviation.minutes
                     </div>
@@ -351,32 +351,32 @@ exports[`Shelf Component tests > Regular shelf 1`] = `
             style="width: 20%; padding-left: 8px; padding-right: 8px;"
           >
             <a
-              class="_card_d75732"
+              class="_card_526f9d"
               data-testid="Last playlist item"
               href="/m/ddeeddee/last-playlist-item"
               role="button"
               tabindex="0"
             >
               <div
-                class="_titleContainer_d75732"
+                class="_titleContainer_526f9d"
               >
                 <h3
-                  class="_title_d75732"
+                  class="_title_526f9d"
                 >
                   Last playlist item
                 </h3>
               </div>
               <div
-                class="_poster_d75732 _aspect169_d75732"
+                class="_poster_526f9d _aspect169_526f9d"
               >
                 <div
-                  class="_meta_d75732"
+                  class="_meta_526f9d"
                 >
                   <div
-                    class="_tags_d75732"
+                    class="_tags_526f9d"
                   >
                     <div
-                      class="_tag_d75732"
+                      class="_tag_526f9d"
                     >
                       21 common:abbreviation.minutes
                     </div>

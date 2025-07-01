@@ -3,13 +3,13 @@
 exports[`<DemoConfigDialog> > renders and matches snapshot 1`] = `
 <div>
   <div
-    class="_note_561a54"
+    class="_note_58ae71"
   >
     <div>
       currently_previewing_config
     </div>
     <button
-      class="_button_e29948 _default_e29948 _text_e29948"
+      class="_button_59f008 _default_59f008 _text_59f008"
       type="button"
     >
       <span>
@@ -23,30 +23,30 @@ exports[`<DemoConfigDialog> > renders and matches snapshot 1`] = `
 exports[`<DemoConfigDialog> > renders and matches snapshot error dialog 1`] = `
 <div>
   <div
-    class="_configModal_561a54"
+    class="_configModal_58ae71"
   >
     <div
-      class="_errorPage_d73633"
+      class="_errorPage_2cce14"
     >
       <div
-        class="_box_d73633"
+        class="_box_2cce14"
       >
         <img
           alt=""
-          class="_image_d73633"
+          class="_image_2cce14"
           src="/images/logo.png"
         />
         <h1
           aria-live="polite"
-          class="_title_d73633"
+          class="_title_2cce14"
         >
           app_config_not_found
         </h1>
         <div
-          class="_main_d73633"
+          class="_main_2cce14"
         >
           <p
-            class="_message_d73633"
+            class="_message_2cce14"
           >
             generic_error_description
           </p>
@@ -54,17 +54,17 @@ exports[`<DemoConfigDialog> > renders and matches snapshot error dialog 1`] = `
             method="GET"
           >
             <div
-              class="_formField_a245e1 _textField_0fa545 _maxWidth_561a54"
+              class="_formField_9d758a _textField_e50c0a _maxWidth_58ae71"
             >
               <div
-                class="_container_ac31ed _error_ac31ed"
+                class="_container_296d37 _error_296d37"
               >
                 <input
                   aria-describedby="helper_text_1235_app-config"
                   aria-invalid="true"
                   aria-required="true"
                   autocapitalize="none"
-                  class="_input_ac31ed"
+                  class="_input_296d37"
                   id="text-field_1235_app-config"
                   maxlength="8"
                   name="app-config"
@@ -75,7 +75,7 @@ exports[`<DemoConfigDialog> > renders and matches snapshot error dialog 1`] = `
                 />
               </div>
               <div
-                class="_helperText_edc1c5 _error_edc1c5"
+                class="_helperText_2d5783 _error_2d5783"
                 id="helper_text_1235_app-config"
               >
                 <span>
@@ -89,11 +89,11 @@ exports[`<DemoConfigDialog> > renders and matches snapshot error dialog 1`] = `
               </div>
             </div>
             <div
-              class="_controls_561a54"
+              class="_controls_58ae71"
             >
               <button
                 aria-disabled="false"
-                class="_button_e29948 _default_e29948 _outlined_e29948"
+                class="_button_59f008 _default_59f008 _outlined_59f008"
                 type="submit"
               >
                 <span>
@@ -102,7 +102,7 @@ exports[`<DemoConfigDialog> > renders and matches snapshot error dialog 1`] = `
               </button>
               <button
                 aria-disabled="false"
-                class="_button_e29948 _default_e29948 _outlined_e29948"
+                class="_button_59f008 _default_59f008 _outlined_59f008"
                 type="button"
               >
                 <span>
@@ -118,7 +118,7 @@ exports[`<DemoConfigDialog> > renders and matches snapshot error dialog 1`] = `
             demo_note
           </p>
           <div
-            class="_links_d73633"
+            class="_links_2cce14"
           >
             <a
               href="https://docs.jwplayer.com/platform/docs/ott-create-an-app-config"
@@ -128,7 +128,7 @@ exports[`<DemoConfigDialog> > renders and matches snapshot error dialog 1`] = `
               app_config_learn_more
             </a>
             <span
-              class="_stack_d73633"
+              class="_stack_2cce14"
             >
               <a>
                 Show Stack Trace

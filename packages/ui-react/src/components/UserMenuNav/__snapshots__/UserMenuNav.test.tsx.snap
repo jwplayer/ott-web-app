@@ -3,25 +3,25 @@
 exports[`<UserMenu> > renders and matches snapshot 1`] = `
 <div>
   <h2
-    class="_sectionHeader_457528"
+    class="_sectionHeader_7ea6c3"
   >
     nav.settings
   </h2>
   <ul
-    class="_menuItems_457528"
+    class="_menuItems_7ea6c3"
   >
     <li>
       <a
-        class="_menuButton_91706b"
+        class="_menuButton_b6c5f9"
         href="/u/my-account"
         tabindex="0"
       >
         <div
-          class="_startIcon_91706b"
+          class="_startIcon_b6c5f9"
         >
           <svg
             aria-hidden="true"
-            class="_icon_585b29"
+            class="_icon_596ab4"
             viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"
           >
@@ -37,16 +37,16 @@ exports[`<UserMenu> > renders and matches snapshot 1`] = `
     </li>
     <li>
       <a
-        class="_menuButton_91706b"
+        class="_menuButton_b6c5f9"
         href="/u/payments"
         tabindex="0"
       >
         <div
-          class="_startIcon_91706b"
+          class="_startIcon_b6c5f9"
         >
           <svg
             aria-hidden="true"
-            class="_icon_585b29"
+            class="_icon_596ab4"
             viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"
           >
@@ -61,19 +61,19 @@ exports[`<UserMenu> > renders and matches snapshot 1`] = `
       </a>
     </li>
     <li
-      class="_divider_457528"
+      class="_divider_7ea6c3"
     >
       <div
-        class="_menuButton_91706b"
+        class="_menuButton_b6c5f9"
         role="button"
         tabindex="0"
       >
         <div
-          class="_startIcon_91706b"
+          class="_startIcon_b6c5f9"
         >
           <svg
             aria-hidden="true"
-            class="_icon_585b29"
+            class="_icon_596ab4"
             viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"
           >

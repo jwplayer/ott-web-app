@@ -3,29 +3,29 @@
 exports[`<Header /> > renders header 1`] = `
 <div>
   <header
-    class="_header_f4f7a7 _static_f4f7a7"
+    class="_header_d975ee _static_d975ee"
   >
     <div
-      class="_container_f4f7a7"
+      class="_container_d975ee"
     >
       <a
-        class="_skipToContent_f4f7a7"
+        class="_skipToContent_d975ee"
         href="#content"
       >
         skip_to_content
       </a>
       <div
-        class="_menu_f4f7a7"
+        class="_menu_d975ee"
       >
         <button
           aria-expanded="false"
           aria-label="open_menu"
-          class="_iconButton_0fef65 _iconButton_f4f7a7"
+          class="_iconButton_7eff5b _iconButton_d975ee"
           type="button"
         >
           <svg
             aria-hidden="true"
-            class="_icon_585b29"
+            class="_icon_596ab4"
             viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"
           >
@@ -40,20 +40,20 @@ exports[`<Header /> > renders header 1`] = `
         </button>
       </div>
       <nav
-        class="_nav_f4f7a7"
+        class="_nav_d975ee"
       >
         <ul />
       </nav>
       <div
-        class="_actions_f4f7a7"
+        class="_actions_d975ee"
       >
         <button
-          class="_iconButton_0fef65 _iconButton_f4f7a7"
+          class="_iconButton_7eff5b _iconButton_d975ee"
           type="button"
         >
           <svg
             aria-hidden="true"
-            class="_icon_585b29"
+            class="_icon_596ab4"
             viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"
           >
@@ -72,29 +72,29 @@ exports[`<Header /> > renders header 1`] = `
 exports[`<Header /> > renders header with nav buttons 1`] = `
 <div>
   <header
-    class="_header_f4f7a7 _static_f4f7a7"
+    class="_header_d975ee _static_d975ee"
   >
     <div
-      class="_container_f4f7a7"
+      class="_container_d975ee"
     >
       <a
-        class="_skipToContent_f4f7a7"
+        class="_skipToContent_d975ee"
         href="#content"
       >
         skip_to_content
       </a>
       <div
-        class="_menu_f4f7a7"
+        class="_menu_d975ee"
       >
         <button
           aria-expanded="false"
           aria-label="open_menu"
-          class="_iconButton_0fef65 _iconButton_f4f7a7"
+          class="_iconButton_7eff5b _iconButton_d975ee"
           type="button"
         >
           <svg
             aria-hidden="true"
-            class="_icon_585b29"
+            class="_icon_596ab4"
             viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"
           >
@@ -109,12 +109,12 @@ exports[`<Header /> > renders header with nav buttons 1`] = `
         </button>
       </div>
       <div
-        class="_brand_f4f7a7"
+        class="_brand_d975ee"
       >
         a
       </div>
       <nav
-        class="_nav_f4f7a7"
+        class="_nav_d975ee"
       >
         <ul>
           <li>
@@ -126,15 +126,15 @@ exports[`<Header /> > renders header with nav buttons 1`] = `
         </ul>
       </nav>
       <div
-        class="_actions_f4f7a7"
+        class="_actions_d975ee"
       >
         <button
-          class="_iconButton_0fef65 _iconButton_f4f7a7"
+          class="_iconButton_7eff5b _iconButton_d975ee"
           type="button"
         >
           <svg
             aria-hidden="true"
-            class="_icon_585b29"
+            class="_icon_596ab4"
             viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"
           >

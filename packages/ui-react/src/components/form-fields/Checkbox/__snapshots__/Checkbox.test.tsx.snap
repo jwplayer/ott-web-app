@@ -3,10 +3,10 @@
 exports[`<Checkbox> > renders and matches snapshot 1`] = `
 <div>
   <div
-    class="_formField_86f2f5 _checkbox_a98c3a"
+    class="_formField_aa17b3 _checkbox_ce521b"
   >
     <div
-      class="_row_a98c3a"
+      class="_row_ce521b"
     >
       <input
         aria-describedby="helper_text_1235_name"

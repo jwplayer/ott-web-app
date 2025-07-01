@@ -3,13 +3,13 @@
 exports[`<NoPaymentRequired> > renders and matches snapshot 1`] = `
 <div>
   <div
-    class="_noPaymentRequired_b113e6"
+    class="_noPaymentRequired_0f8dcd"
   >
     <p>
       checkout.no_payment_needed
     </p>
     <button
-      class="_button_f8f296 _primary_f8f296 _fullWidth_f8f296 _large_f8f296"
+      class="_button_ee73f7 _primary_ee73f7 _fullWidth_ee73f7 _large_ee73f7"
       type="button"
     >
       <span>

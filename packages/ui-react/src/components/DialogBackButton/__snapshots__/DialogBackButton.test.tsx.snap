@@ -4,12 +4,12 @@ exports[`<DialogBackButton> > renders and matches snapshot 1`] = `
 <div>
   <button
     aria-label="common:back"
-    class="_iconButton_0fef65 _dialogBackButton_248199"
+    class="_iconButton_7eff5b _dialogBackButton_85868d"
     type="button"
   >
     <svg
       aria-hidden="true"
-      class="_icon_585b29"
+      class="_icon_596ab4"
       viewBox="0 0 24 24"
       xmlns="http://www.w3.org/2000/svg"
     >

@@ -7,56 +7,56 @@ exports[`<OffersForm> > renders and matches snapshot 1`] = `
     novalidate=""
   >
     <h1
-      class="_title_f7961f"
+      class="_title_b7ec4e"
     >
       choose_offer.title
     </h1>
     <p
-      class="_subtitle_f7961f"
+      class="_subtitle_b7ec4e"
     >
       choose_offer.watch_this_on_platform
     </p>
     <div
-      class="_offerGroupSwitch_f7961f"
+      class="_offerGroupSwitch_b7ec4e"
     >
       <input
         checked=""
-        class="_radio_f7961f"
+        class="_radio_b7ec4e"
         id="svod"
         name="selectedOfferType"
         type="radio"
         value="svod"
       />
       <label
-        class="_label_f7961f _offerGroupLabel_f7961f"
+        class="_label_b7ec4e _offerGroupLabel_b7ec4e"
         for="svod"
       >
         choose_offer.subscription
       </label>
       <input
-        class="_radio_f7961f"
+        class="_radio_b7ec4e"
         id="tvod"
         name="selectedOfferType"
         type="radio"
         value="tvod"
       />
       <label
-        class="_label_f7961f _offerGroupLabel_f7961f"
+        class="_label_b7ec4e _offerGroupLabel_b7ec4e"
         for="tvod"
       >
         choose_offer.one_time_only
       </label>
     </div>
     <div
-      class="_offers_f7961f"
+      class="_offers_b7ec4e"
     >
       <div
         aria-labelledby="title-S916977979_NL"
-        class="_offer_f7961f"
+        class="_offer_b7ec4e"
       >
         <input
           checked=""
-          class="_radio_f7961f"
+          class="_radio_b7ec4e"
           data-testid="S916977979_NL"
           id="S916977979_NL"
           name="selectedOfferId"
@@ -64,13 +64,13 @@ exports[`<OffersForm> > renders and matches snapshot 1`] = `
           value="S916977979_NL"
         />
         <div
-          class="_label_f7961f"
+          class="_label_b7ec4e"
         >
           <label
             for="S916977979_NL"
           >
             <h2
-              class="_offerTitle_f7961f"
+              class="_offerTitle_b7ec4e"
               id="title-S916977979_NL"
             >
               choose_offer.monthly
@@ -82,15 +82,15 @@ exports[`<OffersForm> > renders and matches snapshot 1`] = `
             </span>
             <hr
               aria-hidden="true"
-              class="_offerDivider_f7961f"
+              class="_offerDivider_b7ec4e"
             />
             <ul
-              class="_offerBenefits_f7961f"
+              class="_offerBenefits_b7ec4e"
             >
               <li>
                 <svg
                   aria-hidden="true"
-                  class="_icon_585b29"
+                  class="_icon_596ab4"
                   viewBox="0 0 24 24"
                   xmlns="http://www.w3.org/2000/svg"
                 >
@@ -108,7 +108,7 @@ exports[`<OffersForm> > renders and matches snapshot 1`] = `
               <li>
                 <svg
                   aria-hidden="true"
-                  class="_icon_585b29"
+                  class="_icon_596ab4"
                   viewBox="0 0 24 24"
                   xmlns="http://www.w3.org/2000/svg"
                 >
@@ -126,7 +126,7 @@ exports[`<OffersForm> > renders and matches snapshot 1`] = `
               <li>
                 <svg
                   aria-hidden="true"
-                  class="_icon_585b29"
+                  class="_icon_596ab4"
                   viewBox="0 0 24 24"
                   xmlns="http://www.w3.org/2000/svg"
                 >
@@ -143,10 +143,10 @@ exports[`<OffersForm> > renders and matches snapshot 1`] = `
               </li>
             </ul>
             <div
-              class="_fill_f7961f"
+              class="_fill_b7ec4e"
             />
             <div
-              class="_offerPrice_f7961f"
+              class="_offerPrice_b7ec4e"
             >
               € 6,99
                
@@ -160,10 +160,10 @@ exports[`<OffersForm> > renders and matches snapshot 1`] = `
       </div>
       <div
         aria-labelledby="title-S345569153_NL"
-        class="_offer_f7961f"
+        class="_offer_b7ec4e"
       >
         <input
-          class="_radio_f7961f"
+          class="_radio_b7ec4e"
           data-testid="S345569153_NL"
           id="S345569153_NL"
           name="selectedOfferId"
@@ -171,13 +171,13 @@ exports[`<OffersForm> > renders and matches snapshot 1`] = `
           value="S345569153_NL"
         />
         <div
-          class="_label_f7961f"
+          class="_label_b7ec4e"
         >
           <label
             for="S345569153_NL"
           >
             <h2
-              class="_offerTitle_f7961f"
+              class="_offerTitle_b7ec4e"
               id="title-S345569153_NL"
             >
               choose_offer.yearly
@@ -189,15 +189,15 @@ exports[`<OffersForm> > renders and matches snapshot 1`] = `
             </span>
             <hr
               aria-hidden="true"
-              class="_offerDivider_f7961f"
+              class="_offerDivider_b7ec4e"
             />
             <ul
-              class="_offerBenefits_f7961f"
+              class="_offerBenefits_b7ec4e"
             >
               <li>
                 <svg
                   aria-hidden="true"
-                  class="_icon_585b29"
+                  class="_icon_596ab4"
                   viewBox="0 0 24 24"
                   xmlns="http://www.w3.org/2000/svg"
                 >
@@ -215,7 +215,7 @@ exports[`<OffersForm> > renders and matches snapshot 1`] = `
               <li>
                 <svg
                   aria-hidden="true"
-                  class="_icon_585b29"
+                  class="_icon_596ab4"
                   viewBox="0 0 24 24"
                   xmlns="http://www.w3.org/2000/svg"
                 >
@@ -233,7 +233,7 @@ exports[`<OffersForm> > renders and matches snapshot 1`] = `
               <li>
                 <svg
                   aria-hidden="true"
-                  class="_icon_585b29"
+                  class="_icon_596ab4"
                   viewBox="0 0 24 24"
                   xmlns="http://www.w3.org/2000/svg"
                 >
@@ -250,10 +250,10 @@ exports[`<OffersForm> > renders and matches snapshot 1`] = `
               </li>
             </ul>
             <div
-              class="_fill_f7961f"
+              class="_fill_b7ec4e"
             />
             <div
-              class="_offerPrice_f7961f"
+              class="_offerPrice_b7ec4e"
             >
               € 50,00
                
@@ -268,7 +268,7 @@ exports[`<OffersForm> > renders and matches snapshot 1`] = `
     </div>
     <button
       aria-disabled="false"
-      class="_button_f8f296 _primary_f8f296 _fullWidth_f8f296"
+      class="_button_ee73f7 _primary_ee73f7 _fullWidth_ee73f7"
       type="submit"
     >
       <span>
@@ -286,56 +286,56 @@ exports[`<OffersForm> > renders and matches snapshot 2`] = `
     novalidate=""
   >
     <h1
-      class="_title_f7961f"
+      class="_title_b7ec4e"
     >
       choose_offer.title
     </h1>
     <p
-      class="_subtitle_f7961f"
+      class="_subtitle_b7ec4e"
     >
       choose_offer.watch_this_on_platform
     </p>
     <div
-      class="_offerGroupSwitch_f7961f"
+      class="_offerGroupSwitch_b7ec4e"
     >
       <input
-        class="_radio_f7961f"
+        class="_radio_b7ec4e"
         id="svod"
         name="selectedOfferType"
         type="radio"
         value="svod"
       />
       <label
-        class="_label_f7961f _offerGroupLabel_f7961f"
+        class="_label_b7ec4e _offerGroupLabel_b7ec4e"
         for="svod"
       >
         choose_offer.subscription
       </label>
       <input
         checked=""
-        class="_radio_f7961f"
+        class="_radio_b7ec4e"
         id="tvod"
         name="selectedOfferType"
         type="radio"
         value="tvod"
       />
       <label
-        class="_label_f7961f _offerGroupLabel_f7961f"
+        class="_label_b7ec4e _offerGroupLabel_b7ec4e"
         for="tvod"
       >
         choose_offer.one_time_only
       </label>
     </div>
     <div
-      class="_offers_f7961f"
+      class="_offers_b7ec4e"
     >
       <div
         aria-labelledby="title-R892134629_NL"
-        class="_offer_f7961f"
+        class="_offer_b7ec4e"
       >
         <input
           checked=""
-          class="_radio_f7961f"
+          class="_radio_b7ec4e"
           data-testid="R892134629_NL"
           id="R892134629_NL"
           name="selectedOfferId"
@@ -343,13 +343,13 @@ exports[`<OffersForm> > renders and matches snapshot 2`] = `
           value="R892134629_NL"
         />
         <div
-          class="_label_f7961f"
+          class="_label_b7ec4e"
         >
           <label
             for="R892134629_NL"
           >
             <h2
-              class="_offerTitle_f7961f"
+              class="_offerTitle_b7ec4e"
               id="title-R892134629_NL"
             >
               One Time - TVOD offer
@@ -361,15 +361,15 @@ exports[`<OffersForm> > renders and matches snapshot 2`] = `
             </span>
             <hr
               aria-hidden="true"
-              class="_offerDivider_f7961f"
+              class="_offerDivider_b7ec4e"
             />
             <ul
-              class="_offerBenefits_f7961f"
+              class="_offerBenefits_b7ec4e"
             >
               <li>
                 <svg
                   aria-hidden="true"
-                  class="_icon_585b29"
+                  class="_icon_596ab4"
                   viewBox="0 0 24 24"
                   xmlns="http://www.w3.org/2000/svg"
                 >
@@ -386,10 +386,10 @@ exports[`<OffersForm> > renders and matches snapshot 2`] = `
               </li>
             </ul>
             <div
-              class="_fill_f7961f"
+              class="_fill_b7ec4e"
             />
             <div
-              class="_offerPrice_f7961f"
+              class="_offerPrice_b7ec4e"
             >
               € 2,90
                
@@ -400,7 +400,7 @@ exports[`<OffersForm> > renders and matches snapshot 2`] = `
     </div>
     <button
       aria-disabled="false"
-      class="_button_f8f296 _primary_f8f296 _fullWidth_f8f296"
+      class="_button_ee73f7 _primary_ee73f7 _fullWidth_ee73f7"
       type="submit"
     >
       <span>
