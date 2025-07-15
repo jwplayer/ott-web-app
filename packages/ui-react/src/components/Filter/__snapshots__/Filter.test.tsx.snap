@@ -4,12 +4,12 @@ exports[`<Filter> > renders Filter 1`] = `
 <div>
   <div
     aria-label="filter_videos_by"
-    class="_filterRow_2153bc"
+    class="_filterRow_569014"
     role="listbox"
   >
     <button
       aria-selected="false"
-      class="_button_f8f296 _default_f8f296 _outlined_f8f296"
+      class="_button_ee73f7 _default_ee73f7 _outlined_ee73f7"
       role="option"
       type="button"
     >
@@ -19,7 +19,7 @@ exports[`<Filter> > renders Filter 1`] = `
     </button>
     <button
       aria-selected="false"
-      class="_button_f8f296 _default_f8f296 _outlined_f8f296"
+      class="_button_ee73f7 _default_ee73f7 _outlined_ee73f7"
       role="option"
       type="button"
     >
@@ -29,7 +29,7 @@ exports[`<Filter> > renders Filter 1`] = `
     </button>
     <button
       aria-selected="false"
-      class="_button_f8f296 _default_f8f296 _outlined_f8f296"
+      class="_button_ee73f7 _default_ee73f7 _outlined_ee73f7"
       role="option"
       type="button"
     >
@@ -39,7 +39,7 @@ exports[`<Filter> > renders Filter 1`] = `
     </button>
     <button
       aria-selected="false"
-      class="_button_f8f296 _default_f8f296 _outlined_f8f296"
+      class="_button_ee73f7 _default_ee73f7 _outlined_ee73f7"
       role="option"
       type="button"
     >

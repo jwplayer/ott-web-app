@@ -163,11 +163,6 @@ export default ({ mode, command }: ConfigEnv): UserConfigExport => {
     },
     css: {
       devSourcemap: true,
-      preprocessorOptions: {
-        scss: {
-          api: 'modern-compiler',
-        },
-      },
     },
     resolve: {
       alias: {

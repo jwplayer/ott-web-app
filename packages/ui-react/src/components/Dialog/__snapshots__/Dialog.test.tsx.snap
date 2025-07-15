@@ -13,25 +13,25 @@ exports[`<Dialog> > renders and matches snapshot 1`] = `
     </span>
   </div>
   <dialog
-    class="_centered_6c6c55"
+    class="_centered_43e8b9"
     open=""
   >
     <div
       style="transition: transform 0.3s ease, opacity 0.3s ease; transform: translate(0, -15px); opacity: 0; z-index: 15;"
     >
       <div
-        class="_dialog_00d559 _small_00d559"
+        class="_dialog_044c9b _small_044c9b"
         data-testid="dialog"
       >
         Dialog contents
         <button
           aria-label="close_modal"
-          class="_iconButton_0fef65 _modalCloseButton_b92d69"
+          class="_iconButton_7eff5b _modalCloseButton_421b56"
           type="button"
         >
           <svg
             aria-hidden="true"
-            class="_icon_585b29"
+            class="_icon_596ab4"
             viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"
           >

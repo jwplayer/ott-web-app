@@ -4,7 +4,7 @@ exports[`<RenewSubscriptionForm> > renders and matches snapshot 1`] = `
 <div>
   <div>
     <h2
-      class="_title_a290fe"
+      class="_title_a7d18e"
     >
       renew_subscription.renew_your_subscription
     </h2>
@@ -12,7 +12,7 @@ exports[`<RenewSubscriptionForm> > renders and matches snapshot 1`] = `
       renew_subscription.explanation
     </p>
     <div
-      class="_infoBox_a290fe"
+      class="_infoBox_a7d18e"
     >
       <p>
         <strong>
@@ -23,7 +23,7 @@ exports[`<RenewSubscriptionForm> > renders and matches snapshot 1`] = `
         renew_subscription.next_billing_date_on
       </p>
       <p
-        class="_price_a290fe"
+        class="_price_a7d18e"
       >
         <strong>
           € 22,15
@@ -36,7 +36,7 @@ exports[`<RenewSubscriptionForm> > renders and matches snapshot 1`] = `
     </div>
     <button
       aria-disabled="false"
-      class="_button_f8f296 _confirmButton_a290fe _primary_f8f296 _fullWidth_f8f296"
+      class="_button_ee73f7 _confirmButton_a7d18e _primary_ee73f7 _fullWidth_ee73f7"
       type="submit"
     >
       <span>
@@ -44,7 +44,7 @@ exports[`<RenewSubscriptionForm> > renders and matches snapshot 1`] = `
       </span>
     </button>
     <button
-      class="_button_f8f296 _default_f8f296 _outlined_f8f296 _fullWidth_f8f296"
+      class="_button_ee73f7 _default_ee73f7 _outlined_ee73f7 _fullWidth_ee73f7"
       type="button"
     >
       <span>

@@ -21,6 +21,7 @@ const config: KnipConfig = {
     'packages/ui-react': {
       entry: ['src/**/*'],
       ignoreDependencies: [
+        '@types/dompurify', // Somehow this is not recognised
         'sass-embedded', // Used in Vite
         'postcss-config-jwp', // Used in postcss.config
       ],
@@ -29,11 +30,8 @@ const config: KnipConfig = {
       ignoreDependencies: [
         '@codeceptjs/allure-legacy',
         '@codeceptjs/configure', // Used in e2e tests
-        '@babel/plugin-proposal-decorators', // Used to build with decorators for ioc resolution
-        '@babel/core', // Required peer dependency for babel plugins
         '@jwp/ott-testing', // Used in e2e testing
         '@types/luxon', // Used in tests
-        'babel-plugin-transform-typescript-metadata', // Used to build with decorators for ioc resolution
         'core-js', // Conditionally imported at build time
         'eslint-plugin-codeceptjs', // Used by apps/web/test-e2e/.eslintrc.cjs
         'i18next-parser',

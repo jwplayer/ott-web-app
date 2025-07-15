@@ -19,10 +19,10 @@ exports[`<Payment> > renders and matches snapshot 1`] = `
     </div>
     <div>
       <div
-        class="_formField_86f2f5 _textField_c799b0"
+        class="_formField_aa17b3 _textField_63409b"
       >
         <label
-          class="_label_86f2f5"
+          class="_label_aa17b3"
           for="text-field_1235_cardnumber"
         >
           user:payment.card_number
@@ -33,7 +33,7 @@ exports[`<Payment> > renders and matches snapshot 1`] = `
           aria-label="user:payment.card_number_hidden"
           aria-required="false"
           autocomplete="cc-number"
-          class="_input_859b20"
+          class="_input_9af53b"
           id="text-field_1235_cardnumber"
           name="cardNumber"
           readonly=""
@@ -42,13 +42,13 @@ exports[`<Payment> > renders and matches snapshot 1`] = `
         />
       </div>
       <div
-        class="_cardDetails_c57ff5"
+        class="_cardDetails_995f89"
       >
         <div
-          class="_formField_86f2f5 _textField_c799b0"
+          class="_formField_aa17b3 _textField_63409b"
         >
           <label
-            class="_label_86f2f5"
+            class="_label_aa17b3"
             for="text-field_1235_cardexpiry"
           >
             user:payment.expiry_date
@@ -58,7 +58,7 @@ exports[`<Payment> > renders and matches snapshot 1`] = `
             aria-invalid="false"
             aria-required="false"
             autocomplete="cc-exp"
-            class="_input_859b20"
+            class="_input_9af53b"
             id="text-field_1235_cardexpiry"
             name="cardExpiry"
             readonly=""
@@ -67,10 +67,10 @@ exports[`<Payment> > renders and matches snapshot 1`] = `
           />
         </div>
         <div
-          class="_formField_86f2f5 _textField_c799b0"
+          class="_formField_aa17b3 _textField_63409b"
         >
           <label
-            class="_label_86f2f5"
+            class="_label_aa17b3"
             for="text-field_1235_cardsecuritycode"
           >
             user:payment.security_code
@@ -81,7 +81,7 @@ exports[`<Payment> > renders and matches snapshot 1`] = `
             aria-label="user:payment.security_code_hidden"
             aria-required="false"
             autocomplete="cc-csc"
-            class="_input_859b20"
+            class="_input_9af53b"
             id="text-field_1235_cardsecuritycode"
             name="cardSecurityCode"
             readonly=""
@@ -91,7 +91,7 @@ exports[`<Payment> > renders and matches snapshot 1`] = `
         </div>
       </div>
       <button
-        class="_button_f8f296 _default_f8f296 _outlined_f8f296"
+        class="_button_ee73f7 _default_ee73f7 _outlined_ee73f7"
         type="button"
       >
         <span>
@@ -111,10 +111,10 @@ exports[`<Payment> > renders and matches snapshot 1`] = `
       </h2>
     </div>
     <div
-      class="_infoBox_c57ff5"
+      class="_infoBox_995f89"
     >
       <p
-        class="_transactionItem_c57ff5"
+        class="_transactionItem_995f89"
       >
         <strong>
           May 5, 2021
@@ -127,20 +127,20 @@ exports[`<Payment> > renders and matches snapshot 1`] = `
         </span>
       </p>
       <div
-        class="_transactionDetails_c57ff5"
+        class="_transactionDetails_995f89"
       >
         <div
-          class="_transactionPrice_c57ff5"
+          class="_transactionPrice_995f89"
         >
           user:payment.price_paid_with
         </div>
       </div>
     </div>
     <div
-      class="_infoBox_c57ff5"
+      class="_infoBox_995f89"
     >
       <p
-        class="_transactionItem_c57ff5"
+        class="_transactionItem_995f89"
       >
         <strong>
           May 5, 2021
@@ -153,20 +153,20 @@ exports[`<Payment> > renders and matches snapshot 1`] = `
         </span>
       </p>
       <div
-        class="_transactionDetails_c57ff5"
+        class="_transactionDetails_995f89"
       >
         <div
-          class="_transactionPrice_c57ff5"
+          class="_transactionPrice_995f89"
         >
           user:payment.price_paid_with
         </div>
       </div>
     </div>
     <div
-      class="_infoBox_c57ff5"
+      class="_infoBox_995f89"
     >
       <p
-        class="_transactionItem_c57ff5"
+        class="_transactionItem_995f89"
       >
         <strong>
           May 5, 2021
@@ -179,10 +179,10 @@ exports[`<Payment> > renders and matches snapshot 1`] = `
         </span>
       </p>
       <div
-        class="_transactionDetails_c57ff5"
+        class="_transactionDetails_995f89"
       >
         <div
-          class="_transactionPrice_c57ff5"
+          class="_transactionPrice_995f89"
         >
           user:payment.price_paid_with
         </div>

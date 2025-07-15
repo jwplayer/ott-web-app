@@ -3,7 +3,7 @@
 exports[`<MarkdownComponent> > renders and matches snapshot 1`] = `
 <div>
   <div
-    class="_markdown_e219e2"
+    class="_markdown_101724"
   >
     <p>
       This is a test markdown string with a 

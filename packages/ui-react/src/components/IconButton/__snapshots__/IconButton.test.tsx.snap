@@ -4,7 +4,7 @@ exports[`<IconButton> > renders and matches snapshot 1`] = `
 <div>
   <button
     aria-label="Icon button"
-    class="_iconButton_0fef65"
+    class="_iconButton_7eff5b"
     type="button"
   >
     <svg

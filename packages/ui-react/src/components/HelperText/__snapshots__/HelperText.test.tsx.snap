@@ -3,7 +3,7 @@
 exports[`<HelperText> > renders and matches snapshot 1`] = `
 <div>
   <div
-    class="_helperText_da58e0 _error_da58e0"
+    class="_helperText_f78f73 _error_f78f73"
     id="helper_text_1235"
   >
     Hello world!
