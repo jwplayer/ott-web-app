@@ -37,6 +37,7 @@ const config: KnipConfig = {
         'i18next-parser',
         'luxon', // Used in tests
         'playwright', // Used in test configs
+        'axe-playwright', // Used in test configs
         'tsconfig-paths', // Used for e2e test setup
       ],
     },

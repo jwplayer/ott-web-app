@@ -3,6 +3,7 @@
 exports[`<ShareButton> > renders and matches snapshot 1`] = `
 <div>
   <button
+    aria-label="video:share"
     class="_button_ee73f7 _default_ee73f7 _outlined_ee73f7"
     type="button"
   >

@@ -132,7 +132,7 @@ function checkSearchResults(I: CodeceptJS.I, searchTerm: string, expectedResults
   I.dontSee('All Films');
 
   if (expectedResults > 0) {
-    I.see(`${expectedResults} results for "${searchTerm}"`, 'h2');
+    I.see(`${expectedResults} results for "${searchTerm}"`, 'h1');
     I.dontSee(emptySearchPrompt);
     I.dontSee('No results found');
     searchMatches.forEach((result) => I.see(result));

@@ -5,6 +5,11 @@ exports[`Shelf Component tests > Featured shelf 1`] = `
   <div
     class="_shelf_7fdc3e"
   >
+    <h2
+      class="_title_7fdc3e hidden"
+    >
+      Featured Shelf
+    </h2>
     <div
       class="TileSlider _slider_7fdc3e"
     >

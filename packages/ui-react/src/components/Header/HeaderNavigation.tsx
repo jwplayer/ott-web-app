@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
 import classNames from 'classnames';
+import { useTranslation } from 'react-i18next';
 
 import Button from '../Button/Button';
 
@@ -13,6 +14,7 @@ type NavItem = {
 const scrollOffset = 100;
 
 const HeaderNavigation = ({ className, navItems }: { className?: string; navItems: NavItem[] }) => {
+  const { t } = useTranslation('menu');
   const navRef = useRef<HTMLElement>(null);
 
   const focusHandler = (event: React.FocusEvent) => {
@@ -31,7 +33,7 @@ const HeaderNavigation = ({ className, navItems }: { className?: string; navItem
   };
 
   return (
-    <nav className={classNames(styles.nav, className)} ref={navRef}>
+    <nav className={classNames(styles.nav, className)} ref={navRef} aria-label={t('main_navigation')}>
       <ul onFocus={focusHandler}>
         {navItems.map((item, index) => (
           <li key={index}>

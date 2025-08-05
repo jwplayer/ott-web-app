@@ -40,6 +40,7 @@ exports[`<Header /> > renders header 1`] = `
         </button>
       </div>
       <nav
+        aria-label="main_navigation"
         class="_nav_d975ee"
       >
         <ul />
@@ -114,6 +115,7 @@ exports[`<Header /> > renders header with nav buttons 1`] = `
         a
       </div>
       <nav
+        aria-label="main_navigation"
         class="_nav_d975ee"
       >
         <ul>
