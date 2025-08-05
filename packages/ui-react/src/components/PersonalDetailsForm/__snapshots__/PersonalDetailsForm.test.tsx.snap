@@ -361,6 +361,12 @@ exports[`<PersonalDetailsForm> > Renders with errors 1`] = `
       <div
         class="_container_09c1ee _error_09c1ee"
       >
+        <label
+          class="hidden"
+          for="text-field_1235_key1"
+        >
+          personal_details.select_answer
+        </label>
         <select
           aria-describedby="helper_text_1235_key1"
           aria-invalid="true"
@@ -876,6 +882,12 @@ exports[`<PersonalDetailsForm> > Renders without crashing 1`] = `
       <div
         class="_container_09c1ee"
       >
+        <label
+          class="hidden"
+          for="text-field_1235_key1"
+        >
+          personal_details.select_answer
+        </label>
         <select
           aria-describedby="helper_text_1235_key1"
           aria-invalid="false"

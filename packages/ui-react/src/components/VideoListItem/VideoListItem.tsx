@@ -73,7 +73,7 @@ function VideoListItem({ onHover, progress, activeLabel, item, url, loading = fa
         <Image className={posterImageClassNames} image={image} onLoad={() => setImageLoaded(true)} width={320} alt="" />
         <div className={styles.tags}>
           {isLocked && (
-            <div className={classNames(styles.tag, styles.lock)} aria-label={t('card_lock')}>
+            <div className={classNames(styles.tag, styles.lock)} aria-label={t('card_lock')} role="img">
               <Icon icon={Lock} />
             </div>
           )}

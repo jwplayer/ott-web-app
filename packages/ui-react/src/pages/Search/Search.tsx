@@ -110,9 +110,9 @@ const Search = () => {
         </title>
       </Helmet>
       <header className={styles.header}>
-        <h2 id={headingId} aria-live={isFetching ? undefined : 'polite'}>
+        <h1 id={headingId} aria-live={isFetching ? undefined : 'polite'}>
           {title}
-        </h2>
+        </h1>
       </header>
       <CardGrid
         aria-labelledby={headingId}
@@ -122,6 +122,7 @@ const Search = () => {
         accessModel={accessModel}
         isLoggedIn={!!user}
         hasSubscription={!!subscription}
+        headingLevel={2}
       />
     </div>
   );

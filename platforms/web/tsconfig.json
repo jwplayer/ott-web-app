@@ -13,7 +13,8 @@
       "vitest-axe/extend-expect",
       "@types/jwplayer",
       "vite-plugin-pwa/client",
-      "reflect-metadata"
+      "reflect-metadata",
+      "axe-playwright"
     ]
   },
   "include": [

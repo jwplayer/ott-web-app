@@ -1,5 +1,6 @@
 import React, { type InputHTMLAttributes } from 'react';
 import classNames from 'classnames';
+import useOpaqueId from '@jwp/ott-hooks-react/src/useOpaqueId';
 
 import type { FormControlProps } from '../../types/form';
 
@@ -8,7 +9,6 @@ import styles from './Select.module.scss';
 type HTMLSelectProps = Omit<InputHTMLAttributes<HTMLSelectElement>, 'size'>;
 
 type Props = HTMLSelectProps & {
-  id?: string;
   helperTextId?: string;
   options?: (string | { value: string; label: string })[];
   optionsStyle?: string;
@@ -16,22 +16,27 @@ type Props = HTMLSelectProps & {
 } & FormControlProps;
 
 const Select = ({
+  id,
   required,
   className,
   disabled,
+  label,
   defaultLabel,
   options,
   optionsStyle,
   editing = true,
   value,
   onChange,
-  id,
   name,
   error,
   helperTextId,
   type,
   ...rest
 }: Props) => {
+  const opaqueId = useOpaqueId('select', name);
+  const elementId = id || opaqueId;
+  const accessibilityLabel = label || defaultLabel;
+
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     if (!editing) {
       return event.preventDefault();
@@ -56,7 +61,6 @@ const Select = ({
   } as const;
 
   const inputProps: HTMLSelectProps = {
-    id,
     name,
     value,
     disabled,
@@ -69,7 +73,12 @@ const Select = ({
 
   return (
     <div className={classNames({ [containerClassName]: editing })}>
-      <select {...inputProps} onChange={handleChange}>
+      {accessibilityLabel && (
+        <label htmlFor={elementId} className="hidden">
+          {accessibilityLabel}
+        </label>
+      )}
+      <select id={elementId} {...inputProps} onChange={handleChange}>
         {defaultLabel && (
           <option className={classNames(styles.option, optionsStyle)} value="" disabled={required}>
             {defaultLabel}

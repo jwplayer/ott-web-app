@@ -1,0 +1,42 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`<VideoMetaData> > renders and matches snapshot 1`] = `
+<div>
+  <div
+    class="_container_09c1ee"
+  >
+    <label
+      class="hidden"
+      for="select_1235_choices"
+    >
+      Choose an option
+    </label>
+    <select
+      aria-invalid="false"
+      aria-required="false"
+      class="_select_09c1ee"
+      id="select_1235_choices"
+      name="choices"
+    >
+      <option
+        class="_option_09c1ee"
+        value="a"
+      >
+        a
+      </option>
+      <option
+        class="_option_09c1ee"
+        value="b"
+      >
+        b
+      </option>
+      <option
+        class="_option_09c1ee"
+        value="c"
+      >
+        c
+      </option>
+    </select>
+  </div>
+</div>
+`;

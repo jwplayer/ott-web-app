@@ -19,6 +19,7 @@ const ShareButton = ({ title, description, url, className }: Props) => {
   const { t } = useTranslation();
   const breakpoint = useBreakpoint();
   const [hasShared, setHasShared] = useState<boolean>(false);
+  const label = hasShared ? t('video:copied_url') : t('video:share');
 
   const onShareClick = async () => {
     if (typeof navigator.share === 'function') {
@@ -33,7 +34,8 @@ const ShareButton = ({ title, description, url, className }: Props) => {
 
   return (
     <Button
-      label={hasShared ? t('video:copied_url') : t('video:share')}
+      label={label}
+      aria-label={label}
       startIcon={hasShared ? <Icon icon={Check} /> : <Icon icon={Share} />}
       onClick={onShareClick}
       active={hasShared}
