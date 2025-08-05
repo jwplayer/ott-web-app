@@ -1,6 +1,6 @@
 import { testConfigs } from '@jwp/ott-testing/constants';
 
-Feature('Accessibility');
+Feature('Accessibility').tag('@desktop-only');
 
 const disableRetryFailedStep = (test: { disableRetryFailedStep: boolean }): void => {
   test.disableRetryFailedStep = true;
