@@ -1,0 +1,24 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`<Welcome> > renders and matches snapshot 1`] = `
+<div>
+  <div
+    class="_welcome_14ac05"
+  >
+    <h2>
+      checkout.welcome_title
+    </h2>
+    <p>
+      checkout.welcome_description
+    </p>
+    <button
+      class="_button_ee73f7 _primary_ee73f7 _fullWidth_ee73f7 _large_ee73f7"
+      type="button"
+    >
+      <span>
+        checkout.start_watching
+      </span>
+    </button>
+  </div>
+</div>
+`;

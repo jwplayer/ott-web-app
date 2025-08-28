@@ -1,0 +1,16 @@
+{
+  "app_config_learn_more": "Learn more about App Configs",
+  "app_config_not_found": "Invalid or Missing App Config",
+  "cancel_config_id": "Cancel",
+  "click_to_unselect_config": "(click here to unselect this config)",
+  "currently_previewing_config": "You are currently previewing config: '{{configSource}}'",
+  "demo_note": "Note: The chosen app config ID will be stored locally in this browser only. Use the link at the bottom of the main page to clear the setting and return to this dialog.",
+  "enter_8_digits": "The App Config ID should be 8 digits long. Please correct your input and try again.",
+  "enter_a_value": "Please enter an App Config ID",
+  "invalid_config_id_format": "The App Config ID should consist of only numbers and lowercase letters. Please check your input and then try again.",
+  "please_enter_config_id": "Please enter an App Config ID from your JW Account",
+  "submit_config_id": "Submit",
+  "use_the_jwp_dashboard": "Don't have a config? Use the JWP Dashboard to create an App Config or click Cancel to view a generic demo.",
+  "view_generic_demo": "View Generic Demo?",
+  "viewing_config_demo": "This will redirect you to a generic demo app. Are you sure you want to continue?"
+}

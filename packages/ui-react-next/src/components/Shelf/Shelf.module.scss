@@ -1,0 +1,116 @@
+@use '@jwp/ott-ui-react-next/src/styles/mixins/responsive';
+@use '@jwp/ott-ui-react-next/src/styles/variables';
+@use '@jwp/ott-ui-react-next/src/styles/theme';
+
+.shelf {
+  margin: 0 0;
+  font-family: var(--body-alt-font-family);
+
+  &:hover,
+  &:focus-within {
+    .chevron:not(:disabled) {
+      opacity: 1;
+    }
+  }
+}
+
+.loadingTitle {
+  width: 35%;
+  min-height: 28px;
+  margin-bottom: 12px;
+  background-color: theme.$card-loading-bg-color;
+  border-radius: 5px;
+}
+
+.title {
+  width: 100%;
+  min-height: 28px;
+  margin-bottom: variables.$base-spacing;
+  overflow: hidden;
+  font-family: var(--body-alt-font-family);
+  font-weight: var(--body-font-weight-bold);
+  font-size: 24px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+
+  @include responsive.mobile-only() {
+    font-size: 20px;
+  }
+}
+
+.slider {
+  position: static;
+  overflow: visible;
+
+  li > a {
+    white-space: initial;
+  }
+
+  @include responsive.tablet-and-larger() {
+    li {
+      opacity: 1;
+      transition: opacity 0.2s ease;
+
+      &:global(.TileSlider--hidden) {
+        opacity: 0.5;
+      }
+    }
+  }
+}
+
+.chevron {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: center;
+  width: 44px;
+  height: 44px;
+  outline-color: var(--highlight-color, white);
+  cursor: pointer;
+  filter: drop-shadow(1px 1px 2px variables.$black);
+  transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+  appearance: none;
+
+  > svg {
+    width: 40px;
+    height: 40px;
+  }
+
+  &:disabled {
+    opacity: 0.3;
+    pointer-events: none;
+  }
+
+  &:hover {
+    transform: scale(1.2);
+  }
+}
+
+.dots {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 12px;
+}
+
+.dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin: 0 5px;
+  background-color: var(--body-color);
+  border-radius: 50%;
+  opacity: 0.5;
+  transition: all 200ms ease;
+  will-change: transform;
+
+  &.active {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+}
+
+.error {
+  font-family: var(--body-alt-font-family);
+}

@@ -1,0 +1,22 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`<DialogBackButton> > renders and matches snapshot 1`] = `
+<div>
+  <button
+    aria-label="common:back"
+    class="_iconButton_7eff5b _dialogBackButton_85868d"
+    type="button"
+  >
+    <svg
+      aria-hidden="true"
+      class="_icon_596ab4"
+      viewBox="0 0 24 24"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z"
+      />
+    </svg>
+  </button>
+</div>
+`;

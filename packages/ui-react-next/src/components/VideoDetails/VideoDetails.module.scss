@@ -1,0 +1,77 @@
+@use '@jwp/ott-ui-react-next/src/styles/variables';
+@use '@jwp/ott-ui-react-next/src/styles/theme';
+@use '@jwp/ott-ui-react-next/src/styles/mixins/responsive';
+@use '@jwp/ott-ui-react-next/src/styles/mixins/typography';
+
+.videoDetails {
+  font-family: var(--body-font-family), sans-serif;
+}
+
+.metaContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.primaryMetadata {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+  font-size: 16px;
+  line-height: variables.$base-line-height;
+  letter-spacing: 0.15px;
+
+  @include responsive.mobile-only() {
+    font-size: 14px;
+  }
+}
+
+.secondaryMetadata {
+  margin-top: 24px;
+  margin-bottom: 8px;
+  font-size: 20px;
+  line-height: variables.$base-line-height;
+  letter-spacing: 0.5px;
+
+  @include responsive.mobile-and-small-tablet() {
+    order: 1;
+    margin: 4px 0;
+    font-size: 18px;
+  }
+}
+
+.description {
+  margin-bottom: 24px;
+}
+
+.buttonBar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: center;
+  gap: calc(variables.$base-spacing / 2);
+  width: 100%;
+  max-width: 400px;
+
+  > button {
+    flex: 1;
+    justify-content: center;
+
+    &:first-child {
+      flex-basis: 100%;
+    }
+  }
+
+  @include responsive.mobile-and-small-tablet() {
+    max-width: none;
+  }
+}
+
+.playIcon {
+  position: absolute;
+  top: calc(50% - 60px);
+  left: calc(50% - 35px);
+  padding: 25px 30px;
+  font-size: xx-large;
+  border: 3px solid white;
+  border-radius: 100%;
+}

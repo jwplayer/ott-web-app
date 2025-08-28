@@ -1,0 +1,77 @@
+@use '@jwp/ott-ui-react-next/src/styles/variables';
+@use '@jwp/ott-ui-react-next/src/styles/theme';
+
+.container {
+  display: flex;
+  width: 100%;
+
+  color: theme.$text-field-resting-color;
+
+  background-color: theme.$text-field-bg-color;
+  border: 1px solid theme.$text-field-resting-border-color;
+  border-radius: 4px;
+  transition: border 0.2s ease;
+
+  &.error {
+    border-color: theme.$text-field-error-color;
+  }
+
+  &.disabled {
+    opacity: 0.7;
+  }
+
+  &.leftControl .input {
+    padding-left: 0;
+  }
+
+  &.rightControl .input {
+    padding-right: 0;
+  }
+
+  &:focus-within {
+    color: theme.$text-field-active-color;
+    border-color: theme.$text-field-active-border-color;
+  }
+
+  &:hover {
+    &:not(.disabled) {
+      background-color: theme.$text-field-hover-bg-color;
+      border-color: theme.$text-field-hover-border-color;
+    }
+  }
+}
+
+.control {
+  display: flex;
+  align-items: center;
+}
+
+.control > button, .control > div {
+  width: 48px;
+  height: 48px;
+}
+
+.input {
+  width: 100%;
+  min-height: 48px;
+  padding: 14px 16px;
+  color: inherit;
+  font-size: 16px;
+  line-height: variables.$base-line-height;
+  background: transparent;
+  border: none;
+  outline: none;
+  appearance: none;
+
+  &[type='password'] {
+    &::-ms-reveal {
+      display: none;
+    }
+  }
+
+  &[readonly] {
+    min-height: auto;
+    margin: 1em 0;
+    padding: 0;
+  }
+}

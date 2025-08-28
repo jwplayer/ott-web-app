@@ -1,0 +1,62 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`<Card> > should render anchor tag 1`] = `
+<div>
+  <a
+    class="_card_526f9d"
+    data-testid="This is a movie"
+    href="https://test.dummy.jwplayer.com"
+    role="button"
+    tabindex="0"
+  >
+    <div
+      class="_titleContainer_526f9d"
+    >
+      <h3
+        class="_title_526f9d"
+      >
+        This is a movie
+      </h3>
+    </div>
+    <div
+      class="_poster_526f9d _aspect169_526f9d"
+    >
+      <img
+        alt=""
+        class="_posterImage_526f9d _image_b5fb05"
+        src="http://movie.jpg?width=320"
+      />
+      <div
+        class="_meta_526f9d"
+      >
+        <div
+          class="_tags_526f9d"
+        >
+          <div
+            aria-label="card_lock"
+            class="_tag_526f9d _lock_526f9d"
+            role="img"
+          >
+            <svg
+              aria-hidden="true"
+              class="_icon_596ab4"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M12,17A2,2 0 0,0 14,15C14,13.89 13.1,13 12,13A2,2 0 0,0 10,15A2,2 0 0,0 12,17M18,8A2,2 0 0,1 20,10V20A2,2 0 0,1 18,22H6A2,2 0 0,1 4,20V10C4,8.89 4.9,8 6,8H7V6A5,5 0 0,1 12,1A5,5 0 0,1 17,6V8H18M12,3A3,3 0 0,0 9,6V8H15V6A3,3 0 0,0 12,3Z"
+                fill="currentColor"
+              />
+            </svg>
+          </div>
+          <div
+            class="_tag_526f9d"
+          >
+            2 common:abbreviation.minutes
+          </div>
+        </div>
+      </div>
+    </div>
+  </a>
+</div>
+`;

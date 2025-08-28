@@ -1,0 +1,21 @@
+@use '@jwp/ott-ui-react-next/src/styles/variables';
+@use '@jwp/ott-ui-react-next/src/styles/mixins/responsive';
+
+.epgContainer {
+  padding: calc(variables.$base-spacing * 2) 0;
+
+  @include responsive.mobile-and-tablet() {
+    padding: variables.$base-spacing 0;
+  }
+}
+
+.catchupButton {
+  @include responsive.mobile-and-tablet() {
+    flex: 2 !important;
+    white-space: nowrap;
+  }
+}
+
+.tag {
+  margin-right: calc(#{variables.$base-spacing} / 2);
+}

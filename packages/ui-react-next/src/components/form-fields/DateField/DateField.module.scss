@@ -1,0 +1,64 @@
+@use '@jwp/ott-ui-react-next/src/styles/variables';
+@use '@jwp/ott-ui-react-next/src/styles/theme';
+
+@use '../../Input/Input.module.scss';
+
+.dateField {
+  width: 100%;
+  margin-bottom: 8px;
+
+  &.error {
+    .container {
+      border-color: theme.$text-field-error-color;
+    }
+  }
+
+  &.disabled {
+    .container {
+      opacity: 0.7;
+    }
+  }
+
+  &:hover {
+    &:not(.disabled) {
+      .container {
+        background-color: theme.$text-field-hover-bg-color;
+        border-color: theme.$text-field-hover-border-color;
+      }
+    }
+  }
+}
+
+// below is inferred and extended from Input.module.scss
+.container {
+  display: flex;
+  align-items: center;
+}
+
+.input {
+  text-align: center;
+
+  &::-webkit-inner-spin-button {
+    display: none;
+  }
+
+  &[name="date"] {
+    width: 43px;
+    padding-right: 4px;
+  }
+
+  &[name="month"] {
+    width: 35px;
+    padding-right: 4px;
+    padding-left: 4px;
+  }
+
+  &[name="year"] {
+    width: 60px;
+    padding-left: 4px;
+  }
+}
+
+.hiddenInput {
+  display: none;
+}

@@ -1,0 +1,18 @@
+.infoSmallScreenReorder {
+  // Re-ordering the elements on small screens
+  display: flex;
+  flex-direction: column;
+
+  [class^='_title'] {
+    order: -1;
+    margin-bottom: 24px;
+  }
+
+  [class^='_buttonBar'] {
+    order: -1;
+  }
+
+  [class^='_metaContainer'] {
+    order: 99;
+  }
+}

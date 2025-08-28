@@ -1,0 +1,22 @@
+@use '@jwp/ott-ui-react-next/src/styles/variables';
+@use '@jwp/ott-ui-react-next/src/styles/theme';
+
+.formField {
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+.label {
+  display: block;
+  margin-bottom: 4px;
+  font-weight: var(--body-font-weight-bold);
+  text-align: left;
+
+  > span {
+    margin-left: 4px;
+    font-family: Verdana, sans-serif;
+    font-weight: normal;
+    font-size: 12px;
+    vertical-align: top;
+  }
+}

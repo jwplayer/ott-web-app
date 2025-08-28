@@ -1,0 +1,40 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`<CreditCardCVCField> > renders and matches snapshot 1`] = `
+<div>
+  <div
+    class="_formField_aa17b3 _textField_63409b directPostSecurityCode"
+  >
+    <label
+      class="_label_aa17b3"
+      for="text-field_1235_cardcvc"
+    >
+      payment.security_code
+      <span
+        aria-hidden="true"
+      >
+        *
+      </span>
+    </label>
+    <div
+      class="_container_9af53b"
+    >
+      <input
+        aria-describedby="helper_text_1235_cardcvc"
+        aria-invalid="false"
+        aria-label="payment.security_code"
+        aria-required="true"
+        autocomplete="cc-csc"
+        class="_input_9af53b"
+        id="text-field_1235_cardcvc"
+        name="cardCVC"
+        pattern="\\d*"
+        placeholder="###"
+        required=""
+        type="text"
+        value=""
+      />
+    </div>
+  </div>
+</div>
+`;

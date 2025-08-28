@@ -1,0 +1,123 @@
+@use '@jwp/ott-ui-react-next/src/styles/variables';
+@use '@jwp/ott-ui-react-next/src/styles/theme';
+@use '@jwp/ott-ui-react-next/src/styles/mixins/responsive';
+
+$base-z-index: variables.$epg-z-index;
+$cover-z-index: $base-z-index + 1;
+$control-z-index: $base-z-index + 2;
+
+.epg {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: calc(variables.$base-spacing * 3) 0 calc(variables.$base-spacing * 3) calc(variables.$base-spacing * 3);
+  background-color: var(--epg-background-color, var(--body-background-color));
+
+  // Planby ScrollContainer
+  &.firstFrame > div:nth-child(2) > div > div:nth-child(2) {
+    scroll-behavior: auto !important;
+  }
+
+  // EpgContainer
+  > div:nth-child(2) {
+    padding: 0 !important;
+
+    // Planby Wrapper
+    > div {
+      // Planby Spacer
+      > div:first-child {
+        z-index: variables.$epg-z-index;
+      }
+
+      // Planby ScrollContainer
+      > div:nth-child(2) {
+        overflow-y: hidden !important;
+        scrollbar-width: none !important;
+
+        &::-webkit-scrollbar {
+          display: none !important;
+        }
+
+        // Planby Timeline indicator
+        > div:first-child {
+          z-index: $cover-z-index;
+          box-shadow: 0 8px 10px rgb(0 0 0 / 14%), 0 3px 14px rgb(0 0 0 / 12%), 0 4px 5px rgb(0 0 0 / 20%);
+        }
+
+        // Planby Sidebar with Channels
+        > div[data-testid='sidebar'] {
+          z-index: $cover-z-index;
+        }
+      }
+    }
+  }
+
+  @include responsive.tablet-only() {
+    padding: calc(variables.$base-spacing * 2) 0 calc(variables.$base-spacing * 2) calc(variables.$base-spacing * 2);
+  }
+
+  @include responsive.mobile-only() {
+    padding: variables.$base-spacing 0 variables.$base-spacing variables.$base-spacing;
+  }
+}
+
+.epgSpinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 1;
+  transform: translate(-50%, -50%);
+}
+
+.timelineControl {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  color: variables.$white;
+
+  @include responsive.mobile-only() {
+    position: absolute;
+    z-index: $control-z-index;
+    width: 60px;
+    height: 60px;
+  }
+}
+
+.timelineNowButton {
+  justify-content: center;
+  width: 160px;
+  margin-right: auto;
+
+  @include responsive.mobile-only() {
+    width: 60px;
+  }
+}
+
+.leftControl,
+.rightControl {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 45px;
+  height: 45px;
+  cursor: pointer;
+  transition: transform 0.3s ease-out;
+
+  > svg {
+    width: 35px;
+    height: 35px;
+  }
+
+  &:hover {
+    transform: scale(1.2);
+  }
+
+  // hide on mobile, swiping is much more convenient
+  @include responsive.mobile-only() {
+    display: none;
+  }
+}
+
+.leftControl {
+  margin-right: variables.$base-spacing;
+}

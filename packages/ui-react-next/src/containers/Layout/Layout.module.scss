@@ -1,0 +1,14 @@
+@use '@jwp/ott-ui-react-next/src/styles/variables';
+@use '@jwp/ott-ui-react-next/src/styles/theme';
+
+.layout {
+  position: relative;
+  z-index: 0;
+}
+
+.main {
+  height: 100%;
+  min-height: calc(100vh - variables.$header-height - variables.$footer-height);
+  padding-top: 0.1px;
+  outline: none;
+}

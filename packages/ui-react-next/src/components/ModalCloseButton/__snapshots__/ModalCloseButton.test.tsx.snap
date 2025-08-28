@@ -1,0 +1,26 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`<ModalCloseButton> > renders and matches snapshot 1`] = `
+<div>
+  <button
+    aria-label="close_modal"
+    class="_iconButton_7eff5b _modalCloseButton_421b56"
+    type="button"
+  >
+    <svg
+      aria-hidden="true"
+      class="_icon_596ab4"
+      viewBox="0 0 24 24"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+      />
+      <path
+        d="M0 0h24v24H0z"
+        fill="none"
+      />
+    </svg>
+  </button>
+</div>
+`;

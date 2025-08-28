@@ -1,0 +1,39 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`<CreditCardExpiryField> > renders and matches snapshot 1`] = `
+<div>
+  <div
+    class="_formField_aa17b3 _textField_63409b directPostExpiryDate"
+  >
+    <label
+      class="_label_aa17b3"
+      for="text-field_1235_cardexpiry"
+    >
+      payment.credit_card_expiry_date
+      <span
+        aria-hidden="true"
+      >
+        *
+      </span>
+    </label>
+    <div
+      class="_container_9af53b"
+    >
+      <input
+        aria-describedby="helper_text_1235_cardexpiry"
+        aria-invalid="false"
+        aria-required="true"
+        autocomplete="cc-exp"
+        class="_input_9af53b"
+        id="text-field_1235_cardexpiry"
+        name="cardExpiry"
+        pattern="\\d*"
+        placeholder="MM/YY"
+        required=""
+        type="text"
+        value=""
+      />
+    </div>
+  </div>
+</div>
+`;

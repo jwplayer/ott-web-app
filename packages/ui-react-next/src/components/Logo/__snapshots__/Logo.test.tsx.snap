@@ -1,0 +1,15 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`<Logo/> > renders and matches snapshot 1`] = `
+<div>
+  <a
+    href="/"
+  >
+    <img
+      alt="logo"
+      class="_logo_5ff345"
+      src="123"
+    />
+  </a>
+</div>
+`;

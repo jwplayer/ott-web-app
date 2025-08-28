@@ -1,0 +1,178 @@
+@use '@jwp/ott-ui-react-next/src/styles/variables';
+@use '@jwp/ott-ui-react-next/src/styles/theme';
+@use '@jwp/ott-ui-react-next/src/styles/mixins/responsive';
+@use '@jwp/ott-ui-react-next/src/styles/mixins/typography';
+
+$max-height: 56vw; // To maintain acceptable aspect ratio's
+
+.hero {
+  display: flex;
+  max-width: 100vw;
+  height: 60vh;
+  max-height: $max-height; 
+  padding: calc(variables.$base-spacing * 3) calc(variables.$base-spacing * 3) calc(variables.$base-spacing * 2);
+  font-family: var(--body-font-family), sans-serif;
+  text-shadow: var(--body-text-shadow);
+}
+
+.info {
+  position: relative;
+  align-self: flex-end;
+  width: 50%;
+  max-width: 650px;
+}
+
+.title {
+  @include typography.video-title-base() {
+    margin-bottom: calc(variables.$base-spacing / 2);
+  }
+}
+
+.description {
+  font-family: var(--body-font-family);
+  font-size: 18px;
+  line-height: variables.$base-line-height;
+  letter-spacing: 0.15px;
+}
+
+.poster {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: -1;
+  width: 80vw;
+  height: calc(60vh + variables.$header-height + 40px);
+  max-height: $max-height;
+  object-fit: cover;
+  object-position: 30% 30%;
+
+  -webkit-mask-image: radial-gradient(123% 123% at 100% 0%, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 60%, rgba(0, 0, 0, 0) 100%);
+  mask-image: radial-gradient(123% 123% at 100% 0%, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 60%, rgba(0, 0, 0, 0) 100%);
+}
+
+.posterFadeMenu {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: -1;
+  height: 120px;
+  background: linear-gradient(0deg, transparent, var(--body-background-color, variables.$white));
+}
+
+.posterBackground {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: -1;
+  height: calc(60vh + variables.$header-height + 40px);
+  max-height: $max-height;
+  background: rgba(0,0,0,0.2);
+  -webkit-mask-image: linear-gradient(to bottom, var(--body-background-color, variables.$white) 85%, transparent 100%);
+  mask-image: linear-gradient(to bottom, var(--body-background-color, variables.$white) 85%, transparent 100%);
+}
+
+.posterFadeBottom {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: -1;
+  height: calc(60vh + variables.$header-height + 40px);
+  max-height: $max-height;
+  background: linear-gradient(to bottom, transparent 75%, var(--body-background-color, variables.$white) 100%);
+}
+
+.posterFadeLeft {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: -1;
+  width: 80vw;
+  height: calc(60vh + variables.$header-height + 40px);
+  max-height: $max-height;
+  background: linear-gradient(to left, transparent 60%, var(--body-background-color, variables.$white) 98%);
+}
+
+@include responsive.tablet-only() {
+  .hero {
+    padding: calc(variables.$base-spacing * 2);
+  }
+  
+  .hero, .poster, .posterBackground, .posterFadeBottom {
+    width: 100vw;
+    height: 75vh;
+    max-height: 75vw;
+  }
+
+  .info {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .poster {
+    -webkit-mask-image: linear-gradient(to bottom, black 0%, rgb(0 0 0 / 0.8) 30%, transparent 100%);
+    mask-image: linear-gradient(to bottom, black 0%, rgb(0 0 0 / 0.8) 30%, transparent 100%);
+
+    max-height: $max-height;
+  }
+
+  .posterFadeBottom {
+    max-height: $max-height;
+  }
+
+  .posterFadeLeft {
+    display: none;
+  }
+}
+
+@include responsive.mobile-and-small-tablet() {
+  .hero, .poster, .posterBackground, .posterFadeBottom {
+    height: auto;
+    max-height: 100%;
+  }
+  
+  .hero {
+    min-height: 50vh;
+    padding: variables.$base-spacing calc(variables.$base-spacing * 2);
+  }
+
+  .info {
+    align-self: auto;
+    width: 100%;
+    padding-top: 225px;
+  }
+
+  .poster {
+    width: 100vw;
+    height: $max-height;
+    object-position: center center;
+
+    -webkit-mask-image: linear-gradient(to bottom, black 0%, rgb(0 0 0 / 0.8) 40%, transparent 100%);
+    mask-image: linear-gradient(to bottom, black 0%, rgb(0 0 0 / 0.8) 40%, transparent 100%);
+  }
+
+  .posterBackground {
+    height: calc(50vh + variables.$header-height + 40px);
+  }
+
+  .posterFadeLeft {
+    display: none;
+  }
+}
+
+
+@include responsive.mobile-only() {
+  .hero {
+    padding: variables.$base-spacing;
+  }
+
+  .poster {
+    left: 0;
+    height: 80vw;
+
+    -webkit-mask-image: linear-gradient(to bottom, black 0%, rgb(0 0 0 / 0.8) 55%, transparent 100%);
+    mask-image: linear-gradient(to bottom, black 0%, rgb(0 0 0 / 0.8) 55%, transparent 100%);
+  }
+}

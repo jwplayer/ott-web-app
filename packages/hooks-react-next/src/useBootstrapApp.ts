@@ -1,0 +1,61 @@
+import { useQuery, useQueryClient } from 'react-query';
+import type { Config } from '@jwp/ott-common-next/types/config';
+import type { Settings } from '@jwp/ott-common-next/types/settings';
+import { getModule } from '@jwp/ott-common-next/src/modules/container';
+import AppController from '@jwp/ott-common-next/src/controllers/AppController';
+import type { AppError } from '@jwp/ott-common-next/src/utils/error';
+import { CACHE_TIME, STALE_TIME } from '@jwp/ott-common-next/src/constants';
+import { logDebug } from '@jwp/ott-common-next/src/logger';
+import { useTranslation } from 'react-i18next';
+import { useEffect } from 'react';
+
+const applicationController = getModule(AppController);
+
+type Resources = {
+  config: Config;
+  configSource: string | undefined;
+  settings: Settings;
+};
+
+export type OnReadyCallback = (config: Config | undefined) => void;
+
+export const useBootstrapApp = (url: string, onReady: OnReadyCallback) => {
+  const queryClient = useQueryClient();
+  const { i18n } = useTranslation();
+
+  const refreshEntitlements = () => queryClient.invalidateQueries({ queryKey: ['entitlements'] });
+
+  const { data, isLoading, error, isSuccess, refetch } = useQuery<Resources, Error | AppError>(
+    'config-init',
+    () => applicationController.initializeApp(url, i18n.language, refreshEntitlements),
+    {
+      refetchInterval: false,
+      retry: 1,
+      onSettled: (query) => {
+        logDebug('Bootstrap', 'Initialized application', { ...query });
+        onReady(query?.config);
+      },
+      cacheTime: CACHE_TIME,
+      staleTime: STALE_TIME,
+    },
+  );
+
+  useEffect(() => {
+    if (data) {
+      return onReady(data.config);
+    }
+    if (!isLoading) {
+      refetch();
+    }
+  }, [data, isLoading, refetch, onReady]);
+
+  return {
+    data,
+    isLoading,
+    error,
+    isSuccess,
+    refetch,
+  };
+};
+
+export type BootstrapData = ReturnType<typeof useBootstrapApp>;

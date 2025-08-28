@@ -1,0 +1,28 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`<PaymentFailed> > renders and matches snapshot 1`] = `
+<div>
+  <div>
+    <h2
+      class="_title_a5ae40"
+    >
+      checkout.payment_error
+    </h2>
+    <p
+      class="_message_a5ae40"
+    >
+      Error message
+    </p>
+    <div>
+      <button
+        class="_button_ee73f7 _primary_ee73f7 _fullWidth_ee73f7 _large_ee73f7"
+        type="button"
+      >
+        <span>
+          checkout.close
+        </span>
+      </button>
+    </div>
+  </div>
+</div>
+`;

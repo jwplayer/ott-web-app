@@ -1,0 +1,32 @@
+{
+  "name": "@jwp/ott-hooks-react-next",
+  "version": "4.30.0",
+  "private": true,
+  "scripts": {
+    "lint:ts": "tsc --pretty --noEmit -p ./",
+    "test": "TZ=UTC LC_ALL=en_US.UTF-8 vitest run",
+    "test-update": "TZ=UTC LC_ALL=en_US.UTF-8 vitest run --update",
+    "test-watch": "TZ=UTC LC_ALL=en_US.UTF-8 vitest"
+  },
+  "dependencies": {
+    "@jwp/ott-common-next": "*",
+    "date-fns": "^4.1.0",
+    "i18next": "^24.2.2",
+    "planby": "^0.3.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-i18next": "^15.4.1",
+    "react-query": "^3.39.3",
+    "reflect-metadata": "^0.2.2",
+    "yup": "^1.6.1"
+  },
+  "devDependencies": {
+    "@jwp/ott-testing": "*",
+    "@testing-library/react": "^14.3.1",
+    "@types/jwplayer": "^8.31.3",
+    "eslint-config-jwp": "*",
+    "jsdom": "^26.0.0",
+    "vi-fetch": "^0.8.0",
+    "vitest": "^3.0.8"
+  }
+}

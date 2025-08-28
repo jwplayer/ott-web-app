@@ -1,0 +1,76 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`<Layout /> > renders layout 1`] = `
+<div>
+  <div
+    class="_layout_bfd3ee"
+  >
+    <div>
+      <header
+        class="_header_d975ee _static_d975ee"
+      >
+        <div
+          class="_container_d975ee"
+        >
+          <a
+            class="_skipToContent_d975ee"
+            href="#content"
+          >
+            skip_to_content
+          </a>
+          <div
+            class="_menu_d975ee"
+          >
+            <button
+              aria-expanded="false"
+              aria-label="open_menu"
+              class="_iconButton_7eff5b _iconButton_d975ee"
+              type="button"
+            >
+              <svg
+                aria-hidden="true"
+                class="_icon_596ab4"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M0 0h24v24H0V0z"
+                  fill="none"
+                />
+                <path
+                  d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"
+                />
+              </svg>
+            </button>
+          </div>
+          <nav
+            class="_nav_d975ee"
+          >
+            <ul>
+              <li>
+                <a
+                  aria-current="page"
+                  class="_button_ee73f7 _default_ee73f7 _text_ee73f7 _active_ee73f7 _navButton_d975ee"
+                  href="/"
+                >
+                  <span>
+                    home
+                  </span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+          <div
+            class="_actions_d975ee"
+          />
+        </div>
+      </header>
+      <main
+        class="_main_bfd3ee"
+        id="content"
+        tabindex="-1"
+      />
+    </div>
+  </div>
+</div>
+`;

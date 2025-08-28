@@ -1,0 +1,95 @@
+@use '@jwp/ott-ui-react-next/src/styles/variables';
+@use '@jwp/ott-ui-react-next/src/styles/theme';
+@use '@jwp/ott-ui-react-next/src/styles/mixins/responsive';
+@use '@jwp/ott-ui-react-next/src/styles/mixins/typography';
+
+.details {
+  padding: 24px 0;
+  font-family: var(--body-font-family), sans-serif;
+  font-weight: 400;
+  text-shadow: var(--body-text-shadow);
+
+  @include responsive.desktop-small-only() {
+    padding: 24px 0;
+  }
+
+  @include responsive.tablet-only() {
+    padding: 24px 0 0;
+  }
+
+  @include responsive.mobile-only() {
+    padding: variables.$base-spacing 0 0;
+  }
+}
+
+.inlinePlayerMetadata {
+  display: flex;
+  align-items: center;
+  gap: variables.$base-spacing;
+  margin-bottom: variables.$base-spacing;
+  padding-bottom: variables.$base-spacing;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+
+  @include responsive.mobile-and-small-tablet() {
+    flex-wrap: wrap;
+    padding-bottom: 0;
+    border-bottom: 0;
+  }
+}
+
+.title {
+  @include typography.video-title-base() {
+    margin-bottom: variables.$base-spacing;
+  }
+
+  @include responsive.mobile-only() {
+    margin-bottom: 0;
+  }
+}
+
+div.title {
+  font-weight: initial;
+}
+
+.primaryMetadata {
+  display: flex;
+  flex: 1;
+  flex-basis: 100%;
+  align-items: center;
+  margin-right: auto;
+  margin-bottom: 0;
+  font-size: 16px;
+  line-height: variables.$base-line-height;
+  letter-spacing: 0.15px;
+}
+
+.buttonBar {
+  display: flex;
+  gap: calc(variables.$base-spacing / 2);
+  flex: 1;
+
+  > button {
+    white-space: nowrap;
+  }
+
+  @include responsive.mobile-and-small-tablet() {
+    flex-wrap: wrap;
+
+    > button:nth-last-child(3) {
+      flex-basis: 100%;
+    }
+
+    > button:nth-last-child(2),
+    > button:nth-last-child(1) {
+      flex: 1;
+    }
+  }
+}
+
+.description {
+  min-height: 21px;
+  margin-bottom: 24px;
+  font-size: 18px;
+  line-height: variables.$base-line-height;
+  letter-spacing: 0.5px;
+}

@@ -1,0 +1,21 @@
+{
+  "adyen_order_unknown": "Bestelling is onbekend",
+  "check_your_config": "Er was een probleem bij het ophalen van de applicatieconfiguratie. Probeer het later opnieuw. Als het probleem blijft bestaan, neem contact op met de technische ondersteuning.",
+  "check_your_settings": "Er was een probleem bij het laden van de standaardinstellingen. Probeer het later opnieuw. Als het probleem blijft bestaan, neem contact op met de technische ondersteuning.",
+  "config_invalid": "Ongeldige of ontbrekende configuratie",
+  "empty_shelves_description": "Onze excuses, maar er is geen content beschikbaar in uw regio.",
+  "empty_shelves_heading": "Geen content beschikbaar",
+  "generic_error_description": "Probeer deze pagina te vernieuwen of kom later terug.",
+  "generic_error_heading": "Er was een probleem bij het laden van de applicatie",
+  "learn_more": "Meer informatie",
+  "notfound_error_description": "Deze pagina bestaat niet.",
+  "notfound_error_heading": "Niet gevonden",
+  "playlist_not_found": "Afspeellijst niet gevonden",
+  "settings_invalid": "Ongeldige of ontbrekende instellingen",
+  "unknown_error": "Onbekende fout",
+  "validation_form_error": {
+    "other": "Corrigeer uw fouten voordat u verdergaat.",
+    "required": "Vul alle verplichte velden in voordat u verdergaat."
+  },
+  "video_not_found": "Video niet gevonden"
+}

@@ -1,0 +1,21 @@
+{
+  "adyen_order_unknown": "Commande inconnue",
+  "check_your_config": "Un problème est survenu lors de la récupération de la configuration de l'application. Réessayez plus tard. Si le problème persiste, contactez le support technique.",
+  "check_your_settings": "Un problème est survenu lors du chargement des paramètres par défaut. Réessayez plus tard. Si le problème persiste, contactez le support technique.",
+  "config_invalid": "Configuration invalide ou manquante",
+  "empty_shelves_description": "Nous nous excusons, mais aucun contenu n'est disponible dans votre région.",
+  "empty_shelves_heading": "Aucun contenu disponible",
+  "generic_error_description": "Essayez de rafraîchir cette page ou revenez plus tard.",
+  "generic_error_heading": "Un problème est survenu lors du chargement de l'application",
+  "learn_more": "En savoir plus",
+  "notfound_error_description": "Cette page n'existe pas.",
+  "notfound_error_heading": "Introuvable",
+  "playlist_not_found": "Playlist introuvable",
+  "settings_invalid": "Paramètres invalides ou manquants",
+  "unknown_error": "Erreur inconnue",
+  "validation_form_error": {
+    "other": "Veuillez corriger vos erreurs avant de continuer.",
+    "required": "Veuillez remplir tous les champs obligatoires avant de continuer."
+  },
+  "video_not_found": "Vidéo introuvable"
+}

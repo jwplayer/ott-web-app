@@ -1,0 +1,37 @@
+{
+  "abbreviation": {
+    "hours": "h",
+    "minutes": "min"
+  },
+  "alert": {
+    "close": "Fermer",
+    "success": "Succès",
+    "title": "Une erreur s'est produite"
+  },
+  "back": "Retour",
+  "card_lock": "Élément verrouillé",
+  "close_modal": "Fermer le panneau",
+  "confirmation_dialog": {
+    "close": "Annuler",
+    "confirm": "Oui"
+  },
+  "default_description": "JW OTT Webapp est un site vidéo open-source généré dynamiquement.",
+  "default_site_name": "Mon application OTT",
+  "filter_videos_by": "Filtrer les vidéos par {{name}}",
+  "filter_videos_by_genre": "Filtrer les vidéos par genre",
+  "home": "Accueil",
+  "live": "EN DIRECT",
+  "more_info": "Plus d'informations",
+  "now": "Maintenant",
+  "play_item": "Lire {{title}}",
+  "scheduled": "Prévu",
+  "sign_in": "Se connecter",
+  "sign_up": "S'inscrire",
+  "slide_indicator": "Page {{page}} sur {{pages}}",
+  "slide_left": "Glisser à gauche",
+  "slide_next": "Diapositive suivante",
+  "slide_previous": "Diapositive précédente",
+  "slide_right": "Glisser à droite",
+  "slide_to": "Aller à l'élément {{item}} sur {{items}}",
+  "videoplayer": "Lecteur vidéo"
+}

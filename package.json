@@ -35,6 +35,7 @@
     "test-update": "TZ=UTC LC_ALL=en_US.UTF-8 vitest run -u",
     "test-watch": "TZ=UTC LC_ALL=en_US.UTF-8 vitest",
     "web": "yarn --cwd platforms/web",
+    "web-next": "yarn --cwd platforms/web-next",
     "access-bridge": "yarn --cwd platforms/access-bridge"
   },
   "devDependencies": {

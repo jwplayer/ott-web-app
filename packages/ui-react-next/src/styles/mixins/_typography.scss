@@ -1,0 +1,20 @@
+@use '../variables';
+@use 'responsive';
+
+@mixin video-title-base($font-size: 34px) {
+  font-family: var(--body-alt-font-family), sans-serif;
+  font-weight: var(--body-font-weight-bold);
+  font-size: $font-size;
+  line-height: 1.3em;
+  letter-spacing: 0.25px;
+
+  text-shadow: var(--body-text-shadow);
+
+  @content;
+
+  @include responsive.mobile-only() {
+    font-size: $font-size * 0.8;
+    line-height: $font-size * 0.8;
+    letter-spacing: 0.15px;
+  }
+}

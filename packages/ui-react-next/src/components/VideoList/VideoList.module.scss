@@ -1,0 +1,22 @@
+@use '@jwp/ott-ui-react-next/src/styles/variables';
+@use '@jwp/ott-ui-react-next/src/styles/theme';
+@use '@jwp/ott-ui-react-next/src/styles/mixins/responsive';
+@use '@jwp/ott-ui-react-next/src/styles/mixins/typography';
+
+.container {
+  height: 100%;
+}
+
+.content {
+  @include responsive.desktop-only() {
+    height: 100%;
+    padding: variables.$base-spacing calc(variables.$base-spacing * 2);
+    overflow-y: auto;
+  }
+}
+
+.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}

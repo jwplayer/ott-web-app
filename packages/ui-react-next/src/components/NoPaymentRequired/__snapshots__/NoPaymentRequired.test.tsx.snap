@@ -1,0 +1,21 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`<NoPaymentRequired> > renders and matches snapshot 1`] = `
+<div>
+  <div
+    class="_noPaymentRequired_0f8dcd"
+  >
+    <p>
+      checkout.no_payment_needed
+    </p>
+    <button
+      class="_button_ee73f7 _primary_ee73f7 _fullWidth_ee73f7 _large_ee73f7"
+      type="button"
+    >
+      <span>
+        checkout.continue
+      </span>
+    </button>
+  </div>
+</div>
+`;

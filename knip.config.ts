@@ -15,6 +15,29 @@ const config: KnipConfig = {
         'codecept:*',
       ],
     },
+    'packages/common-next': {
+      entry: ['src/**/*'],
+      ignoreDependencies: [
+        '@inplayer-org/inplayer.js',
+      ],
+    },
+    'packages/ui-react-next': {
+      entry: ['src/**/*'],
+      ignoreDependencies: [
+        '@types/dompurify', // Somehow this is not recognised
+        'sass-embedded', // Used in Vite
+      ],
+    },
+    'platforms/web-next': {
+      ignoreDependencies: [
+        '@svgr/webpack',
+        'tailwindcss',
+        'broadcast-channel',
+        'postcss',
+        'webpack',
+        'react-i18next'
+      ],
+    },
     'packages/common': {
       entry: ['src/**/*'],
     },

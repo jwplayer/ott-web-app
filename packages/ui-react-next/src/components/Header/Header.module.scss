@@ -1,0 +1,224 @@
+@use '@jwp/ott-ui-react-next/src/styles/variables';
+@use '@jwp/ott-ui-react-next/src/styles/theme';
+@use '@jwp/ott-ui-react-next/src/styles/accessibility';
+@use '@jwp/ott-ui-react-next/src/styles/mixins/responsive';
+@use '@jwp/ott-ui-react-next/src/styles/mixins/utils';
+
+//
+// Header
+// --------------------------------
+
+.header {
+  height: variables.$header-height;
+  padding: 0 calc(variables.$base-spacing * 3);
+  color: var(--header-contrast-color, --body-color, variables.$white);
+  background: var(--header-background, transparent);
+
+  //
+  // Make header fixed
+  //
+  &.fixed {
+    position: fixed;
+    z-index: variables.$header-z-index;
+    width: 100%;
+  }
+
+  //
+  // Make header static
+  //
+  &.static {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+  }
+}
+
+//
+// Header container
+//
+.container {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: variables.$base-spacing;
+  height: 100%;
+}
+
+//
+// Header menu
+//
+.menu {
+  display: none;
+}
+
+//
+// Header menu
+//
+.iconButton {
+  width: 36px;
+  height: 36px;
+
+  > svg {
+    fill: currentColor;
+  }
+}
+
+//
+// Header brand
+//
+.brand {
+  align-self: center;
+}
+
+//
+// Header navigation
+//
+.nav {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  padding: calc(variables.$base-spacing / 2) 0;
+  overflow: hidden;
+
+  > ul {
+    margin: 0;
+    padding: 0;
+    white-space: nowrap;
+    list-style-type: none;
+
+    li {
+      display: inline-block;
+    }
+  }
+
+  a {
+    height: 36px;
+    min-height: 36px;
+    margin: 0 6px;
+    padding: 0 calc(#{variables.$base-spacing} / 2);
+    font-weight: var(--body-font-weight-bold);
+    font-size: 18px;
+  }
+}
+
+.skipToContent {
+  position: absolute;
+  top: 50px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  color: var(--highlight-contrast-color, black);
+  font-weight: bold;
+  border-radius: 20px;
+  clip: rect(1px, 1px, 1px, 1px);
+
+  @include accessibility.focus-visible() using ($value) {
+    box-shadow: $value;
+  }
+
+  &:focus {
+    z-index: 1;
+    width: auto;
+    height: auto;
+    padding: calc(#{variables.$base-spacing} / 2);
+    white-space: nowrap;
+    text-decoration: none;
+    background: var(--highlight-color, white);
+    box-shadow: theme.$panel-box-shadow;
+    clip: auto;
+  }
+}
+
+//
+// Header actions
+//
+.actions {
+  position: relative;
+  display: flex;
+  gap: calc(variables.$base-spacing / 2);
+
+  @include responsive.mobile-and-tablet() {
+    // the search container wants to position itself against the header
+    position: static;
+  }
+}
+
+//
+// Header search
+//
+.search {
+  max-width: 180px;
+}
+
+.brandCentered {
+  .brand {
+    text-align: center;
+  }
+}
+
+.navButton {
+  overflow: visible;
+
+  &::after {
+    position: absolute;
+    right: calc(variables.$base-spacing / 2);
+    bottom: 0;
+    left: calc(variables.$base-spacing / 2);
+    height: 2px;
+    background-color: var(--highlight-color);
+    content: '';
+  }
+
+  body:global(.is-tabbing) &:focus::after {
+    display: none;
+  }
+}
+
+//
+// mediaQueries
+// --------------------------------
+
+@include responsive.mobile-and-tablet() {
+  .menu {
+    display: block;
+  }
+
+  .brand {
+    flex: 1;
+  }
+
+  .nav {
+    display: none;
+  }
+
+  .searchActive {
+    .menu,
+    .brand,
+    .actions > *:not(:first-child) { // all action buttons except the search bar
+      display: none;
+    }
+  }
+}
+
+@include responsive.tablet-only() {
+  .header {
+    padding: 10px calc(variables.$base-spacing * 2);
+  }
+}
+
+@include responsive.mobile-only() {
+  .header {
+    padding: 10px variables.$base-spacing;
+  }
+
+  .brand {
+    text-align: center;
+  }
+
+  .menu,
+  .actions {
+    justify-content: flex-end;
+    width: 80px;
+  }
+}

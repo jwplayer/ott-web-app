@@ -1,0 +1,39 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`<CreditCardNumberField> > renders and matches snapshot 1`] = `
+<div>
+  <div
+    class="_formField_aa17b3 _textField_63409b directPostCreditCardNumber"
+  >
+    <label
+      class="_label_aa17b3"
+      for="text-field_1235_cardnumber"
+    >
+      payment.credit_card_number
+      <span
+        aria-hidden="true"
+      >
+        *
+      </span>
+    </label>
+    <div
+      class="_container_9af53b"
+    >
+      <input
+        aria-describedby="helper_text_1235_cardnumber"
+        aria-invalid="false"
+        aria-required="true"
+        autocomplete="cc-number"
+        class="_input_9af53b"
+        id="text-field_1235_cardnumber"
+        name="cardNumber"
+        pattern="\\d*"
+        placeholder="1234 5678 9012 3456"
+        required=""
+        type="text"
+        value=""
+      />
+    </div>
+  </div>
+</div>
+`;

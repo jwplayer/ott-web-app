@@ -1,0 +1,72 @@
+@use '@jwp/ott-ui-react-next/src/styles/variables';
+@use '@jwp/ott-ui-react-next/src/styles/theme';
+@use '@jwp/ott-ui-react-next/src/styles/mixins/responsive';
+
+.errorPage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 70vh;
+
+  a,
+  a:visited,
+  a:hover,
+  a:active {
+    color: inherit;
+    font-weight: var(--body-font-weight-bold);
+    text-decoration: underline;
+    cursor: pointer;
+  }
+}
+
+.box {
+  max-width: 600px;
+  padding: 12px;
+}
+
+.title {
+  margin-bottom: 24px;
+  font-family: var(--body-alt-font-family);
+  font-weight: var(--body-font-weight-bold);
+  font-size: 34px;
+}
+
+.message {
+  padding-bottom: 16px;
+}
+
+.main {
+  > h6 {
+    margin-bottom: variables.$base-spacing;
+    font-family: var(--body-alt-font-family);
+    font-weight: var(--body-font-weight-bold);
+    font-size: 20px;
+  }
+}
+
+@include responsive.mobile-only() {
+  .title {
+    font-size: 24px;
+  }
+}
+
+.logo {
+  margin-bottom: 24px;
+}
+
+.links {
+  position: relative;
+}
+
+.stack {
+  a {
+    position: absolute;
+    right: 0;
+  }
+}
+
+.image {
+  max-width: 200px;
+  max-height: 80px;
+  margin-bottom: 24px;
+}

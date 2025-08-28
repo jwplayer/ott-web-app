@@ -1,0 +1,67 @@
+@use '@jwp/ott-ui-react-next/src/styles/variables';
+@use '@jwp/ott-ui-react-next/src/styles/theme';
+@use '@jwp/ott-ui-react-next/src/styles/mixins/responsive';
+
+$animation-duration: 0.3s;
+
+.dialog {
+  top: 0;
+  left: 0;
+  width: 100vw;
+  max-width: 100vw;
+  height: 100%;
+  max-height: 100vh;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  color: var(--body-color);
+  background: transparent;
+  border: none;
+
+  &.centered[open] {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+
+  &.close[open] {
+    animation: fade-out $animation-duration forwards;
+
+    &::backdrop {
+      animation: fade-out $animation-duration forwards;
+    }
+  }
+
+  &[open] {
+    animation: fade-in $animation-duration forwards;
+
+    &::backdrop {
+      animation: fade-in $animation-duration forwards;
+    }
+  }
+}
+
+.dialog::backdrop {
+  background-color: theme.$modal-backdrop-bg;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}

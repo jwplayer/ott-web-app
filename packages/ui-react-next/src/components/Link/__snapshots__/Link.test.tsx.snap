@@ -1,0 +1,9 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`<Link> > renders and matches snapshot 1`] = `
+<div>
+  <a
+    class="_link_ef752c"
+  />
+</div>
+`;

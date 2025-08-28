@@ -1,0 +1,26 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`<Checkbox> > renders and matches snapshot 1`] = `
+<div>
+  <div
+    class="_formField_aa17b3 _checkbox_ce521b"
+  >
+    <div
+      class="_row_ce521b"
+    >
+      <input
+        aria-describedby="helper_text_1235_name"
+        id="text-field_1235_name"
+        name="name"
+        type="checkbox"
+        value="value"
+      />
+      <label
+        for="text-field_1235_name"
+      >
+        label
+      </label>
+    </div>
+  </div>
+</div>
+`;

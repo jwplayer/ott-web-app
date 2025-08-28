@@ -1,0 +1,91 @@
+import React from 'react';
+import { useLocation } from 'react-router';
+import { useTranslation } from 'react-i18next';
+import type { FormErrors } from '@jwp/ott-common-next/types/form';
+import type { LoginFormData } from '@jwp/ott-common-next/types/account';
+import { testId } from '@jwp/ott-common-next/src/utils/common';
+import useToggle from '@jwp/ott-hooks-react-next/src/useToggle';
+import type { SocialLoginURLs } from '@jwp/ott-hooks-react-next/src/useSocialLoginUrls';
+import Visibility from '@jwp/ott-theme/assets/icons/visibility.svg?react';
+import VisibilityOff from '@jwp/ott-theme/assets/icons/visibility_off.svg?react';
+
+import TextField from '../form-fields/TextField/TextField';
+import Button from '../Button/Button';
+import Link from '../Link/Link';
+import IconButton from '../IconButton/IconButton';
+import FormFeedback from '../FormFeedback/FormFeedback';
+import LoadingOverlay from '../LoadingOverlay/LoadingOverlay';
+import Icon from '../Icon/Icon';
+import { modalURLFromLocation } from '../../utils/location';
+
+import styles from './LoginForm.module.scss';
+
+type Props = {
+  onSubmit: React.FormEventHandler<HTMLFormElement>;
+  onChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+  error?: string;
+  errors: FormErrors<LoginFormData>;
+  values: LoginFormData;
+  validationError?: boolean;
+  submitting: boolean;
+  socialLoginURLs: SocialLoginURLs | null;
+  siteName?: string;
+};
+
+const LoginForm: React.FC<Props> = ({ onSubmit, onChange, values, errors, validationError, submitting, siteName }: Props) => {
+  const [viewPassword, toggleViewPassword] = useToggle();
+  const { t } = useTranslation('account');
+  const location = useLocation();
+
+  return (
+    <form onSubmit={onSubmit} data-testid={testId('login-form')} noValidate>
+      {errors.form ? (
+        <FormFeedback variant="error" visible={!validationError}>
+          {errors.form}
+        </FormFeedback>
+      ) : null}
+      <h2 className={styles.title}>{t('login.sign_in')}</h2>
+      <TextField
+        value={values.email}
+        onChange={onChange}
+        label={t('login.email')}
+        placeholder={t('login.email')}
+        error={!!errors.email}
+        helperText={errors.email}
+        name="email"
+        type="email"
+        required
+        testId="login-email-input"
+        autoComplete="email"
+      />
+      <TextField
+        value={values.password}
+        onChange={onChange}
+        label={t('login.password')}
+        placeholder={t('login.password')}
+        error={!!errors.password}
+        helperText={errors.password}
+        name="password"
+        type={viewPassword ? 'text' : 'password'}
+        rightControl={
+          <IconButton aria-label={t('login.view_password')} onClick={() => toggleViewPassword()} aria-pressed={viewPassword}>
+            <Icon icon={viewPassword ? Visibility : VisibilityOff} />
+          </IconButton>
+        }
+        required
+        testId="login-password-input"
+        autoComplete="current-password"
+      />
+      {submitting && <LoadingOverlay transparentBackground inline />}
+      <Link className={styles.link} href={modalURLFromLocation(location, 'forgot-password')}>
+        {t('login.forgot_password')}
+      </Link>
+      <Button type="submit" label={t('login.sign_in')} variant="contained" color="primary" size="large" disabled={submitting} fullWidth />
+      <p className={styles.bottom}>
+        {t('login.not_registered', { siteName })} <Link href={modalURLFromLocation(location, 'create-account')}>{t('login.sign_up')}</Link>
+      </p>
+    </form>
+  );
+};
+
+export default LoginForm;
