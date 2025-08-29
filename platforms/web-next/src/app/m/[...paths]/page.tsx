@@ -9,23 +9,27 @@ export const generateStaticParams = async () => []
 
 
 export async function generateMetadata({ params }: { params: Promise<{ paths: string[] }> }) {
+  try {
 
-  const mediaId = (await params).paths[0];
+    const mediaId = (await params).paths[0];
 
-  const media = await apiService.getMediaById({ id: mediaId, language: 'en' });
+    const media = await apiService.getMediaById({ id: mediaId, language: 'en' });
 
-  if (!media) return { title: "Media Not Found" };
+    if (!media) return { title: "Video Not Found" };
 
-  return {
-    title: media.title,
-    description: media.description,
-
-    openGraph: {
+    return {
       title: media.title,
       description: media.description,
-      url: `${env.APP_PUBLIC_URL}/m/${mediaId}`,
-    },
-  };
+
+      openGraph: {
+        title: media.title,
+        description: media.description,
+        url: `${env.APP_PUBLIC_URL}/m/${mediaId}`,
+      },
+    };
+  } catch (error) {
+    return { title: "Video Not Found" };
+  }
 }
 
 
