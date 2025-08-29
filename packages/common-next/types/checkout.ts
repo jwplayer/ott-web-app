@@ -2,6 +2,7 @@ import type { PayloadWithIPOverride } from './account';
 import type { PaymentDetail } from './subscription';
 import type { EmptyEnvironmentServiceRequest, EnvironmentServiceRequest, PromiseRequest } from './service';
 import type { PlansResponse } from './plans';
+import type { AdyenPaymentMethod } from './adyen';
 
 export type Offer = {
   id: number | null;

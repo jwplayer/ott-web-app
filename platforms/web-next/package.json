@@ -28,6 +28,7 @@
     "@types/react-dom": "^19",
     "@tailwindcss/postcss": "^4",
     "tailwindcss": "^4",
+    "webpack": "^5.98.0",
     "@svgr/webpack": "^8.1.0",
     "@types/jwplayer": "^8.31.3"
   }

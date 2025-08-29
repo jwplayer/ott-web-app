@@ -31,7 +31,6 @@ const MediaMovieCinema: ScreenComponent<PlaylistItem> = ({ data, isLoading }) =>
     playlist,
     nextItem,
     playUrl,
-    movieURL,
     trailerItem,
     hasTrailer,
     isFavoritesEnabled,
@@ -41,7 +40,7 @@ const MediaMovieCinema: ScreenComponent<PlaylistItem> = ({ data, isLoading }) =>
     isPlaylistLoading,
     setPlayTrailer,
   } = useMovieData(data, id, feedId);
-  const { handleBack, handleComplete } = useMovieHandlers(nextItem, movieURL);
+  const { handleBack, handleComplete } = useMovieHandlers(nextItem);
   const canonicalUrl = data ? `${env.APP_PUBLIC_URL}${mediaURL({ id: data.mediaid, title: data.title })}` : window.location.href;
 
   useScrollReset(id);
@@ -84,7 +83,7 @@ const MediaMovieCinema: ScreenComponent<PlaylistItem> = ({ data, isLoading }) =>
       <MediaSectionRelated playlist={playlist} item={data} isLoading={isLoading || isPlaylistLoading} />
       <Cinema
         open={play && isEntitled}
-        onClose={handleBack}
+        onBackPress={handleBack}
         item={data}
         title={data.title}
         primaryMetadata={<VideoMetaData attributes={primaryMetadata} />}

@@ -1,4 +1,5 @@
 import ApiService from "@jwp/ott-common-next/src/services/ApiService";
+import env from "@jwp/ott-common-next/src/env";
 
 import MediaDetails from "../../../components/client-pages/media-details";
 
@@ -22,7 +23,7 @@ export async function generateMetadata({ params }: { params: Promise<{ paths: st
     openGraph: {
       title: media.title,
       description: media.description,
-      url: `/m/${mediaId}`,
+      url: `${env.APP_PUBLIC_URL}/m/${mediaId}`,
     },
   };
 }

@@ -18,6 +18,7 @@ type Props = {
   onPlay?: () => void;
   onPause?: () => void;
   onComplete?: () => void;
+  onBackPress?: () => void;
   onClose?: () => void;
   onNext?: () => void;
   feedId?: string;
@@ -40,6 +41,7 @@ const Cinema: React.FC<Props> = ({
   onPause,
   onComplete,
   onClose,
+  onBackPress,
   onNext,
   feedId,
   liveStartDateTime,
@@ -85,7 +87,7 @@ const Cinema: React.FC<Props> = ({
         <Fade className={styles.overlayFade} open={!isPlaying || userActive || overlayHasFocus} keepMounted>
           <div className={styles.playerOverlay} onFocus={() => setOverlayHasFocus(true)} onBlur={() => setOverlayHasFocus(false)}>
             <div className={styles.playerContent}>
-              <IconButton aria-label={t('common:back')} onClick={onClose} className={styles.backButton}>
+              <IconButton aria-label={t('common:back')} onClick={onBackPress} className={styles.backButton}>
                 <Icon icon={ArrowLeft} />
               </IconButton>
               <div>

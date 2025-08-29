@@ -5,13 +5,13 @@ import { mediaURL } from '@jwp/ott-common-next/src/utils/urlFormatting';
 import useEventCallback from '@jwp/ott-hooks-react-next/src/useEventCallback';
 import { useRouter } from 'next/navigation';
 
-export default function useMovieHandlers(nextItem: PlaylistItem | undefined, url: string) {
+export default function useMovieHandlers(nextItem: PlaylistItem | undefined) {
   const { config } = useConfigStore(({ config, accessModel }) => ({ config, accessModel }), shallow);
   const { features } = config;
 
   const router = useRouter();
   const navigate = router.push;
-  const handleBack = () => navigate(url);
+  const handleBack = router.back;
 
   const handleComplete = useEventCallback(() => {
     if (nextItem) {

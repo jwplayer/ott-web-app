@@ -1,10 +1,11 @@
 import React from 'react';
-import { useLocation, useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import type { PlaylistItem } from '@jwp/ott-common-next/types/playlist';
 import { useConfigStore } from '@jwp/ott-common-next/src/stores/ConfigStore';
 import Lock from '@jwp/ott-theme/assets/icons/lock.svg?react';
 import { modalURLFromLocation } from '@jwp/ott-ui-react-next/src/utils/location';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import type { Location } from 'react-router';
 
 import Image from '../../components/Image/Image';
 import Fade from '../../components/Animation/Fade/Fade';
@@ -51,8 +52,16 @@ const InlinePlayer: React.FC<Props> = ({
 }: Props) => {
   const siteName = useConfigStore((s) => s.config.siteName);
   const { t } = useTranslation();
-  const navigate = useNavigate();
-  const location = useLocation();
+  const navigate = useRouter().push;
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const location: Location = {
+    pathname,
+    search: searchParams.toString(),
+    hash: '',
+    state: undefined,
+    key: '',
+  };
 
   const loginButtonClickHandler = () => {
     navigate(modalURLFromLocation(location, 'login'));

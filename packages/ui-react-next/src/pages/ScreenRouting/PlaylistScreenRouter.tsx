@@ -1,11 +1,11 @@
 import React from 'react';
-import { useParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import type { Playlist } from '@jwp/ott-common-next/types/playlist';
 import { APP_CONFIG_ITEM_TYPE, PLAYLIST_CONTENT_TYPE } from '@jwp/ott-common-next/src/constants';
 import { ScreenMap } from '@jwp/ott-common-next/src/utils/ScreenMap';
 import usePlaylist from '@jwp/ott-hooks-react-next/src/usePlaylist';
 import type { AppMenuType } from '@jwp/ott-common-next/types/config';
+import { usePathname } from 'next/navigation';
 
 import Loading from '../Loading/Loading';
 import ErrorPage from '../../components/ErrorPage/ErrorPage';
@@ -26,8 +26,8 @@ playlistScreenMap.registerByContentType(PlaylistLiveChannels, PLAYLIST_CONTENT_T
 contentScreenMap.registerDefault(PlaylistGrid);
 
 const PlaylistScreenRouter = ({ type }: { type: AppMenuType }) => {
-  const params = useParams();
-  const id = params.id || '';
+  const pathname = usePathname();
+  const id = pathname.split('/').pop() || '';
 
   const { isFetching, error, data } = usePlaylist(id, {}, true, true, type);
   const { t } = useTranslation('error');

@@ -1,5 +1,4 @@
 import type { Playlist, PlaylistItem } from '../../types/playlist';
-
 export function debounce<T extends (...args: any[]) => void>(callback: T, wait = 200) {
   let timeout: NodeJS.Timeout | undefined;
   function debounced(...args: unknown[]) {

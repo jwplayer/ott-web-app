@@ -1,17 +1,18 @@
 import type { NextConfig } from "next";
+import { DefinePlugin } from "webpack";
 
 const nextConfig: NextConfig = {
   webpack: (config, { dev, isServer }) => {
 
     config.plugins.push(
-      new (require('webpack').DefinePlugin)({
-        __dev__: process.env.NODE_ENV === "development",
-        __mode__: JSON.stringify(process.env.NODE_ENV || 'development'),
-        __debug__: process.env.APP_TEST_DEBUG === '1',
+      new DefinePlugin({
+        __dev__: JSON.stringify(process.env.NODE_ENV === "development"),
+        __mode__: JSON.stringify(process.env.NODE_ENV === 'development' ? 'dev' : process.env.NODE_ENV === 'production' ? 'prod' : 'demo'),
+        __debug__: JSON.stringify(process.env.APP_TEST_DEBUG === '1'),
       })
     );
 
-    
+
     if (!isServer) {
       config.module.rules.push({
         test: /\.svg$/i,

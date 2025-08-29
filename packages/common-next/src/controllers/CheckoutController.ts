@@ -29,6 +29,7 @@ import { FormValidationError } from '../errors/FormValidationError';
 import { determineSwitchDirection } from '../utils/subscription';
 import { logError } from '../logger';
 import { findDefaultCardMethodId } from '../utils/payments';
+import type { AdyenPaymentMethod } from '../../types/adyen';
 
 @injectable()
 export default class CheckoutController {

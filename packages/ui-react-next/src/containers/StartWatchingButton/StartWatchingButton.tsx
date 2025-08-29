@@ -28,7 +28,6 @@ type Props = {
 const StartWatchingButton: React.VFC<Props> = ({ item, playUrl, disabled = false, onClick }) => {
   const { t } = useTranslation('video');
   const router = useRouter();
-  const navigate = router.push;
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
@@ -75,6 +74,8 @@ const StartWatchingButton: React.VFC<Props> = ({ item, playUrl, disabled = false
   }, [hasMediaOffers, isEntitled, isLoggedIn]);
 
   const handleStartWatchingClick = useCallback(() => {
+    const navigate = router.push;
+
     if (isEntitled) {
       if (onClick) {
         onClick();
@@ -86,7 +87,7 @@ const StartWatchingButton: React.VFC<Props> = ({ item, playUrl, disabled = false
     if (hasMediaOffers) return navigate(modalURLFromLocation(location, 'choose-offer'));
 
     return navigate('/u/payments');
-  }, [isEntitled, playUrl, navigate, isLoggedIn, location, hasMediaOffers, onClick]);
+  }, [isEntitled, playUrl, router, isLoggedIn, location, hasMediaOffers, onClick]);
 
   useEffect(() => {
     // set the TVOD mediaOffers in the checkout store

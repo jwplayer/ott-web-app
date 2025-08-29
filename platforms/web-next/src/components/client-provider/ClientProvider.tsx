@@ -1,10 +1,11 @@
 "use client"
-import QueryProvider from "@jwp/ott-ui-react-next/src/containers/QueryProvider/QueryProvider";
+
+//must be imported on top of the file ****
+import "../../modules/register";
+// ***************************************
+
 import { AriaAnnouncerProvider } from "@jwp/ott-ui-react-next/src/containers/AnnouncementProvider/AnnoucementProvider";
-
-
-import '../../modules/register';
-
+import QueryProvider from "@jwp/ott-ui-react-next/src/containers/QueryProvider/QueryProvider";
 import React, { useState, useEffect } from 'react';
 import { IS_DEMO_MODE, IS_DEVELOPMENT_BUILD, IS_PREVIEW_MODE, IS_PROD_MODE } from '@jwp/ott-common-next/src/utils/common';
 import ErrorPage, { ErrorPageWithoutTranslation } from '@jwp/ott-ui-react-next/src/components/ErrorPage/ErrorPage';
@@ -15,8 +16,6 @@ import { AppError } from '@jwp/ott-common-next/src/utils/error';
 import { logError } from "@jwp/ott-common-next/src/logger";
 
 import initI18n from "../../i18n/config";
-
-
 
 interface State {
     isLoading: boolean;
@@ -113,7 +112,7 @@ export const ClientProvider = ({ children }: { children: React.JSX.Element }) =>
             <AriaAnnouncerProvider>
                 {isLoading && <LoadingOverlay />}
                 {!isLoading && children}
-                <RootLoader onReady={()=> setIsLoading(false)}/>
+                <RootLoader onReady={() => setIsLoading(false)} />
             </AriaAnnouncerProvider>
         </QueryProvider>
     )

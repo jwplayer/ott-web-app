@@ -1,4 +1,4 @@
-interface AdyenPaymentMethod {
+export interface AdyenPaymentMethod {
   encryptedCardNumber: string;
   encryptedExpiryMonth: string;
   encryptedExpiryYear: string;
@@ -6,7 +6,7 @@ interface AdyenPaymentMethod {
   type: string;
 }
 
-interface AdyenEventData {
+export interface AdyenEventData {
   isValid: boolean;
   data: {
     browserInfo: {
@@ -31,7 +31,7 @@ interface AdyenEventData {
   };
 }
 
-interface AdyenAdditionalEventData {
+export interface AdyenAdditionalEventData {
   isValid: boolean;
   data: {
     details: unknown;
@@ -39,6 +39,6 @@ interface AdyenAdditionalEventData {
 }
 
 // currently only card payments with Adyen are supported
-const adyenPaymentMethods = ['card'] as const;
+export const adyenPaymentMethods = ['card'] as const;
 
-type AdyenPaymentMethodType = (typeof adyenPaymentMethods)[number];
+export type AdyenPaymentMethodType = (typeof adyenPaymentMethods)[number];

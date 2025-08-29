@@ -35,7 +35,6 @@ const MediaMovie: ScreenComponent<PlaylistItem> = ({ data, isLoading }) => {
   const {
     playlist,
     nextItem,
-    movieURL,
     trailerItem,
     mediaOffers,
     hasTrailer,
@@ -46,7 +45,7 @@ const MediaMovie: ScreenComponent<PlaylistItem> = ({ data, isLoading }) => {
     primaryMetadata,
     setPlayTrailer,
   } = useMovieData(data, id, feedId);
-  const { handleComplete } = useMovieHandlers(nextItem, movieURL);
+  const { handleComplete } = useMovieHandlers(nextItem);
 
   const canonicalUrl = data ? `${env.APP_PUBLIC_URL}${mediaURL({ id: data.mediaid, title: data.title })}` : window.location.href;
 
