@@ -27,7 +27,7 @@ contentScreenMap.registerDefault(PlaylistGrid);
 
 const PlaylistScreenRouter = ({ type }: { type: AppMenuType }) => {
   const pathname = usePathname();
-  const id = pathname.split('/').pop() || '';
+  const id = pathname?.split('/').pop() || '';
 
   const { isFetching, error, data } = usePlaylist(id, {}, true, true, type);
   const { t } = useTranslation('error');

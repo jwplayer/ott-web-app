@@ -49,9 +49,9 @@ const MediaSeries: ScreenComponent<PlaylistItem> = ({ data: seriesMedia }) => {
   const searchParams = useSearchParams();
 
   const seriesId = seriesMedia.mediaid;
-  const play = searchParams.get('play') === '1';
-  const feedId = searchParams.get('r');
-  const episodeId = searchParams.get('e');
+  const play = searchParams?.get('play') === '1';
+  const feedId = searchParams?.get('r');
+  const episodeId = searchParams?.get('e');
 
   // Main data
   const { isLoading: isSeriesDataLoading, data: series, error: seriesError } = useSeries(seriesId);
@@ -124,8 +124,8 @@ const MediaSeries: ScreenComponent<PlaylistItem> = ({ data: seriesMedia }) => {
     (): Location => ({
       hash: '',
       key: '',
-      pathname: pathname,
-      search: searchParams.toString(),
+      pathname: pathname || '',
+      search: searchParams?.toString() || '',
       state: null,
     }),
     [pathname, searchParams],
@@ -157,7 +157,7 @@ const MediaSeries: ScreenComponent<PlaylistItem> = ({ data: seriesMedia }) => {
   }, [episode]);
 
   useEffect(() => {
-    if (episodeInProgress && !searchParams.get('e')) {
+    if (episodeInProgress && !searchParams?.get('e')) {
       router.push(createURLFromLocation(location, { e: episodeInProgress.mediaid, r: feedId || '' }));
     }
   }, [router, pathname, location, searchParams, episodeInProgress, feedId]);
@@ -201,7 +201,7 @@ const MediaSeries: ScreenComponent<PlaylistItem> = ({ data: seriesMedia }) => {
 
   // Legacy series is used
   if (seriesError?.code === 404) {
-    const url = buildLegacySeriesUrlFromMediaItem(seriesMedia, play, feedId);
+    const url = buildLegacySeriesUrlFromMediaItem(seriesMedia, play, feedId || null);
 
     return redirect(url);
   }

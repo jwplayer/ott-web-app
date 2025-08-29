@@ -1,6 +1,5 @@
-import type { CoreOptions } from '@adyen/adyen-web/dist/types/core/types';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import type DropinElement from '@adyen/adyen-web/dist/types/components/Dropin/Dropin';
+type DropinElement = any;
 import { useLocation, useNavigate } from 'react-router-dom';
 import type { AdyenPaymentSession } from '@jwp/ott-common-next/types/checkout';
 import { getModule } from '@jwp/ott-common-next/src/modules/container';
@@ -12,6 +11,7 @@ import useQueryParam from '@jwp/ott-ui-react-next/src/hooks/useQueryParam';
 import useEventCallback from '@jwp/ott-hooks-react-next/src/useEventCallback';
 import { useTranslation } from 'react-i18next';
 
+import type { CoreOptions } from '../../types/adey';
 import Adyen from '../../components/Adyen/Adyen';
 import { useAriaAnnouncer } from '../AnnouncementProvider/AnnoucementProvider';
 

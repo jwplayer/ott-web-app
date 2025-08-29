@@ -3,7 +3,7 @@ import env from "@jwp/ott-common-next/src/env";
 
 import MediaDetails from "../../../components/client-pages/media-details";
 
-export const apiService = new ApiService();
+const apiService = new ApiService();
 
 export const generateStaticParams = async () => []
 

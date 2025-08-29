@@ -2,7 +2,7 @@ import ApiService from "@jwp/ott-common-next/src/services/ApiService";
 
 import PlaylistDetails from "../../../components/client-pages/playlist-details";
 
-export const apiService = new ApiService();
+const apiService = new ApiService();
 
 export const generateStaticParams = async () => []
 
@@ -29,8 +29,7 @@ export async function generateMetadata({ params }: { params: Promise<{ paths: st
 }
 
 
-export default async function PlaylistPage({ params }: { params: Promise<{ paths: string[] }> }) {
-  const { paths } = await params;
+export default async function PlaylistPage() {
 
   return <PlaylistDetails />
 }

@@ -1,7 +1,5 @@
-import type { CoreOptions } from '@adyen/adyen-web/dist/types/core/types';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import type DropinElement from '@adyen/adyen-web/dist/types/components/Dropin/Dropin';
-import { useNavigate } from 'react-router';
+type DropinElement = any;
 import type { AdyenPaymentSession } from '@jwp/ott-common-next/types/checkout';
 import { getModule } from '@jwp/ott-common-next/src/modules/container';
 import CheckoutController from '@jwp/ott-common-next/src/controllers/CheckoutController';
@@ -9,7 +7,9 @@ import AccountController from '@jwp/ott-common-next/src/controllers/AccountContr
 import { createURL } from '@jwp/ott-common-next/src/utils/urlFormatting';
 import { ADYEN_LIVE_CLIENT_KEY, ADYEN_TEST_CLIENT_KEY } from '@jwp/ott-common-next/src/constants';
 import { useTranslation } from 'react-i18next';
+import { useRouter } from 'next/navigation';
 
+import type { CoreOptions } from '../../types/adey';
 import Adyen from '../../components/Adyen/Adyen';
 import { useAriaAnnouncer } from '../AnnouncementProvider/AnnoucementProvider';
 
@@ -31,7 +31,17 @@ export default function AdyenInitialPayment({ setUpdatingOrder, type, paymentSuc
   const [session, setSession] = useState<AdyenPaymentSession>();
 
   const isSandbox = accountController.getSandbox();
-  const navigate = useNavigate();
+  const router = useRouter();
+
+  const navigate = useCallback(
+    (url: string, options?: { replace?: boolean }) => {
+      if (options?.replace) {
+        return router.replace(url);
+      }
+      return router.push(url);
+    },
+    [router],
+  );
 
   useEffect(() => {
     const createSession = async () => {

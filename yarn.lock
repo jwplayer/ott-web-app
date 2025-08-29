@@ -12,7 +12,7 @@
   resolved "https://registry.yarnpkg.com/@adobe/css-tools/-/css-tools-4.3.3.tgz#90749bde8b89cd41764224f5aac29cd4138f75ff"
   integrity sha512-rE0Pygv0sEZ4vBWHlAgJLGDU7Pm8xoO6p3wsEceb7GYAjScrOHpEo8KK/eVkAcnSM+slAEtXjA2JpdjLp4fJQQ==
 
-"@adyen/adyen-web@^5.71.1":
+"@adyen/adyen-web@5.71.1", "@adyen/adyen-web@^5.71.1":
   version "5.71.1"
   resolved "https://registry.yarnpkg.com/@adyen/adyen-web/-/adyen-web-5.71.1.tgz#d7ac73fb53ec9683400f55d4de9f3f5ea828f215"
   integrity sha512-ta4xN9lCXB+cu3rdIiIxxRn5+6PnL0iPqPynD7gZig3eyXMdENy+t1kVRQv11577hc5dy1jhBKrMgUkMxoJBsQ==

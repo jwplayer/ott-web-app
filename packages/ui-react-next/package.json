@@ -9,7 +9,7 @@
     "test-watch": "TZ=UTC LC_ALL=en_US.UTF-8 vitest"
   },
   "dependencies": {
-    "@adyen/adyen-web": "^5.71.1",
+    "@adyen/adyen-web": "5.71.1",
     "@jwp/ott-common-next": "*",
     "@jwp/ott-hooks-react-next": "*",
     "@jwp/ott-theme": "*",

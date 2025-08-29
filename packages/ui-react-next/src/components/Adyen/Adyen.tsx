@@ -1,13 +1,14 @@
 import React, { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import AdyenCheckout from '@adyen/adyen-web';
-import type { CoreOptions } from '@adyen/adyen-web/dist/types/core/types';
-import type { PaymentMethods } from '@adyen/adyen-web/dist/types/types';
+import type { AdyenPaymentMethodType } from '@jwp/ott-common-next/types/adyen';
 
+import type { CoreOptions, PaymentMethods } from '../../types/adey';
 import Button from '../Button/Button';
 import FormFeedback from '../FormFeedback/FormFeedback';
 
 import styles from './Adyen.module.scss';
+
 import '@adyen/adyen-web/dist/adyen.css';
 import './AdyenForm.scss';
 

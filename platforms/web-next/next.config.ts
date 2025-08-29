@@ -2,7 +2,7 @@ import type { NextConfig } from "next";
 import { DefinePlugin } from "webpack";
 
 const nextConfig: NextConfig = {
-  webpack: (config, { dev, isServer }) => {
+  webpack: (config, { isServer }) => {
 
     config.plugins.push(
       new DefinePlugin({

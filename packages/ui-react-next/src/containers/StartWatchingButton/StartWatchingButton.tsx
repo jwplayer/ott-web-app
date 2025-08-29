@@ -35,8 +35,8 @@ const StartWatchingButton: React.VFC<Props> = ({ item, playUrl, disabled = false
     (): Location => ({
       hash: '',
       key: '',
-      pathname: pathname,
-      search: searchParams.toString(),
+      pathname: pathname || '',
+      search: searchParams?.toString() || '',
       state: null,
     }),
     [pathname, searchParams],

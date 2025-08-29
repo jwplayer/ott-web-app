@@ -56,8 +56,8 @@ const InlinePlayer: React.FC<Props> = ({
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const location: Location = {
-    pathname,
-    search: searchParams.toString(),
+    pathname: pathname || '',
+    search: searchParams?.toString() || '',
     hash: '',
     state: undefined,
     key: '',
