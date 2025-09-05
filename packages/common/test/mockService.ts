@@ -1,8 +1,8 @@
-import type { interfaces } from 'inversify';
+import type { ServiceIdentifier } from 'inversify';
 import { afterEach } from 'vitest';
 
 type ServiceMockEntry = {
-  serviceIdentifier: interfaces.ServiceIdentifier;
+  serviceIdentifier: ServiceIdentifier;
   implementation: unknown;
 };
 
@@ -10,10 +10,9 @@ export type OptionalMembers<T> = { [K in keyof T]?: T[K] };
 
 export let mockedServices: ServiceMockEntry[] = [];
 
-const getName = (serviceIdentifier: interfaces.ServiceIdentifier) =>
-  serviceIdentifier instanceof Function ? serviceIdentifier.name : serviceIdentifier.toString();
+const getName = (serviceIdentifier: ServiceIdentifier) => (serviceIdentifier instanceof Function ? serviceIdentifier.name : serviceIdentifier.toString());
 
-export const mockService = <T, B extends OptionalMembers<T>>(serviceIdentifier: interfaces.ServiceIdentifier<T>, implementation: B, override = false) => {
+export const mockService = <T, B extends OptionalMembers<T>>(serviceIdentifier: ServiceIdentifier<T>, implementation: B, override = false) => {
   if (!override && mockedServices.some((mock) => mock.serviceIdentifier === serviceIdentifier)) {
     throw new Error(`There already is a mocked service for ${getName(serviceIdentifier)}`);
   }
@@ -34,7 +33,7 @@ afterEach(() => {
 
 vi.mock('@jwp/ott-common/src/modules/container', async () => {
   const actual = (await vi.importActual('@jwp/ott-common/src/modules/container')) as Record<string, unknown>;
-  const getModule = (serviceIdentifier: interfaces.ServiceIdentifier) => {
+  const getModule = (serviceIdentifier: ServiceIdentifier) => {
     const mockedService = mockedServices.find((current) => current.serviceIdentifier === serviceIdentifier);
 
     if (!mockedService) {
@@ -44,7 +43,7 @@ vi.mock('@jwp/ott-common/src/modules/container', async () => {
     return mockedService.implementation;
   };
 
-  const getAllModules = (serviceIdentifier: interfaces.ServiceIdentifier) => {
+  const getAllModules = (serviceIdentifier: ServiceIdentifier) => {
     const mockedService = mockedServices.find((current) => current.serviceIdentifier === serviceIdentifier);
 
     return mockedService ? [mockedService.implementation] : [];
@@ -54,7 +53,7 @@ vi.mock('@jwp/ott-common/src/modules/container', async () => {
     ...actual,
     getModule,
     getAllModules,
-    getNamedModule: (serviceIdentifier: interfaces.ServiceIdentifier, _name: string) => {
+    getNamedModule: (serviceIdentifier: ServiceIdentifier, _name: string) => {
       return getModule(serviceIdentifier);
     },
   };

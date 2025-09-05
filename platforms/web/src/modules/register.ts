@@ -29,44 +29,45 @@ import { LocalStorageService } from '#src/services/LocalStorageService';
  * })
  * ```
  */
+export const register = async () => {
+  container.bind(StorageService).to(LocalStorageService);
 
-container.bind(StorageService).to(LocalStorageService);
+  container.bind(BROADCAST_CHANNEL).toConstantValue(new BroadcastChannel('jwp-refresh-token-channel'));
 
-container.bind(BROADCAST_CHANNEL).toConstantValue(new BroadcastChannel('jwp-refresh-token-channel'));
+  // Currently, this is only used for e2e testing to override the customer ip from a browser cookie
+  container.bind<GetCustomerIP>(GET_CUSTOMER_IP).toConstantValue(async () => getOverrideIP());
 
-// Currently, this is only used for e2e testing to override the customer ip from a browser cookie
-container.bind<GetCustomerIP>(GET_CUSTOMER_IP).toConstantValue(async () => getOverrideIP());
+  /**
+   * Log transporters
+   *
+   * Add custom log transporters by registering more modules to the LogTransporter type. The custom transporter must
+   * extend the LogTransporter class.
+   *
+   * @example
+   * ```ts
+   * container.bind<LogTransporter>(LogTransporter).toDynamicValue(() => new GoogleGTMTransporter(import.meta.env.DEV ? LogLevel.SILENT : LogLevel.WARN));
+   * ```
+   */
+  container.bind<LogTransporter>(LogTransporter).toDynamicValue(() => new ConsoleTransporter(import.meta.env.DEV ? LogLevel.DEBUG : LogLevel.ERROR));
 
-/**
- * Log transporters
- *
- * Add custom log transporters by registering more modules to the LogTransporter type. The custom transporter must
- * extend the LogTransporter class.
- *
- * @example
- * ```ts
- * container.bind<LogTransporter>(LogTransporter).toDynamicValue(() => new GoogleGTMTransporter(import.meta.env.DEV ? LogLevel.SILENT : LogLevel.WARN));
- * ```
- */
-container.bind<LogTransporter>(LogTransporter).toDynamicValue(() => new ConsoleTransporter(import.meta.env.DEV ? LogLevel.DEBUG : LogLevel.ERROR));
+  /**
+   * UI Component override
+   *
+   * @example
+   * ```ts
+   * // Define an identifier from the component (from `ui-react` for example):
+   * export const CardIdentifier = Symbol('CARD');
+   *
+   * // Make sure the component is wrapped in the HOC:
+   * export default createInjectableComponent(CardIdentifier, Card);
+   *
+   * // Override the component into the associated container, from register.ts:
+   * import { container as uiComponentContainer } from '@jwp/ott-ui-react/src/modules/container';
+   *
+   * uiComponentContainer.bind<React.FC<CardProps>>(CardIdentifier).toConstantValue(CustomCard);
+   * ```
+   */
 
-/**
- * UI Component override
- *
- * @example
- * ```ts
- * // Define an identifier from the component (from `ui-react` for example):
- * export const CardIdentifier = Symbol('CARD');
- *
- * // Make sure the component is wrapped in the HOC:
- * export default createInjectableComponent(CardIdentifier, Card);
- *
- * // Override the component into the associated container, from register.ts:
- * import { container as uiComponentContainer } from '@jwp/ott-ui-react/src/modules/container';
- *
- * uiComponentContainer.bind<React.FC<CardProps>>(CardIdentifier).toConstantValue(CustomCard);
- * ```
- */
-
-// Override ui-react component
-// uiComponentContainer.bind<React.FC<CardProps>>(CardIdentifier).toConstantValue(CustomCard);
+  // Override ui-react component
+  // uiComponentContainer.bind<React.FC<CardProps>>(CardIdentifier).toConstantValue(CustomCard);
+};

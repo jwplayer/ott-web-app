@@ -5,9 +5,7 @@ import 'wicg-inert';
 import { registerSW } from 'virtual:pwa-register';
 import { configureEnv } from '@jwp/ott-common/src/env';
 
-import './modules/register';
-
-import App from './App';
+import { register } from './modules/register';
 
 import { attachAccessibilityListener } from '#src/utils/accessibility';
 
@@ -39,14 +37,23 @@ configureEnv({
 
 attachAccessibilityListener();
 
-const rootElement = document.getElementById('root');
+async function run() {
+  await register();
 
-if (rootElement) {
-  const root = createRoot(rootElement);
-  root.render(<App />);
-} else {
-  console.info('Application - rootElement not found');
+  attachAccessibilityListener();
+
+  const { default: App } = await import('./App');
+  const rootElement = document.getElementById('root');
+
+  if (rootElement) {
+    const root = createRoot(rootElement);
+    root.render(<App />);
+  } else {
+    console.info('Application - rootElement not found');
+  }
 }
+
+run();
 
 const refresh = registerSW({
   immediate: true,
