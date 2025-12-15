@@ -58,8 +58,7 @@
     "vitest": "^3.0.8"
   },
   "resolutions": {
-    "axios": "^0.30.0",
-    "cheerio": "1.0.0-rc.12",
-    "**/minimatch/brace-expansion": "^1.1.12"
+    "**/minimatch/brace-expansion": "^1.1.12",
+    "**/@inplayer-org/**/axios": "^1.7.9"
   }
 }
