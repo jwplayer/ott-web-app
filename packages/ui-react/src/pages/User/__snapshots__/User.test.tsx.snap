@@ -3,27 +3,27 @@
 exports[`User Component tests > Account Page 1`] = `
 <div>
   <div
-    class="_user_e9c5ca"
+    class="_user_8aee8a"
   >
     <nav
-      class="_leftColumn_e9c5ca"
+      class="_leftColumn_8aee8a"
     >
       <div
-        class="_panel_e9c5ca"
+        class="_panel_8aee8a"
       >
         <ul>
           <li>
             <a
               aria-current="page"
-              class="_button_f8f296 _button_e9c5ca _default_f8f296 _text_f8f296 _active_f8f296"
+              class="_button_ee73f7 _button_8aee8a _default_ee73f7 _text_ee73f7 _active_ee73f7"
               href="/u/my-account"
             >
               <div
-                class="_startIcon_f8f296"
+                class="_startIcon_ee73f7"
               >
                 <svg
                   aria-hidden="true"
-                  class="_icon_585b29"
+                  class="_icon_596ab4"
                   viewBox="0 0 24 24"
                   xmlns="http://www.w3.org/2000/svg"
                 >
@@ -39,15 +39,15 @@ exports[`User Component tests > Account Page 1`] = `
           </li>
           <li>
             <a
-              class="_button_f8f296 _button_e9c5ca _default_f8f296 _text_f8f296"
+              class="_button_ee73f7 _button_8aee8a _default_ee73f7 _text_ee73f7"
               href="/u/payments"
             >
               <div
-                class="_startIcon_f8f296"
+                class="_startIcon_ee73f7"
               >
                 <svg
                   aria-hidden="true"
-                  class="_icon_585b29"
+                  class="_icon_596ab4"
                   viewBox="0 0 24 24"
                   xmlns="http://www.w3.org/2000/svg"
                 >
@@ -62,18 +62,18 @@ exports[`User Component tests > Account Page 1`] = `
             </a>
           </li>
           <li
-            class="_logoutLi_e9c5ca"
+            class="_logoutLi_8aee8a"
           >
             <button
-              class="_button_f8f296 _button_e9c5ca _default_f8f296 _text_f8f296"
+              class="_button_ee73f7 _button_8aee8a _default_ee73f7 _text_ee73f7"
               type="button"
             >
               <div
-                class="_startIcon_f8f296"
+                class="_startIcon_ee73f7"
               >
                 <svg
                   aria-hidden="true"
-                  class="_icon_585b29"
+                  class="_icon_596ab4"
                   viewBox="0 0 24 24"
                   xmlns="http://www.w3.org/2000/svg"
                 >
@@ -91,7 +91,7 @@ exports[`User Component tests > Account Page 1`] = `
       </div>
     </nav>
     <div
-      class="_mainColumn_e9c5ca"
+      class="_mainColumn_8aee8a"
     />
   </div>
 </div>
@@ -100,26 +100,26 @@ exports[`User Component tests > Account Page 1`] = `
 exports[`User Component tests > Favorites Page 1`] = `
 <div>
   <div
-    class="_user_e9c5ca"
+    class="_user_8aee8a"
   >
     <nav
-      class="_leftColumn_e9c5ca"
+      class="_leftColumn_8aee8a"
     >
       <div
-        class="_panel_e9c5ca"
+        class="_panel_8aee8a"
       >
         <ul>
           <li>
             <a
-              class="_button_f8f296 _button_e9c5ca _default_f8f296 _text_f8f296"
+              class="_button_ee73f7 _button_8aee8a _default_ee73f7 _text_ee73f7"
               href="/u/my-account"
             >
               <div
-                class="_startIcon_f8f296"
+                class="_startIcon_ee73f7"
               >
                 <svg
                   aria-hidden="true"
-                  class="_icon_585b29"
+                  class="_icon_596ab4"
                   viewBox="0 0 24 24"
                   xmlns="http://www.w3.org/2000/svg"
                 >
@@ -136,15 +136,15 @@ exports[`User Component tests > Favorites Page 1`] = `
           <li>
             <a
               aria-current="page"
-              class="_button_f8f296 _button_e9c5ca _default_f8f296 _text_f8f296 _active_f8f296"
+              class="_button_ee73f7 _button_8aee8a _default_ee73f7 _text_ee73f7 _active_ee73f7"
               href="/u/favorites"
             >
               <div
-                class="_startIcon_f8f296"
+                class="_startIcon_ee73f7"
               >
                 <svg
                   aria-hidden="true"
-                  class="_icon_585b29"
+                  class="_icon_596ab4"
                   viewBox="0 0 24 24"
                   xmlns="http://www.w3.org/2000/svg"
                 >
@@ -160,15 +160,15 @@ exports[`User Component tests > Favorites Page 1`] = `
           </li>
           <li>
             <a
-              class="_button_f8f296 _button_e9c5ca _default_f8f296 _text_f8f296"
+              class="_button_ee73f7 _button_8aee8a _default_ee73f7 _text_ee73f7"
               href="/u/payments"
             >
               <div
-                class="_startIcon_f8f296"
+                class="_startIcon_ee73f7"
               >
                 <svg
                   aria-hidden="true"
-                  class="_icon_585b29"
+                  class="_icon_596ab4"
                   viewBox="0 0 24 24"
                   xmlns="http://www.w3.org/2000/svg"
                 >
@@ -183,18 +183,18 @@ exports[`User Component tests > Favorites Page 1`] = `
             </a>
           </li>
           <li
-            class="_logoutLi_e9c5ca"
+            class="_logoutLi_8aee8a"
           >
             <button
-              class="_button_f8f296 _button_e9c5ca _default_f8f296 _text_f8f296"
+              class="_button_ee73f7 _button_8aee8a _default_ee73f7 _text_ee73f7"
               type="button"
             >
               <div
-                class="_startIcon_f8f296"
+                class="_startIcon_ee73f7"
               >
                 <svg
                   aria-hidden="true"
-                  class="_icon_585b29"
+                  class="_icon_596ab4"
                   viewBox="0 0 24 24"
                   xmlns="http://www.w3.org/2000/svg"
                 >
@@ -212,7 +212,7 @@ exports[`User Component tests > Favorites Page 1`] = `
       </div>
     </nav>
     <div
-      class="_mainColumn_e9c5ca"
+      class="_mainColumn_8aee8a"
     />
   </div>
 </div>
@@ -221,26 +221,26 @@ exports[`User Component tests > Favorites Page 1`] = `
 exports[`User Component tests > Payments Page 1`] = `
 <div>
   <div
-    class="_user_e9c5ca"
+    class="_user_8aee8a"
   >
     <nav
-      class="_leftColumn_e9c5ca"
+      class="_leftColumn_8aee8a"
     >
       <div
-        class="_panel_e9c5ca"
+        class="_panel_8aee8a"
       >
         <ul>
           <li>
             <a
-              class="_button_f8f296 _button_e9c5ca _default_f8f296 _text_f8f296"
+              class="_button_ee73f7 _button_8aee8a _default_ee73f7 _text_ee73f7"
               href="/u/my-account"
             >
               <div
-                class="_startIcon_f8f296"
+                class="_startIcon_ee73f7"
               >
                 <svg
                   aria-hidden="true"
-                  class="_icon_585b29"
+                  class="_icon_596ab4"
                   viewBox="0 0 24 24"
                   xmlns="http://www.w3.org/2000/svg"
                 >
@@ -257,15 +257,15 @@ exports[`User Component tests > Payments Page 1`] = `
           <li>
             <a
               aria-current="page"
-              class="_button_f8f296 _button_e9c5ca _default_f8f296 _text_f8f296 _active_f8f296"
+              class="_button_ee73f7 _button_8aee8a _default_ee73f7 _text_ee73f7 _active_ee73f7"
               href="/u/payments"
             >
               <div
-                class="_startIcon_f8f296"
+                class="_startIcon_ee73f7"
               >
                 <svg
                   aria-hidden="true"
-                  class="_icon_585b29"
+                  class="_icon_596ab4"
                   viewBox="0 0 24 24"
                   xmlns="http://www.w3.org/2000/svg"
                 >
@@ -280,18 +280,18 @@ exports[`User Component tests > Payments Page 1`] = `
             </a>
           </li>
           <li
-            class="_logoutLi_e9c5ca"
+            class="_logoutLi_8aee8a"
           >
             <button
-              class="_button_f8f296 _button_e9c5ca _default_f8f296 _text_f8f296"
+              class="_button_ee73f7 _button_8aee8a _default_ee73f7 _text_ee73f7"
               type="button"
             >
               <div
-                class="_startIcon_f8f296"
+                class="_startIcon_ee73f7"
               >
                 <svg
                   aria-hidden="true"
-                  class="_icon_585b29"
+                  class="_icon_596ab4"
                   viewBox="0 0 24 24"
                   xmlns="http://www.w3.org/2000/svg"
                 >
@@ -309,7 +309,7 @@ exports[`User Component tests > Payments Page 1`] = `
       </div>
     </nav>
     <div
-      class="_mainColumn_e9c5ca"
+      class="_mainColumn_8aee8a"
     />
   </div>
 </div>

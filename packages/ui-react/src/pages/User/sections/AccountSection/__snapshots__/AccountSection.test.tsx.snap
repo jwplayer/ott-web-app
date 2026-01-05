@@ -9,10 +9,10 @@ exports[`<AccountSection> > renders and matches snapshot 1`] = `
   </h1>
   <section
     aria-labelledby="account_about_you_1235"
-    class="_panel_e9c5ca"
+    class="_panel_8aee8a"
   >
     <div
-      class="_panelHeader_e9c5ca"
+      class="_panelHeader_8aee8a"
     >
       <h2
         id="account_about_you_1235"
@@ -21,14 +21,14 @@ exports[`<AccountSection> > renders and matches snapshot 1`] = `
       </h2>
     </div>
     <form
-      class="_flexBox_1c1c63"
+      class="_flexBox_568f2b"
       novalidate=""
     >
       <div
-        class="_formField_86f2f5 _textField_c799b0"
+        class="_formField_aa17b3 _textField_63409b"
       >
         <label
-          class="_label_86f2f5"
+          class="_label_aa17b3"
           for="text-field_1235_firstname"
         >
           account.firstname
@@ -38,7 +38,7 @@ exports[`<AccountSection> > renders and matches snapshot 1`] = `
           aria-invalid="false"
           aria-required="false"
           autocomplete="given-name"
-          class="_input_859b20"
+          class="_input_9af53b"
           id="text-field_1235_firstname"
           lang="en"
           name="firstName"
@@ -48,10 +48,10 @@ exports[`<AccountSection> > renders and matches snapshot 1`] = `
         />
       </div>
       <div
-        class="_formField_86f2f5 _textField_c799b0"
+        class="_formField_aa17b3 _textField_63409b"
       >
         <label
-          class="_label_86f2f5"
+          class="_label_aa17b3"
           for="text-field_1235_lastname"
         >
           account.lastname
@@ -61,7 +61,7 @@ exports[`<AccountSection> > renders and matches snapshot 1`] = `
           aria-invalid="false"
           aria-required="false"
           autocomplete="family-name"
-          class="_input_859b20"
+          class="_input_9af53b"
           id="text-field_1235_lastname"
           lang="en"
           name="lastName"
@@ -72,10 +72,10 @@ exports[`<AccountSection> > renders and matches snapshot 1`] = `
       </div>
     </form>
     <div
-      class="_controls_1c1c63"
+      class="_controls_568f2b"
     >
       <button
-        class="_button_f8f296 _default_f8f296 _outlined_f8f296"
+        class="_button_ee73f7 _default_ee73f7 _outlined_ee73f7"
         type="button"
       >
         <span>
@@ -86,10 +86,10 @@ exports[`<AccountSection> > renders and matches snapshot 1`] = `
   </section>
   <section
     aria-labelledby="account_email_1235"
-    class="_panel_e9c5ca"
+    class="_panel_8aee8a"
   >
     <div
-      class="_panelHeader_e9c5ca"
+      class="_panelHeader_8aee8a"
     >
       <h2
         id="account_email_1235"
@@ -98,14 +98,14 @@ exports[`<AccountSection> > renders and matches snapshot 1`] = `
       </h2>
     </div>
     <form
-      class="_flexBox_1c1c63"
+      class="_flexBox_568f2b"
       novalidate=""
     >
       <div
-        class="_formField_86f2f5 _textField_c799b0"
+        class="_formField_aa17b3 _textField_63409b"
       >
         <label
-          class="_label_86f2f5"
+          class="_label_aa17b3"
           for="text-field_1235_email"
         >
           account.email
@@ -115,7 +115,7 @@ exports[`<AccountSection> > renders and matches snapshot 1`] = `
           aria-invalid="false"
           aria-required="true"
           autocomplete="email"
-          class="_input_859b20"
+          class="_input_9af53b"
           id="text-field_1235_email"
           name="email"
           readonly=""
@@ -126,15 +126,15 @@ exports[`<AccountSection> > renders and matches snapshot 1`] = `
       </div>
     </form>
     <div
-      class="_controls_1c1c63"
+      class="_controls_568f2b"
     />
   </section>
   <section
     aria-labelledby="account_security_1235"
-    class="_panel_e9c5ca"
+    class="_panel_8aee8a"
   >
     <div
-      class="_panelHeader_e9c5ca"
+      class="_panelHeader_8aee8a"
     >
       <h2
         id="account_security_1235"
@@ -143,14 +143,14 @@ exports[`<AccountSection> > renders and matches snapshot 1`] = `
       </h2>
     </div>
     <form
-      class="_flexBox_1c1c63"
+      class="_flexBox_568f2b"
       novalidate=""
     />
     <div
-      class="_controls_1c1c63"
+      class="_controls_568f2b"
     >
       <button
-        class="_button_f8f296 _default_f8f296 _outlined_f8f296"
+        class="_button_ee73f7 _default_ee73f7 _outlined_ee73f7"
         type="button"
       >
         <span>
@@ -161,10 +161,10 @@ exports[`<AccountSection> > renders and matches snapshot 1`] = `
   </section>
   <section
     aria-labelledby="account_terms_and_tracking_1235"
-    class="_panel_e9c5ca"
+    class="_panel_8aee8a"
   >
     <div
-      class="_panelHeader_e9c5ca"
+      class="_panelHeader_8aee8a"
     >
       <h2
         id="account_terms_and_tracking_1235"
@@ -173,14 +173,14 @@ exports[`<AccountSection> > renders and matches snapshot 1`] = `
       </h2>
     </div>
     <form
-      class="_flexBox_1c1c63"
+      class="_flexBox_568f2b"
       novalidate=""
     >
       <div
-        class="_formField_86f2f5 _checkbox_a98c3a"
+        class="_formField_aa17b3 _checkbox_ce521b"
       >
         <div
-          class="_row_a98c3a"
+          class="_row_ce521b"
         >
           <input
             aria-describedby="helper_text_1235_consentsvalues_marketing"
@@ -199,7 +199,7 @@ exports[`<AccountSection> > renders and matches snapshot 1`] = `
       </div>
     </form>
     <div
-      class="_controls_1c1c63"
+      class="_controls_568f2b"
     />
   </section>
 </div>

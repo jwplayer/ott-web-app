@@ -11,30 +11,30 @@ exports[`<Cinema> > renders and matches snapshot 1`] = `
     open=""
   >
     <div
-      class="_cinemaContainer_555f3c"
+      class="_cinemaContainer_97d151"
       style="transition: transform 0.3s ease-out; transform: scale(1);"
     >
       <div
-        class="_cinema_555f3c"
+        class="_cinema_97d151"
       >
         <div
-          class="_overlayFade_555f3c"
+          class="_overlayFade_97d151"
           style="transition: opacity 0.25s ease-in-out; opacity: 1; will-change: opacity;"
         >
           <div
-            class="_playerOverlay_555f3c"
+            class="_playerOverlay_97d151"
           >
             <div
-              class="_playerContent_555f3c"
+              class="_playerContent_97d151"
             >
               <button
                 aria-label="common:back"
-                class="_iconButton_0fef65 _backButton_555f3c"
+                class="_iconButton_7eff5b _backButton_97d151"
                 type="button"
               >
                 <svg
                   aria-hidden="true"
-                  class="_icon_585b29"
+                  class="_icon_596ab4"
                   viewBox="0 0 24 24"
                   xmlns="http://www.w3.org/2000/svg"
                 >
@@ -45,15 +45,15 @@ exports[`<Cinema> > renders and matches snapshot 1`] = `
               </button>
               <div>
                 <h1
-                  class="_title_555f3c"
+                  class="_title_97d151"
                 >
                   Test item title
                 </h1>
                 <div
-                  class="_metaContainer_555f3c"
+                  class="_metaContainer_97d151"
                 >
                   <div
-                    class="_primaryMetadata_555f3c"
+                    class="_primaryMetadata_97d151"
                   >
                     Primary metadata
                   </div>
@@ -63,10 +63,10 @@ exports[`<Cinema> > renders and matches snapshot 1`] = `
           </div>
         </div>
         <div
-          class="_loadingOverlay_eb61cb _inline_eb61cb"
+          class="_loadingOverlay_8ac119 _inline_8ac119"
         >
           <div
-            class="_buffer_d122df"
+            class="_buffer_5ad0ee"
           >
             <div />
             <div />

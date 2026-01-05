@@ -3,10 +3,10 @@
 exports[`<CreditCardCVCField> > renders and matches snapshot 1`] = `
 <div>
   <div
-    class="_formField_86f2f5 _textField_c799b0 directPostSecurityCode"
+    class="_formField_aa17b3 _textField_63409b directPostSecurityCode"
   >
     <label
-      class="_label_86f2f5"
+      class="_label_aa17b3"
       for="text-field_1235_cardcvc"
     >
       payment.security_code
@@ -17,7 +17,7 @@ exports[`<CreditCardCVCField> > renders and matches snapshot 1`] = `
       </span>
     </label>
     <div
-      class="_container_859b20"
+      class="_container_9af53b"
     >
       <input
         aria-describedby="helper_text_1235_cardcvc"
@@ -25,7 +25,7 @@ exports[`<CreditCardCVCField> > renders and matches snapshot 1`] = `
         aria-label="payment.security_code"
         aria-required="true"
         autocomplete="cc-csc"
-        class="_input_859b20"
+        class="_input_9af53b"
         id="text-field_1235_cardcvc"
         name="cardCVC"
         pattern="\\d*"

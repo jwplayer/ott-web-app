@@ -3,7 +3,7 @@
 exports[`<Welcome> > renders and matches snapshot 1`] = `
 <div>
   <div
-    class="_welcome_c4a16f"
+    class="_welcome_14ac05"
   >
     <h2>
       checkout.welcome_title
@@ -12,7 +12,7 @@ exports[`<Welcome> > renders and matches snapshot 1`] = `
       checkout.welcome_description
     </p>
     <button
-      class="_button_f8f296 _primary_f8f296 _fullWidth_f8f296 _large_f8f296"
+      class="_button_ee73f7 _primary_ee73f7 _fullWidth_ee73f7 _large_ee73f7"
       type="button"
     >
       <span>

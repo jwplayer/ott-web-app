@@ -199,9 +199,9 @@ Scenario('I can slide within non-featured shelves', async ({ I }) => {
 Scenario('I can see the footer', ({ I }) => {
   I.scrollPageToBottom();
   I.see('© JW Player');
-  I.see('jwplayer.com');
-  I.click('jwplayer.com');
+  I.see('jwpconnatix.com');
+  I.click('jwpconnatix.com');
   I.wait(2);
   I.switchToNextTab();
-  I.seeCurrentUrlEquals('https://jwplayer.com/');
+  I.seeCurrentUrlEquals('https://jwpconnatix.com/');
 });

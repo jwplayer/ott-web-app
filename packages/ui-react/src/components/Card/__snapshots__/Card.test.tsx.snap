@@ -3,43 +3,43 @@
 exports[`<Card> > should render anchor tag 1`] = `
 <div>
   <a
-    class="_card_d75732"
+    class="_card_526f9d"
     data-testid="This is a movie"
     href="https://test.dummy.jwplayer.com"
     role="button"
     tabindex="0"
   >
     <div
-      class="_titleContainer_d75732"
+      class="_titleContainer_526f9d"
     >
       <h3
-        class="_title_d75732"
+        class="_title_526f9d"
       >
         This is a movie
       </h3>
     </div>
     <div
-      class="_poster_d75732 _aspect169_d75732"
+      class="_poster_526f9d _aspect169_526f9d"
     >
       <img
         alt=""
-        class="_posterImage_d75732 _image_4c41c3"
+        class="_posterImage_526f9d _image_b5fb05"
         src="http://movie.jpg?width=320"
       />
       <div
-        class="_meta_d75732"
+        class="_meta_526f9d"
       >
         <div
-          class="_tags_d75732"
+          class="_tags_526f9d"
         >
           <div
             aria-label="card_lock"
-            class="_tag_d75732 _lock_d75732"
+            class="_tag_526f9d _lock_526f9d"
             role="img"
           >
             <svg
               aria-hidden="true"
-              class="_icon_585b29"
+              class="_icon_596ab4"
               viewBox="0 0 24 24"
               xmlns="http://www.w3.org/2000/svg"
             >
@@ -50,7 +50,7 @@ exports[`<Card> > should render anchor tag 1`] = `
             </svg>
           </div>
           <div
-            class="_tag_d75732"
+            class="_tag_526f9d"
           >
             2 common:abbreviation.minutes
           </div>

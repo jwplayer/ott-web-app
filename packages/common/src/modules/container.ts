@@ -1,13 +1,13 @@
-import { Container, injectable, type interfaces, inject } from 'inversify';
+import { Container, injectable, type ServiceIdentifier, inject } from 'inversify';
 
-export const container = new Container({ defaultScope: 'Singleton', skipBaseClassChecks: true });
+export const container = new Container({ defaultScope: 'Singleton' });
 
 export { injectable, inject };
 
-export function getModule<T>(constructorFunction: interfaces.ServiceIdentifier<T>, required: false): T | undefined;
-export function getModule<T>(constructorFunction: interfaces.ServiceIdentifier<T>, required: true): T;
-export function getModule<T>(constructorFunction: interfaces.ServiceIdentifier<T>): T;
-export function getModule<T>(constructorFunction: interfaces.ServiceIdentifier<T>, required = true): T | undefined {
+export function getModule<T>(constructorFunction: ServiceIdentifier<T>, required: false): T | undefined;
+export function getModule<T>(constructorFunction: ServiceIdentifier<T>, required: true): T;
+export function getModule<T>(constructorFunction: ServiceIdentifier<T>): T;
+export function getModule<T>(constructorFunction: ServiceIdentifier<T>, required = true): T | undefined {
   const module = container.getAll(constructorFunction)[0];
 
   if (required && !module) throw new Error(`Service / Controller '${String(constructorFunction)}' not found`);
@@ -15,14 +15,14 @@ export function getModule<T>(constructorFunction: interfaces.ServiceIdentifier<T
   return module;
 }
 
-export function getAllModules<T>(constructorFunction: interfaces.ServiceIdentifier<T>): T[] {
+export function getAllModules<T>(constructorFunction: ServiceIdentifier<T>): T[] {
   return container.getAll(constructorFunction);
 }
 
-export function getNamedModule<T>(constructorFunction: interfaces.ServiceIdentifier<T>, name: string | null, required: false): T | undefined;
-export function getNamedModule<T>(constructorFunction: interfaces.ServiceIdentifier<T>, name: string | null, required: true): T;
-export function getNamedModule<T>(constructorFunction: interfaces.ServiceIdentifier<T>, name: string | null): T;
-export function getNamedModule<T>(constructorFunction: interfaces.ServiceIdentifier<T>, name: string | null, required = true): T | undefined {
+export function getNamedModule<T>(constructorFunction: ServiceIdentifier<T>, name: string | null, required: false): T | undefined;
+export function getNamedModule<T>(constructorFunction: ServiceIdentifier<T>, name: string | null, required: true): T;
+export function getNamedModule<T>(constructorFunction: ServiceIdentifier<T>, name: string | null): T;
+export function getNamedModule<T>(constructorFunction: ServiceIdentifier<T>, name: string | null, required = true): T | undefined {
   if (!name) {
     // if no name is given we throw an error to satisfy the non-nullable return type
     if (required) {
@@ -34,7 +34,7 @@ export function getNamedModule<T>(constructorFunction: interfaces.ServiceIdentif
   let module;
 
   try {
-    module = container.getAllNamed(constructorFunction, name)[0];
+    module = container.getAll(constructorFunction, { name })[0];
 
     return module;
   } catch (err: unknown) {

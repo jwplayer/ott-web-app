@@ -3,27 +3,27 @@
 exports[`<ErrorPage> > renders and matches snapshot 1`] = `
 <div>
   <div
-    class="_errorPage_8c5621"
+    class="_errorPage_fd1542"
   >
     <div
-      class="_box_8c5621"
+      class="_box_fd1542"
     >
       <img
         alt=""
-        class="_image_8c5621"
+        class="_image_fd1542"
         src="/images/logo.png"
       />
       <h1
         aria-live="polite"
-        class="_title_8c5621"
+        class="_title_fd1542"
       >
         This is the title
       </h1>
       <div
-        class="_main_8c5621"
+        class="_main_fd1542"
       >
         <p
-          class="_message_8c5621"
+          class="_message_fd1542"
         >
           generic_error_description
         </p>

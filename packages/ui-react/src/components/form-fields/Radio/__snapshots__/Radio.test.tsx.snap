@@ -3,10 +3,10 @@
 exports[`<Radio> > renders and matches snapshot 1`] = `
 <div>
   <div
-    class="_formField_86f2f5"
+    class="_formField_aa17b3"
   >
     <label
-      class="_label_86f2f5"
+      class="_label_aa17b3"
       for="text-field_1235_radio"
     >
       Choose a Value
@@ -15,7 +15,7 @@ exports[`<Radio> > renders and matches snapshot 1`] = `
       id="text-field_1235_radio"
     >
       <div
-        class="_radio_854545"
+        class="_radio_cf3580"
       >
         <input
           aria-describedby="helper_text_1235_radio"
@@ -32,7 +32,7 @@ exports[`<Radio> > renders and matches snapshot 1`] = `
         </label>
       </div>
       <div
-        class="_radio_854545"
+        class="_radio_cf3580"
       >
         <input
           aria-describedby="helper_text_1235_radio"
@@ -48,7 +48,7 @@ exports[`<Radio> > renders and matches snapshot 1`] = `
         </label>
       </div>
       <div
-        class="_radio_854545"
+        class="_radio_cf3580"
       >
         <input
           aria-describedby="helper_text_1235_radio"
@@ -65,7 +65,7 @@ exports[`<Radio> > renders and matches snapshot 1`] = `
       </div>
     </div>
     <div
-      class="_helperText_da58e0"
+      class="_helperText_f78f73"
       id="helper_text_1235_radio"
     >
       This is required!

@@ -72,8 +72,8 @@ container.bind(CheckoutController).toSelf();
 container.bind(AccessController).toSelf();
 
 // EPG services
-container.bind(EpgService).to(JWEpgService).whenTargetNamed(EPG_TYPE.jwp);
-container.bind(EpgService).to(ViewNexaEpgService).whenTargetNamed(EPG_TYPE.viewNexa);
+container.bind(EpgService).to(JWEpgService).whenNamed(EPG_TYPE.jwp);
+container.bind(EpgService).to(ViewNexaEpgService).whenNamed(EPG_TYPE.viewNexa);
 
 // Functions
 container.bind(INTEGRATION_TYPE).toDynamicValue(getIntegrationType);
@@ -82,14 +82,14 @@ container.bind(API_ACCESS_BRIDGE_URL).toDynamicValue(getApiAccessBridgeUrl);
 // Cleeng integration
 container.bind(DETERMINE_INTEGRATION_TYPE).toConstantValue(isCleengIntegrationType);
 container.bind(CleengService).toSelf();
-container.bind(AccountService).to(CleengAccountService).whenTargetNamed(INTEGRATION.CLEENG);
-container.bind(CheckoutService).to(CleengCheckoutService).whenTargetNamed(INTEGRATION.CLEENG);
-container.bind(SubscriptionService).to(CleengSubscriptionService).whenTargetNamed(INTEGRATION.CLEENG);
+container.bind(AccountService).to(CleengAccountService).whenNamed(INTEGRATION.CLEENG);
+container.bind(CheckoutService).to(CleengCheckoutService).whenNamed(INTEGRATION.CLEENG);
+container.bind(SubscriptionService).to(CleengSubscriptionService).whenNamed(INTEGRATION.CLEENG);
 
 // JWP integration
 container.bind(DETERMINE_INTEGRATION_TYPE).toConstantValue(isJwpIntegrationType);
 container.bind(JWPAPIService).toSelf();
 container.bind(JWPEntitlementService).toSelf();
-container.bind(AccountService).to(JWPAccountService).whenTargetNamed(INTEGRATION.JWP);
-container.bind(CheckoutService).to(JWPCheckoutService).whenTargetNamed(INTEGRATION.JWP);
-container.bind(SubscriptionService).to(JWPSubscriptionService).whenTargetNamed(INTEGRATION.JWP);
+container.bind(AccountService).to(JWPAccountService).whenNamed(INTEGRATION.JWP);
+container.bind(CheckoutService).to(JWPCheckoutService).whenNamed(INTEGRATION.JWP);
+container.bind(SubscriptionService).to(JWPSubscriptionService).whenNamed(INTEGRATION.JWP);

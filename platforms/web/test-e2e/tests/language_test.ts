@@ -58,11 +58,65 @@ Scenario('English language is selected when the locale is `en-GB`', async ({ I }
   await assertActiveLanguage(I, 'en');
 });
 
+Scenario('English title and description are displayed when the locale is `en-GB`', async ({ I }) => {
+  I.restartBrowser({ locale: 'en-GB' });
+  I.useConfig(testConfigs.basicNoAuth);
+  await assertActiveLanguage(I, 'en');
+
+  await I.openVideoCard(constants.agent327Title);
+  I.see(constants.agent327Title);
+  I.see(constants.agent327Description);
+
+  I.amOnPage(constants.baseUrl);
+  await I.openVideoCard(constants.bigBuckBunnyTitle);
+  I.see(constants.bigBuckBunnyTitle);
+  I.see(constants.bigBuckBunnyDescription);
+
+  I.amOnPage(constants.baseUrl);
+  await I.openVideoCard(constants.elephantsDreamTitle);
+  I.see(constants.elephantsDreamTitle);
+  I.see(constants.elephantsDreamDescription);
+});
+
 Scenario('Spanish language is selected when the locale is `es-ES`', async ({ I }) => {
   I.restartBrowser({ locale: 'es-ES' });
   I.useConfig(testConfigs.basicNoAuth);
 
   await assertActiveLanguage(I, 'es');
+});
+
+Scenario('Spanish title and description are displayed when the locale is `es-ES`', async ({ I }) => {
+  I.restartBrowser({ locale: 'es-ES' });
+  I.useConfig(testConfigs.basicNoAuth);
+  await assertActiveLanguage(I, 'es');
+
+  await I.openVideoCard(constants.agent327TitleSpanish);
+  I.see(constants.agent327TitleSpanish);
+  I.see(constants.agent327DescriptionSpanish);
+
+  I.amOnPage(constants.baseUrl);
+  await I.openVideoCard(constants.bigBuckBunnyTitleSpanish);
+  I.see(constants.bigBuckBunnyTitleSpanish);
+  I.see(constants.bigBuckBunnyDescriptionSpanish);
+
+  I.amOnPage(constants.baseUrl);
+  await I.openVideoCard(constants.elephantsDreamTitleSpanish);
+  I.see(constants.elephantsDreamTitleSpanish);
+  I.see(constants.elephantsDreamDescriptionSpanish);
+});
+
+Scenario('Changing language to Spanish on movie details page updates title and description', async ({ I }) => {
+  I.restartBrowser({ locale: 'en-GB' });
+  I.useConfig(testConfigs.basicNoAuth);
+  await assertActiveLanguage(I, 'en');
+
+  await I.openVideoCard(constants.agent327Title);
+  I.see(constants.agent327Title);
+  I.see(constants.agent327Description);
+
+  switchLanguage(I, 'es');
+  I.see(constants.agent327TitleSpanish);
+  I.see(constants.agent327DescriptionSpanish);
 });
 
 Scenario('Changing the language is persisted in the localStorage`', async ({ I }) => {

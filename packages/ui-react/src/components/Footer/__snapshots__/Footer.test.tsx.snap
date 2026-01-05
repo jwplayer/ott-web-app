@@ -3,10 +3,10 @@
 exports[`<Footer> > renders and matches snapshot 1`] = `
 <div>
   <footer
-    class="_footer_33bf66 _testFixMargin_33bf66"
+    class="_footer_0a5567 _testFixMargin_0a5567"
   >
     <div
-      class="_markdown_e219e2 _inline_e219e2"
+      class="_markdown_101724 _inline_101724"
     >
       Simple
     </div>
@@ -17,18 +17,18 @@ exports[`<Footer> > renders and matches snapshot 1`] = `
 exports[`<Footer> > renders and matches snapshot with two links 1`] = `
 <div>
   <footer
-    class="_footer_33bf66 _testFixMargin_33bf66"
+    class="_footer_0a5567 _testFixMargin_0a5567"
   >
     <ul
-      class="_list_33bf66"
+      class="_list_0a5567"
     >
       <li
-        class="_markdown_e219e2 _inline_e219e2"
+        class="_markdown_101724 _inline_101724"
       >
         Two links
       </li>
       <li
-        class="_markdown_e219e2 _inline_e219e2"
+        class="_markdown_101724 _inline_101724"
       >
         <a
           href="https://www.jwplayer.com/"
@@ -39,7 +39,7 @@ exports[`<Footer> > renders and matches snapshot with two links 1`] = `
         </a>
       </li>
       <li
-        class="_markdown_e219e2 _inline_e219e2"
+        class="_markdown_101724 _inline_101724"
       >
         <a
           href="https://www.jwplayer.com/"
@@ -57,18 +57,18 @@ exports[`<Footer> > renders and matches snapshot with two links 1`] = `
 exports[`<Footer> > renders and matches snapshot without links 1`] = `
 <div>
   <footer
-    class="_footer_33bf66 _testFixMargin_33bf66"
+    class="_footer_0a5567 _testFixMargin_0a5567"
   >
     <ul
-      class="_list_33bf66"
+      class="_list_0a5567"
     >
       <li
-        class="_markdown_e219e2 _inline_e219e2"
+        class="_markdown_101724 _inline_101724"
       >
         Text one
       </li>
       <li
-        class="_markdown_e219e2 _inline_e219e2"
+        class="_markdown_101724 _inline_101724"
       >
         Text two
       </li>

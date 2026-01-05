@@ -28,7 +28,7 @@ jobs:
           git config user.name "${{ env.GH_USER }}"
           git config user.email "${{ env.GH_EMAIL }}"
           git fetch origin ${{ github.ref_name }}
-          git merge origin/${{ github.ref_name }}
+          git merge origin/${{ github.ref_name }} --allow-unrelated-histories
           yarn && yarn workspace @jwp/ott-web run i18next
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

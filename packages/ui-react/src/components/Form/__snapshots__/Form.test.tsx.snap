@@ -13,7 +13,7 @@ exports[`<Form> > renders Form 1`] = `
       </h2>
     </div>
     <form
-      class="_flexBox_1c1c63"
+      class="_flexBox_568f2b"
       novalidate=""
     >
       <input
@@ -22,10 +22,10 @@ exports[`<Form> > renders Form 1`] = `
       />
     </form>
     <div
-      class="_controls_1c1c63"
+      class="_controls_568f2b"
     >
       <button
-        class="_button_f8f296 _default_f8f296 _outlined_f8f296"
+        class="_button_ee73f7 _default_ee73f7 _outlined_ee73f7"
         type="button"
       >
         <span>

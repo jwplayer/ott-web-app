@@ -1,3 +1,20 @@
+## [6.11.0](https://github.com/jwplayer/ott-web-app/compare/v6.10.0...v6.11.0) (2025-09-05)
+
+
+### Features
+
+* add e2e tests for content lists ([#689](https://github.com/jwplayer/ott-web-app/issues/689)) ([fab2ff1](https://github.com/jwplayer/ott-web-app/commit/fab2ff1ef421aa01b532c430e790fd74d1c79f85))
+* add e2e tests for translations ([#687](https://github.com/jwplayer/ott-web-app/issues/687)) ([0bc69a7](https://github.com/jwplayer/ott-web-app/commit/0bc69a7514eff2a61573b034dd7bb6fcf197617d))
+* movie screen by composition ([6f0a73e](https://github.com/jwplayer/ott-web-app/commit/6f0a73e9783169f0f9efbfaff723740b52703466))
+* Reference implementation of the labels filter in the web app ([#682](https://github.com/jwplayer/ott-web-app/issues/682)) ([5184a76](https://github.com/jwplayer/ott-web-app/commit/5184a764511b5cba897acb0c180d8c5fdcd924c4))
+
+
+### Bug Fixes
+
+* Fix broken SCA flow payment finalization ([#677](https://github.com/jwplayer/ott-web-app/issues/677)) ([405f5e5](https://github.com/jwplayer/ott-web-app/commit/405f5e5a0310e2188f9bcfdbc7c54594876a48fd))
+* **i18n:** update i18n keys ([#683](https://github.com/jwplayer/ott-web-app/issues/683)) ([c8f9a24](https://github.com/jwplayer/ott-web-app/commit/c8f9a24f2d7c192b5f736096837b3d5d7421d3f7))
+* Trial period displayed incorrectly ([#676](https://github.com/jwplayer/ott-web-app/issues/676)) ([e139359](https://github.com/jwplayer/ott-web-app/commit/e139359e2bdc43248442a090568b082ba2902db9))
+
 ## [6.10.0](https://github.com/jwplayer/ott-web-app/compare/v6.9.0...v6.10.0) (2025-04-09)
 
 

@@ -3,7 +3,7 @@
 exports[`<Button> > renders and matches snapshot 1`] = `
 <div>
   <button
-    class="_button_f8f296 _default_f8f296 _outlined_f8f296"
+    class="_button_ee73f7 _default_ee73f7 _outlined_ee73f7"
     type="button"
   >
     <span>
@@ -11,7 +11,7 @@ exports[`<Button> > renders and matches snapshot 1`] = `
     </span>
   </button>
   <button
-    class="_button_f8f296 _default_f8f296 _outlined_f8f296 _active_f8f296"
+    class="_button_ee73f7 _default_ee73f7 _outlined_ee73f7 _active_ee73f7"
     type="button"
   >
     <span>
@@ -20,7 +20,7 @@ exports[`<Button> > renders and matches snapshot 1`] = `
   </button>
   <button
     aria-disabled="true"
-    class="_button_f8f296 _default_f8f296 _outlined_f8f296 _disabled_f8f296"
+    class="_button_ee73f7 _default_ee73f7 _outlined_ee73f7 _disabled_ee73f7"
     type="button"
   >
     <span>
@@ -28,16 +28,16 @@ exports[`<Button> > renders and matches snapshot 1`] = `
     </span>
   </button>
   <button
-    class="_button_f8f296 _default_f8f296 _outlined_f8f296"
+    class="_button_ee73f7 _default_ee73f7 _outlined_ee73f7"
     type="button"
   >
     <span
-      class="_hidden_f8f296"
+      class="_hidden_ee73f7"
     >
       Busy button
     </span>
     <div
-      class="_buffer_d122df _centerAbsolute_f8f296 _small_d122df"
+      class="_buffer_5ad0ee _centerAbsolute_ee73f7 _small_5ad0ee"
     >
       <div />
       <div />
@@ -46,7 +46,7 @@ exports[`<Button> > renders and matches snapshot 1`] = `
     </div>
   </button>
   <button
-    class="_button_f8f296 _default_f8f296 _outlined_f8f296 _small_f8f296"
+    class="_button_ee73f7 _default_ee73f7 _outlined_ee73f7 _small_ee73f7"
     type="button"
   >
     <span>
@@ -54,7 +54,7 @@ exports[`<Button> > renders and matches snapshot 1`] = `
     </span>
   </button>
   <button
-    class="_button_f8f296 _default_f8f296 _outlined_f8f296 _large_f8f296"
+    class="_button_ee73f7 _default_ee73f7 _outlined_ee73f7 _large_ee73f7"
     type="button"
   >
     <span>
@@ -62,7 +62,7 @@ exports[`<Button> > renders and matches snapshot 1`] = `
     </span>
   </button>
   <button
-    class="_button_f8f296 _default_f8f296 _outlined_f8f296 _fullWidth_f8f296"
+    class="_button_ee73f7 _default_ee73f7 _outlined_ee73f7 _fullWidth_ee73f7"
     type="button"
   >
     <span>
@@ -70,15 +70,15 @@ exports[`<Button> > renders and matches snapshot 1`] = `
     </span>
   </button>
   <button
-    class="_button_f8f296 _default_f8f296 _outlined_f8f296"
+    class="_button_ee73f7 _default_ee73f7 _outlined_ee73f7"
     type="button"
   >
     <div
-      class="_startIcon_f8f296"
+      class="_startIcon_ee73f7"
     >
       <svg
         aria-hidden="true"
-        class="_icon_585b29"
+        class="_icon_596ab4"
         viewBox="0 0 24 24"
         xmlns="http://www.w3.org/2000/svg"
       >
@@ -92,7 +92,7 @@ exports[`<Button> > renders and matches snapshot 1`] = `
     </span>
   </button>
   <a
-    class="_button_f8f296 _default_f8f296 _outlined_f8f296"
+    class="_button_ee73f7 _default_ee73f7 _outlined_ee73f7"
     href="https://jwplayer.com"
   >
     <span>

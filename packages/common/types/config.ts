@@ -51,6 +51,7 @@ export type Content = {
   featured?: boolean;
   backgroundColor?: string | null;
   custom?: Record<string, string>;
+  filterTags?: string;
 };
 
 export type Menu = {

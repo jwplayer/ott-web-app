@@ -104,8 +104,8 @@ each shelf separately.
 
 **content[].contentId**
 
-The eight-character Playlists IDs from the JW Player dashboard. These IDs populate the video "shelves" on your site. *
-*contentId** is not required if you use `continue_watching` or `favorites` **type**.
+The eight-character Playlists IDs from the JW Player dashboard. These IDs populate the video "shelves" on your site. \*
+\*contentId** is not required if you use `continue_watching` or `favorites` **type\*\*.
 
 ---
 
@@ -142,6 +142,16 @@ Controls if the playlist should be used as a large "Featured" shelf on your JW O
 **content[].backgroundColor** (optional)
 
 You can change the background color of the shelf with the help of this property (e.g., #ff0000).
+
+---
+
+**content[].filterTags** (optional)
+
+You can optionally define a list of comma separated labels which are used to filter shelves.
+
+The OTT Web App offers a demonstration of its filtering capabilities. This example can be enabled by configuring the `enableLabelsFiltering` custom parameter.
+
+Filtering by device type, country, and day of week is supported. See the `Home.tsx` file for a code example.
 
 ---
 
@@ -305,11 +315,11 @@ Note, this setting is ignored if Cleeng is not enabled (i.e. there is not Cleeng
 **integrations.cleeng.monthlyOffer** (optional)
 
 If Cleeng is enabled, and you want to show the Payments and Subscription functionality, you need to include at least one
-offer ID (either this or the yearly offer property). 
-The application uses this ID to map to an offer that you've configured in your Cleeng environment under Offers to 
-represent your monthly subscription. 
+offer ID (either this or the yearly offer property).
+The application uses this ID to map to an offer that you've configured in your Cleeng environment under Offers to
+represent your monthly subscription.
 Note that only the data used from the Cleeng offer is the price, the free days, and the free period,
-and the app does not verify if the offer length is actually monthly. 
+and the app does not verify if the offer length is actually monthly.
 If no monthly or yearly offer is configured, the Payments section will not be shown.
 
 ---

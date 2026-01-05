@@ -6,48 +6,48 @@ exports[`<VideoDetails> > renders and matches snapshot 1`] = `
     data-testid="cinema-layout"
   >
     <header
-      class="_videoDetails_d0c133"
+      class="_videoDetails_7652e1"
       data-testid="video-details"
       id="video-details"
     >
       <div
-        class="_hero_77f2c2"
+        class="_hero_eb8714"
       >
         <img
           alt=""
-          class="_poster_77f2c2 _image_4c41c3"
+          class="_poster_eb8714 _image_b5fb05"
           src="http://image.jpg?width=1280"
         />
         <div
-          class="_posterFadeMenu_77f2c2"
+          class="_posterFadeMenu_eb8714"
         />
         <div
-          class="_posterFadeLeft_77f2c2"
+          class="_posterFadeLeft_eb8714"
         />
         <div
-          class="_posterFadeBottom_77f2c2"
+          class="_posterFadeBottom_eb8714"
         />
         <div
-          class="_posterBackground_77f2c2"
+          class="_posterBackground_eb8714"
         />
         <div
-          class="_info_77f2c2"
+          class="_info_eb8714"
         >
           <h1
-            class="_title_77f2c2"
+            class="_title_eb8714"
           >
             Test video
           </h1>
           <div
-            class="_metaContainer_d0c133"
+            class="_metaContainer_7652e1"
           >
             <div
-              class="_primaryMetadata_d0c133"
+              class="_primaryMetadata_7652e1"
             >
               Primary metadata string
             </div>
             <div
-              class="_secondaryMetadata_d0c133"
+              class="_secondaryMetadata_7652e1"
             >
               <strong>
                 Secondary metadata string
@@ -55,17 +55,17 @@ exports[`<VideoDetails> > renders and matches snapshot 1`] = `
             </div>
           </div>
           <div
-            class="_truncatedText_b1c064 _description_77f2c2 _description_d0c133"
+            class="_truncatedText_c07e0b _description_eb8714 _description_7652e1"
             style="max-height: calc(1.5em * 8); -webkit-line-clamp: 8; line-clamp: 8; display: -webkit-box;"
           >
             <div
-              class="_markdown_e219e2 _inline_e219e2"
+              class="_markdown_101724 _inline_101724"
             >
               Video description
             </div>
           </div>
           <div
-            class="_buttonBar_d0c133"
+            class="_buttonBar_7652e1"
           >
             <button>
               Start watching

@@ -8,8 +8,6 @@ import { CACHE_TIME, STALE_TIME } from '@jwp/ott-common/src/constants';
 import { logDebug } from '@jwp/ott-common/src/logger';
 import { useTranslation } from 'react-i18next';
 
-const applicationController = getModule(AppController);
-
 type Resources = {
   config: Config;
   configSource: string | undefined;
@@ -19,6 +17,7 @@ type Resources = {
 export type OnReadyCallback = (config: Config | undefined) => void;
 
 export const useBootstrapApp = (url: string, onReady: OnReadyCallback) => {
+  const applicationController = getModule(AppController);
   const queryClient = useQueryClient();
   const { i18n } = useTranslation();
 

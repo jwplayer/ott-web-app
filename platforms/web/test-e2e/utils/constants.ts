@@ -34,12 +34,21 @@ export default {
   agent327Title: 'Agent 327',
   agent327Description:
     'Hendrik IJzerbroot – Agent 327 – is a secret agent working for the Netherlands secret service agency. In the twenty comic books that were published since 1968, Martin Lodewijk created a rich universe with international conspiracies, hilarious characters and a healthy dose of Dutch humour.',
+  agent327TitleSpanish: 'Agente 327',
+  agent327DescriptionSpanish:
+    'Hendrik IJzerbroot, el Agente 327, es un agente secreto que trabaja para la agencia del servicio secreto de los Países Bajos. En los veinte cómics publicados desde 1968, Martin Lodewijk creó un rico universo con conspiraciones internacionales, personajes hilarantes y una saludable dosis de humor holandés.',
   bigBuckBunnyTitle: 'Big Buck Bunny',
   bigBuckBunnyDescription:
     "Big Buck Bunny (code-named Project Peach) is a 2008 short computer-animated comedy film featuring animals of the forest, made by the Blender Institute, part of the Blender Foundation. Like the foundation's previous film, Elephants Dream, the film was made using Blender, a free and open-source software application for 3D computer modeling and animation developed by the same foundation.",
+  bigBuckBunnyTitleSpanish: 'Gran Conejo Buck',
+  bigBuckBunnyDescriptionSpanish:
+    'Gran Conejo Buck (código de nombre Proyecto Durazno) es un cortometraje de comedia animado por computadora de 2008 que presenta animales del bosque, realizado por el Instituto Blender, parte de la Fundación Blender. Al igual que la película anterior de la fundación, Elephants Dream, la película fue realizada utilizando Blender, una aplicación gratuita y de código abierto para modelado y animación 3D desarrollada por la misma fundación.',
   elephantsDreamTitle: 'Elephants Dream',
   elephantsDreamDescription:
     'Elephants Dream (code-named Project Orange during production and originally titled Machina) is a 2006 Dutch computer animated science fiction fantasy experimental short film produced by Blender Foundation using, almost exclusively, free and open-source software. The film is English-language and includes subtitles in over 30 languages.',
+  elephantsDreamTitleSpanish: 'Sueño de Elefantes',
+  elephantsDreamDescriptionSpanish:
+    'Sueño de Elefantes (código de nombre Proyecto Naranja durante la producción y originalmente titulado Machina) es un cortometraje experimental de ciencia ficción animado por computadora de 2006 producido por la Fundación Blender utilizando, casi exclusivamente, software libre y de código abierto. La película está en inglés e incluye subtítulos en más de 30 idiomas.',
   fantasyVehicleTitle: 'Fantasy Vehicle Creation',
   fantasyVehicleId: 'lsFXY5xn',
   minecraftAnimationWorkshopTitle: 'Minecraft Animation Workshop',
