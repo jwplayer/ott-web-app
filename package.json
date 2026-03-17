@@ -58,8 +58,18 @@
     "vitest": "^3.0.8"
   },
   "resolutions": {
-    "axios": "^0.30.0",
+    "axios": "^0.30.3",
     "cheerio": "1.0.0-rc.12",
-    "**/minimatch/brace-expansion": "^1.1.12"
+    "**/minimatch/brace-expansion": "^1.1.12",
+    "@sentry/bundler-plugin-core/glob/minimatch": "8.0.7",
+    "eslint/file-entry-cache/flat-cache/flatted": ">=3.4.0",
+    "eslint/js-yaml": ">=4.1.1",
+    "eslint/@eslint/eslintrc/js-yaml": ">=4.1.1",
+    "@commitlint/load/cosmiconfig/js-yaml": ">=4.1.1",
+    "eslint/ajv": ">=6.14.0 <7",
+    "eslint/@eslint/eslintrc/ajv": ">=6.14.0 <7",
+    "@inplayer-org/inplayer.js/qs": ">=6.14.2",
+    "stripe/qs": ">=6.14.2",
+    "**/lodash": ">=4.17.23"
   }
 }
