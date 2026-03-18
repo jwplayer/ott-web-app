@@ -92,7 +92,8 @@ exports[`<Button> > renders and matches snapshot 1`] = `
     </span>
   </button>
   <a
-    class="_button_ee73f7 _default_ee73f7 _outlined_ee73f7"
+    aria-current="page"
+    class="_button_ee73f7 _default_ee73f7 _outlined_ee73f7 _active_ee73f7"
     href="https://jwplayer.com"
   >
     <span>
