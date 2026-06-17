@@ -180,7 +180,8 @@
                 "default": "jwp",
                 "options": [
                   { "value": "jwp", "label": "Default" },
-                  { "value": "viewnexa", "label": "ViewNexa" }
+                  { "value": "xmltv", "label": "XMLTV" },
+                  { "value": "viewnexa", "label": "ViewNexa (deprecated)" }
                 ]
               }
             },

@@ -7,7 +7,7 @@ import type { PlaylistItem } from '../../../types/playlist';
 import type { EpgProgram } from '../../../types/epg';
 import { logError, logWarn } from '../../logger';
 
-const viewNexaEpgProgramSchema = object().shape({
+const xmltvEpgProgramSchema = object().shape({
   'episode-num': object().shape({
     '#text': string().required(),
   }),
@@ -27,9 +27,9 @@ const viewNexaEpgProgramSchema = object().shape({
 const parseData = (date: string): string => parse(date, 'yyyyMdHms xxxx', new Date()).toISOString();
 
 @injectable()
-export default class ViewNexaEpgService extends EpgService {
+export default class XmltvEpgService extends EpgService {
   transformProgram = async (data: unknown): Promise<EpgProgram> => {
-    const program = await viewNexaEpgProgramSchema.validate(data);
+    const program = await xmltvEpgProgramSchema.validate(data);
 
     return {
       id: program['episode-num']['#text'],
@@ -48,7 +48,7 @@ export default class ViewNexaEpgService extends EpgService {
     const scheduleUrl = item.scheduleUrl;
 
     if (!scheduleUrl) {
-      logWarn('ViewNexaEpgService', 'Tried requesting a schedule for an item with missing `scheduleUrl`', { item });
+      logWarn('XmltvEpgService', 'Tried requesting a schedule for an item with missing `scheduleUrl`', { item });
       return undefined;
     }
 
@@ -65,7 +65,7 @@ export default class ViewNexaEpgService extends EpgService {
       return schedule?.tv?.programme || [];
     } catch (error: unknown) {
       if (error instanceof Error) {
-        logError('ViewNexaEpgService', `Fetch failed for View Nexa EPG schedule: '${scheduleUrl}'`, { error });
+        logError('XmltvEpgService', `Fetch failed for XMLTV EPG schedule: '${scheduleUrl}'`, { error });
       }
     }
   };
