@@ -12,3 +12,12 @@ overrides:
   '@xmldom/xmldom': '>=0.9.10'
 
 minimumReleaseAge: 10080 # 7 days
+
+allowBuilds:
+  '@parcel/watcher': true
+  core-js: true
+  core-js-pure: true
+  detox: true
+  dtrace-provider: true
+  esbuild: true
+  sharp: true
