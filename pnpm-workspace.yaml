@@ -5,8 +5,10 @@ packages:
   - platforms/*
 
 overrides:
-  # Fix critical vulnerabilities
+  # Fix vulnerabilities
   'fast-xml-parser': '>=4.5.4'
   'shell-quote': '>=1.8.4'
+  'axios': '>=0.30.0'
+  '@xmldom/xmldom': '>=0.9.10'
 
 minimumReleaseAge: 10080 # 7 days
