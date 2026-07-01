@@ -79,8 +79,8 @@ services. It enables you to easily publish your JW Player-hosted video content w
 The easiest way to get the OTT Web App running on your machine, use the following commands:
 
 ```shell
-$ yarn
-$ yarn web start
+$ pnpm install
+$ pnpm web start
 ```
 
 These commands will install all dependencies and start a dev server serving the web app. Read

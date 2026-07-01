@@ -16,7 +16,7 @@ jobs:
           persist-credentials: false
 
       - name: Install dependencies
-        run: yarn
+        run: pnpm install --frozen-lockfile
 
       - name: Get current package version
         id: package-version
@@ -27,7 +27,7 @@ jobs:
       - name: Build App
         working-directory: ./platforms/web
         run: |
-          yarn build
+          pnpm build
           cd build
           tar czf ott-web-app-build-${{steps.package-version.outputs.current-version}}.tar.gz public
           zip -r ott-web-app-build-${{steps.package-version.outputs.current-version}}.zip public

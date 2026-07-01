@@ -19,7 +19,7 @@ jobs:
       - name: Build Preview Link
         env:
           APP_PLAYER_LICENSE_KEY: ${{ secrets.PLAYER_LICENSE_KEY }}
-        run: yarn && MODE=preview yarn build
+        run: pnpm install && MODE=preview pnpm build
       - uses: FirebaseExtended/action-hosting-deploy@v0
         id: firebase_hosting_preview
         with:
@@ -36,6 +36,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Install Lighthouse CI
-        run: sudo yarn global add @lhci/cli@0.12.x
+        run: sudo pnpm add -g @lhci/cli@0.12.x
       - name: Run Lighthouse CI
         run: lhci autorun --collect.url=${{ needs.build_and_preview.outputs.output1 }}?app-config=gnnuzabk --config=./lighthouserc.cjs

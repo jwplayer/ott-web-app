@@ -19,11 +19,11 @@ This means that we need to:
 
 ## The solution
 
-Based on the re-usability of the existing codebase, we've created separate modules using Yarn Workspaces.
+Based on the re-usability of the existing codebase, we've created separate modules using pnpm Workspaces.
 This will combine all similar code and prevent installing redundant or conflicting dependencies.
 
 For example, all components, containers, and pages are combined into the `packages/ui-react` module, which depends on
-React and React DOM. 
+React and React DOM.
 To create a React Native app, you could add a `packages/ui-react-native` module and configure
 aliases to use the correct module.
 
@@ -81,8 +81,8 @@ CodeceptJS/Playwright-specific code.
 
 Name: `@jwp/ott-theme`
 
-The most important theming comes from the app config, but many other SCSS variables can be abstracted into generic 
-(JSON) tokens. 
+The most important theming comes from the app config, but many other SCSS variables can be abstracted into generic
+(JSON) tokens.
 These tokens can be used across multiple frameworks.
 
 Raw SVG icons are added here as well.
@@ -120,7 +120,7 @@ a local package.
 
 This is the Eslint config for React or TypeScript packages. Usage:
 
-**.eslintrc.js**
+**.eslintrc.cjs**
 
 ```js
 module.exports = {
@@ -132,7 +132,7 @@ module.exports = {
 
 This package contains the PostCSS config. It's not much, but it will ensure the config stays the same for all packages.
 
-**postcss.config.js**
+**postcss.config.mjs**
 
 ```js
 module.exports = require('postcss-config-jwp');
@@ -142,7 +142,7 @@ module.exports = require('postcss-config-jwp');
 
 This package contains all Stylelint rules.
 
-**stylelint.config.js**
+**stylelint.config.cjs**
 
 ```js
 module.exports = {

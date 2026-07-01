@@ -17,12 +17,12 @@ Content editors will then be able to choose a content type for each media item a
 
 ## Uploading content types to the dashboard
 
-In order to quickly upload the content types, you can use the yarn script included with this repository as so:
+In order to quickly upload the content types, you can use the pnpm script included with this repository as so:
 
-`yarn load-content-types --site-id=<site id>`
+`pnpm load-content-types --site-id=<site id>`
 
 By default, the script will load the content types that the vanilla web app expects found in [content-types.json](../scripts/content-types/content-types.json).
-You can modify this file in your fork of the web app code or optionally specify another file to load by adding a `--source-file=<file path>` param to the yarn script call.
+You can modify this file in your fork of the web app code or optionally specify another file to load by adding a `--source-file=<file path>` param to the pnpm script call.
 
 ### Content type upload file definition
 

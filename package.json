@@ -1,5 +1,6 @@
 {
   "name": "@jwp/ott",
+  "packageManager": "pnpm@11.9.0+sha512.bd682d5d03fe525ef7c9fd6780c6884d1e756ac4c9c9fe00c538782824310dcf90e3ddc4f53835f06dfaebd5085e41855e0bcbb3b60de2ac5bbab89e5036f03b",
   "version": "6.11.0",
   "private": true,
   "license": "Apache-2.0",
@@ -22,20 +23,19 @@
     "format:prettier": "prettier --write \"{**/*,*}.{js,ts,jsx,tsx}\"",
     "format:stylelint": "stylelint --fix '**/*.{css,scss}'",
     "i18next-diff": "npx ts-node ./scripts/i18next/diff-translations",
-    "i18next-update": "npx ts-node ./scripts/i18next/update-translations.ts && yarn workspace @jwp/ott-web run i18next",
-    "lint": "run-p -c lint:*",
+    "i18next-update": "pnpm exec ts-node ./scripts/i18next/update-translations.ts && pnpm --filter @jwp/ott-web run i18next",
+    "lint": "pnpm \"/^lint:.*/\"",
     "lint:eslint": "eslint \"{**/*,*}.{js,ts,jsx,tsx}\"",
     "lint:prettier": "prettier --check \"{**/*,*}.{js,ts,jsx,tsx}\"",
     "lint:stylelint": "stylelint '**/*.{css,scss}'",
-    "lint:ts": "tsc --pretty --noEmit -p ./scripts && yarn workspaces run lint:ts",
+    "lint:ts": "pnpm exec tsc --pretty --noEmit -p ./scripts && pnpm -r run lint:ts",
     "load-content-types": "ts-node ./scripts/content-types/load-content-types",
-    "pre-commit": "yarn depcheck && lint-staged",
+    "pre-commit": "pnpm depcheck && lint-staged",
     "prepare": "husky install",
     "test": "TZ=UTC LC_ALL=en_US.UTF-8 vitest run",
     "test-update": "TZ=UTC LC_ALL=en_US.UTF-8 vitest run -u",
     "test-watch": "TZ=UTC LC_ALL=en_US.UTF-8 vitest",
-    "web": "yarn --cwd platforms/web",
-    "access-bridge": "yarn --cwd platforms/access-bridge"
+    "web": "pnpm -C platforms/web"
   },
   "devDependencies": {
     "@babel/core": "^7.26.10",
@@ -45,7 +45,7 @@
     "@types/node": "^22.13.10",
     "csv-parse": "^5.6.0",
     "eslint": "^8.57.1",
-    "eslint-config-jwp": "*",
+    "eslint-config-jwp": "workspace:*",
     "husky": "^6.0.0",
     "i18next-parser-workspaces": "^0.2.1",
     "knip": "^5.61.2",
@@ -53,23 +53,9 @@
     "npm-run-all": "^4.1.5",
     "prettier": "^2.8.8",
     "read": "^2.1.0",
+    "stylelint": "^15.11.0",
     "ts-node": "^10.9.2",
     "typescript": "5.8.3",
     "vitest": "^3.0.8"
-  },
-  "resolutions": {
-    "axios": "^0.30.3",
-    "cheerio": "1.0.0-rc.12",
-    "**/minimatch/brace-expansion": "^1.1.12",
-    "@sentry/bundler-plugin-core/glob/minimatch": "8.0.7",
-    "eslint/file-entry-cache/flat-cache/flatted": ">=3.4.0",
-    "eslint/js-yaml": ">=4.1.1",
-    "eslint/@eslint/eslintrc/js-yaml": ">=4.1.1",
-    "@commitlint/load/cosmiconfig/js-yaml": ">=4.1.1",
-    "eslint/ajv": ">=6.14.0 <7",
-    "eslint/@eslint/eslintrc/ajv": ">=6.14.0 <7",
-    "@inplayer-org/inplayer.js/qs": ">=6.14.2",
-    "stripe/qs": ">=6.14.2",
-    "**/lodash": ">=4.17.23"
   }
 }

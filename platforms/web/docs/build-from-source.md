@@ -8,7 +8,7 @@ The following tools are needed to start building JW OTT Webapp. Follow the instr
 
 - [GIT](https://git-scm.com/)
 - [Node.js](https://nodejs.org/)
-- [Yarn](https://yarnpkg.com/)
+- [pnpm](https://pnpmpkg.com/)
 
 ## Build the JW OTT Webapp
 
@@ -24,10 +24,8 @@ $ cd ott-web-app
 2. Install the required dependencies. Optional dependencies include packages that are not necessary to build the project. These optional dependencies can be safely ignored.
 
 ```shell
-$ yarn --ignore-optional
+$ pnpm install --no-optional
 ```
-
-> **NOTE**: Some of the [easy deployments](easy-deployments.md) instructions require installing these optional dependencies. Use the `yarn` command to install all dependencies. The `yarn` command can be run even if `yarn --ignore-optional` has been previously run.
 
 3. Create or update the .ini files in `/platforms/web/ini` for the modes you will be running in (probably dev and prod).
    You can copy the ini file from `/platforms/web/ini/templates` into `/platforms/web/ini`. The files in `/platforms/web/ini` are git-ignored, so you do not need to worry about account values in source control, but you will need to recreate the ini files each time you make a fresh checkout of the repository.
@@ -38,7 +36,7 @@ $ yarn --ignore-optional
 
 ```shell
 $ cd platforms/web
-$ yarn start
+$ pnpm start
 ```
 
 If you encounter any errors, make sure you have correctly set the `defaultConfigSource` in `/platforms/web/ini/.webapp.dev.ini` to point to a valid app config from your JWP account.
@@ -50,10 +48,10 @@ If you encounter any errors, make sure you have correctly set the `defaultConfig
 
 ```shell
 $ cd platforms/web
-$ yarn build
+$ pnpm build
 ```
 
-If you have not made any changes to the JW OTT Webapp configuration or source code, changes can now be made. Be sure to run the `yarn build` command after making any changes.
+If you have not made any changes to the JW OTT Webapp configuration or source code, changes can now be made. Be sure to run the `pnpm build` command after making any changes.
 
 If you encounter any errors, first check to make sure you've properly updated `/platforms/web/ini/.webapp.prod.ini` to point `defaultConfigSource` to your production app config from your JWP account.
 
@@ -64,13 +62,13 @@ For most cases, you will want to use `dev`, `test`, or `prod` modes. The support
 
 Please keep in mind that there is a nuanced difference between vite `mode` and whether you are running a development or production build as determined by [`NODE_ENV`](https://nodejs.dev/en/learn/nodejs-the-difference-between-development-and-production/).
 Mode can be whatever different deployment environments that our application can be run in, while the build type will always be either `development` or `production`.
-Typically, when you run the development server using `yarn start`, it will be a `development` build, and you build the code with `yarn build` and then host it from static hosting, you will be running a production build.
+Typically, when you run the development server using `pnpm start`, it will be a `development` build, and you build the code with `pnpm build` and then host it from static hosting, you will be running a production build.
 
 Production builds optimize code and minimize debug information, while development builds are made for developers to dig into.
 
 - **dev** - used for developers to locally develop, test, and debug code. Has the most debug information, including a config selector to help developers quickly switch between app configs. Will allow any app config to be loaded.
 - **test** - used when running unit and e2e tests. Should typically be run as a production build. Will only load a select list of test app configs.
-- **prod** - default used when running `yarn build` to create compiled code for production hosting. You should make sure to update the prod .ini file to only allow app configs from your account.
+- **prod** - default used when running `pnpm build` to create compiled code for production hosting. You should make sure to update the prod .ini file to only allow app configs from your account.
 - **demo** - used for the [JWP preview site](https://app-preview.jwplayer.com/) and includes a dialog to switch between app configs. Will allow any app-config to be loaded and does not have a default config.
 - **preview** - used for GitHub PR previews. Behaves like a hybrid between dev and demo.
 - **jwdev** - this mode is for running code on JW's internal dev environment. It will only work for JW employees on the internal network.

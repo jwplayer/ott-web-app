@@ -1,32 +1,38 @@
 import type { KnipConfig } from 'knip';
 
 const config: KnipConfig = {
-  ignoreBinaries: [
-    // These are installed, but don't have valid package.json bin fields for knip to detect them
-    'stylelint',
-  ],
   workspaces: {
     '.': {
       entry: ['scripts/**/*'],
       ignoreBinaries: [
-        // false positives from yarn scripts in github actions
+        // false positives from pnpm scripts in github actions
         'build',
-        'start:test',
-        'codecept:*',
       ],
     },
     'packages/common': {
       entry: ['src/**/*'],
+      ignoreDependencies: [
+        '@jwp/ott-common', // Self-reference so internal `@jwp/ott-common/*` imports resolve under strict pnpm
+      ],
+    },
+    'packages/hooks-react': {
+      entry: ['src/**/*'],
+      ignoreDependencies: [
+        '@jwp/ott-hooks-react', // Self-reference so internal `@jwp/ott-hooks-react/*` imports resolve under strict pnpm
+      ],
     },
     'packages/ui-react': {
       entry: ['src/**/*'],
+      ignoreUnresolved: ['@jwp/ott-ui-react/src/styles/.*'],
       ignoreDependencies: [
         '@types/dompurify', // Somehow this is not recognised
         'sass-embedded', // Used in Vite
         'postcss-config-jwp', // Used in postcss.config
+        '@jwp/ott-ui-react', // Self-reference so internal `@jwp/ott-ui-react/*` imports resolve under strict pnpm
       ],
     },
     'platforms/web': {
+      ignoreUnresolved: ['@jwp/ott-ui-react/src/styles/.*'],
       ignoreDependencies: [
         '@codeceptjs/allure-legacy',
         '@codeceptjs/configure', // Used in e2e tests

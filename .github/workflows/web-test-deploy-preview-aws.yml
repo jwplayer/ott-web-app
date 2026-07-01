@@ -34,17 +34,17 @@ jobs:
     environment:
       name: Deployment Previews
       url: ${{ format('https://pr-{0}.{1}?app-config={2}', github.event.pull_request.number || '0' , vars.PREVIEW_DOMAIN, vars.PREVIEW_DEFAULT_CONFIG) }}
-    if:  ${{ vars.DEPLOYMENT_PREVIEWS != '' }}
+    if: ${{ vars.DEPLOYMENT_PREVIEWS != '' }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
       - name: Install packages
-        run: yarn install --frozen-lockfile
+        run: pnpm install --frozen-lockfile
       - name: Build
         run: |
-          yarn build
+          pnpm build
         env:
           MODE: demo
           APP_GTM_TAG_ID: ${{ vars.APP_GTM_TAG_ID }}

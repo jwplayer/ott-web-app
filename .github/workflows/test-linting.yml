@@ -11,10 +11,10 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '22.x'
-      - name: yarn install, lint
+          node-version: "22.x"
+      - name: pnpm install, lint
         run: |
-          yarn install
-          yarn lint
+          pnpm install --frozen-lockfile
+          pnpm lint
         env:
           CI: true

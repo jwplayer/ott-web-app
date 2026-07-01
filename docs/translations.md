@@ -10,7 +10,7 @@ Here is a list of all supported translations included in the OTT Web App. The st
 generated using Google Translate/ChatGTP or validated by a person.
 
 | Language | Code | Status    | Validated by             |
-|----------|------|-----------|--------------------------|
+| -------- | ---- | --------- | ------------------------ |
 | English  | en   | Validated | Dev team                 |
 | Spanish  | es   | Validated | Jose Alfredo Lopez Urrea |
 | ...      |      |           |                          |
@@ -23,7 +23,7 @@ are separated by namespace.
 
 > The translation files will be moved to the `./packages/i18n` package in the near future.
 
-The structure of all translation files is generated automatically using the `yarn i18next` command. This script
+The structure of all translation files is generated automatically using the `pnpm i18next` command. This script
 extracts all namespaces and translation keys from the source code. Refrain from editing the structure (e.g., adding or
 removing keys) of translation files manually because this is prone to mistakes.
 
@@ -34,7 +34,7 @@ for one or more French-speaking regions, use the LCID string (e.g., `fr-be`, `fr
 the language code. The downside of this, when having multiple French-speaking regions, a lot of translations will be
 duplicate.
 
-After adding the subdirectory, run the `yarn i18next` command to generate all the added
+After adding the subdirectory, run the `pnpm i18next` command to generate all the added
 language(s) translation files. You can now translate each key for the added language(s).
 
 ## Defined languages
@@ -80,14 +80,14 @@ This disables the multilingual feature by only supporting the English language. 
 hidden in the header.
 
 ```shell
-$ APP_ENABLED_LANGUAGES=en yarn build 
+$ APP_ENABLED_LANGUAGES=en pnpm build
 ```
 
 This builds an OTT Web App supporting the English and French languages. The language selection icon will be shown in
 the header.
 
 ```shell
-$ APP_ENABLED_LANGUAGES=en,fr yarn build 
+$ APP_ENABLED_LANGUAGES=en,fr pnpm build
 ```
 
 ## Default language
@@ -103,5 +103,5 @@ Build an OTT Web App with English and French translations, but default to French
 predicted.
 
 ```shell
-$ APP_ENABLED_LANGUAGES=en,fr APP_DEFAULT_LANGUAGE=fr yarn build 
+$ APP_ENABLED_LANGUAGES=en,fr APP_DEFAULT_LANGUAGE=fr pnpm build
 ```
