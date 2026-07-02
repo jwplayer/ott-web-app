@@ -19,7 +19,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # ghapm:v4
         with:
-          node-version: 24
+          node-version: "24.18.0" # https://github.com/FirebaseExtended/action-hosting-deploy/issues/460#issuecomment-4832552057
       - name: Install pnpm
         uses: pnpm/action-setup@a3252b78c470c02df07e9d59298aecedc3ccdd6d # ghapm:v3
       - name: Build Preview Link
@@ -41,7 +41,13 @@ jobs:
     needs: build_and_preview
     steps:
       - uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # ghapm:v3
+      - name: Use Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # ghapm:v4
+        with:
+          node-version: "24.18.0" # https://github.com/FirebaseExtended/action-hosting-deploy/issues/460#issuecomment-4832552057
+      - name: Install pnpm
+        uses: pnpm/action-setup@a3252b78c470c02df07e9d59298aecedc3ccdd6d # ghapm:v3
       - name: Install Lighthouse CI
-        run: sudo pnpm add -g @lhci/cli@0.12.x
+        run: pnpm add -D @lhci/cli@0.12.x
       - name: Run Lighthouse CI
-        run: lhci autorun --collect.url=${{ needs.build_and_preview.outputs.output1 }}?app-config=gnnuzabk --config=./lighthouserc.cjs
+        run: pnpm exec lhci autorun --collect.url=${{ needs.build_and_preview.outputs.output1 }}?app-config=gnnuzabk --config=./lighthouserc.cjs
