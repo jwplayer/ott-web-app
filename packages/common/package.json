@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@inplayer-org/inplayer.js": "^3.13.28",
+    "@jwp/ott-common": "workspace:*",
     "date-fns": "^4.1.0",
     "fast-xml-parser": "^4.5.4",
     "i18next": "^24.2.2",
@@ -23,10 +24,10 @@
     "zustand": "^4.5.5"
   },
   "devDependencies": {
-    "@jwp/ott-testing": "*",
+    "@jwp/ott-testing": "workspace:*",
     "@types/ini": "^1.3.34",
     "@types/lodash.merge": "^4.6.9",
-    "eslint-config-jwp": "*",
+    "eslint-config-jwp": "workspace:*",
     "jsdom": "^26.0.0",
     "timezone-mock": "^1.3.6",
     "vi-fetch": "^0.8.0",

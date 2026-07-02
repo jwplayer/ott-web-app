@@ -13,10 +13,10 @@ jobs:
 
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # ghapm:v4
 
       - name: Merge release -> develop
-        uses: devmasx/merge-branch@master
+        uses: devmasx/merge-branch@6ec8363d74aad4f1615d1234ae1908b4185c4313
         with:
           type: now
           from_branch: release

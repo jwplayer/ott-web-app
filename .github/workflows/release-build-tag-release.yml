@@ -11,12 +11,17 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # ghapm:v4
         with:
           persist-credentials: false
-
+      - name: Use Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # ghapm:v4
+        with:
+          node-version: 24
+      - name: Install pnpm
+        uses: pnpm/action-setup@a3252b78c470c02df07e9d59298aecedc3ccdd6d # ghapm:v3
       - name: Install dependencies
-        run: yarn
+        run: pnpm install --frozen-lockfile
 
       - name: Get current package version
         id: package-version
@@ -27,14 +32,14 @@ jobs:
       - name: Build App
         working-directory: ./platforms/web
         run: |
-          yarn build
+          pnpm build
           cd build
           tar czf ott-web-app-build-${{steps.package-version.outputs.current-version}}.tar.gz public
           zip -r ott-web-app-build-${{steps.package-version.outputs.current-version}}.zip public
 
       - name: Parse Changelog Entry
         id: changelog-reader
-        uses: coditory/changelog-parser@v1
+        uses: coditory/changelog-parser@4f567c6914ee75eff434b4d946393dfd254f8f98 # ghapm:v1
         with:
           version: ${{ steps.package-version.outputs.current-version }}
 
@@ -49,7 +54,7 @@ jobs:
         run: git tag ${{ steps.package-version.outputs.current-version }}
 
       - name: Release
-        uses: ncipollo/release-action@v1.13.0
+        uses: ncipollo/release-action@6c75be85e571768fa31b40abf38de58ba0397db5 # ghapm:v1
         if: ${{ steps.package-version.outputs.current-version }}
         with:
           commit: 'release'

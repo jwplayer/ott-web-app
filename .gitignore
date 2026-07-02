@@ -1,6 +1,7 @@
 # project, build, and deployment
 node_modules
 yarn-error.log
+pnpm-debug.log
 
 # os or editor
 .idea

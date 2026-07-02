@@ -1,6 +1,0 @@
-node_modules
-build
-*.local
-.env
-# Sentry Config File
-.env.sentry-build-plugin

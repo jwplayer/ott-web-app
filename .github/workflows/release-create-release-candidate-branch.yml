@@ -17,25 +17,31 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # ghapm:v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           ref: release
       # It would be easier to create the branch from develop,
       # but unfortunately the script that creates the PR's only considers commits added during the action run
+      - name: Use Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # ghapm:v4
+        with:
+          node-version: 24
+      - name: Install pnpm
+        uses: pnpm/action-setup@a3252b78c470c02df07e9d59298aecedc3ccdd6d # ghapm:v3
       - name: Merge latest from target branch
         run: |
           git config user.name "${{ env.GH_USER }}"
           git config user.email "${{ env.GH_EMAIL }}"
           git fetch origin ${{ github.ref_name }}
           git merge origin/${{ github.ref_name }} --allow-unrelated-histories
-          yarn && yarn workspace @jwp/ott-web run i18next
+          pnpm install && pnpm --filter @jwp/ott-web run i18next
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Generate changelog
         id: changelog
-        uses: TriPSs/conventional-changelog-action@v5.1.0
+        uses: TriPSs/conventional-changelog-action@dd734f74fce61a6e02f821ee1b5930bc79a23534 # ghapm:v5
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           release-count: 0
@@ -46,7 +52,7 @@ jobs:
           input-file: 'CHANGELOG.md'
 
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v6
+        uses: peter-evans/create-pull-request@c5a7806660adbe173f04e3e038b0ccdcd758773c # ghapm:v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           title: Release Candidate - ${{ steps.changelog.outputs.tag }}${{ github.ref_name != 'develop' && ' (Hotfix)' || ''}}
