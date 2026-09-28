@@ -2,11 +2,13 @@ import { Navigate } from 'react-router';
 import { useSearchParams } from 'react-router-dom';
 import type { PlaylistItem } from '@jwp/ott-common/types/playlist';
 import { buildLegacySeriesUrlFromMediaItem, mediaURL } from '@jwp/ott-common/src/utils/urlFormatting';
+import { getLegacySeriesPlaylistId } from '@jwp/ott-common/src/utils/media';
 import { useSeriesLookup } from '@jwp/ott-hooks-react/src/series/useSeriesLookup';
 import useMedia from '@jwp/ott-hooks-react/src/useMedia';
 
 import type { ScreenComponent } from '../../../../../types/screens';
 import Loading from '../../../Loading/Loading';
+import MediaMovie from '../MediaMovie/MediaMovie';
 
 /**
  * This media series episode screen is used to redirect an episode item to the series page.
@@ -27,6 +29,11 @@ const MediaEpisode: ScreenComponent<PlaylistItem> = ({ data: media, isLoading: i
   }
 
   if (!episodeInSeries) {
+    // Without a series or a legacy series playlist id there is nothing to redirect to, so play the item as a regular video
+    if (!getLegacySeriesPlaylistId(media)) {
+      return <MediaMovie data={media} isLoading={isMediaLoading} />;
+    }
+
     return <Navigate to={buildLegacySeriesUrlFromMediaItem(media, play, feedId)} replace />;
   }
 
