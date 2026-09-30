@@ -47,6 +47,10 @@ export const getLegacySeriesPlaylistIdFromEpisodeTags = (item: PlaylistItem | un
   return;
 };
 
+// An episode can only be redirected to a legacy series page when a series playlist id can be found in its custom params or tags
+export const getLegacySeriesPlaylistId = (item: PlaylistItem | undefined) =>
+  getSeriesPlaylistIdFromCustomParams(item) || getLegacySeriesPlaylistIdFromEpisodeTags(item);
+
 export const isLiveChannel = (item: PlaylistItem): item is RequiredProperties<PlaylistItem, 'contentType'> =>
   isContentType(item, MEDIA_CONTENT_TYPE.liveChannel);
 
