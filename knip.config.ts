@@ -7,6 +7,7 @@ const config: KnipConfig = {
       ignoreBinaries: [
         // false positives from pnpm scripts in github actions
         'build',
+        'lhci', // Installed on the fly in the lighthouse workflow
       ],
     },
     'packages/common': {
