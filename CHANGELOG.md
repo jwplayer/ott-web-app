@@ -1,3 +1,10 @@
+## [6.11.1](https://github.com/jwplayer/ott-web-app/compare/v6.12.0...v6.11.1) (2026-10-09)
+
+
+### Bug Fixes
+
+* **project:** play episode as a movie when no series can be found ([#706](https://github.com/jwplayer/ott-web-app/issues/706)) ([281489c](https://github.com/jwplayer/ott-web-app/commit/281489c6d9ede8500ba2705f190f8bd9af1d8b87))
+
 ## [6.11.0](https://github.com/jwplayer/ott-web-app/compare/v6.10.0...v6.11.0) (2025-09-05)
 
 
