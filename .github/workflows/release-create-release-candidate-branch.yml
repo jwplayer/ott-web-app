@@ -27,17 +27,19 @@ jobs:
         uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # ghapm:v4
         with:
           node-version: 24
-      - name: Install pnpm
-        uses: pnpm/action-setup@a3252b78c470c02df07e9d59298aecedc3ccdd6d # ghapm:v3
       - name: Merge latest from target branch
         run: |
           git config user.name "${{ env.GH_USER }}"
           git config user.email "${{ env.GH_EMAIL }}"
           git fetch origin ${{ github.ref_name }}
           git merge origin/${{ github.ref_name }} --allow-unrelated-histories
-          pnpm install && pnpm --filter @jwp/ott-web run i18next
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # Set up pnpm after the merge, since the release branch may not define a pnpm version yet
+      - name: Install pnpm
+        uses: pnpm/action-setup@a3252b78c470c02df07e9d59298aecedc3ccdd6d # ghapm:v3
+      - name: Install dependencies and update translations
+        run: pnpm install && pnpm --filter @jwp/ott-web run i18next
 
       - name: Generate changelog
         id: changelog
