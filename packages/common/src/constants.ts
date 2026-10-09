@@ -94,6 +94,8 @@ export const DEFAULT_FEATURES = {
 
 export const EPG_TYPE = {
   jwp: 'jwp',
+  xmltv: 'xmltv',
+  // Deprecated alias of `xmltv`, kept for backwards compatibility with existing app configs.
   viewNexa: 'viewnexa',
 } as const;
 

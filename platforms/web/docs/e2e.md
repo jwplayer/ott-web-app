@@ -37,16 +37,16 @@ We use several workers to launch tests for each platform. That increases the spe
 Basic commands:
 
 - `cd platforms/web` - run the following commands from the web platform
-- `yarn codecept:mobile` - to run tests for a mobile device
-- `yarn codecept:desktop` - to run tests for desktop
-- `yarn serve-report:mobile` - to serve an allure report from "./output/mobile" folder
-- `yarn serve-report:desktop` - to serve allure report from "./output/desktop" folder
-- `yarn codecept-serve:mobile` - to run desktop tests and serve the report
-- `yarn codecept-serve:desktop` - to run mobile tests and serve the report
+- `pnpm codecept:mobile` - to run tests for a mobile device
+- `pnpm codecept:desktop` - to run tests for desktop
+- `pnpm serve-report:mobile` - to serve an allure report from "./output/mobile" folder
+- `pnpm serve-report:desktop` - to serve allure report from "./output/desktop" folder
+- `pnpm codecept-serve:mobile` - to run desktop tests and serve the report
+- `pnpm codecept-serve:desktop` - to run mobile tests and serve the report
 
 ## GitHub Actions
 
-We have two actions: one for desktop and one for mobile devices. 
+We have two actions: one for desktop and one for mobile devices.
 Each one runs independently.
 After the actions run, it is possible to download an artifact with an allure report and build a nice report locally.
 
@@ -57,7 +57,7 @@ To serve allure reports locally `allure-commandline` package should be installed
 ## Simple steps to run tests locally for desktop
 
 1. Install Java 8 (for Mac homebrew `adoptopenjdk8` package can be used)
-2. `yarn install`
+2. `pnpm install`
 3. Install `allure-commandline` globally (can help in the future to serve downloaded artifacts)
-4. Run `cd platforms/web` 
-5. Run `yarn codecept-serve:desktop`
+4. Run `cd platforms/web`
+5. Run `pnpm codecept-serve:desktop`

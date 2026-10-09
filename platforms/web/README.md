@@ -3,12 +3,12 @@
 ## Getting started
 
 - Clone this repository
-- Run `yarn` to install dependencies
+- Run `pnpm install` to install dependencies
 - Navigate to the platform directory `cd platforms/web`
-- Run unit tests through `yarn test`
-- Format the code through `yarn format` (or automatically do it via git hooks)
-- Lint through `yarn lint` (eslint, prettier, stylelint and tsc checks)
-- Run `yarn start`
+- Run unit tests through `pnpm test`
+- Format the code through `pnpm format` (or automatically do it via git hooks)
+- Lint through `pnpm lint` (eslint, prettier, stylelint and tsc checks)
+- Run `pnpm start`
 
 ## Create favicons / pwa icons
 
@@ -17,9 +17,9 @@ Use a high-quality square-sized image.
 We suggest a dimension 1024x1024 or higher
 
 - Navigate to the platform directory `cd platforms/web`
-- Perform `yarn generate-pwa-assets`
+- Perform `pnpm generate-pwa-assets`
 
-Install `sharp` if you get the following error: Could not load the "sharp" module using the ... runtime and run `yarn generate-pwa-assets` afterward
+Install `sharp` if you get the following error: Could not load the "sharp" module using the ... runtime and run `pnpm generate-pwa-assets` afterward
 
 The different icon formats are defined here [pwa-assets.config.ts](./pwa-assets.config.ts)
 

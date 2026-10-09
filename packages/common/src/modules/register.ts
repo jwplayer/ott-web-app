@@ -24,7 +24,7 @@ import EntitlementController from '../controllers/EntitlementController';
 
 // Epg services
 import EpgService from '../services/EpgService';
-import ViewNexaEpgService from '../services/epg/ViewNexaEpgService';
+import XmltvEpgService from '../services/epg/XmltvEpgService';
 import JWEpgService from '../services/epg/JWEpgService';
 
 // Access integration
@@ -73,7 +73,9 @@ container.bind(AccessController).toSelf();
 
 // EPG services
 container.bind(EpgService).to(JWEpgService).whenNamed(EPG_TYPE.jwp);
-container.bind(EpgService).to(ViewNexaEpgService).whenNamed(EPG_TYPE.viewNexa);
+container.bind(EpgService).to(XmltvEpgService).whenNamed(EPG_TYPE.xmltv);
+// `viewnexa` is a deprecated alias for `xmltv`; bind it to the same service for backwards compatibility.
+container.bind(EpgService).to(XmltvEpgService).whenNamed(EPG_TYPE.viewNexa);
 
 // Functions
 container.bind(INTEGRATION_TYPE).toDynamicValue(getIntegrationType);

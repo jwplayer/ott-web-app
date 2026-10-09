@@ -203,5 +203,5 @@ Scenario('I can see the footer', ({ I }) => {
   I.click('jwpconnatix.com');
   I.wait(2);
   I.switchToNextTab();
-  I.seeCurrentUrlEquals('https://jwpconnatix.com/');
+  I.seeCurrentUrlEquals('https://jwx.com/');
 });

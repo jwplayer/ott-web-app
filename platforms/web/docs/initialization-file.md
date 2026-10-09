@@ -4,7 +4,7 @@ The JW OTT Web App loads a small initialization (.ini) file at startup. This fil
 Template ini files are included in the repo and with the pre-compiled production release builds ([.webapp.prod.ini](../ini/templates/.webapp.prod.ini)).
 Make sure you include a copy of the ini file edited to include your account data at `/public/.webapp.ini` for the application to load correctly.
 
-For all manual builds (`yarn start` or `yarn build`), the ini file is copied from `/ini/.webapp.<mode>.ini` to `build/public/.webapp.ini`, which the application fetches and parses at startup. For production builds, the ini file is stripped of comments and extra whitespace.
+For all manual builds (`pnpm start` or `pnpm build`), the ini file is copied from `/ini/.webapp.<mode>.ini` to `build/public/.webapp.ini`, which the application fetches and parses at startup. For production builds, the ini file is stripped of comments and extra whitespace.
 If a file doesn't exist in /ini/.webapp.<mode>.ini, then the template file will first be copied from [`ini/templates`](../ini/templates).
 
 ## Ini Parameters

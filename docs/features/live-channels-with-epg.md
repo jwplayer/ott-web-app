@@ -28,6 +28,7 @@ Add the following Custom Parameters to the media item:
 - **contentType**: LiveChannel
 - **liveChannelsId**: playlist id noted down in previous step
 - **scheduleUrl**: URL to your EPG data
+- **scheduleType** (optional): format of the EPG data referenced by `scheduleUrl`. Defaults to `jwp` (the JW Player schedule format). Use `xmltv` for the [XMLTV](http://wiki.xmltv.org/) format. `viewnexa` is a deprecated alias of `xmltv`, kept for backwards compatibility with existing configs.
 
 ## Add a Live menu item
 

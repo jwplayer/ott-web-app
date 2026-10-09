@@ -1,3 +1,17 @@
+## [6.13.0](https://github.com/jwplayer/ott-web-app/compare/v6.12.0...v6.13.0) (2026-10-09)
+
+
+### Bug Fixes
+
+* **project:** play episode as a movie when no series can be found ([#706](https://github.com/jwplayer/ott-web-app/issues/706)) ([281489c](https://github.com/jwplayer/ott-web-app/commit/281489c6d9ede8500ba2705f190f8bd9af1d8b87))
+
+## [6.12.0](https://github.com/jwplayer/ott-web-app/compare/v6.11.0...v6.12.0) (2026-07-02)
+
+
+### Features
+
+* **epg:** add xmltv EPG provider, keep viewnexa as alias ([#703](https://github.com/jwplayer/ott-web-app/issues/703)) ([ed0862d](https://github.com/jwplayer/ott-web-app/commit/ed0862dd879df77b442cdcb8a3293dc98d0ed55d))
+
 ## [6.11.0](https://github.com/jwplayer/ott-web-app/compare/v6.10.0...v6.11.0) (2025-09-05)
 
 

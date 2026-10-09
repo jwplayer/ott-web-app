@@ -1,11 +1,11 @@
 ## When working on this project, keep these in mind:
 
-- Use `yarn`
-- Run all unit tests through `yarn test`
-- Format the code through `yarn format` (or automatically do it via git hooks)
-- Lint through `yarn lint` (eslint, prettier, stylelint and tsc checks)
-- Run `yarn i18next` to extract all translations keys from source-code
-- Run `yarn depcheck` to validating dependency usages for all packages
+- Use `pnpm`
+- Run all unit tests through `pnpm test`
+- Format the code through `pnpm format` (or automatically do it via git hooks)
+- Lint through `pnpm lint` (eslint, prettier, stylelint and tsc checks)
+- Run `pnpm i18next` to extract all translations keys from source-code
+- Run `pnpm depcheck` to validating dependency usages for all packages
 - Run `npx syncpack lint` for validating dependency issues for all workspaces
 - The JW organization requires personal access tokens for all of their repositories. To create a branch or pull request, you'll need to [Generate a Personal Access Token](https://github.com/settings/tokens) and then [store it in your git config](https://stackoverflow.com/questions/46645843/where-to-store-my-git-personal-access-token/67360592). (For token permissions, `repo` should be sufficient).
 
@@ -27,8 +27,8 @@ The GitHub action will update the project package.json, create a release tag in 
 
 ## Git Commit Guidelines (conventional changelog)
 
-We use the conventional changelog, thereby defining very precise rules over how our git commit messages can be formatted. 
-This leads to **more readable messages** that are easy to follow when looking through the **project history**. 
+We use the conventional changelog, thereby defining very precise rules over how our git commit messages can be formatted.
+This leads to **more readable messages** that are easy to follow when looking through the **project history**.
 But also, we allow the git commit messages to **generate the change log**.
 
 ### Commit Message Format
@@ -43,7 +43,7 @@ Each commit message consists of a **header**, a **body** and a **footer**. The h
 <footer>
 ```
 
-The subject line of the commit message cannot be longer than 100 characters. 
+The subject line of the commit message cannot be longer than 100 characters.
 This allows the message to be easier to read on GitHub as well as in various git tools.
 
 ### Type
@@ -89,12 +89,12 @@ The footer should contain any information about **Breaking Changes** and is also
 /docs             - Documentation
   /_images        - Images used in the docs and README
   /features       - Docs coverage specific product use cases
-/node_modules*    - Yarn generated dependencies
+/node_modules*    - pnpm generated dependencies
 /packages         - Re-usable code for platforms (registered in workspace)
 /platforms        - Platform entry points (registered in workspace)
 /scripts          - Dev helper scripts for i18n, deployment, etc.
 /CHANGELOG.md     - Auto-generated changelog
-/package.json     - Yarn file for dependencies and scripts
+/package.json     - pnpm file for dependencies and scripts
 /tsconfig.base..  - The base TS configuration file used in most packages and platforms
 /vitest.worksp..  - Vitest workspace configuration file
 

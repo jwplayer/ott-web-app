@@ -1,18 +1,18 @@
 import { afterEach, beforeEach, describe, expect } from 'vitest';
 import { mockFetch, mockGet } from 'vi-fetch';
 import { unregister } from 'timezone-mock';
-import viewNexaChannel from '@jwp/ott-testing/epg/viewNexaChannel.xml?raw';
+import xmltvChannel from '@jwp/ott-testing/epg/xmltvChannel.xml?raw';
 import livePlaylistFixture from '@jwp/ott-testing/fixtures/livePlaylist.json';
 
 import type { Playlist } from '../../../types/playlist';
 import { EPG_TYPE } from '../../constants';
 
-import ViewNexaEpgService from './ViewNexaEpgService';
+import XmltvEpgService from './XmltvEpgService';
 
 const livePlaylist = livePlaylistFixture as Playlist;
-const epgService = new ViewNexaEpgService();
+const epgService = new XmltvEpgService();
 
-describe('ViewNexaEpgService', () => {
+describe('XmltvEpgService', () => {
   beforeEach(() => {
     mockFetch.clearAll();
     vi.useFakeTimers();
@@ -27,16 +27,16 @@ describe('ViewNexaEpgService', () => {
   });
 
   test('fetchSchedule performs a request', async () => {
-    const mock = mockGet('/epg/viewNexaChannel.xml').willResolveOnce([]);
-    const data = await epgService.fetchSchedule({ ...livePlaylist.playlist[0], scheduleUrl: '/epg/viewNexaChannel.xml', scheduleType: EPG_TYPE.viewNexa });
+    const mock = mockGet('/epg/xmltvChannel.xml').willResolveOnce([]);
+    const data = await epgService.fetchSchedule({ ...livePlaylist.playlist[0], scheduleUrl: '/epg/xmltvChannel.xml', scheduleType: EPG_TYPE.xmltv });
 
     expect(mock).toHaveFetched();
     expect(data).toEqual([]);
   });
 
   test('fetchSchedule parses xml content', async () => {
-    const mock = mockGet('/epg/viewNexaChannel.xml').willResolveOnce(viewNexaChannel);
-    const data = await epgService.fetchSchedule({ ...livePlaylist.playlist[0], scheduleUrl: '/epg/viewNexaChannel.xml', scheduleType: EPG_TYPE.viewNexa });
+    const mock = mockGet('/epg/xmltvChannel.xml').willResolveOnce(xmltvChannel);
+    const data = await epgService.fetchSchedule({ ...livePlaylist.playlist[0], scheduleUrl: '/epg/xmltvChannel.xml', scheduleType: EPG_TYPE.xmltv });
 
     expect(mock).toHaveFetched();
     expect(data[0]).toEqual({
