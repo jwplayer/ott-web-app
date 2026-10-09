@@ -11,7 +11,7 @@
 
 ## Versioning and Changelog
 
-We use the [TriPSs/conventional-changelog-action](https://github.com/TriPSs/conventional-changelog-action) GitHub [action](https://github.com/jwplayer/ott-web-app/actions/workflows/bump-version.yml) to do an automated version increment for any commit to the develop branch. The type of version increment will be determined by the commit message(s) in the code being added as follows (see [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) for more details):
+We use the [TriPSs/conventional-changelog-action](https://github.com/TriPSs/conventional-changelog-action) in the [Release - Create Release Candidate Branch](https://github.com/jwplayer/ott-web-app/actions/workflows/release-create-release-candidate-branch.yml) workflow to increment the version when a release candidate is created. The type of version increment will be determined by the commit messages since the last release as follows (see [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) for more details):
 
 - `fix:` - perform a patch bump
 - `feat:` - perform a minor bump
@@ -21,9 +21,18 @@ We use the [TriPSs/conventional-changelog-action](https://github.com/TriPSs/conv
 
 In case there are multiple commits being merged, the biggest type of bump will be performed.
 
-The GitHub action will update the project package.json, create a release tag in GitHub, and update the changelog based on the commit messages in the code being merged.
+The action updates the project package.json and the changelog. Tags and GitHub releases are created by the release workflows, so don't create them manually.
 
-**Note**: In order to access the repository and bypass the protected branch requirements, the action relies on a personal access token, which must belong to an admin of the repo, and which is stored as `ACTION_TOKEN` in the [repository secrets](https://github.com/jwplayer/ott-web-app/settings/secrets/actions). If this token needs to be updated, please generate a [Personal Access Token](https://github.com/settings/tokens) with the `public_repo` scope.
+## Release Process
+
+1. Run the [Release - Create Release Candidate Branch](https://github.com/jwplayer/ott-web-app/actions/workflows/release-create-release-candidate-branch.yml) workflow on `develop`. It merges `develop` into a branch off `release`, updates the translations, bumps the version, updates the changelog and opens a `release-candidate` pull request into `release`.
+2. Check the version and changelog in the pull request. Push any corrections to the `release-candidate` branch.
+3. Test and merge the pull request into `release`. This triggers:
+   - [Release - Build Artifacts, Tag, and Release](https://github.com/jwplayer/ott-web-app/actions/workflows/release-build-tag-release.yml), which builds the web app and creates the `vX.Y.Z` tag and GitHub release with the build artifacts attached
+   - [Web - Release - Deploy Prod Demo Site](https://github.com/jwplayer/ott-web-app/actions/workflows/web-release-deploy-prod-demo.yml), which deploys the demo site
+4. After a successful release, [Release - Merge Back to Dev](https://github.com/jwplayer/ott-web-app/actions/workflows/release-merge-back.yml) merges `release` back into `develop`. If it fails, run it manually.
+
+For a hotfix, run the release candidate workflow on a `hotfix/...` branch instead of `develop`. It creates a `hotfix-release-candidate` pull request with the `hotfix` label. The rest of the process is the same.
 
 ## Git Commit Guidelines (conventional changelog)
 
