@@ -6,8 +6,6 @@ packages:
 
 overrides:
   # Fix vulnerabilities
-  'fast-xml-parser': '>=4.5.4'
-  'shell-quote': '>=1.8.4'
   'axios': '>=0.30.0'
   '@xmldom/xmldom': '>=0.9.10'
   # i18next-parser imports the default export, which was removed in cheerio 1.0.0
