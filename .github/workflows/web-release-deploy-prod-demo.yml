@@ -19,12 +19,14 @@ jobs:
         with:
           node-version: 24
       - name: Install pnpm
-        uses: pnpm/action-setup@a3252b78c470c02df07e9d59298aecedc3ccdd6d # ghapm:v3
+        uses: pnpm/setup@731dfb6463bbd11c11fd0ee11fe00ed0e36d48a1 # ghapm:v3
+        with:
+          install: false
       - name: Build
         env:
           APP_PLAYER_LICENSE_KEY: ${{ secrets.PLAYER_LICENSE_KEY }}
           APP_GOOGLE_SITE_VERIFICATION_ID: ${{ vars.GOOGLE_SITE_VERIFICATION_ID }}
-        run: pnpm install &&  MODE=demo pnpm build
+        run: pnpm install --frozen-lockfile && MODE=demo pnpm build
       - uses: FirebaseExtended/action-hosting-deploy@500ac625ca2dd40cbd15f7659af953801858032a # ghapm:v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
