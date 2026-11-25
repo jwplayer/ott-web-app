@@ -37,9 +37,11 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       # Set up pnpm after the merge, since the release branch may not define a pnpm version yet
       - name: Install pnpm
-        uses: pnpm/action-setup@a3252b78c470c02df07e9d59298aecedc3ccdd6d # ghapm:v3
+        uses: pnpm/setup@731dfb6463bbd11c11fd0ee11fe00ed0e36d48a1 # ghapm:v3
+        with:
+          install: false
       - name: Install dependencies and update translations
-        run: pnpm install && pnpm --filter @jwp/ott-web run i18next
+        run: pnpm install --frozen-lockfile && pnpm --filter @jwp/ott-web run i18next
 
       - name: Generate changelog
         id: changelog

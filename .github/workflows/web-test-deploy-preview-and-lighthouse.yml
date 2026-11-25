@@ -21,11 +21,13 @@ jobs:
         with:
           node-version: "24.18.0" # https://github.com/FirebaseExtended/action-hosting-deploy/issues/460#issuecomment-4832552057
       - name: Install pnpm
-        uses: pnpm/action-setup@a3252b78c470c02df07e9d59298aecedc3ccdd6d # ghapm:v3
+        uses: pnpm/setup@731dfb6463bbd11c11fd0ee11fe00ed0e36d48a1 # ghapm:v3
+        with:
+          install: false
       - name: Build Preview Link
         env:
           APP_PLAYER_LICENSE_KEY: ${{ secrets.PLAYER_LICENSE_KEY }}
-        run: pnpm install && MODE=preview pnpm build
+        run: pnpm install --frozen-lockfile && MODE=preview pnpm build
       - uses: FirebaseExtended/action-hosting-deploy@500ac625ca2dd40cbd15f7659af953801858032a # ghapm:v0
         id: firebase_hosting_preview
         with:
@@ -46,7 +48,9 @@ jobs:
         with:
           node-version: "24.18.0" # https://github.com/FirebaseExtended/action-hosting-deploy/issues/460#issuecomment-4832552057
       - name: Install pnpm
-        uses: pnpm/action-setup@a3252b78c470c02df07e9d59298aecedc3ccdd6d # ghapm:v3
+        uses: pnpm/setup@731dfb6463bbd11c11fd0ee11fe00ed0e36d48a1 # ghapm:v3
+        with:
+          install: false
       - name: Install Lighthouse CI
         run: pnpm add -D @lhci/cli@0.12.x
       - name: Run Lighthouse CI
