@@ -80,7 +80,7 @@
     "vite-plugin-static-copy": "^2.3.0",
     "vite-plugin-stylelint": "^5.3.1",
     "vite-plugin-svgr": "^4.3.0",
-    "vitest": "^3.0.8",
+    "vitest": "^4.1.12",
     "vitest-axe": "^1.0.0-pre.3",
     "workbox-build": "^6.6.1",
     "workbox-window": "^6.6.1"
