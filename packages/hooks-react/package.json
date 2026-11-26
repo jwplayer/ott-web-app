@@ -30,6 +30,6 @@
     "eslint-config-jwp": "workspace:*",
     "jsdom": "^26.0.0",
     "vi-fetch": "^0.8.0",
-    "vitest": "^3.0.8"
+    "vitest": "^4.1.12"
   }
 }

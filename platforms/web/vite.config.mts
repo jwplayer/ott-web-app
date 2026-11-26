@@ -1,7 +1,7 @@
 import path from 'path';
 
 import { defineConfig, loadEnv } from 'vite';
-import type { ConfigEnv, UserConfigExport } from 'vitest/config';
+import type { ConfigEnv, ViteUserConfigExport } from 'vitest/config';
 import react from '@vitejs/plugin-react';
 import eslintPlugin from 'vite-plugin-eslint';
 import StylelintPlugin from 'vite-plugin-stylelint';
@@ -23,7 +23,7 @@ import {
   getGtmScript,
 } from './scripts/build-tools/buildTools';
 
-export default ({ mode, command }: ConfigEnv): UserConfigExport => {
+export default ({ mode, command }: ConfigEnv): ViteUserConfigExport => {
   const envPrefix = 'APP_';
   const env = loadEnv(mode, process.cwd(), envPrefix);
 

@@ -6,13 +6,13 @@ import Icon from './Icon';
 
 describe('<Icon>', () => {
   test('renders and matches snapshot', () => {
-    const { container } = render(<Icon icon={vi.fn()} />);
+    const { container } = render(<Icon icon={vi.fn(() => null)} />);
 
     expect(container).toMatchSnapshot();
   });
 
   test('WCAG 2.2 (AA) compliant', async () => {
-    const { container } = render(<Icon icon={vi.fn()} />);
+    const { container } = render(<Icon icon={vi.fn(() => null)} />);
 
     expect(await axe(container, { runOnly: ['wcag21a', 'wcag21aa', 'wcag22aa'] })).toHaveNoViolations();
   });
